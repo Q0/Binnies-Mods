@@ -9,14 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class ComponentExtraBeeGUI extends MachineComponent implements IInteraction.RightClick {
-   ExtraBeeGUID id;
+    ExtraBeeGUID id;
 
-   public ComponentExtraBeeGUI(Machine machine, ExtraBeeGUID id) {
-      super(machine);
-      this.id = id;
-   }
+    public ComponentExtraBeeGUI(Machine machine, ExtraBeeGUID id) {
+        super(machine);
+        this.id = id;
+    }
 
-   public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
-      ExtraBees.proxy.openGui(this.id, player, x, y, z);
-   }
+    public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
+        ExtraBees.proxy.openGui(this.id, player, x, y, z);
+    }
 }

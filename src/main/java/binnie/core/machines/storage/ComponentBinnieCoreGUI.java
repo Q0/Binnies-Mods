@@ -9,14 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 class ComponentBinnieCoreGUI extends MachineComponent implements IInteraction.RightClick {
-   private BinnieCoreGUI id;
+    private BinnieCoreGUI id;
 
-   public ComponentBinnieCoreGUI(Machine machine, BinnieCoreGUI id) {
-      super(machine);
-      this.id = id;
-   }
+    public ComponentBinnieCoreGUI(Machine machine, BinnieCoreGUI id) {
+        super(machine);
+        this.id = id;
+    }
 
-   public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
-      BinnieCore.proxy.openGui(this.id, player, x, y, z);
-   }
+    public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
+        BinnieCore.proxy.openGui(this.id, player, x, y, z);
+    }
 }

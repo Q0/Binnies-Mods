@@ -12,21 +12,21 @@ import binnie.craftgui.resource.minecraft.CraftGUITextureSheet;
 import binnie.craftgui.resource.minecraft.StandardTexture;
 
 class ControlBreedingProgress extends Control {
-   private static Texture Progress = new StandardTexture(80, 22, 4, 4, CraftGUITextureSheet.Controls2);
-   private float percentage;
-   private int colour;
+    private static Texture Progress = new StandardTexture(80, 22, 4, 4, CraftGUITextureSheet.Controls2);
+    private float percentage;
+    private int colour;
 
-   public ControlBreedingProgress(IWidget parent, int x, int y, int width, int height, BreedingSystem system, float percentage) {
-      super(parent, (float)x, (float)y, (float)width, (float)height);
-      this.percentage = percentage;
-      this.colour = system.getColour();
-   }
+    public ControlBreedingProgress(IWidget parent, int x, int y, int width, int height, BreedingSystem system, float percentage) {
+        super(parent, (float) x, (float) y, (float) width, (float) height);
+        this.percentage = percentage;
+        this.colour = system.getColour();
+    }
 
-   public void onRenderBackground() {
-      CraftGUI.Render.texture((Object)CraftGUITexture.PanelBlack, (IArea)this.getArea());
-      IArea area = this.getArea().inset(1);
-      area.setSize(new IPoint(area.size().x() * this.percentage, area.size().y()));
-      CraftGUI.Render.colour(this.colour);
-      CraftGUI.Render.texture(Progress, area);
-   }
+    public void onRenderBackground() {
+        CraftGUI.Render.texture((Object) CraftGUITexture.PanelBlack, (IArea) this.getArea());
+        IArea area = this.getArea().inset(1);
+        area.setSize(new IPoint(area.size().x() * this.percentage, area.size().y()));
+        CraftGUI.Render.colour(this.colour);
+        CraftGUI.Render.texture(Progress, area);
+    }
 }

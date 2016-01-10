@@ -4,36 +4,32 @@ import binnie.craftgui.controls.ControlText;
 import binnie.craftgui.controls.ControlTextCentered;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.events.EventValueChanged;
-import binnie.craftgui.mod.database.ControlSpeciesBox;
-import binnie.craftgui.mod.database.DatabaseTab;
-import binnie.craftgui.mod.database.PageBranch;
-import binnie.craftgui.mod.database.WindowAbstractDatabase;
 import cpw.mods.fml.common.Mod.EventHandler;
 import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IClassification;
 
 public class PageBranchSpecies extends PageBranch {
-   private ControlText pageBranchSpecies_title = new ControlTextCentered(this, 8.0F, "Species");
-   private ControlSpeciesBox pageBranchSpecies_speciesList;
+    private ControlText pageBranchSpecies_title = new ControlTextCentered(this, 8.0F, "Species");
+    private ControlSpeciesBox pageBranchSpecies_speciesList;
 
-   @EventHandler
-   public void onHandleEvent(EventValueChanged event) {
-   }
+    @EventHandler
+    public void onHandleEvent(EventValueChanged event) {
+    }
 
-   public PageBranchSpecies(IWidget parent, DatabaseTab tab) {
-      super(parent, tab);
-      this.addEventHandler(new EventValueChanged.Handler() {
-         public void onEvent(EventValueChanged event) {
-            if(event.isOrigin(PageBranchSpecies.this.pageBranchSpecies_speciesList)) {
-               ((WindowAbstractDatabase)PageBranchSpecies.this.getSuperParent()).gotoSpecies((IAlleleSpecies)event.getValue());
+    public PageBranchSpecies(IWidget parent, DatabaseTab tab) {
+        super(parent, tab);
+        this.addEventHandler(new EventValueChanged.Handler() {
+            public void onEvent(EventValueChanged event) {
+                if (event.isOrigin(PageBranchSpecies.this.pageBranchSpecies_speciesList)) {
+                    ((WindowAbstractDatabase) PageBranchSpecies.this.getSuperParent()).gotoSpecies((IAlleleSpecies) event.getValue());
+                }
+
             }
+        });
+        this.pageBranchSpecies_speciesList = new ControlSpeciesBox(this, 4.0F, 20.0F, 136.0F, 152.0F);
+    }
 
-         }
-      });
-      this.pageBranchSpecies_speciesList = new ControlSpeciesBox(this, 4.0F, 20.0F, 136.0F, 152.0F);
-   }
-
-   public void onValueChanged(IClassification branch) {
-      this.pageBranchSpecies_speciesList.setBranch(branch);
-   }
+    public void onValueChanged(IClassification branch) {
+        this.pageBranchSpecies_speciesList.setBranch(branch);
+    }
 }

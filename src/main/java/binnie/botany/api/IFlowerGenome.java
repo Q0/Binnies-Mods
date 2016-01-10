@@ -1,44 +1,39 @@
 package binnie.botany.api;
 
-import binnie.botany.api.EnumAcidity;
-import binnie.botany.api.EnumMoisture;
-import binnie.botany.api.IAlleleFlowerSpecies;
-import binnie.botany.api.IFlowerColour;
-import binnie.botany.api.IFlowerType;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.EnumTolerance;
 import forestry.api.genetics.IGenome;
 
 public interface IFlowerGenome extends IGenome {
-   IAlleleFlowerSpecies getPrimary();
+    IAlleleFlowerSpecies getPrimary();
 
-   IAlleleFlowerSpecies getSecondary();
+    IAlleleFlowerSpecies getSecondary();
 
-   IFlowerColour getPrimaryColor();
+    IFlowerColour getPrimaryColor();
 
-   IFlowerColour getSecondaryColor();
+    IFlowerColour getSecondaryColor();
 
-   IFlowerColour getStemColor();
+    IFlowerColour getStemColor();
 
-   int getFertility();
+    int getFertility();
 
-   int getLifespan();
+    int getLifespan();
 
-   IFlowerType getType();
+    IFlowerType getType();
 
-   EnumTolerance getToleranceTemperature();
+    EnumTolerance getToleranceTemperature();
 
-   EnumTolerance getToleranceMoisture();
+    EnumTolerance getToleranceMoisture();
 
-   EnumTolerance getTolerancePH();
+    EnumTolerance getTolerancePH();
 
-   float getAgeChance();
+    float getAgeChance();
 
-   float getSappiness();
+    float getSappiness();
 
-   boolean canTolerate(EnumAcidity var1);
+    boolean canTolerate(EnumAcidity var1);
 
-   boolean canTolerate(EnumMoisture var1);
+    boolean canTolerate(EnumMoisture var1);
 
-   boolean canTolerate(EnumTemperature var1);
+    boolean canTolerate(EnumTemperature var1);
 }

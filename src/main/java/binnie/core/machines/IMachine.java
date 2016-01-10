@@ -1,27 +1,24 @@
 package binnie.core.machines;
 
-import binnie.core.machines.IOwnable;
-import binnie.core.machines.MachineComponent;
-import binnie.core.machines.MachinePackage;
-import binnie.core.machines.MachineUtil;
-import java.util.Collection;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import java.util.Collection;
+
 public interface IMachine extends IOwnable {
-   void addComponent(MachineComponent var1);
+    void addComponent(MachineComponent var1);
 
-   MachineUtil getMachineUtil();
+    MachineUtil getMachineUtil();
 
-   Object getInterface(Class var1);
+    Object getInterface(Class var1);
 
-   void markDirty();
+    void markDirty();
 
-   World getWorld();
+    World getWorld();
 
-   TileEntity getTileEntity();
+    TileEntity getTileEntity();
 
-   Collection getInterfaces(Class var1);
+    Collection getInterfaces(Class var1);
 
-   MachinePackage getPackage();
+    MachinePackage getPackage();
 }

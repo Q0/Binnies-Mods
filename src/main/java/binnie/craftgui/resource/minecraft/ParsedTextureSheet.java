@@ -5,18 +5,18 @@ import binnie.core.resource.IBinnieTexture;
 import binnie.core.resource.ResourceType;
 
 class ParsedTextureSheet implements IBinnieTexture {
-   private String name;
-   private String modid;
-   private String path;
+    private String name;
+    private String modid;
+    private String path;
 
-   public ParsedTextureSheet(String name, String modid, String path) {
-      super();
-      this.name = name;
-      this.modid = modid;
-      this.path = path;
-   }
+    public ParsedTextureSheet(String name, String modid, String path) {
+        super();
+        this.name = name;
+        this.modid = modid;
+        this.path = path;
+    }
 
-   public BinnieResource getTexture() {
-      return new BinnieResource(this.modid, ResourceType.GUI, this.path);
-   }
+    public BinnieResource getTexture() {
+        return new BinnieResource(this.modid, ResourceType.GUI, this.path);
+    }
 }

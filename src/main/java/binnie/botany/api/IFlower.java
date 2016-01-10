@@ -1,33 +1,32 @@
 package binnie.botany.api;
 
-import binnie.botany.api.IFlowerGenome;
 import forestry.api.genetics.IIndividual;
 import net.minecraft.world.World;
 
 public interface IFlower extends IIndividual {
-   IFlowerGenome getGenome();
+    IFlowerGenome getGenome();
 
-   IFlowerGenome getMate();
+    IFlowerGenome getMate();
 
-   void mate(IFlower var1);
+    void mate(IFlower var1);
 
-   int getAge();
+    int getAge();
 
-   void age();
+    void age();
 
-   void setAge(int var1);
+    void setAge(int var1);
 
-   IFlower getOffspring(World var1);
+    IFlower getOffspring(World var1);
 
-   int getMaxAge();
+    int getMaxAge();
 
-   boolean isWilted();
+    boolean isWilted();
 
-   void setWilted(boolean var1);
+    void setWilted(boolean var1);
 
-   boolean hasFlowered();
+    boolean hasFlowered();
 
-   void setFlowered(boolean var1);
+    void setFlowered(boolean var1);
 
-   void removeMate();
+    void removeMate();
 }

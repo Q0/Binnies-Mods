@@ -1,140 +1,138 @@
 package binnie.craftgui.core;
 
-import binnie.craftgui.core.ITopLevelWidget;
-import binnie.craftgui.core.IWidgetAttribute;
-import binnie.craftgui.core.RenderStage;
 import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.events.Event;
 import binnie.craftgui.events.EventHandler;
+
 import java.util.List;
 
 public interface IWidget {
-   IWidget getParent();
+    IWidget getParent();
 
-   void deleteChild(IWidget var1);
+    void deleteChild(IWidget var1);
 
-   void deleteAllChildren();
+    void deleteAllChildren();
 
-   ITopLevelWidget getSuperParent();
+    ITopLevelWidget getSuperParent();
 
-   boolean isTopLevel();
+    boolean isTopLevel();
 
-   IPoint getPosition();
+    IPoint getPosition();
 
-   IPoint pos();
+    IPoint pos();
 
-   void setPosition(IPoint var1);
+    void setPosition(IPoint var1);
 
-   IPoint getSize();
+    IPoint getSize();
 
-   IPoint size();
+    IPoint size();
 
-   void setSize(IPoint var1);
+    void setSize(IPoint var1);
 
-   IPoint getOriginalPosition();
+    IPoint getOriginalPosition();
 
-   IPoint getAbsolutePosition();
+    IPoint getAbsolutePosition();
 
-   IPoint getOriginalAbsolutePosition();
+    IPoint getOriginalAbsolutePosition();
 
-   IPoint getOffset();
+    IPoint getOffset();
 
-   IArea getArea();
+    IArea getArea();
 
-   IArea area();
+    IArea area();
 
-   void setOffset(IPoint var1);
+    void setOffset(IPoint var1);
 
-   IPoint getMousePosition();
+    IPoint getMousePosition();
 
-   IPoint getRelativeMousePosition();
+    IPoint getRelativeMousePosition();
 
-   void setColour(int var1);
+    void setColour(int var1);
 
-   int getColour();
+    int getColour();
 
-   void render();
+    void render();
 
-   void updateClient();
+    void updateClient();
 
-   void enable();
+    void enable();
 
-   void disable();
+    void disable();
 
-   void show();
+    void show();
 
-   void hide();
+    void hide();
 
-   boolean calculateIsMouseOver();
+    boolean calculateIsMouseOver();
 
-   boolean isEnabled();
+    boolean isEnabled();
 
-   boolean isVisible();
+    boolean isVisible();
 
-   boolean isFocused();
+    boolean isFocused();
 
-   boolean isMouseOver();
+    boolean isMouseOver();
 
-   boolean isDragged();
+    boolean isDragged();
 
-   boolean isChildVisible(IWidget var1);
+    boolean isChildVisible(IWidget var1);
 
-   boolean isChildEnabled(IWidget var1);
+    boolean isChildEnabled(IWidget var1);
 
-   boolean canMouseOver();
+    boolean canMouseOver();
 
-   boolean canFocus();
+    boolean canFocus();
 
-   IWidget addWidget(IWidget var1);
+    IWidget addWidget(IWidget var1);
 
-   List getWidgets();
+    List getWidgets();
 
-   void callEvent(Event var1);
+    void callEvent(Event var1);
 
-   void recieveEvent(Event var1);
+    void recieveEvent(Event var1);
 
-   void onUpdateClient();
+    void onUpdateClient();
 
-   void delete();
+    void delete();
 
-   void onDelete();
+    void onDelete();
 
-   Object getWidget(Class var1);
+    Object getWidget(Class var1);
 
-   IArea getCroppedZone();
+    IArea getCroppedZone();
 
-   void setCroppedZone(IWidget var1, IArea var2);
+    void setCroppedZone(IWidget var1, IArea var2);
 
-   boolean isCroppedWidet();
+    boolean isCroppedWidet();
 
-   IWidget getCropWidget();
+    IWidget getCropWidget();
 
-   boolean isMouseOverWidget(IPoint var1);
+    boolean isMouseOverWidget(IPoint var1);
 
-   int getLevel();
+    int getLevel();
 
-   boolean isDescendant(IWidget var1);
+    boolean isDescendant(IWidget var1);
 
-   List getAttributes();
+    List getAttributes();
 
-   boolean hasAttribute(IWidgetAttribute var1);
+    boolean hasAttribute(IWidgetAttribute var1);
 
-   boolean addAttribute(IWidgetAttribute var1);
+    boolean addAttribute(IWidgetAttribute var1);
 
-   void addEventHandler(EventHandler var1);
+    void addEventHandler(EventHandler var1);
 
-   void addSelfEventHandler(EventHandler var1);
+    void addSelfEventHandler(EventHandler var1);
 
-   boolean contains(IPoint var1);
+    boolean contains(IPoint var1);
 
-   float x();
+    float x();
 
-   float y();
+    float y();
 
-   float w();
+    float w();
 
-   float h();
+    float h();
 
-   void onRender(RenderStage var1);
+    void onRender(RenderStage var1);
 }

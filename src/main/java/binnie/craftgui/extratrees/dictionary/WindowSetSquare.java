@@ -9,22 +9,22 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
 
 public class WindowSetSquare extends Window {
-   public WindowSetSquare(EntityPlayer player, IInventory inventory, Side side) {
-      super(150.0F, 150.0F, player, inventory, side);
-   }
+    public WindowSetSquare(EntityPlayer player, IInventory inventory, Side side) {
+        super(150.0F, 150.0F, player, inventory, side);
+    }
 
-   protected AbstractMod getMod() {
-      return ExtraTrees.instance;
-   }
+    protected AbstractMod getMod() {
+        return ExtraTrees.instance;
+    }
 
-   protected String getName() {
-      return null;
-   }
+    protected String getName() {
+        return null;
+    }
 
-   public void initialiseClient() {
-   }
+    public void initialiseClient() {
+    }
 
-   public static Window create(EntityPlayer player, World world, int x, int y, int z, Side side) {
-      return new WindowSetSquare(player, (IInventory)null, side);
-   }
+    public static Window create(EntityPlayer player, World world, int x, int y, int z, Side side) {
+        return new WindowSetSquare(player, (IInventory) null, side);
+    }
 }

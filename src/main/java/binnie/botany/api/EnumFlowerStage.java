@@ -1,19 +1,19 @@
 package binnie.botany.api;
 
 public enum EnumFlowerStage {
-   FLOWER("Flower"),
-   SEED("Seed"),
-   POLLEN("Pollen"),
-   NONE("NONE");
+    FLOWER("Flower"),
+    SEED("Seed"),
+    POLLEN("Pollen"),
+    NONE("NONE");
 
-   public static final EnumFlowerStage[] VALUES = values();
-   String name;
+    public static final EnumFlowerStage[] VALUES = values();
+    String name;
 
-   private EnumFlowerStage(String name) {
-      this.name = name;
-   }
+    private EnumFlowerStage(String name) {
+        this.name = name;
+    }
 
-   public String getName() {
-      return this.name;
-   }
+    public String getName() {
+        return this.name;
+    }
 }

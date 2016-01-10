@@ -9,33 +9,33 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public enum FruitPod implements IIconProvider {
-   Cocoa,
-   Banana,
-   Coconut,
-   Plantain,
-   RedBanana,
-   Papayimar;
+    Cocoa,
+    Banana,
+    Coconut,
+    Plantain,
+    RedBanana,
+    Papayimar;
 
-   short[] textures = new short[]{BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID()};
-   IIcon[] icons = new IIcon[3];
+    short[] textures = new short[]{BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID()};
+    IIcon[] icons = new IIcon[3];
 
-   private FruitPod() {
-   }
+    private FruitPod() {
+    }
 
-   public short[] getTextures() {
-      return this.textures;
-   }
+    public short[] getTextures() {
+        return this.textures;
+    }
 
-   @SideOnly(Side.CLIENT)
-   public IIcon getIcon(short texUID) {
-      int index = this.textures[0] - texUID;
-      return index >= 0 && index < 3?this.icons[index]:null;
-   }
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(short texUID) {
+        int index = this.textures[0] - texUID;
+        return index >= 0 && index < 3 ? this.icons[index] : null;
+    }
 
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.icons[0] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".0");
-      this.icons[1] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".1");
-      this.icons[2] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".2");
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.icons[0] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".0");
+        this.icons[1] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".1");
+        this.icons[2] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".2");
+    }
 }

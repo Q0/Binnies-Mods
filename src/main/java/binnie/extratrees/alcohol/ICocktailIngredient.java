@@ -1,15 +1,15 @@
 package binnie.extratrees.alcohol;
 
 public interface ICocktailIngredient {
-   String getName();
+    String getName();
 
-   String getIdentifier();
+    String getIdentifier();
 
-   int getColour();
+    int getColour();
 
-   int getTransparency();
+    int getTransparency();
 
-   String getTooltip(int var1);
+    String getTooltip(int var1);
 
-   float getABV();
+    float getABV();
 }

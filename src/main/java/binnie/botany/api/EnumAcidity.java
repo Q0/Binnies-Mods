@@ -1,14 +1,14 @@
 package binnie.botany.api;
 
 public enum EnumAcidity {
-   Acid,
-   Neutral,
-   Alkaline;
+    Acid,
+    Neutral,
+    Alkaline;
 
-   private EnumAcidity() {
-   }
+    private EnumAcidity() {
+    }
 
-   public String getID() {
-      return this.name().toLowerCase();
-   }
+    public String getID() {
+        return this.name().toLowerCase();
+    }
 }

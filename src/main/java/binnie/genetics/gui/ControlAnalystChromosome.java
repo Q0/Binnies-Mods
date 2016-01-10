@@ -4,11 +4,7 @@ import binnie.Binnie;
 import binnie.core.genetics.BreedingSystem;
 import binnie.core.texture.BinnieCoreTexture;
 import binnie.craftgui.controls.core.Control;
-import binnie.craftgui.core.Attribute;
-import binnie.craftgui.core.CraftGUI;
-import binnie.craftgui.core.ITooltip;
-import binnie.craftgui.core.IWidget;
-import binnie.craftgui.core.Tooltip;
+import binnie.craftgui.core.*;
 import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.resource.Texture;
 import binnie.craftgui.resource.minecraft.StandardTexture;
@@ -17,40 +13,40 @@ import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.ISpeciesRoot;
 
 public class ControlAnalystChromosome extends Control implements ITooltip {
-   IAllele allele0;
-   IAllele allele1;
-   IChromosomeType chromosomeType;
-   ISpeciesRoot root;
-   Texture Homozygous = new StandardTexture(0, 0, 16, 22, BinnieCoreTexture.GUIAnalyst);
-   Texture Heterozygous = new StandardTexture(16, 0, 16, 22, BinnieCoreTexture.GUIAnalyst);
+    IAllele allele0;
+    IAllele allele1;
+    IChromosomeType chromosomeType;
+    ISpeciesRoot root;
+    Texture Homozygous = new StandardTexture(0, 0, 16, 22, BinnieCoreTexture.GUIAnalyst);
+    Texture Heterozygous = new StandardTexture(16, 0, 16, 22, BinnieCoreTexture.GUIAnalyst);
 
-   public ControlAnalystChromosome(IWidget parent, float x, float y, ISpeciesRoot root, IChromosomeType type, IAllele allele0, IAllele allele1) {
-      super(parent, x, y, 16.0F, 22.0F);
-      this.addAttribute(Attribute.MouseOver);
-      this.root = root;
-      this.chromosomeType = type;
-      this.allele0 = allele0;
-      this.allele1 = allele1;
-   }
+    public ControlAnalystChromosome(IWidget parent, float x, float y, ISpeciesRoot root, IChromosomeType type, IAllele allele0, IAllele allele1) {
+        super(parent, x, y, 16.0F, 22.0F);
+        this.addAttribute(Attribute.MouseOver);
+        this.root = root;
+        this.chromosomeType = type;
+        this.allele0 = allele0;
+        this.allele1 = allele1;
+    }
 
-   public boolean isHomozygous() {
-      return this.allele0.getUID().equals(this.allele1.getUID());
-   }
+    public boolean isHomozygous() {
+        return this.allele0.getUID().equals(this.allele1.getUID());
+    }
 
-   public void onRenderBackground() {
-      super.onRenderBackground();
-      CraftGUI.Render.texture(this.isHomozygous()?this.Homozygous:this.Heterozygous, IPoint.ZERO);
-   }
+    public void onRenderBackground() {
+        super.onRenderBackground();
+        CraftGUI.Render.texture(this.isHomozygous() ? this.Homozygous : this.Heterozygous, IPoint.ZERO);
+    }
 
-   public void getTooltip(Tooltip tooltip) {
-      BreedingSystem system = Binnie.Genetics.getSystem(this.root);
-      tooltip.add(system.getChromosomeName(this.chromosomeType));
-      if(this.isHomozygous()) {
-         tooltip.add(system.getAlleleName(this.chromosomeType, this.allele0));
-      } else {
-         tooltip.add("Active: " + system.getAlleleName(this.chromosomeType, this.allele0));
-         tooltip.add("Inactive: " + system.getAlleleName(this.chromosomeType, this.allele1));
-      }
+    public void getTooltip(Tooltip tooltip) {
+        BreedingSystem system = Binnie.Genetics.getSystem(this.root);
+        tooltip.add(system.getChromosomeName(this.chromosomeType));
+        if (this.isHomozygous()) {
+            tooltip.add(system.getAlleleName(this.chromosomeType, this.allele0));
+        } else {
+            tooltip.add("Active: " + system.getAlleleName(this.chromosomeType, this.allele0));
+            tooltip.add("Inactive: " + system.getAlleleName(this.chromosomeType, this.allele1));
+        }
 
-   }
+    }
 }

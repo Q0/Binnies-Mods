@@ -4,11 +4,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 interface IPacketLocation {
-   TileEntity getTarget(World var1);
+    TileEntity getTarget(World var1);
 
-   int getX();
+    int getX();
 
-   int getY();
+    int getY();
 
-   int getZ();
+    int getZ();
 }

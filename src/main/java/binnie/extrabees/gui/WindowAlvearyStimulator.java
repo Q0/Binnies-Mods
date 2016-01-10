@@ -15,31 +15,31 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowAlvearyStimulator extends Window {
-   Machine machine;
-   ControlPlayerInventory playerInventory;
+    Machine machine;
+    ControlPlayerInventory playerInventory;
 
-   public WindowAlvearyStimulator(EntityPlayer player, IInventory inventory, Side side) {
-      super(176.0F, 144.0F, player, inventory, side);
-      this.machine = ((TileEntityMachine)inventory).getMachine();
-   }
+    public WindowAlvearyStimulator(EntityPlayer player, IInventory inventory, Side side) {
+        super(176.0F, 144.0F, player, inventory, side);
+        this.machine = ((TileEntityMachine) inventory).getMachine();
+    }
 
-   public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-      return player != null && inventory != null?new WindowAlvearyStimulator(player, inventory, side):null;
-   }
+    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+        return player != null && inventory != null ? new WindowAlvearyStimulator(player, inventory, side) : null;
+    }
 
-   public void initialiseClient() {
-      this.setTitle("Stimulator");
-      new ControlEnergyBar(this, 75, 29, 60, 16, Position.Left);
-      ControlSlot slot = new ControlSlot(this, 41.0F, 28.0F);
-      slot.assign(AlvearyStimulator.slotCircuit);
-      this.playerInventory = new ControlPlayerInventory(this);
-   }
+    public void initialiseClient() {
+        this.setTitle("Stimulator");
+        new ControlEnergyBar(this, 75, 29, 60, 16, Position.Left);
+        ControlSlot slot = new ControlSlot(this, 41.0F, 28.0F);
+        slot.assign(AlvearyStimulator.slotCircuit);
+        this.playerInventory = new ControlPlayerInventory(this);
+    }
 
-   public AbstractMod getMod() {
-      return ExtraBees.instance;
-   }
+    public AbstractMod getMod() {
+        return ExtraBees.instance;
+    }
 
-   public String getName() {
-      return "AlvearyStimulator";
-   }
+    public String getName() {
+        return "AlvearyStimulator";
+    }
 }

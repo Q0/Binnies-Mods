@@ -12,24 +12,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemMasterRegistry extends Item {
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.itemIcon = Genetics.proxy.getIcon(register, "masterRegistry");
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = Genetics.proxy.getIcon(register, "masterRegistry");
+    }
 
-   public ItemMasterRegistry() {
-      super();
-      this.setCreativeTab(CreativeTabGenetics.instance);
-      this.setUnlocalizedName("masterRegistry");
-      this.setMaxStackSize(1);
-   }
+    public ItemMasterRegistry() {
+        super();
+        this.setCreativeTab(CreativeTabGenetics.instance);
+        this.setUnlocalizedName("masterRegistry");
+        this.setMaxStackSize(1);
+    }
 
-   public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
-      Genetics.proxy.openGui(GeneticsGUI.MasterRegistry, player, (int)player.posX, (int)player.posY, (int)player.posZ);
-      return itemstack;
-   }
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
+        Genetics.proxy.openGui(GeneticsGUI.MasterRegistry, player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        return itemstack;
+    }
 
-   public String getItemStackDisplayName(ItemStack i) {
-      return "Master Registry";
-   }
+    public String getItemStackDisplayName(ItemStack i) {
+        return "Master Registry";
+    }
 }

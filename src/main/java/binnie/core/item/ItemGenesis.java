@@ -12,24 +12,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemGenesis extends Item {
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.itemIcon = BinnieCore.proxy.getIcon(register, "genesis");
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = BinnieCore.proxy.getIcon(register, "genesis");
+    }
 
-   public ItemGenesis() {
-      super();
-      this.setCreativeTab(Tabs.tabApiculture);
-      this.setUnlocalizedName("genesis");
-      this.setMaxStackSize(1);
-   }
+    public ItemGenesis() {
+        super();
+        this.setCreativeTab(Tabs.tabApiculture);
+        this.setUnlocalizedName("genesis");
+        this.setMaxStackSize(1);
+    }
 
-   public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
-      BinnieCore.proxy.openGui(BinnieCoreGUI.Genesis, player, (int)player.posX, (int)player.posY, (int)player.posZ);
-      return itemstack;
-   }
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
+        BinnieCore.proxy.openGui(BinnieCoreGUI.Genesis, player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        return itemstack;
+    }
 
-   public String getItemStackDisplayName(ItemStack i) {
-      return "Genesis";
-   }
+    public String getItemStackDisplayName(ItemStack i) {
+        return "Genesis";
+    }
 }

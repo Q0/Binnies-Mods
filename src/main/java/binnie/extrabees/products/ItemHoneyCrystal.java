@@ -10,34 +10,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemHoneyCrystal extends Item {
-   private int maxCharge = 8000;
-   private int transferLimit = 500;
-   private int tier = 1;
+    private int maxCharge = 8000;
+    private int transferLimit = 500;
+    private int tier = 1;
 
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystal");
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystal");
+    }
 
-   public ItemHoneyCrystal() {
-      super();
-      this.setMaxDamage(27);
-      this.setMaxStackSize(1);
-      this.setCreativeTab(Tabs.tabApiculture);
-      this.setUnlocalizedName("honeyCrystal");
-   }
+    public ItemHoneyCrystal() {
+        super();
+        this.setMaxDamage(27);
+        this.setMaxStackSize(1);
+        this.setCreativeTab(Tabs.tabApiculture);
+        this.setUnlocalizedName("honeyCrystal");
+    }
 
-   public String getItemStackDisplayName(ItemStack i) {
-      return ExtraBees.proxy.localise("item.honeycrystal");
-   }
+    public String getItemStackDisplayName(ItemStack i) {
+        return ExtraBees.proxy.localise("item.honeycrystal");
+    }
 
-   public static NBTTagCompound getOrCreateNbtData(ItemStack itemStack) {
-      NBTTagCompound ret = itemStack.getTagCompound();
-      if(ret == null) {
-         ret = new NBTTagCompound();
-         itemStack.setTagCompound(ret);
-      }
+    public static NBTTagCompound getOrCreateNbtData(ItemStack itemStack) {
+        NBTTagCompound ret = itemStack.getTagCompound();
+        if (ret == null) {
+            ret = new NBTTagCompound();
+            itemStack.setTagCompound(ret);
+        }
 
-      return ret;
-   }
+        return ret;
+    }
 }

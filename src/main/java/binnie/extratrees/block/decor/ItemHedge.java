@@ -6,12 +6,12 @@ import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 
 public class ItemHedge extends ItemBlockWithMetadata {
-   public ItemHedge(Block block) {
-      super(block, block);
-   }
+    public ItemHedge(Block block) {
+        super(block, block);
+    }
 
-   public String getItemStackDisplayName(ItemStack item) {
-      int meta = item.getItemDamage();
-      return ExtraTreeSpecies.LeafType.values()[meta % 6].descript + (meta >= 8?" Full":"") + " Hedge";
-   }
+    public String getItemStackDisplayName(ItemStack item) {
+        int meta = item.getItemDamage();
+        return ExtraTreeSpecies.LeafType.values()[meta % 6].descript + (meta >= 8 ? " Full" : "") + " Hedge";
+    }
 }

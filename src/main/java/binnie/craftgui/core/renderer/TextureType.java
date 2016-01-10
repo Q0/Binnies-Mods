@@ -1,9 +1,9 @@
 package binnie.craftgui.core.renderer;
 
 public enum TextureType {
-   Stretched,
-   Tiled;
+    Stretched,
+    Tiled;
 
-   private TextureType() {
-   }
+    private TextureType() {
+    }
 }

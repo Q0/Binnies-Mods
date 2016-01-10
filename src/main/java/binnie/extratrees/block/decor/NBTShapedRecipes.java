@@ -1,49 +1,49 @@
 package binnie.extratrees.block.decor;
 
-import binnie.extratrees.block.decor.NBTShapedRecipe;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NBTShapedRecipes implements IRecipe {
-   static List recipes = new ArrayList();
+    static List recipes = new ArrayList();
 
-   public NBTShapedRecipes() {
-      super();
-   }
+    public NBTShapedRecipes() {
+        super();
+    }
 
-   public boolean matches(InventoryCrafting inventory, World world) {
-      for(NBTShapedRecipe recipe : recipes) {
-         if(recipe.matches(inventory, world)) {
-            return true;
-         }
-      }
+    public boolean matches(InventoryCrafting inventory, World world) {
+        for (NBTShapedRecipe recipe : recipes) {
+            if (recipe.matches(inventory, world)) {
+                return true;
+            }
+        }
 
-      return false;
-   }
+        return false;
+    }
 
-   public ItemStack getCraftingResult(InventoryCrafting inventory) {
-      for(NBTShapedRecipe recipe : recipes) {
-         if(recipe.matches(inventory, (World)null)) {
-            return recipe.getCraftingResult(inventory);
-         }
-      }
+    public ItemStack getCraftingResult(InventoryCrafting inventory) {
+        for (NBTShapedRecipe recipe : recipes) {
+            if (recipe.matches(inventory, (World) null)) {
+                return recipe.getCraftingResult(inventory);
+            }
+        }
 
-      return null;
-   }
+        return null;
+    }
 
-   public int getRecipeSize() {
-      return 9;
-   }
+    public int getRecipeSize() {
+        return 9;
+    }
 
-   public ItemStack getRecipeOutput() {
-      return null;
-   }
+    public ItemStack getRecipeOutput() {
+        return null;
+    }
 
-   public static void addRecipe(NBTShapedRecipe nbtShapedRecipe) {
-      recipes.add(nbtShapedRecipe);
-   }
+    public static void addRecipe(NBTShapedRecipe nbtShapedRecipe) {
+        recipes.add(nbtShapedRecipe);
+    }
 }

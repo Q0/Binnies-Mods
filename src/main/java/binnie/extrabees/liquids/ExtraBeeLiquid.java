@@ -11,57 +11,57 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 
 public enum ExtraBeeLiquid implements ILiquidType {
-   ACID("acid", 11528985),
-   POISON("poison", 15406315),
-   GLACIAL("liquidnitrogen", 9881800);
+    ACID("acid", 11528985),
+    POISON("poison", 15406315),
+    GLACIAL("liquidnitrogen", 9881800);
 
-   String ident;
-   IIcon icon;
-   int colour;
+    String ident;
+    IIcon icon;
+    int colour;
 
-   private ExtraBeeLiquid(String ident, int colour) {
-      this.ident = ident;
-      this.colour = colour;
-   }
+    private ExtraBeeLiquid(String ident, int colour) {
+        this.ident = ident;
+        this.colour = colour;
+    }
 
-   public IIcon getIcon() {
-      return this.icon;
-   }
+    public IIcon getIcon() {
+        return this.icon;
+    }
 
-   @SideOnly(Side.CLIENT)
-   public void registerIcon(IIconRegister register) {
-      this.icon = ExtraBees.proxy.getIcon(register, "liquids/" + this.getIdentifier());
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcon(IIconRegister register) {
+        this.icon = ExtraBees.proxy.getIcon(register, "liquids/" + this.getIdentifier());
+    }
 
-   public String getName() {
-      return ExtraBees.proxy.localise(this.toString().toLowerCase());
-   }
+    public String getName() {
+        return ExtraBees.proxy.localise(this.toString().toLowerCase());
+    }
 
-   public String getIdentifier() {
-      return this.ident;
-   }
+    public String getIdentifier() {
+        return this.ident;
+    }
 
-   public int getColour() {
-      return 16777215;
-   }
+    public int getColour() {
+        return 16777215;
+    }
 
-   public FluidStack get(int amount) {
-      return Binnie.Liquid.getLiquidStack(this.ident, amount);
-   }
+    public FluidStack get(int amount) {
+        return Binnie.Liquid.getLiquidStack(this.ident, amount);
+    }
 
-   public int getTransparency() {
-      return 255;
-   }
+    public int getTransparency() {
+        return 255;
+    }
 
-   public boolean canPlaceIn(FluidContainer container) {
-      return true;
-   }
+    public boolean canPlaceIn(FluidContainer container) {
+        return true;
+    }
 
-   public boolean showInCreative(FluidContainer container) {
-      return container == FluidContainer.Bucket || container == FluidContainer.Can || container == FluidContainer.Capsule || container == FluidContainer.Refractory;
-   }
+    public boolean showInCreative(FluidContainer container) {
+        return container == FluidContainer.Bucket || container == FluidContainer.Can || container == FluidContainer.Capsule || container == FluidContainer.Refractory;
+    }
 
-   public int getContainerColour() {
-      return this.colour;
-   }
+    public int getContainerColour() {
+        return this.colour;
+    }
 }

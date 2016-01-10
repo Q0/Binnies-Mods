@@ -1,14 +1,14 @@
 package binnie.botany.api;
 
 public enum EnumSoilType {
-   SOIL,
-   LOAM,
-   FLOWERBED;
+    SOIL,
+    LOAM,
+    FLOWERBED;
 
-   private EnumSoilType() {
-   }
+    private EnumSoilType() {
+    }
 
-   public String getID() {
-      return this.name().toLowerCase();
-   }
+    public String getID() {
+        return this.name().toLowerCase();
+    }
 }

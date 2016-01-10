@@ -7,14 +7,14 @@ import binnie.craftgui.core.geometry.IPoint;
 import net.minecraft.util.IIcon;
 
 public class ControlBlockIconDisplay extends Control {
-   IIcon icon;
+    IIcon icon;
 
-   public ControlBlockIconDisplay(IWidget parent, float x, float y, IIcon icon) {
-      super(parent, x, y, 18.0F, 18.0F);
-      this.icon = icon;
-   }
+    public ControlBlockIconDisplay(IWidget parent, float x, float y, IIcon icon) {
+        super(parent, x, y, 18.0F, 18.0F);
+        this.icon = icon;
+    }
 
-   public void onRenderBackground() {
-      CraftGUI.Render.iconBlock(IPoint.ZERO, this.icon);
-   }
+    public void onRenderBackground() {
+        CraftGUI.Render.iconBlock(IPoint.ZERO, this.icon);
+    }
 }

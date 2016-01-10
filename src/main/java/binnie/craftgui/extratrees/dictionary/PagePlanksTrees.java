@@ -10,19 +10,20 @@ import binnie.craftgui.mod.database.DatabaseTab;
 import binnie.craftgui.mod.database.PageAbstract;
 import binnie.craftgui.mod.database.WindowAbstractDatabase;
 import forestry.api.genetics.IAlleleSpecies;
-import java.util.Collection;
 import net.minecraft.item.ItemStack;
 
-public class PagePlanksTrees extends PageAbstract {
-   public PagePlanksTrees(IWidget parent, DatabaseTab tab) {
-      super(parent, tab);
-   }
+import java.util.Collection;
 
-   public void onValueChanged(ItemStack species) {
-      this.deleteAllChildren();
-      WindowAbstractDatabase database = (WindowAbstractDatabase)WindowAbstractDatabase.get(this);
-      new ControlText(this, new IArea(0.0F, 0.0F, this.size().x(), 24.0F), species.getDisplayName(), TextJustification.MiddleCenter);
-      Collection<IAlleleSpecies> trees = ((TreeBreedingSystem)database.getBreedingSystem()).getTreesThatMakePlanks(species, database.isNEI(), database.getWorld(), database.getUsername());
-      (new ControlSpeciesBox(this, 4.0F, 24.0F, this.size().x() - 8.0F, this.size().y() - 4.0F - 24.0F)).setOptions(trees);
-   }
+public class PagePlanksTrees extends PageAbstract {
+    public PagePlanksTrees(IWidget parent, DatabaseTab tab) {
+        super(parent, tab);
+    }
+
+    public void onValueChanged(ItemStack species) {
+        this.deleteAllChildren();
+        WindowAbstractDatabase database = (WindowAbstractDatabase) WindowAbstractDatabase.get(this);
+        new ControlText(this, new IArea(0.0F, 0.0F, this.size().x(), 24.0F), species.getDisplayName(), TextJustification.MiddleCenter);
+        Collection<IAlleleSpecies> trees = ((TreeBreedingSystem) database.getBreedingSystem()).getTreesThatMakePlanks(species, database.isNEI(), database.getWorld(), database.getUsername());
+        (new ControlSpeciesBox(this, 4.0F, 24.0F, this.size().x() - 8.0F, this.size().y() - 4.0F - 24.0F)).setOptions(trees);
+    }
 }

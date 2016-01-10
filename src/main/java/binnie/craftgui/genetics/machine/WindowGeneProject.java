@@ -8,19 +8,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowGeneProject extends Window {
-   public WindowGeneProject(EntityPlayer player, IInventory inventory, Side side) {
-      super(100.0F, 100.0F, player, inventory, side);
-   }
+    public WindowGeneProject(EntityPlayer player, IInventory inventory, Side side) {
+        super(100.0F, 100.0F, player, inventory, side);
+    }
 
-   protected AbstractMod getMod() {
-      return Genetics.instance;
-   }
+    protected AbstractMod getMod() {
+        return Genetics.instance;
+    }
 
-   protected String getName() {
-      return "GeneProjects";
-   }
+    protected String getName() {
+        return "GeneProjects";
+    }
 
-   public void initialiseClient() {
-      this.setTitle("Gene Projects");
-   }
+    public void initialiseClient() {
+        this.setTitle("Gene Projects");
+    }
 }

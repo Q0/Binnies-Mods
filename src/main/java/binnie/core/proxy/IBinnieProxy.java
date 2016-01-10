@@ -1,9 +1,7 @@
 package binnie.core.proxy;
 
 import binnie.core.AbstractMod;
-import binnie.core.proxy.IProxyCore;
 import binnie.core.resource.BinnieResource;
-import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,40 +11,42 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
+import java.io.File;
+
 public interface IBinnieProxy extends IProxyCore {
-   boolean isClient();
+    boolean isClient();
 
-   boolean isServer();
+    boolean isServer();
 
-   File getDirectory();
+    File getDirectory();
 
-   void bindTexture(BinnieResource var1);
+    void bindTexture(BinnieResource var1);
 
-   void bindTexture(ResourceLocation var1);
+    void bindTexture(ResourceLocation var1);
 
-   int getUniqueRenderID();
+    int getUniqueRenderID();
 
-   void registerCustomItemRenderer(Item var1, IItemRenderer var2);
+    void registerCustomItemRenderer(Item var1, IItemRenderer var2);
 
-   void openGui(AbstractMod var1, int var2, EntityPlayer var3, int var4, int var5, int var6);
+    void openGui(AbstractMod var1, int var2, EntityPlayer var3, int var4, int var5, int var6);
 
-   boolean isSimulating(World var1);
+    boolean isSimulating(World var1);
 
-   World getWorld();
+    World getWorld();
 
-   Minecraft getMinecraftInstance();
+    Minecraft getMinecraftInstance();
 
-   boolean needsTagCompoundSynched(Item var1);
+    boolean needsTagCompoundSynched(Item var1);
 
-   Object createObject(String var1);
+    Object createObject(String var1);
 
-   void registerTileEntity(Class var1, String var2, Object var3);
+    void registerTileEntity(Class var1, String var2, Object var3);
 
-   void createPipe(Item var1);
+    void createPipe(Item var1);
 
-   boolean isDebug();
+    boolean isDebug();
 
-   void registerBlockRenderer(Object var1);
+    void registerBlockRenderer(Object var1);
 
-   IIcon getIcon(IIconRegister var1, String var2, String var3);
+    IIcon getIcon(IIconRegister var1, String var2, String var3);
 }

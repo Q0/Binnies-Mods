@@ -3,32 +3,32 @@ package binnie.extratrees.genetics;
 import forestry.api.genetics.IFruitFamily;
 
 public enum ExtraTreeFruitFamily implements IFruitFamily {
-   Berry("Berries", "berry", "berri"),
-   Citrus("Citrus", "citrus", "citrus");
+    Berry("Berries", "berry", "berri"),
+    Citrus("Citrus", "citrus", "citrus");
 
-   String name;
-   String uid;
-   String scientific;
+    String name;
+    String uid;
+    String scientific;
 
-   private ExtraTreeFruitFamily(String name, String uid, String scientific) {
-      this.name = name;
-      this.uid = uid;
-      this.scientific = scientific;
-   }
+    private ExtraTreeFruitFamily(String name, String uid, String scientific) {
+        this.name = name;
+        this.uid = uid;
+        this.scientific = scientific;
+    }
 
-   public String getUID() {
-      return "binnie.family." + this.uid;
-   }
+    public String getUID() {
+        return "binnie.family." + this.uid;
+    }
 
-   public String getName() {
-      return this.name;
-   }
+    public String getName() {
+        return this.name;
+    }
 
-   public String getScientific() {
-      return this.scientific;
-   }
+    public String getScientific() {
+        return this.scientific;
+    }
 
-   public String getDescription() {
-      return this.name;
-   }
+    public String getDescription() {
+        return this.name;
+    }
 }

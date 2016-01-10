@@ -4,10 +4,10 @@ import binnie.core.resource.IBinnieTexture;
 import binnie.craftgui.core.geometry.IArea;
 
 public class MinecraftTexture {
-   IArea textureArea = new IArea(0.0F, 0.0F, 0.0F, 0.0F);
-   IBinnieTexture texture;
+    IArea textureArea = new IArea(0.0F, 0.0F, 0.0F, 0.0F);
+    IBinnieTexture texture;
 
-   public MinecraftTexture() {
-      super();
-   }
+    public MinecraftTexture() {
+        super();
+    }
 }

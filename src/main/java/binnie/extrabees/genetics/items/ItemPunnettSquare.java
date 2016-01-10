@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemPunnettSquare extends Item {
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.itemIcon = ExtraBees.proxy.getIcon(register, "");
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = ExtraBees.proxy.getIcon(register, "");
+    }
 
-   public ItemPunnettSquare() {
-      super();
-      this.setCreativeTab(CreativeTabs.tabTools);
-      this.setMaxStackSize(1);
-   }
+    public ItemPunnettSquare() {
+        super();
+        this.setCreativeTab(CreativeTabs.tabTools);
+        this.setMaxStackSize(1);
+    }
 
-   public String getItemStackDisplayName(ItemStack itemstack) {
-      return "Punnett Square";
-   }
+    public String getItemStackDisplayName(ItemStack itemstack) {
+        return "Punnett Square";
+    }
 
-   public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
-      ExtraBees.proxy.openGui(ExtraBeeGUID.PunnettSquare, player, (int)player.posX, (int)player.posY, (int)player.posZ);
-      return itemstack;
-   }
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
+        ExtraBees.proxy.openGui(ExtraBeeGUID.PunnettSquare, player, (int) player.posX, (int) player.posY, (int) player.posZ);
+        return itemstack;
+    }
 }

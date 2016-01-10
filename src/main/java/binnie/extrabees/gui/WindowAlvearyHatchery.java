@@ -13,30 +13,30 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowAlvearyHatchery extends Window {
-   Machine machine;
-   ControlPlayerInventory playerInventory;
+    Machine machine;
+    ControlPlayerInventory playerInventory;
 
-   public WindowAlvearyHatchery(EntityPlayer player, IInventory inventory, Side side) {
-      super(176.0F, 144.0F, player, inventory, side);
-      this.machine = ((TileEntityMachine)inventory).getMachine();
-   }
+    public WindowAlvearyHatchery(EntityPlayer player, IInventory inventory, Side side) {
+        super(176.0F, 144.0F, player, inventory, side);
+        this.machine = ((TileEntityMachine) inventory).getMachine();
+    }
 
-   public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-      return player != null && inventory != null?new WindowAlvearyHatchery(player, inventory, side):null;
-   }
+    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+        return player != null && inventory != null ? new WindowAlvearyHatchery(player, inventory, side) : null;
+    }
 
-   public void initialiseClient() {
-      this.setTitle("Hatchery");
-      this.playerInventory = new ControlPlayerInventory(this);
-      ControlSlotArray slot = new ControlSlotArray(this, 43, 30, 5, 1);
-      slot.create(AlvearyHatchery.slotLarvae);
-   }
+    public void initialiseClient() {
+        this.setTitle("Hatchery");
+        this.playerInventory = new ControlPlayerInventory(this);
+        ControlSlotArray slot = new ControlSlotArray(this, 43, 30, 5, 1);
+        slot.create(AlvearyHatchery.slotLarvae);
+    }
 
-   public AbstractMod getMod() {
-      return ExtraBees.instance;
-   }
+    public AbstractMod getMod() {
+        return ExtraBees.instance;
+    }
 
-   public String getName() {
-      return "AlvearyHatchery";
-   }
+    public String getName() {
+        return "AlvearyHatchery";
+    }
 }

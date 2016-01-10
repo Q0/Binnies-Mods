@@ -1,7 +1,7 @@
 package binnie.core.machines.transfer;
 
 public class TransferHandler {
-   public TransferHandler() {
-      super();
-   }
+    public TransferHandler() {
+        super();
+    }
 }

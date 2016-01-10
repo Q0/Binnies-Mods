@@ -5,29 +5,29 @@ import binnie.core.machines.TileEntityMachine;
 import net.minecraft.tileentity.TileEntity;
 
 class TileEntityMultiblockMachine extends TileEntity {
-   private boolean inStructure;
-   private int tileX;
-   private int tileY;
-   private int tileZ;
+    private boolean inStructure;
+    private int tileX;
+    private int tileY;
+    private int tileZ;
 
-   TileEntityMultiblockMachine() {
-      super();
-   }
+    TileEntityMultiblockMachine() {
+        super();
+    }
 
-   boolean inStructure() {
-      return this.inStructure;
-   }
+    boolean inStructure() {
+        return this.inStructure;
+    }
 
-   public Machine getMachine() {
-      return this.getMasterMachine();
-   }
+    public Machine getMachine() {
+        return this.getMasterMachine();
+    }
 
-   private Machine getMasterMachine() {
-      if(!this.inStructure) {
-         return null;
-      } else {
-         TileEntity tile = this.worldObj.getTileEntity(this.xCoord + this.tileX, this.yCoord + this.tileY, this.zCoord + this.tileZ);
-         return tile instanceof TileEntityMachine?((TileEntityMachine)tile).getMachine():null;
-      }
-   }
+    private Machine getMasterMachine() {
+        if (!this.inStructure) {
+            return null;
+        } else {
+            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + this.tileX, this.yCoord + this.tileY, this.zCoord + this.tileZ);
+            return tile instanceof TileEntityMachine ? ((TileEntityMachine) tile).getMachine() : null;
+        }
+    }
 }

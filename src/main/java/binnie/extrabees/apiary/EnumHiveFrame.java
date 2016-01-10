@@ -16,93 +16,93 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public enum EnumHiveFrame implements IHiveFrame {
-   Cocoa,
-   Cage,
-   Soul,
-   Clay,
-   Debug;
+    Cocoa,
+    Cage,
+    Soul,
+    Clay,
+    Debug;
 
-   Item item;
-   int maxDamage = 240;
-   BeeModifierLogic logic = new BeeModifierLogic();
+    Item item;
+    int maxDamage = 240;
+    BeeModifierLogic logic = new BeeModifierLogic();
 
-   public static void init() {
-      Cocoa.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.25F);
-      Cocoa.logic.setModifier(EnumBeeModifier.Production, 1.5F, 5.0F);
-      Cage.logic.setModifier(EnumBeeModifier.Territory, 0.5F, 0.1F);
-      Cage.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
-      Cage.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.5F);
-      Soul.logic.setModifier(EnumBeeModifier.Mutation, 1.5F, 5.0F);
-      Soul.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
-      Soul.logic.setModifier(EnumBeeModifier.Production, 0.25F, 0.1F);
-      Soul.setMaxDamage(80);
-      Clay.logic.setModifier(EnumBeeModifier.Lifespan, 1.5F, 5.0F);
-      Clay.logic.setModifier(EnumBeeModifier.Mutation, 0.5F, 0.2F);
-      Clay.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.2F);
-      Debug.logic.setModifier(EnumBeeModifier.Lifespan, 1.0E-4F, 1.0E-4F);
-      GameRegistry.addRecipe(new ItemStack(Cocoa.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), new ItemStack(Items.dye, 1, 3)});
-      GameRegistry.addShapelessRecipe(new ItemStack(Cage.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars});
-      GameRegistry.addShapelessRecipe(new ItemStack(Soul.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand});
-      GameRegistry.addRecipe(new ItemStack(Clay.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), Items.clay_ball});
-   }
+    public static void init() {
+        Cocoa.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.25F);
+        Cocoa.logic.setModifier(EnumBeeModifier.Production, 1.5F, 5.0F);
+        Cage.logic.setModifier(EnumBeeModifier.Territory, 0.5F, 0.1F);
+        Cage.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
+        Cage.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.5F);
+        Soul.logic.setModifier(EnumBeeModifier.Mutation, 1.5F, 5.0F);
+        Soul.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
+        Soul.logic.setModifier(EnumBeeModifier.Production, 0.25F, 0.1F);
+        Soul.setMaxDamage(80);
+        Clay.logic.setModifier(EnumBeeModifier.Lifespan, 1.5F, 5.0F);
+        Clay.logic.setModifier(EnumBeeModifier.Mutation, 0.5F, 0.2F);
+        Clay.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.2F);
+        Debug.logic.setModifier(EnumBeeModifier.Lifespan, 1.0E-4F, 1.0E-4F);
+        GameRegistry.addRecipe(new ItemStack(Cocoa.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), new ItemStack(Items.dye, 1, 3)});
+        GameRegistry.addShapelessRecipe(new ItemStack(Cage.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars});
+        GameRegistry.addShapelessRecipe(new ItemStack(Soul.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand});
+        GameRegistry.addRecipe(new ItemStack(Clay.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), Items.clay_ball});
+    }
 
-   public int getIconIndex() {
-      return 55 + this.ordinal();
-   }
+    public int getIconIndex() {
+        return 55 + this.ordinal();
+    }
 
-   public void setMaxDamage(int damage) {
-      this.maxDamage = damage;
-   }
+    public void setMaxDamage(int damage) {
+        this.maxDamage = damage;
+    }
 
-   private EnumHiveFrame() {
-   }
+    private EnumHiveFrame() {
+    }
 
-   public ItemStack frameUsed(IBeeHousing house, ItemStack frame, IBee queen, int wear) {
-      frame.setItemDamage(frame.getItemDamage() + wear);
-      return frame.getItemDamage() >= frame.getMaxDamage()?null:frame;
-   }
+    public ItemStack frameUsed(IBeeHousing house, ItemStack frame, IBee queen, int wear) {
+        frame.setItemDamage(frame.getItemDamage() + wear);
+        return frame.getItemDamage() >= frame.getMaxDamage() ? null : frame;
+    }
 
-   public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.Territory, currentModifier);
-   }
+    public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.Territory, currentModifier);
+    }
 
-   public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
-   }
+    public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
+    }
 
-   public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
-   }
+    public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
+    }
 
-   public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.Production, currentModifier);
-   }
+    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.Production, currentModifier);
+    }
 
-   public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
-   }
+    public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
+    }
 
-   public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
-      return this.logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
-   }
+    public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
+        return this.logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
+    }
 
-   public boolean isSealed() {
-      return this.logic.getModifier(EnumBeeBooleanModifier.Sealed);
-   }
+    public boolean isSealed() {
+        return this.logic.getModifier(EnumBeeBooleanModifier.Sealed);
+    }
 
-   public boolean isSelfLighted() {
-      return this.logic.getModifier(EnumBeeBooleanModifier.SelfLighted);
-   }
+    public boolean isSelfLighted() {
+        return this.logic.getModifier(EnumBeeBooleanModifier.SelfLighted);
+    }
 
-   public boolean isSunlightSimulated() {
-      return this.logic.getModifier(EnumBeeBooleanModifier.SunlightStimulated);
-   }
+    public boolean isSunlightSimulated() {
+        return this.logic.getModifier(EnumBeeBooleanModifier.SunlightStimulated);
+    }
 
-   public boolean isHellish() {
-      return this.logic.getModifier(EnumBeeBooleanModifier.Hellish);
-   }
+    public boolean isHellish() {
+        return this.logic.getModifier(EnumBeeBooleanModifier.Hellish);
+    }
 
-   public String getName() {
-      return ExtraBees.proxy.localise("item.frame." + this.toString().toLowerCase());
-   }
+    public String getName() {
+        return ExtraBees.proxy.localise("item.frame." + this.toString().toLowerCase());
+    }
 }

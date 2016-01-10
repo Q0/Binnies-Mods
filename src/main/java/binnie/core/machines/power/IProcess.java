@@ -1,14 +1,11 @@
 package binnie.core.machines.power;
 
-import binnie.core.machines.power.IErrorStateSource;
-import binnie.core.machines.power.ProcessInfo;
-
 public interface IProcess extends IErrorStateSource {
-   float getEnergyPerTick();
+    float getEnergyPerTick();
 
-   String getTooltip();
+    String getTooltip();
 
-   boolean isInProgress();
+    boolean isInProgress();
 
-   ProcessInfo getInfo();
+    ProcessInfo getInfo();
 }

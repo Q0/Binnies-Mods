@@ -6,21 +6,21 @@ import binnie.core.resource.IBinnieTexture;
 import binnie.craftgui.core.CraftGUI;
 
 public enum CraftGUITextureSheet implements IBinnieTexture {
-   Controls2("controls"),
-   Panel2("panels"),
-   Slots("slots");
+    Controls2("controls"),
+    Panel2("panels"),
+    Slots("slots");
 
-   String name;
+    String name;
 
-   private CraftGUITextureSheet(String name) {
-      this.name = name;
-   }
+    private CraftGUITextureSheet(String name) {
+        this.name = name;
+    }
 
-   public String toString() {
-      return this.name;
-   }
+    public String toString() {
+        return this.name;
+    }
 
-   public BinnieResource getTexture() {
-      return BinnieCore.proxy.isServer()?null:CraftGUI.ResourceManager.getTextureSheet(this.name).getTexture();
-   }
+    public BinnieResource getTexture() {
+        return BinnieCore.proxy.isServer() ? null : CraftGUI.ResourceManager.getTextureSheet(this.name).getTexture();
+    }
 }

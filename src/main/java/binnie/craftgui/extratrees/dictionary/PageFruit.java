@@ -11,22 +11,23 @@ import binnie.craftgui.mod.database.PageAbstract;
 import binnie.craftgui.mod.database.WindowAbstractDatabase;
 import binnie.extratrees.ExtraTrees;
 import forestry.api.genetics.IAlleleSpecies;
-import java.util.Collection;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collection;
+
 public class PageFruit extends PageAbstract {
-   boolean treesThatBearFruit;
+    boolean treesThatBearFruit;
 
-   public PageFruit(IWidget parent, DatabaseTab tab, boolean treesThatBearFruit) {
-      super(parent, tab);
-      this.treesThatBearFruit = treesThatBearFruit;
-   }
+    public PageFruit(IWidget parent, DatabaseTab tab, boolean treesThatBearFruit) {
+        super(parent, tab);
+        this.treesThatBearFruit = treesThatBearFruit;
+    }
 
-   public void onValueChanged(ItemStack species) {
-      this.deleteAllChildren();
-      WindowAbstractDatabase database = (WindowAbstractDatabase)WindowAbstractDatabase.get(this);
-      new ControlText(this, new IArea(0.0F, 0.0F, this.size().x(), 24.0F), ExtraTrees.proxy.localise("gui.database.tab.fruit." + (this.treesThatBearFruit?"natural":"potential")), TextJustification.MiddleCenter);
-      Collection<IAlleleSpecies> trees = this.treesThatBearFruit?((TreeBreedingSystem)database.getBreedingSystem()).getTreesThatBearFruit(species, database.isNEI(), database.getWorld(), database.getUsername()):((TreeBreedingSystem)database.getBreedingSystem()).getTreesThatCanBearFruit(species, database.isNEI(), database.getWorld(), database.getUsername());
-      (new ControlSpeciesBox(this, 4.0F, 24.0F, this.size().x() - 8.0F, this.size().y() - 4.0F - 24.0F)).setOptions(trees);
-   }
+    public void onValueChanged(ItemStack species) {
+        this.deleteAllChildren();
+        WindowAbstractDatabase database = (WindowAbstractDatabase) WindowAbstractDatabase.get(this);
+        new ControlText(this, new IArea(0.0F, 0.0F, this.size().x(), 24.0F), ExtraTrees.proxy.localise("gui.database.tab.fruit." + (this.treesThatBearFruit ? "natural" : "potential")), TextJustification.MiddleCenter);
+        Collection<IAlleleSpecies> trees = this.treesThatBearFruit ? ((TreeBreedingSystem) database.getBreedingSystem()).getTreesThatBearFruit(species, database.isNEI(), database.getWorld(), database.getUsername()) : ((TreeBreedingSystem) database.getBreedingSystem()).getTreesThatCanBearFruit(species, database.isNEI(), database.getWorld(), database.getUsername());
+        (new ControlSpeciesBox(this, 4.0F, 24.0F, this.size().x() - 8.0F, this.size().y() - 4.0F - 24.0F)).setOptions(trees);
+    }
 }

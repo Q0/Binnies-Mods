@@ -12,30 +12,30 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowAlvearyIndustrialFrame extends Window {
-   Machine machine;
-   ControlPlayerInventory playerInventory;
+    Machine machine;
+    ControlPlayerInventory playerInventory;
 
-   public WindowAlvearyIndustrialFrame(EntityPlayer player, IInventory inventory, Side side) {
-      super(176.0F, 144.0F, player, inventory, side);
-      this.machine = ((TileEntityMachine)inventory).getMachine();
-   }
+    public WindowAlvearyIndustrialFrame(EntityPlayer player, IInventory inventory, Side side) {
+        super(176.0F, 144.0F, player, inventory, side);
+        this.machine = ((TileEntityMachine) inventory).getMachine();
+    }
 
-   public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-      return player != null && inventory != null?new WindowAlvearyIndustrialFrame(player, inventory, side):null;
-   }
+    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+        return player != null && inventory != null ? new WindowAlvearyIndustrialFrame(player, inventory, side) : null;
+    }
 
-   public void initialiseClient() {
-      this.setTitle("Industrial Frame Housing");
-      this.playerInventory = new ControlPlayerInventory(this);
-      ControlSlot slot = new ControlSlot(this, 79.0F, 30.0F);
-      slot.assign(0);
-   }
+    public void initialiseClient() {
+        this.setTitle("Industrial Frame Housing");
+        this.playerInventory = new ControlPlayerInventory(this);
+        ControlSlot slot = new ControlSlot(this, 79.0F, 30.0F);
+        slot.assign(0);
+    }
 
-   public AbstractMod getMod() {
-      return ExtraBees.instance;
-   }
+    public AbstractMod getMod() {
+        return ExtraBees.instance;
+    }
 
-   public String getName() {
-      return "AlvearyIndustrialFrame";
-   }
+    public String getName() {
+        return "AlvearyIndustrialFrame";
+    }
 }

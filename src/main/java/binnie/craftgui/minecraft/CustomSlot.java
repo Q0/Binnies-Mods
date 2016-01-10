@@ -3,40 +3,39 @@ package binnie.craftgui.minecraft;
 import binnie.core.machines.Machine;
 import binnie.core.machines.inventory.IInventorySlots;
 import binnie.core.machines.inventory.InventorySlot;
-import binnie.craftgui.minecraft.ContainerCraftGUI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class CustomSlot extends Slot {
-   public boolean isItemValid(ItemStack par1ItemStack) {
-      return this.inventory.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
-   }
+    public boolean isItemValid(ItemStack par1ItemStack) {
+        return this.inventory.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
+    }
 
-   public CustomSlot(IInventory inventory, int index) {
-      super(inventory, index, 0, 0);
-   }
+    public CustomSlot(IInventory inventory, int index) {
+        super(inventory, index, 0, 0);
+    }
 
-   public InventorySlot getInventorySlot() {
-      IInventorySlots slots = (IInventorySlots)Machine.getInterface(IInventorySlots.class, this.inventory);
-      return slots != null?slots.getSlot(this.getSlotIndex()):null;
-   }
+    public InventorySlot getInventorySlot() {
+        IInventorySlots slots = (IInventorySlots) Machine.getInterface(IInventorySlots.class, this.inventory);
+        return slots != null ? slots.getSlot(this.getSlotIndex()) : null;
+    }
 
-   public boolean handleClick() {
-      InventorySlot slot = this.getInventorySlot();
-      return slot != null && slot.isRecipe();
-   }
+    public boolean handleClick() {
+        InventorySlot slot = this.getInventorySlot();
+        return slot != null && slot.isRecipe();
+    }
 
-   public void onSlotClick(ContainerCraftGUI container, int mouseButton, int modifier, EntityPlayer player) {
-      ItemStack stack = player.inventory.getItemStack();
-      if(stack != null && mouseButton != 2) {
-         stack = stack.copy();
-         stack.stackSize = 1;
-         this.putStack(stack);
-      } else {
-         this.putStack((ItemStack)null);
-      }
+    public void onSlotClick(ContainerCraftGUI container, int mouseButton, int modifier, EntityPlayer player) {
+        ItemStack stack = player.inventory.getItemStack();
+        if (stack != null && mouseButton != 2) {
+            stack = stack.copy();
+            stack.stackSize = 1;
+            this.putStack(stack);
+        } else {
+            this.putStack((ItemStack) null);
+        }
 
-   }
+    }
 }

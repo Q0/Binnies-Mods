@@ -5,15 +5,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IIncubatorRecipe {
-   boolean isInputLiquid(FluidStack var1);
+    boolean isInputLiquid(FluidStack var1);
 
-   boolean isInputLiquidSufficient(FluidStack var1);
+    boolean isInputLiquidSufficient(FluidStack var1);
 
-   boolean isItemStack(ItemStack var1);
+    boolean isItemStack(ItemStack var1);
 
-   void doTask(MachineUtil var1);
+    void doTask(MachineUtil var1);
 
-   float getChance();
+    float getChance();
 
-   boolean roomForOutput(MachineUtil var1);
+    boolean roomForOutput(MachineUtil var1);
 }

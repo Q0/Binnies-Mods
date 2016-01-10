@@ -2,18 +2,17 @@ package binnie.core.machines.power;
 
 import binnie.core.machines.inventory.IValidatedTankContainer;
 import binnie.core.machines.inventory.TankSlot;
-import binnie.core.machines.power.TankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
 public interface ITankMachine extends IFluidHandler, IValidatedTankContainer {
-   TankInfo[] getTankInfos();
+    TankInfo[] getTankInfos();
 
-   IFluidTank[] getTanks();
+    IFluidTank[] getTanks();
 
-   TankSlot addTank(int var1, String var2, int var3);
+    TankSlot addTank(int var1, String var2, int var3);
 
-   IFluidTank getTank(int var1);
+    IFluidTank getTank(int var1);
 
-   TankSlot getTankSlot(int var1);
+    TankSlot getTankSlot(int var1);
 }

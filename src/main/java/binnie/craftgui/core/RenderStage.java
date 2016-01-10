@@ -1,10 +1,10 @@
 package binnie.craftgui.core;
 
 public enum RenderStage {
-   PreChildren,
-   PostChildren,
-   PostSiblings;
+    PreChildren,
+    PostChildren,
+    PostSiblings;
 
-   private RenderStage() {
-   }
+    private RenderStage() {
+    }
 }

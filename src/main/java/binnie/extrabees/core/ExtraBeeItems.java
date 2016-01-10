@@ -8,7 +8,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.recipes.RecipeManagers;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -17,163 +16,165 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.List;
+
 public enum ExtraBeeItems implements IItemMisc {
-   ScentedGear("Scented Gear", "scentedGear"),
-   DiamondShard("Diamond Fragment", "diamondShard"),
-   EmeraldShard("Emerald Fragment", "emeraldShard"),
-   RubyShard("Ruby Fragment", "rubyShard"),
-   SapphireShard("Sapphire Fragment", "sapphireShard"),
-   LapisShard("Lapis Fragment", "lapisShard"),
-   IronDust("Iron Grains", "ironDust"),
-   GoldDust("Gold Grains", "goldDust"),
-   SilverDust("Silver Grains", "silverDust"),
-   PlatinumDust("Platinum Grains", "platinumDust"),
-   CopperDust("Copper Grains", "copperDust"),
-   TinDust("Tin Grains", "tinDust"),
-   NickelDust("Nickel Grains", "nickelDust"),
-   LeadDust("Lead Grains", "leadDust"),
-   ZincDust("Zinc Grains", "zincDust"),
-   TitaniumDust("Titanium Grains", "titaniumDust"),
-   TungstenDust("Tungsten Grains", "tungstenDust"),
-   UraniumDust("Radioactive Fragments", "radioactiveDust"),
-   CoalDust("Coal Grains", "coalDust"),
-   RedDye("Red Dye", "dyeRed"),
-   YellowDye("Yellow Dye", "dyeYellow"),
-   BlueDye("Blue Dye", "dyeBlue"),
-   GreenDye("Green Dye", "dyeGreen"),
-   WhiteDye("White Dye", "dyeWhite"),
-   BlackDye("Black Dye", "dyeBlack"),
-   BrownDye("Brown Dye", "dyeBrown"),
-   ClayDust("Clay Dust", "clayDust"),
-   YelloriumDust("Yellorium Grains", "yelloriumDust"),
-   BlutoniumDust("Blutonium Grains", "blutoniumDust"),
-   CyaniteDust("Cyanite Grains", "cyaniteDust");
+    ScentedGear("Scented Gear", "scentedGear"),
+    DiamondShard("Diamond Fragment", "diamondShard"),
+    EmeraldShard("Emerald Fragment", "emeraldShard"),
+    RubyShard("Ruby Fragment", "rubyShard"),
+    SapphireShard("Sapphire Fragment", "sapphireShard"),
+    LapisShard("Lapis Fragment", "lapisShard"),
+    IronDust("Iron Grains", "ironDust"),
+    GoldDust("Gold Grains", "goldDust"),
+    SilverDust("Silver Grains", "silverDust"),
+    PlatinumDust("Platinum Grains", "platinumDust"),
+    CopperDust("Copper Grains", "copperDust"),
+    TinDust("Tin Grains", "tinDust"),
+    NickelDust("Nickel Grains", "nickelDust"),
+    LeadDust("Lead Grains", "leadDust"),
+    ZincDust("Zinc Grains", "zincDust"),
+    TitaniumDust("Titanium Grains", "titaniumDust"),
+    TungstenDust("Tungsten Grains", "tungstenDust"),
+    UraniumDust("Radioactive Fragments", "radioactiveDust"),
+    CoalDust("Coal Grains", "coalDust"),
+    RedDye("Red Dye", "dyeRed"),
+    YellowDye("Yellow Dye", "dyeYellow"),
+    BlueDye("Blue Dye", "dyeBlue"),
+    GreenDye("Green Dye", "dyeGreen"),
+    WhiteDye("White Dye", "dyeWhite"),
+    BlackDye("Black Dye", "dyeBlack"),
+    BrownDye("Brown Dye", "dyeBrown"),
+    ClayDust("Clay Dust", "clayDust"),
+    YelloriumDust("Yellorium Grains", "yelloriumDust"),
+    BlutoniumDust("Blutonium Grains", "blutoniumDust"),
+    CyaniteDust("Cyanite Grains", "cyaniteDust");
 
-   String name;
-   String iconPath;
-   IIcon icon;
-   String metalString = null;
-   String gemString = null;
+    String name;
+    String iconPath;
+    IIcon icon;
+    String metalString = null;
+    String gemString = null;
 
-   public static void init() {
-      OreDictionary.registerOre("dyeRed", RedDye.get(1));
-      OreDictionary.registerOre("dyeYellow", YellowDye.get(1));
-      OreDictionary.registerOre("dyeBlue", BlueDye.get(1));
-      OreDictionary.registerOre("dyeGreen", GreenDye.get(1));
-      OreDictionary.registerOre("dyeBlack", BlackDye.get(1));
-      OreDictionary.registerOre("dyeWhite", WhiteDye.get(1));
-      OreDictionary.registerOre("dyeBrown", BrownDye.get(1));
-   }
+    public static void init() {
+        OreDictionary.registerOre("dyeRed", RedDye.get(1));
+        OreDictionary.registerOre("dyeYellow", YellowDye.get(1));
+        OreDictionary.registerOre("dyeBlue", BlueDye.get(1));
+        OreDictionary.registerOre("dyeGreen", GreenDye.get(1));
+        OreDictionary.registerOre("dyeBlack", BlackDye.get(1));
+        OreDictionary.registerOre("dyeWhite", WhiteDye.get(1));
+        OreDictionary.registerOre("dyeBrown", BrownDye.get(1));
+    }
 
-   public static void postInit() {
-      ItemStack lapisShard = LapisShard.get(1);
-      GameRegistry.addShapelessRecipe(new ItemStack(Items.dye, 1, 4), new Object[]{lapisShard, lapisShard, lapisShard, lapisShard});
+    public static void postInit() {
+        ItemStack lapisShard = LapisShard.get(1);
+        GameRegistry.addShapelessRecipe(new ItemStack(Items.dye, 1, 4), new Object[]{lapisShard, lapisShard, lapisShard, lapisShard});
 
-      for(ExtraBeeItems item : values()) {
-         if(item.metalString != null) {
-            ItemStack dust = null;
-            ItemStack ingot = null;
-            if(!OreDictionary.getOres("ingot" + item.metalString).isEmpty()) {
-               ingot = ((ItemStack)OreDictionary.getOres("ingot" + item.metalString).get(0)).copy();
+        for (ExtraBeeItems item : values()) {
+            if (item.metalString != null) {
+                ItemStack dust = null;
+                ItemStack ingot = null;
+                if (!OreDictionary.getOres("ingot" + item.metalString).isEmpty()) {
+                    ingot = ((ItemStack) OreDictionary.getOres("ingot" + item.metalString).get(0)).copy();
+                }
+
+                if (!OreDictionary.getOres("dust" + item.metalString).isEmpty()) {
+                    dust = ((ItemStack) OreDictionary.getOres("dust" + item.metalString).get(0)).copy();
+                }
+
+                ItemStack input = item.get(1);
+                if (dust != null) {
+                    GameRegistry.addShapelessRecipe(dust, new Object[]{input, input, input, input});
+                } else if (ingot != null) {
+                    GameRegistry.addShapelessRecipe(ingot, new Object[]{input, input, input, input, input, input, input, input, input});
+                } else if (item == CoalDust) {
+                    GameRegistry.addShapelessRecipe(new ItemStack(Items.coal), new Object[]{input, input, input, input});
+                }
+            } else if (item.gemString != null) {
+                ItemStack gem = null;
+                if (!OreDictionary.getOres("gem" + item.gemString).isEmpty()) {
+                    gem = (ItemStack) OreDictionary.getOres("gem" + item.gemString).get(0);
+                }
+
+                ItemStack input = item.get(1);
+                if (gem != null) {
+                    GameRegistry.addShapelessRecipe(gem.copy(), new Object[]{input, input, input, input, input, input, input, input, input});
+                }
             }
+        }
 
-            if(!OreDictionary.getOres("dust" + item.metalString).isEmpty()) {
-               dust = ((ItemStack)OreDictionary.getOres("dust" + item.metalString).get(0)).copy();
-            }
+        Item woodGear = null;
 
-            ItemStack input = item.get(1);
-            if(dust != null) {
-               GameRegistry.addShapelessRecipe(dust, new Object[]{input, input, input, input});
-            } else if(ingot != null) {
-               GameRegistry.addShapelessRecipe(ingot, new Object[]{input, input, input, input, input, input, input, input, input});
-            } else if(item == CoalDust) {
-               GameRegistry.addShapelessRecipe(new ItemStack(Items.coal), new Object[]{input, input, input, input});
-            }
-         } else if(item.gemString != null) {
-            ItemStack gem = null;
-            if(!OreDictionary.getOres("gem" + item.gemString).isEmpty()) {
-               gem = (ItemStack)OreDictionary.getOres("gem" + item.gemString).get(0);
-            }
+        try {
+            woodGear = (Item) Class.forName("buildcraft.BuildCraftCore").getField("woodenGearItem").get((Object) null);
+        } catch (Exception var8) {
+            ;
+        }
 
-            ItemStack input = item.get(1);
-            if(gem != null) {
-               GameRegistry.addShapelessRecipe(gem.copy(), new Object[]{input, input, input, input, input, input, input, input, input});
-            }
-         }
-      }
+        ItemStack gear = new ItemStack(Blocks.planks, 1);
+        if (woodGear != null) {
+            gear = new ItemStack(woodGear, 1);
+        }
 
-      Item woodGear = null;
+        RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("for.honey", 500), (ItemStack) null, ScentedGear.get(1), new Object[]{" j ", "bgb", " p ", Character.valueOf('j'), Mods.Forestry.item("royalJelly"), Character.valueOf('b'), Mods.Forestry.item("beeswax"), Character.valueOf('p'), Mods.Forestry.item("pollen"), Character.valueOf('g'), gear});
+    }
 
-      try {
-         woodGear = (Item)Class.forName("buildcraft.BuildCraftCore").getField("woodenGearItem").get((Object)null);
-      } catch (Exception var8) {
-         ;
-      }
+    private ExtraBeeItems(String name, String iconPath) {
+        this.name = name;
+        this.iconPath = iconPath;
+    }
 
-      ItemStack gear = new ItemStack(Blocks.planks, 1);
-      if(woodGear != null) {
-         gear = new ItemStack(woodGear, 1);
-      }
+    private void setGem(String string) {
+        this.gemString = string;
+    }
 
-      RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("for.honey", 500), (ItemStack)null, ScentedGear.get(1), new Object[]{" j ", "bgb", " p ", Character.valueOf('j'), Mods.Forestry.item("royalJelly"), Character.valueOf('b'), Mods.Forestry.item("beeswax"), Character.valueOf('p'), Mods.Forestry.item("pollen"), Character.valueOf('g'), gear});
-   }
+    private void setMetal(String string) {
+        this.metalString = string;
+    }
 
-   private ExtraBeeItems(String name, String iconPath) {
-      this.name = name;
-      this.iconPath = iconPath;
-   }
+    public boolean isActive() {
+        return this.metalString == null ? (this.gemString != null ? !OreDictionary.getOres("gem" + this.gemString).isEmpty() : true) : !OreDictionary.getOres("ingot" + this.metalString).isEmpty() || !OreDictionary.getOres("dust" + this.metalString).isEmpty() || this == CoalDust;
+    }
 
-   private void setGem(String string) {
-      this.gemString = string;
-   }
+    public IIcon getIcon(ItemStack stack) {
+        return this.icon;
+    }
 
-   private void setMetal(String string) {
-      this.metalString = string;
-   }
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        this.icon = ExtraBees.proxy.getIcon(register, "misc/" + this.iconPath);
+    }
 
-   public boolean isActive() {
-      return this.metalString == null?(this.gemString != null?!OreDictionary.getOres("gem" + this.gemString).isEmpty():true):!OreDictionary.getOres("ingot" + this.metalString).isEmpty() || !OreDictionary.getOres("dust" + this.metalString).isEmpty() || this == CoalDust;
-   }
+    public void addInformation(List par3List) {
+    }
 
-   public IIcon getIcon(ItemStack stack) {
-      return this.icon;
-   }
+    public String getName(ItemStack stack) {
+        return this.name;
+    }
 
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister register) {
-      this.icon = ExtraBees.proxy.getIcon(register, "misc/" + this.iconPath);
-   }
+    public ItemStack get(int i) {
+        return new ItemStack(ExtraBees.itemMisc, i, this.ordinal());
+    }
 
-   public void addInformation(List par3List) {
-   }
-
-   public String getName(ItemStack stack) {
-      return this.name;
-   }
-
-   public ItemStack get(int i) {
-      return new ItemStack(ExtraBees.itemMisc, i, this.ordinal());
-   }
-
-   static {
-      TinDust.setMetal("Tin");
-      ZincDust.setMetal("Zinc");
-      CopperDust.setMetal("Copper");
-      IronDust.setMetal("Iron");
-      NickelDust.setMetal("Nickel");
-      LeadDust.setMetal("Lead");
-      SilverDust.setMetal("Silver");
-      GoldDust.setMetal("Gold");
-      PlatinumDust.setMetal("Platinum");
-      TungstenDust.setMetal("Tungsten");
-      TitaniumDust.setMetal("Titanium");
-      CoalDust.setMetal("Coal");
-      YelloriumDust.setMetal("Yellorium");
-      BlutoniumDust.setMetal("Blutonium");
-      CyaniteDust.setMetal("Cyanite");
-      DiamondShard.setGem("Diamond");
-      EmeraldShard.setGem("Emerald");
-      RubyShard.setGem("Ruby");
-      SapphireShard.setGem("Sapphire");
-   }
+    static {
+        TinDust.setMetal("Tin");
+        ZincDust.setMetal("Zinc");
+        CopperDust.setMetal("Copper");
+        IronDust.setMetal("Iron");
+        NickelDust.setMetal("Nickel");
+        LeadDust.setMetal("Lead");
+        SilverDust.setMetal("Silver");
+        GoldDust.setMetal("Gold");
+        PlatinumDust.setMetal("Platinum");
+        TungstenDust.setMetal("Tungsten");
+        TitaniumDust.setMetal("Titanium");
+        CoalDust.setMetal("Coal");
+        YelloriumDust.setMetal("Yellorium");
+        BlutoniumDust.setMetal("Blutonium");
+        CyaniteDust.setMetal("Cyanite");
+        DiamondShard.setGem("Diamond");
+        EmeraldShard.setGem("Emerald");
+        RubyShard.setGem("Ruby");
+        SapphireShard.setGem("Sapphire");
+    }
 }

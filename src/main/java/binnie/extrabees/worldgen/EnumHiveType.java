@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum EnumHiveType {
-   Water,
-   Rock,
-   Nether,
-   Marble;
+    Water,
+    Rock,
+    Nether,
+    Marble;
 
-   public List drops = new ArrayList();
+    public List drops = new ArrayList();
 
-   private EnumHiveType() {
-   }
+    private EnumHiveType() {
+    }
 }

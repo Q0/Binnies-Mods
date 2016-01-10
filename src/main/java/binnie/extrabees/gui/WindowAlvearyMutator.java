@@ -18,44 +18,44 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class WindowAlvearyMutator extends Window {
-   Machine machine;
-   ControlPlayerInventory playerInventory;
+    Machine machine;
+    ControlPlayerInventory playerInventory;
 
-   public WindowAlvearyMutator(EntityPlayer player, IInventory inventory, Side side) {
-      super(176.0F, 176.0F, player, inventory, side);
-      this.machine = ((TileEntityMachine)inventory).getMachine();
-   }
+    public WindowAlvearyMutator(EntityPlayer player, IInventory inventory, Side side) {
+        super(176.0F, 176.0F, player, inventory, side);
+        this.machine = ((TileEntityMachine) inventory).getMachine();
+    }
 
-   public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-      return player != null && inventory != null?new WindowAlvearyMutator(player, inventory, side):null;
-   }
+    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+        return player != null && inventory != null ? new WindowAlvearyMutator(player, inventory, side) : null;
+    }
 
-   public void initialiseClient() {
-      this.setTitle("Mutator");
-      this.playerInventory = new ControlPlayerInventory(this);
-      ControlSlot slot = new ControlSlot(this, 79.0F, 30.0F);
-      slot.assign(0);
-      (new ControlText(this, new IArea(0.0F, 52.0F, this.w(), 16.0F), "Possible Mutagens:", TextJustification.MiddleCenter)).setColour(5592405);
-      int size = AlvearyMutator.getMutagens().size();
-      int w = size * 18;
-      if(size > 0) {
-         float x = (this.w() - (float)w) / 2.0F;
+    public void initialiseClient() {
+        this.setTitle("Mutator");
+        this.playerInventory = new ControlPlayerInventory(this);
+        ControlSlot slot = new ControlSlot(this, 79.0F, 30.0F);
+        slot.assign(0);
+        (new ControlText(this, new IArea(0.0F, 52.0F, this.w(), 16.0F), "Possible Mutagens:", TextJustification.MiddleCenter)).setColour(5592405);
+        int size = AlvearyMutator.getMutagens().size();
+        int w = size * 18;
+        if (size > 0) {
+            float x = (this.w() - (float) w) / 2.0F;
 
-         for(ItemStack stack : AlvearyMutator.getMutagens()) {
-            ControlItemDisplay display = new ControlItemDisplay(this, x, 66.0F);
-            display.setItemStack(stack);
-            display.hastooltip = true;
-            x += 18.0F;
-         }
-      }
+            for (ItemStack stack : AlvearyMutator.getMutagens()) {
+                ControlItemDisplay display = new ControlItemDisplay(this, x, 66.0F);
+                display.setItemStack(stack);
+                display.hastooltip = true;
+                x += 18.0F;
+            }
+        }
 
-   }
+    }
 
-   public AbstractMod getMod() {
-      return ExtraBees.instance;
-   }
+    public AbstractMod getMod() {
+        return ExtraBees.instance;
+    }
 
-   public String getName() {
-      return "AlvearyMutator";
-   }
+    public String getName() {
+        return "AlvearyMutator";
+    }
 }
