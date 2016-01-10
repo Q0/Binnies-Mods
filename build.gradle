@@ -43,7 +43,7 @@ repositories {
 	}
 	ivy {
 		name "BuildCraft"
-		artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/6.4.16/buildcraft-6.4.16-dev.jar"
+		artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/7.1.14/buildcraft-7.1.14-dev.jar"
 	}
 }
 
