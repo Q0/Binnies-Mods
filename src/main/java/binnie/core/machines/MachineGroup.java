@@ -1,62 +1,66 @@
 package binnie.core.machines;
 
-import binnie.Binnie;
-import binnie.core.AbstractMod;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-
 import java.util.Collection;
+import java.util.Iterator;
+import net.minecraft.block.Block;
+import cpw.mods.fml.common.registry.GameRegistry;
+import binnie.Binnie;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import binnie.core.AbstractMod;
 
-public class MachineGroup {
+public class MachineGroup
+{
     private AbstractMod mod;
     private String blockName;
     private String uid;
-    private Map packages = new LinkedHashMap();
-    private Map packagesID = new LinkedHashMap();
+    private Map<String, MachinePackage> packages;
+    private Map<Integer, MachinePackage> packagesID;
     private BlockMachine block;
-    public boolean customRenderer = true;
-    private boolean renderedTileEntity = true;
+    public boolean customRenderer;
+    private boolean renderedTileEntity;
 
-    public MachineGroup(AbstractMod mod, String uid, String blockName, IMachineType[] types) {
-        super();
+    public MachineGroup(final AbstractMod mod, final String uid, final String blockName, final IMachineType[] types) {
+        this.packages = new LinkedHashMap<String, MachinePackage>();
+        this.packagesID = new LinkedHashMap<Integer, MachinePackage>();
+        this.customRenderer = true;
+        this.renderedTileEntity = true;
         this.mod = mod;
         this.uid = uid;
         this.blockName = blockName;
-
-        for (IMachineType type : types) {
-            if (type.getPackageClass() != null && type.isActive()) {
-                try {
-                    MachinePackage pack = (MachinePackage) type.getPackageClass().newInstance();
-                    pack.assignMetadata(type.ordinal());
-                    pack.setActive(type.isActive());
-                    this.addPackage(pack);
-                } catch (Exception var10) {
-                    throw new RuntimeException("Failed to create machine package " + type.toString(), var10);
+        for (final IMachineType type : types) {
+            if (type.getPackageClass() != null) {
+                if (type.isActive()) {
+                    try {
+                        final MachinePackage pack = (MachinePackage)type.getPackageClass().newInstance();
+                        pack.assignMetadata(type.ordinal());
+                        pack.setActive(type.isActive());
+                        this.addPackage(pack);
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException("Failed to create machine package " + type.toString(), e);
+                    }
                 }
             }
         }
-
         Binnie.Machine.registerMachineGroup(this);
         this.block = new BlockMachine(this, blockName);
         if (this.block != null) {
-            GameRegistry.registerBlock(this.block, ItemMachine.class, blockName);
-
-            for (MachinePackage pack : this.getPackages()) {
-                pack.register();
+            GameRegistry.registerBlock((Block)this.block, (Class)ItemMachine.class, blockName);
+            for (final MachinePackage pack2 : this.getPackages()) {
+                pack2.register();
             }
         }
-
     }
 
-    private void addPackage(MachinePackage pack) {
+    private void addPackage(final MachinePackage pack) {
         this.packages.put(pack.getUID(), pack);
         this.packagesID.put(pack.getMetadata(), pack);
         pack.setGroup(this);
     }
 
-    public Collection getPackages() {
+    public Collection<MachinePackage> getPackages() {
         return this.packages.values();
     }
 
@@ -64,12 +68,12 @@ public class MachineGroup {
         return this.block;
     }
 
-    public MachinePackage getPackage(int metadata) {
-        return (MachinePackage) this.packagesID.get(Integer.valueOf(metadata));
+    public MachinePackage getPackage(final int metadata) {
+        return this.packagesID.get(metadata);
     }
 
-    public MachinePackage getPackage(String name) {
-        return (MachinePackage) this.packages.get(name);
+    public MachinePackage getPackage(final String name) {
+        return this.packages.get(name);
     }
 
     public String getUID() {
@@ -88,7 +92,7 @@ public class MachineGroup {
         this.renderedTileEntity = false;
     }
 
-    public void setCreativeTab(CreativeTabs tab) {
+    public void setCreativeTab(final CreativeTabs tab) {
         this.block.setCreativeTab(tab);
     }
 
