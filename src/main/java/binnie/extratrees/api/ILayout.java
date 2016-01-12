@@ -17,7 +17,7 @@ public interface ILayout {
 
     ILayout invert();
 
-    IIcon getPrimaryIcon(IDesignSystem var1);
+    IIcon getPrimaryIcon(final IDesignSystem p0);
 
-    IIcon getSecondaryIcon(IDesignSystem var1);
+    IIcon getSecondaryIcon(final IDesignSystem p0);
 }

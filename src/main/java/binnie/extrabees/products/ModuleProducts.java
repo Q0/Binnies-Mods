@@ -9,10 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ModuleProducts implements IInitializable {
-    public ModuleProducts() {
-        super();
-    }
-
+    @Override
     public void preInit() {
         ExtraBees.honeyCrystal = new ItemHoneyCrystal();
         ExtraBees.honeyCrystalEmpty = new ItemHoneyCrystalEmpty();
@@ -24,24 +21,22 @@ public class ModuleProducts implements IInitializable {
         OreDictionary.registerOre("gemDiamond", Items.diamond);
     }
 
+    @Override
     public void init() {
         ItemHoneyComb.addSubtypes();
     }
 
+    @Override
     public void postInit() {
-        GameRegistry.addRecipe(new ItemStack(ExtraBees.honeyCrystalEmpty), new Object[]{"#@#", "@#@", "#@#", Character.valueOf('@'), Mods.Forestry.stack("honeyDrop"), Character.valueOf('#'), EnumHoneyDrop.ENERGY.get(1)});
-
-        for (EnumHoneyComb info : EnumHoneyComb.values()) {
+        GameRegistry.addRecipe(new ItemStack(ExtraBees.honeyCrystalEmpty), new Object[]{"#@#", "@#@", "#@#", '@', Mods.Forestry.stack("honeyDrop"), '#', EnumHoneyDrop.ENERGY.get(1)});
+        for (final EnumHoneyComb info : EnumHoneyComb.values()) {
             info.addRecipe();
         }
-
-        for (EnumHoneyDrop info : EnumHoneyDrop.values()) {
-            info.addRecipe();
+        for (final EnumHoneyDrop info2 : EnumHoneyDrop.values()) {
+            info2.addRecipe();
         }
-
-        for (EnumPropolis info : EnumPropolis.values()) {
-            info.addRecipe();
+        for (final EnumPropolis info3 : EnumPropolis.values()) {
+            info3.addRecipe();
         }
-
     }
 }

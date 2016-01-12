@@ -21,34 +21,36 @@ public class WindowAlvearyMutator extends Window {
     Machine machine;
     ControlPlayerInventory playerInventory;
 
-    public WindowAlvearyMutator(EntityPlayer player, IInventory inventory, Side side) {
-        super(176.0F, 176.0F, player, inventory, side);
+    public WindowAlvearyMutator(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(176.0f, 176.0f, player, inventory, side);
         this.machine = ((TileEntityMachine) inventory).getMachine();
     }
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-        return player != null && inventory != null ? new WindowAlvearyMutator(player, inventory, side) : null;
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        if (player == null || inventory == null) {
+            return null;
+        }
+        return new WindowAlvearyMutator(player, inventory, side);
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Mutator");
         this.playerInventory = new ControlPlayerInventory(this);
-        ControlSlot slot = new ControlSlot(this, 79.0F, 30.0F);
+        final ControlSlot slot = new ControlSlot(this, 79.0f, 30.0f);
         slot.assign(0);
-        (new ControlText(this, new IArea(0.0F, 52.0F, this.w(), 16.0F), "Possible Mutagens:", TextJustification.MiddleCenter)).setColour(5592405);
-        int size = AlvearyMutator.getMutagens().size();
-        int w = size * 18;
+        new ControlText(this, new IArea(0.0f, 52.0f, this.w(), 16.0f), "Possible Mutagens:", TextJustification.MiddleCenter).setColour(5592405);
+        final int size = AlvearyMutator.getMutagens().size();
+        final int w = size * 18;
         if (size > 0) {
-            float x = (this.w() - (float) w) / 2.0F;
-
-            for (ItemStack stack : AlvearyMutator.getMutagens()) {
-                ControlItemDisplay display = new ControlItemDisplay(this, x, 66.0F);
+            float x = (this.w() - w) / 2.0f;
+            for (final ItemStack stack : AlvearyMutator.getMutagens()) {
+                final ControlItemDisplay display = new ControlItemDisplay(this, x, 66.0f);
                 display.setItemStack(stack);
                 display.hastooltip = true;
-                x += 18.0F;
+                x += 18.0f;
             }
         }
-
     }
 
     public AbstractMod getMod() {

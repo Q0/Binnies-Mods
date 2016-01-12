@@ -7,6 +7,7 @@ import binnie.core.machines.inventory.SetList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -15,52 +16,62 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ComponentIndexerInventory extends ComponentInventory implements IInventory {
-    int indexerSize = -1;
-    public int guiRefreshCounter = 0;
-    List indexerInventory = new SetList();
-    public List sortedInventory = new SetList();
-    Object sortingMode;
-    boolean needsSorting = true;
+public abstract class ComponentIndexerInventory<T> extends ComponentInventory implements IInventory {
+    int indexerSize;
+    public int guiRefreshCounter;
+    List<ItemStack> indexerInventory;
+    public List<Integer> sortedInventory;
+    T sortingMode;
+    boolean needsSorting;
 
-    public ComponentIndexerInventory(Machine machine) {
+    public ComponentIndexerInventory(final Machine machine) {
         super(machine);
+        this.indexerSize = -1;
+        this.guiRefreshCounter = 0;
+        this.indexerInventory = new SetList<ItemStack>();
+        this.sortedInventory = new SetList<Integer>();
+        this.needsSorting = true;
     }
 
     public int getSizeInventory() {
-        return this.indexerSize > 0 ? this.indexerSize + 1 : this.indexerInventory.size() + 1;
-    }
-
-    public ItemStack getStackInSlot(int index) {
-        return index >= 0 && index < this.indexerInventory.size() ? (ItemStack) this.indexerInventory.get(index) : null;
-    }
-
-    public ItemStack decrStackSize(int index, int amount) {
-        if (index >= 0) {
-            ItemStack returnStack = this.getStackInSlot(index).copy();
-            this.setInventorySlotContents(index, (ItemStack) null);
-            return returnStack;
-        } else {
-            return null;
+        if (this.indexerSize > 0) {
+            return this.indexerSize + 1;
         }
+        return this.indexerInventory.size() + 1;
     }
 
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public ItemStack getStackInSlot(final int index) {
+        if (index >= 0 && index < this.indexerInventory.size()) {
+            return this.indexerInventory.get(index);
+        }
         return null;
     }
 
+    public ItemStack decrStackSize(final int index, final int amount) {
+        if (index >= 0) {
+            final ItemStack returnStack = this.getStackInSlot(index).copy();
+            this.setInventorySlotContents(index, null);
+            return returnStack;
+        }
+        return null;
+    }
+
+    public ItemStack getStackInSlotOnClosing(final int var1) {
+        return null;
+    }
+
+    @Override
     public void markDirty() {
         super.markDirty();
         ++this.guiRefreshCounter;
     }
 
-    public void setInventorySlotContents(int index, ItemStack itemStack) {
+    public void setInventorySlotContents(final int index, final ItemStack itemStack) {
         if (index >= 0 && index < this.indexerInventory.size()) {
             this.indexerInventory.set(index, itemStack);
         } else if (itemStack != null) {
             this.indexerInventory.add(itemStack);
         }
-
         this.needsSorting = true;
         this.markDirty();
     }
@@ -73,7 +84,7 @@ public abstract class ComponentIndexerInventory extends ComponentInventory imple
         return 64;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUseableByPlayer(final EntityPlayer var1) {
         return true;
     }
 
@@ -83,52 +94,48 @@ public abstract class ComponentIndexerInventory extends ComponentInventory imple
     public void closeInventory() {
     }
 
-    public void setMode(Object mode) {
+    public void setMode(final T mode) {
         this.sortingMode = mode;
         this.needsSorting = true;
     }
 
-    public Object getMode() {
+    public T getMode() {
         return this.sortingMode;
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        NBTTagList indexerNBT = new NBTTagList();
-
-        for (ItemStack item : this.indexerInventory) {
-            NBTTagCompound itemNBT = new NBTTagCompound();
+        final NBTTagList indexerNBT = new NBTTagList();
+        for (final ItemStack item : this.indexerInventory) {
+            final NBTTagCompound itemNBT = new NBTTagCompound();
             item.writeToNBT(itemNBT);
-            indexerNBT.appendTag(itemNBT);
+            indexerNBT.appendTag((NBTBase) itemNBT);
         }
-
-        nbttagcompound.setTag("indexer", indexerNBT);
+        nbttagcompound.setTag("indexer", (NBTBase) indexerNBT);
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        NBTTagList indexerNBT = nbttagcompound.getTagList("indexer", 10);
+        final NBTTagList indexerNBT = nbttagcompound.getTagList("indexer", 10);
         this.indexerInventory.clear();
-
         for (int i = 0; i < indexerNBT.tagCount(); ++i) {
-            NBTTagCompound itemNBT = indexerNBT.getCompoundTagAt(i);
+            final NBTTagCompound itemNBT = indexerNBT.getCompoundTagAt(i);
             this.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(itemNBT));
         }
-
         this.needsSorting = true;
         this.markDirty();
     }
 
     public abstract void Sort();
 
-    public static class ComponentApiaristIndexerInventory extends ComponentIndexerInventory implements IInventory {
-        public ComponentApiaristIndexerInventory(Machine machine) {
+    public static class ComponentApiaristIndexerInventory extends ComponentIndexerInventory<Mode> implements IInventory {
+        public ComponentApiaristIndexerInventory(final Machine machine) {
             super(machine);
         }
 
+        @Override
         public void Sort() {
             int i = 0;
-
             while (i < this.indexerInventory.size()) {
                 if (this.indexerInventory.get(i) == null) {
                     this.indexerInventory.remove(i);
@@ -136,94 +143,90 @@ public abstract class ComponentIndexerInventory extends ComponentInventory imple
                     ++i;
                 }
             }
+            if (!this.needsSorting) {
+                return;
+            }
+            this.needsSorting = false;
+            ++this.guiRefreshCounter;
+            switch ((Mode) this.sortingMode) {
+                case Species:
+                case Type: {
+                    class SpeciesList {
+                        public List<Integer> drones;
+                        public List<Integer> queens;
+                        public List<Integer> princesses;
+                        public List<ItemStack> bees;
 
-            if (this.needsSorting) {
-                this.needsSorting = false;
-                ++this.guiRefreshCounter;
-                label56:
-                switch ((ComponentIndexerInventory.ComponentApiaristIndexerInventory.Mode) this.sortingMode) {
-                    case Species:
-                    case Type:
-                        Map<Integer, SpeciesList> speciesList = new HashMap();
-
-                        class SpeciesList {
-                            public List drones = new ArrayList();
-                            public List queens = new ArrayList();
-                            public List princesses = new ArrayList();
-                            public List bees = new ArrayList();
-
-                            SpeciesList() {
-                                super();
-                            }
-
-                            public void add(ItemStack stack) {
-                                this.bees.add(stack);
-                            }
+                        SpeciesList() {
+                            this.drones = new ArrayList<Integer>();
+                            this.queens = new ArrayList<Integer>();
+                            this.princesses = new ArrayList<Integer>();
+                            this.bees = new ArrayList<ItemStack>();
                         }
 
-                        for (ItemStack itemStack : this.indexerInventory) {
-                            int species = itemStack.getItemDamage();
-                            if (!speciesList.containsKey(Integer.valueOf(species))) {
-                                speciesList.put(Integer.valueOf(species), new SpeciesList());
-                            }
-
-                            ((SpeciesList) speciesList.get(Integer.valueOf(species))).add(itemStack);
+                        public void add(final ItemStack stack) {
+                            this.bees.add(stack);
                         }
-
-                        for (SpeciesList sortableList : speciesList.values()) {
-                            for (ItemStack beeStack : sortableList.bees) {
-                                if (Binnie.Genetics.getBeeRoot().isDrone(beeStack)) {
-                                    sortableList.drones.add(Integer.valueOf(this.indexerInventory.indexOf(beeStack)));
-                                } else if (Binnie.Genetics.getBeeRoot().isMated(beeStack)) {
-                                    sortableList.queens.add(Integer.valueOf(this.indexerInventory.indexOf(beeStack)));
-                                } else {
-                                    sortableList.princesses.add(Integer.valueOf(this.indexerInventory.indexOf(beeStack)));
-                                }
+                    }
+                    final Map<Integer, SpeciesList> speciesList = new HashMap<Integer, SpeciesList>();
+                    for (final ItemStack itemStack : this.indexerInventory) {
+                        final int species = itemStack.getItemDamage();
+                        if (!speciesList.containsKey(species)) {
+                            speciesList.put(species, new SpeciesList());
+                        }
+                        speciesList.get(species).add(itemStack);
+                    }
+                    for (final SpeciesList sortableList : speciesList.values()) {
+                        for (final ItemStack beeStack : sortableList.bees) {
+                            if (Binnie.Genetics.getBeeRoot().isDrone(beeStack)) {
+                                sortableList.drones.add(this.indexerInventory.indexOf(beeStack));
+                            } else if (Binnie.Genetics.getBeeRoot().isMated(beeStack)) {
+                                sortableList.queens.add(this.indexerInventory.indexOf(beeStack));
+                            } else {
+                                sortableList.princesses.add(this.indexerInventory.indexOf(beeStack));
                             }
                         }
-
-                        this.sortedInventory = new SetList();
-                        switch ((ComponentIndexerInventory.ComponentApiaristIndexerInventory.Mode) this.sortingMode) {
-                            case Species:
-                                for (int i = 0; i < 1024; ++i) {
-                                    if (speciesList.containsKey(Integer.valueOf(i))) {
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).queens);
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).princesses);
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).drones);
-                                    }
+                    }
+                    this.sortedInventory = new SetList<Integer>();
+                    switch ((Mode) this.sortingMode) {
+                        case Species: {
+                            for (int j = 0; j < 1024; ++j) {
+                                if (speciesList.containsKey(j)) {
+                                    this.sortedInventory.addAll(speciesList.get(j).queens);
+                                    this.sortedInventory.addAll(speciesList.get(j).princesses);
+                                    this.sortedInventory.addAll(speciesList.get(j).drones);
                                 }
-
-                                return;
-                            case Type:
-                                for (int i = 0; i < 1024; ++i) {
-                                    if (speciesList.containsKey(Integer.valueOf(i))) {
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).queens);
-                                    }
-                                }
-
-                                for (int i = 0; i < 1024; ++i) {
-                                    if (speciesList.containsKey(Integer.valueOf(i))) {
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).princesses);
-                                    }
-                                }
-
-                                for (int i = 0; i < 1024; ++i) {
-                                    if (speciesList.containsKey(Integer.valueOf(i))) {
-                                        this.sortedInventory.addAll(((SpeciesList) speciesList.get(Integer.valueOf(i))).drones);
-                                    }
-                                }
-                                break label56;
-                            default:
-                                return;
+                            }
+                            break;
                         }
-                    default:
-                        this.sortedInventory.clear();
-
-                        for (i = 0; i < this.indexerInventory.size(); ++i) {
-                            this.sortedInventory.add(Integer.valueOf(i));
+                        case Type: {
+                            for (int j = 0; j < 1024; ++j) {
+                                if (speciesList.containsKey(j)) {
+                                    this.sortedInventory.addAll(speciesList.get(j).queens);
+                                }
+                            }
+                            for (int j = 0; j < 1024; ++j) {
+                                if (speciesList.containsKey(j)) {
+                                    this.sortedInventory.addAll(speciesList.get(j).princesses);
+                                }
+                            }
+                            for (int j = 0; j < 1024; ++j) {
+                                if (speciesList.containsKey(j)) {
+                                    this.sortedInventory.addAll(speciesList.get(j).drones);
+                                }
+                            }
+                            break;
                         }
+                    }
+                    break;
                 }
-
+                default: {
+                    this.sortedInventory.clear();
+                    for (i = 0; i < this.indexerInventory.size(); ++i) {
+                        this.sortedInventory.add(i);
+                    }
+                    break;
+                }
             }
         }
 
@@ -231,17 +234,14 @@ public abstract class ComponentIndexerInventory extends ComponentInventory imple
             return false;
         }
 
-        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+        public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
             return true;
         }
 
-        public static enum Mode {
+        public enum Mode {
             None,
             Species,
             Type;
-
-            private Mode() {
-            }
         }
     }
 }

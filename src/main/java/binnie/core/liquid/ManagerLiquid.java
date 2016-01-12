@@ -1,19 +1,18 @@
 package binnie.core.liquid;
 
+import binnie.core.ManagerBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Iterator;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import binnie.core.ManagerBase;
 
-public class ManagerLiquid extends ManagerBase
-{
+public class ManagerLiquid extends ManagerBase {
     Map<String, IFluidType> fluids;
 
     public ManagerLiquid() {
@@ -36,7 +35,7 @@ public class ManagerLiquid extends ManagerBase
     public BinnieFluid createLiquid(final IFluidType fluid, final int id) {
         this.fluids.put(fluid.getIdentifier().toLowerCase(), fluid);
         final BinnieFluid bFluid = new BinnieFluid(fluid);
-        FluidRegistry.registerFluid((Fluid)bFluid);
+        FluidRegistry.registerFluid((Fluid) bFluid);
         ItemFluidContainer.registerFluid(fluid, id);
         return bFluid;
     }

@@ -6,14 +6,18 @@ public enum EnumFlowerStage {
     POLLEN("Pollen"),
     NONE("NONE");
 
-    public static final EnumFlowerStage[] VALUES = values();
+    public static final EnumFlowerStage[] VALUES;
     String name;
 
-    private EnumFlowerStage(String name) {
+    private EnumFlowerStage(final String name) {
         this.name = name;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    static {
+        VALUES = values();
     }
 }

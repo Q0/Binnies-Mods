@@ -3,16 +3,20 @@ package binnie.core.machines.inventory;
 import binnie.Binnie;
 import binnie.core.BinnieCore;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class InventorySlot extends BaseSlot {
-    private ItemStack itemStack = null;
-    private InventorySlot.Type type = InventorySlot.Type.Standard;
+public class InventorySlot extends BaseSlot<ItemStack> {
+    private ItemStack itemStack;
+    private Type type;
 
-    public InventorySlot(int index, String unlocName) {
+    public InventorySlot(final int index, final String unlocName) {
         super(index, unlocName);
+        this.itemStack = null;
+        this.type = Type.Standard;
     }
 
+    @Override
     public ItemStack getContent() {
         return this.itemStack;
     }
@@ -21,78 +25,76 @@ public class InventorySlot extends BaseSlot {
         return this.getContent();
     }
 
-    public void setContent(ItemStack itemStack) {
+    @Override
+    public void setContent(final ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ItemStack decrStackSize(int amount) {
+    public ItemStack decrStackSize(final int amount) {
         if (this.itemStack == null) {
             return null;
-        } else if (this.itemStack.stackSize <= amount) {
-            ItemStack returnStack = this.itemStack.copy();
+        }
+        if (this.itemStack.stackSize <= amount) {
+            final ItemStack returnStack = this.itemStack.copy();
             this.itemStack = null;
             return returnStack;
-        } else {
-            ItemStack returnStack = this.itemStack.copy();
-            this.itemStack.stackSize -= amount;
-            returnStack.stackSize = amount;
-            return returnStack;
         }
+        final ItemStack returnStack = this.itemStack.copy();
+        final ItemStack itemStack = this.itemStack;
+        itemStack.stackSize -= amount;
+        returnStack.stackSize = amount;
+        return returnStack;
     }
 
-    public void readFromNBT(NBTTagCompound slotNBT) {
+    public void readFromNBT(final NBTTagCompound slotNBT) {
         if (slotNBT.hasKey("item")) {
-            NBTTagCompound itemNBT = slotNBT.getCompoundTag("item");
+            final NBTTagCompound itemNBT = slotNBT.getCompoundTag("item");
             this.itemStack = ItemStack.loadItemStackFromNBT(itemNBT);
         } else {
             this.itemStack = null;
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound slotNBT) {
-        NBTTagCompound itemNBT = new NBTTagCompound();
+    public void writeToNBT(final NBTTagCompound slotNBT) {
+        final NBTTagCompound itemNBT = new NBTTagCompound();
         if (this.itemStack != null) {
             this.itemStack.writeToNBT(itemNBT);
         }
-
-        slotNBT.setTag("item", itemNBT);
+        slotNBT.setTag("item", (NBTBase) itemNBT);
     }
 
-    public void setItemStack(ItemStack duplicate) {
+    public void setItemStack(final ItemStack duplicate) {
         this.setContent(duplicate);
     }
 
+    @Override
     public SlotValidator getValidator() {
         return (SlotValidator) this.validator;
     }
 
-    public void setType(InventorySlot.Type type) {
+    public void setType(final Type type) {
         this.type = type;
-        if (type == InventorySlot.Type.Recipe) {
+        if (type == Type.Recipe) {
             this.setReadOnly();
             this.forbidInteraction();
         }
-
     }
 
-    public InventorySlot.Type getType() {
+    public Type getType() {
         return this.type;
     }
 
     public boolean isRecipe() {
-        return this.type == InventorySlot.Type.Recipe;
+        return this.type == Type.Recipe;
     }
 
+    @Override
     public String getName() {
         return Binnie.Language.localise(BinnieCore.instance, "gui.slot." + this.unlocName);
     }
 
-    public static enum Type {
+    public enum Type {
         Standard,
         Recipe;
-
-        private Type() {
-        }
     }
 }

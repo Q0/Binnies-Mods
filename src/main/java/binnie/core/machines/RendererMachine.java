@@ -12,44 +12,37 @@ import net.minecraft.world.World;
 public class RendererMachine extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
     RenderBlocks blockRenderer;
 
-    public RendererMachine() {
-        super();
-    }
-
-    public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float var8) {
+    public void renderTileEntityAt(final TileEntity entity, final double x, final double y, final double z, final float var8) {
         this.renderTileEntity((TileEntityMachine) entity, x, y, z, var8, this.blockRenderer);
     }
 
-    public void renderTileEntity(TileEntityMachine entity, double x, double y, double z, float var8, RenderBlocks renderer) {
+    public void renderTileEntity(final TileEntityMachine entity, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
         if (entity != null && entity.getMachine() != null) {
-            MachinePackage machinePackage = entity.getMachine().getPackage();
+            final MachinePackage machinePackage = entity.getMachine().getPackage();
             machinePackage.renderMachine(entity.getMachine(), x, y, z, var8, renderer);
         }
-
     }
 
-    public void renderInvBlock(RenderBlocks renderblocks, Block block, int i, int j) {
-        TileEntity entity = block.createTileEntity((World) null, i);
-        this.renderTileEntity((TileEntityMachine) entity, 0.0D, -0.1D, 0.0D, 0.0625F, renderblocks);
+    public void renderInvBlock(final RenderBlocks renderblocks, final Block block, final int i, final int j) {
+        final TileEntity entity = block.createTileEntity((World) null, i);
+        this.renderTileEntity((TileEntityMachine) entity, 0.0, -0.1, 0.0, 0.0625f, renderblocks);
     }
 
-    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    public void renderInventoryBlock(final Block block, final int metadata, final int modelID, final RenderBlocks renderer) {
         if (modelID == Binnie.Machine.getMachineRenderID()) {
             this.renderInvBlock(renderer, block, metadata, modelID);
         }
-
     }
 
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        TileEntityMachine tile = (TileEntityMachine) world.getTileEntity(x, y, z);
+    public boolean renderWorldBlock(final IBlockAccess world, final int x, final int y, final int z, final Block block, final int modelId, final RenderBlocks renderer) {
+        final TileEntityMachine tile = (TileEntityMachine) world.getTileEntity(x, y, z);
         if (tile != null && tile.getMachine() != null && tile.getMachine().getPackage() != null && tile.getMachine().getPackage().getGroup() != null && !tile.getMachine().getPackage().getGroup().customRenderer) {
-            this.renderTileEntity(tile, (double) x, (double) y, (double) z, 1.0F, renderer);
+            this.renderTileEntity(tile, x, y, z, 1.0f, renderer);
         }
-
         return true;
     }
 
-    public boolean shouldRender3DInInventory(int i) {
+    public boolean shouldRender3DInInventory(final int i) {
         return true;
     }
 
@@ -57,7 +50,7 @@ public class RendererMachine extends TileEntitySpecialRenderer implements ISimpl
         return Binnie.Machine.getMachineRenderID();
     }
 
-    public void func_147496_a(World par1World) {
-        this.blockRenderer = new RenderBlocks(par1World);
+    public void func_147496_a(final World par1World) {
+        this.blockRenderer = new RenderBlocks((IBlockAccess) par1World);
     }
 }

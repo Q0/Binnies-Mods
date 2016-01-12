@@ -10,10 +10,6 @@ class TileEntityMultiblockMachine extends TileEntity {
     private int tileY;
     private int tileZ;
 
-    TileEntityMultiblockMachine() {
-        super();
-    }
-
     boolean inStructure() {
         return this.inStructure;
     }
@@ -25,9 +21,11 @@ class TileEntityMultiblockMachine extends TileEntity {
     private Machine getMasterMachine() {
         if (!this.inStructure) {
             return null;
-        } else {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + this.tileX, this.yCoord + this.tileY, this.zCoord + this.tileZ);
-            return tile instanceof TileEntityMachine ? ((TileEntityMachine) tile).getMachine() : null;
         }
+        final TileEntity tile = this.worldObj.getTileEntity(this.xCoord + this.tileX, this.yCoord + this.tileY, this.zCoord + this.tileZ);
+        if (tile instanceof TileEntityMachine) {
+            return ((TileEntityMachine) tile).getMachine();
+        }
+        return null;
     }
 }

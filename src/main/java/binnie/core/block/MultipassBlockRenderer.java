@@ -10,48 +10,47 @@ import org.lwjgl.opengl.GL11;
 
 public class MultipassBlockRenderer implements ISimpleBlockRenderingHandler {
     public static MultipassBlockRenderer instance;
-    private static int layer = 0;
+    private static int layer;
 
     public MultipassBlockRenderer() {
-        super();
-        instance = this;
+        MultipassBlockRenderer.instance = this;
     }
 
-    private void setColour(Tessellator tess, int colour) {
-        float var6 = (float) (colour >> 16 & 255) / 255.0F;
-        float var7 = (float) (colour >> 8 & 255) / 255.0F;
-        float var8 = (float) (colour & 255) / 255.0F;
+    private void setColour(final Tessellator tess, final int colour) {
+        final float var6 = (colour >> 16 & 0xFF) / 255.0f;
+        final float var7 = (colour >> 8 & 0xFF) / 255.0f;
+        final float var8 = (colour & 0xFF) / 255.0f;
         GL11.glColor3f(var6, var7, var8);
     }
 
     public static int getLayer() {
-        return layer;
+        return MultipassBlockRenderer.layer;
     }
 
-    public void renderInventoryBlock(Block block, int meta, int modelID, RenderBlocks renderer) {
+    public void renderInventoryBlock(final Block block, final int meta, final int modelID, final RenderBlocks renderer) {
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-
-        for (layer = 0; layer < ((IMultipassBlock) block).getNumberOfPasses(); ++layer) {
+        GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
+        MultipassBlockRenderer.layer = 0;
+        while (MultipassBlockRenderer.layer < ((IMultipassBlock) block).getNumberOfPasses()) {
             this.renderItem(block, renderer, meta);
+            ++MultipassBlockRenderer.layer;
         }
-
-        layer = 0;
+        MultipassBlockRenderer.layer = 0;
     }
 
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(final IBlockAccess world, final int x, final int y, final int z, final Block block, final int modelId, final RenderBlocks renderer) {
         boolean r = true;
-
-        for (layer = 0; layer < ((IMultipassBlock) block).getNumberOfPasses(); ++layer) {
+        MultipassBlockRenderer.layer = 0;
+        while (MultipassBlockRenderer.layer < ((IMultipassBlock) block).getNumberOfPasses()) {
             r = renderer.renderStandardBlock(block, x, y, z);
+            ++MultipassBlockRenderer.layer;
         }
-
-        layer = 0;
+        MultipassBlockRenderer.layer = 0;
         return r;
     }
 
-    public boolean shouldRender3DInInventory(int i) {
+    public boolean shouldRender3DInInventory(final int i) {
         return true;
     }
 
@@ -59,39 +58,43 @@ public class MultipassBlockRenderer implements ISimpleBlockRenderingHandler {
         return BinnieCore.multipassRenderID;
     }
 
-    public void renderItem(Block block, RenderBlocks renderer, int meta) {
+    public void renderItem(final Block block, final RenderBlocks renderer, final int meta) {
         this.setColor(((IMultipassBlock) block).colorMultiplier(meta));
-        Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, -1.0F, 0.0F);
-        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, meta));
+        tessellator.setNormal(0.0f, -1.0f, 0.0f);
+        renderer.renderFaceYNeg(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 0, meta));
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, meta));
+        tessellator.setNormal(0.0f, 1.0f, 0.0f);
+        renderer.renderFaceYPos(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 1, meta));
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, meta));
+        tessellator.setNormal(0.0f, 0.0f, -1.0f);
+        renderer.renderFaceZNeg(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 2, meta));
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 3, meta));
+        tessellator.setNormal(0.0f, 0.0f, 1.0f);
+        renderer.renderFaceZPos(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 3, meta));
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 4, meta));
+        tessellator.setNormal(-1.0f, 0.0f, 0.0f);
+        renderer.renderFaceXNeg(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 4, meta));
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, meta));
+        tessellator.setNormal(1.0f, 0.0f, 0.0f);
+        renderer.renderFaceXPos(block, 0.0, 0.0, 0.0, renderer.getBlockIconFromSideAndMetadata(block, 5, meta));
         tessellator.draw();
     }
 
-    public void setColor(int l) {
-        float f = (float) (l >> 16 & 255) / 255.0F;
-        float f1 = (float) (l >> 8 & 255) / 255.0F;
-        float f2 = (float) (l & 255) / 255.0F;
-        GL11.glColor3f(f, f1, f2);
+    public void setColor(final int l) {
+        final float f = (l >> 16 & 0xFF) / 255.0f;
+        final float f2 = (l >> 8 & 0xFF) / 255.0f;
+        final float f3 = (l & 0xFF) / 255.0f;
+        GL11.glColor3f(f, f2, f3);
+    }
+
+    static {
+        MultipassBlockRenderer.layer = 0;
     }
 }

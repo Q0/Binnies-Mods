@@ -3,11 +3,11 @@ package binnie.botany.api;
 import net.minecraft.util.IIcon;
 
 public interface IFlowerType {
-    IIcon getStem(EnumFlowerStage var1, boolean var2, int var3);
+    IIcon getStem(final EnumFlowerStage p0, final boolean p1, final int p2);
 
-    IIcon getPetalIcon(EnumFlowerStage var1, boolean var2, int var3);
+    IIcon getPetalIcon(final EnumFlowerStage p0, final boolean p1, final int p2);
 
-    IIcon getVariantIcon(EnumFlowerStage var1, boolean var2, int var3);
+    IIcon getVariantIcon(final EnumFlowerStage p0, final boolean p1, final int p2);
 
     int getID();
 

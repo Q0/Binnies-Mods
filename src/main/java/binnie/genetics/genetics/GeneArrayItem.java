@@ -8,6 +8,7 @@ import binnie.genetics.api.IGene;
 import forestry.api.core.INBTTagable;
 import forestry.api.genetics.ISpeciesRoot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -15,112 +16,111 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneArrayItem implements INBTTagable, IGeneItem {
-    List genes = new ArrayList();
+    List<IGene> genes;
 
-    public GeneArrayItem(ItemStack stack) {
-        super();
-        if (stack != null) {
-            this.readFromNBT(stack.getTagCompound());
+    public GeneArrayItem(final ItemStack stack) {
+        this.genes = new ArrayList<IGene>();
+        if (stack == null) {
+            return;
         }
+        this.readFromNBT(stack.getTagCompound());
     }
 
-    public GeneArrayItem(IGene gene) {
-        super();
+    public GeneArrayItem(final IGene gene) {
+        this.genes = new ArrayList<IGene>();
         this.addGene(gene);
     }
 
     public GeneArrayItem() {
-        super();
+        this.genes = new ArrayList<IGene>();
     }
 
-    public int getColour(int renderPass) {
-        return renderPass == 2 ? this.getBreedingSystem().getColour() : 16777215;
+    public int getColour(final int renderPass) {
+        if (renderPass == 2) {
+            return this.getBreedingSystem().getColour();
+        }
+        return 16777215;
     }
 
-    public void getInfo(List list) {
-        List<Object> totalList = new ArrayList();
-
-        for (IGene gene : this.genes) {
-            String chromosomeName = this.getBreedingSystem().getChromosomeName(gene.getChromosome());
+    public void getInfo(final List list) {
+        final List<Object> totalList = new ArrayList<Object>();
+        for (final IGene gene : this.genes) {
+            final String chromosomeName = this.getBreedingSystem().getChromosomeName(gene.getChromosome());
             totalList.add("§6" + chromosomeName + "§7: " + gene.getName());
         }
-
-        if (totalList.size() >= 4 && !BinnieCore.proxy.isShiftDown()) {
+        if (totalList.size() < 4 || BinnieCore.proxy.isShiftDown()) {
+            list.addAll(totalList);
+        } else {
             list.add(totalList.get(0));
             list.add(totalList.get(1));
             list.add(totalList.size() - 2 + " more genes. Hold shift to display.");
-        } else {
-            list.addAll(totalList);
         }
-
     }
 
     public BreedingSystem getBreedingSystem() {
         if (this.genes.size() == 0) {
             return null;
-        } else {
-            BreedingSystem system = Binnie.Genetics.getSystem(((IGene) this.genes.get(0)).getSpeciesRoot().getUID());
-            return system == null ? (BreedingSystem) Binnie.Genetics.getActiveSystems().iterator().next() : system;
         }
+        final BreedingSystem system = Binnie.Genetics.getSystem(this.genes.get(0).getSpeciesRoot().getUID());
+        return (system == null) ? Binnie.Genetics.getActiveSystems().iterator().next() : system;
     }
 
-    public List getGenes() {
+    public List<IGene> getGenes() {
         return this.genes;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         this.genes.clear();
         if (nbt != null) {
-            NBTTagList list = nbt.getTagList("genes", 10);
-
+            final NBTTagList list = nbt.getTagList("genes", 10);
             for (int i = 0; i < list.tagCount(); ++i) {
-                Gene gene = Gene.create(list.getCompoundTagAt(i));
+                final Gene gene = Gene.create(list.getCompoundTagAt(i));
                 this.genes.add(gene);
             }
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
-        if (this.genes.size() != 0) {
-            NBTTagList list = new NBTTagList();
-
-            for (IGene gene : this.genes) {
-                NBTTagCompound geneNBT = gene.getNBTTagCompound();
-                list.appendTag(geneNBT);
-            }
-
-            nbt.setTag("genes", list);
+    public void writeToNBT(final NBTTagCompound nbt) {
+        if (this.genes.size() == 0) {
+            return;
         }
+        final NBTTagList list = new NBTTagList();
+        for (final IGene gene : this.genes) {
+            final NBTTagCompound geneNBT = gene.getNBTTagCompound();
+            list.appendTag((NBTBase) geneNBT);
+        }
+        nbt.setTag("genes", (NBTBase) list);
     }
 
     public ISpeciesRoot getSpeciesRoot() {
-        return this.genes.size() == 0 ? null : ((IGene) this.genes.get(0)).getSpeciesRoot();
+        if (this.genes.size() == 0) {
+            return null;
+        }
+        return this.genes.get(0).getSpeciesRoot();
     }
 
-    public IGene getGene(int chromosome) {
-        for (IGene gene : this.genes) {
+    public IGene getGene(final int chromosome) {
+        for (final IGene gene : this.genes) {
             if (gene.getChromosome().ordinal() == chromosome) {
                 return gene;
             }
         }
-
         return null;
     }
 
-    public void writeToItem(ItemStack stack) {
-        if (stack != null) {
-            NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-            this.writeToNBT(nbt);
-            stack.setTagCompound(nbt);
+    public void writeToItem(final ItemStack stack) {
+        if (stack == null) {
+            return;
         }
+        final NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
+        this.writeToNBT(nbt);
+        stack.setTagCompound(nbt);
     }
 
-    public void addGene(IGene gene) {
+    public void addGene(final IGene gene) {
         if (this.getGene(gene.getChromosome().ordinal()) != null) {
             this.genes.remove(this.getGene(gene.getChromosome().ordinal()));
         }
-
         this.genes.add(gene);
     }
 }

@@ -19,21 +19,21 @@ public enum FruitSprite implements IIconProvider {
 
     BinnieIcon icon;
 
-    private FruitSprite() {
-    }
-
     public short getIndex() {
         return (short) (this.ordinal() + 4200);
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(short texUID) {
-        int index = texUID - 4200;
-        return index >= 0 && index < values().length ? values()[index].icon.getIcon() : null;
+    public IIcon getIcon(final short texUID) {
+        final int index = texUID - 4200;
+        if (index >= 0 && index < values().length) {
+            return values()[index].icon.getIcon();
+        }
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.icon = Binnie.Resource.getBlockIcon(ExtraTrees.instance, "fruit/" + this.toString().toLowerCase());
     }
 }

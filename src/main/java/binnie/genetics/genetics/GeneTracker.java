@@ -11,6 +11,7 @@ import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.ISpeciesRoot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -20,91 +21,84 @@ import net.minecraft.world.WorldSavedData;
 import java.util.ArrayList;
 
 public class GeneTracker extends WorldSavedData {
-    private ArrayList discoveredGenes = new ArrayList();
+    private ArrayList<IGene> discoveredGenes;
     GameProfile username;
 
-    public GeneTracker(String s, GameProfile username) {
+    public GeneTracker(final String s, final GameProfile username) {
         super(s);
+        this.discoveredGenes = new ArrayList<IGene>();
         this.username = username;
     }
 
-    public GeneTracker(String s) {
+    public GeneTracker(final String s) {
         super(s);
+        this.discoveredGenes = new ArrayList<IGene>();
     }
 
-    protected static GeneTracker getCommonTracker(EntityPlayer player) {
-        return getTracker(player.worldObj, (GameProfile) null);
+    protected static GeneTracker getCommonTracker(final EntityPlayer player) {
+        return getTracker(player.worldObj, null);
     }
 
-    public static GeneTracker getTracker(World world, GameProfile player) {
-        String filename = "GeneTracker." + (player == null ? "common" : player.getId());
-        GeneTracker tracker = (GeneTracker) world.loadItemData(GeneTracker.class, filename);
+    public static GeneTracker getTracker(final World world, final GameProfile player) {
+        final String filename = "GeneTracker." + ((player == null) ? "common" : player.getId());
+        GeneTracker tracker = (GeneTracker) world.loadItemData((Class) GeneTracker.class, filename);
         if (tracker == null) {
             tracker = new GeneTracker(filename, player);
-            world.setItemData(filename, tracker);
+            world.setItemData(filename, (WorldSavedData) tracker);
         } else {
             tracker.username = player;
         }
-
         return tracker;
     }
 
-    public void synchToPlayer(EntityPlayer player) {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
+    public void synchToPlayer(final EntityPlayer player) {
+        final NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
         Genetics.proxy.sendToPlayer(new MessageNBT(GeneticsPacket.GeneTrackerSync.ordinal(), nbttagcompound), player);
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
-        for (ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
-            if (nbt.hasKey(root.getUID())) {
-                NBTTagCompound nbtRoot = nbt.getCompoundTag(root.getUID());
-
-                for (IChromosomeType chromo : root.getKaryotype()) {
-                    if (nbtRoot.hasKey("" + chromo.ordinal())) {
-                        NBTTagList nbtChromo = nbtRoot.getTagList("" + chromo.ordinal(), 8);
-
-                        for (int i = 0; i < nbtChromo.tagCount(); ++i) {
-                            String uid = nbtChromo.getStringTagAt(i);
-                            IAllele allele = AlleleManager.alleleRegistry.getAllele(uid);
-                            Gene gene = new Gene(allele, chromo, root);
-                            if (allele != null && !this.discoveredGenes.contains(gene)) {
-                                this.discoveredGenes.add(gene);
-                            }
+    public void readFromNBT(final NBTTagCompound nbt) {
+        for (final ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
+            if (!nbt.hasKey(root.getUID())) {
+                continue;
+            }
+            final NBTTagCompound nbtRoot = nbt.getCompoundTag(root.getUID());
+            for (final IChromosomeType chromo : root.getKaryotype()) {
+                if (nbtRoot.hasKey("" + chromo.ordinal())) {
+                    final NBTTagList nbtChromo = nbtRoot.getTagList("" + chromo.ordinal(), 8);
+                    for (int i = 0; i < nbtChromo.tagCount(); ++i) {
+                        final String uid = nbtChromo.getStringTagAt(i);
+                        final IAllele allele = AlleleManager.alleleRegistry.getAllele(uid);
+                        final Gene gene = new Gene(allele, chromo, root);
+                        if (allele != null && !this.discoveredGenes.contains(gene)) {
+                            this.discoveredGenes.add(gene);
                         }
                     }
                 }
             }
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
-        for (ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
-            NBTTagCompound nbtRoot = new NBTTagCompound();
-
-            for (IChromosomeType chromo : root.getKaryotype()) {
-                NBTTagList nbtChromo = new NBTTagList();
-
-                for (IGene gene : this.discoveredGenes) {
+    public void writeToNBT(final NBTTagCompound nbt) {
+        for (final ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
+            final NBTTagCompound nbtRoot = new NBTTagCompound();
+            for (final IChromosomeType chromo : root.getKaryotype()) {
+                final NBTTagList nbtChromo = new NBTTagList();
+                for (final IGene gene : this.discoveredGenes) {
                     if (gene.getSpeciesRoot() == root && gene.getChromosome() == chromo) {
-                        nbtChromo.appendTag(new NBTTagString(gene.getAllele().getUID()));
+                        nbtChromo.appendTag((NBTBase) new NBTTagString(gene.getAllele().getUID()));
                     }
                 }
-
-                nbtRoot.setTag("" + chromo.ordinal(), nbtChromo);
+                nbtRoot.setTag("" + chromo.ordinal(), (NBTBase) nbtChromo);
             }
-
-            nbt.setTag(root.getUID(), nbtRoot);
+            nbt.setTag(root.getUID(), (NBTBase) nbtRoot);
         }
-
     }
 
-    public void registerGene(IGene iGene) {
+    public void registerGene(final IGene iGene) {
         if (!this.discoveredGenes.contains(iGene)) {
             this.discoveredGenes.add(iGene);
         }
-
         this.markDirty();
     }
 
@@ -112,7 +106,7 @@ public class GeneTracker extends WorldSavedData {
         return this.discoveredGenes.size();
     }
 
-    public boolean isSequenced(Gene gene) {
+    public boolean isSequenced(final Gene gene) {
         return this.discoveredGenes.contains(gene);
     }
 }

@@ -8,21 +8,23 @@ import java.io.IOException;
 public class MessageMetadata extends MessageCoordinates {
     public int meta;
 
-    public MessageMetadata(int posX, int posY, int posZ, int meta) {
+    public MessageMetadata(final int posX, final int posY, final int posZ, final int meta) {
         super(BinnieCorePacketID.TileMetadata.ordinal(), posX, posY, posZ);
         this.meta = meta;
     }
 
-    public MessageMetadata(MessageBinnie message) {
+    public MessageMetadata(final MessageBinnie message) {
         super(message);
     }
 
-    public void writeData(ByteBuf data) throws IOException {
+    @Override
+    public void writeData(final ByteBuf data) throws IOException {
         super.writeData(data);
         data.writeInt(this.meta);
     }
 
-    public void readData(ByteBuf data) throws IOException {
+    @Override
+    public void readData(final ByteBuf data) throws IOException {
         super.readData(data);
         this.meta = data.readInt();
     }

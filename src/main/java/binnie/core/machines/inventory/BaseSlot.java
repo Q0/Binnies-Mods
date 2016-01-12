@@ -7,15 +7,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Collection;
 import java.util.EnumSet;
 
-abstract class BaseSlot implements INBTTagable, IValidator {
-    private SidedAccess access = new SidedAccess();
-    Validator validator = null;
-    private boolean readOnly = false;
+abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
+    private SidedAccess access;
+    Validator<T> validator;
+    private boolean readOnly;
     private int index;
-    protected String unlocName = "";
+    protected String unlocName;
 
-    public BaseSlot(int index, String unlocName) {
-        super();
+    public BaseSlot(final int index, final String unlocName) {
+        this.access = new SidedAccess();
+        this.validator = null;
+        this.readOnly = false;
+        this.unlocName = "";
         this.setIndex(index);
         this.setUnlocalisedName(unlocName);
     }
@@ -25,15 +28,15 @@ abstract class BaseSlot implements INBTTagable, IValidator {
         this.forbidInsertion();
     }
 
-    public boolean isValid(Object item) {
-        return item == null ? true : (this.validator != null ? this.validator.isValid(item) : true);
+    public boolean isValid(final T item) {
+        return item == null || this.validator == null || this.validator.isValid(item);
     }
 
-    public abstract Object getContent();
+    public abstract T getContent();
 
-    public abstract void setContent(Object var1);
+    public abstract void setContent(final T p0);
 
-    public void setValidator(Validator val) {
+    public void setValidator(final Validator<T> val) {
         this.validator = val;
     }
 
@@ -49,7 +52,7 @@ abstract class BaseSlot implements INBTTagable, IValidator {
         return this.index;
     }
 
-    private void setIndex(int index) {
+    private void setIndex(final int index) {
         this.index = index;
     }
 
@@ -66,22 +69,20 @@ abstract class BaseSlot implements INBTTagable, IValidator {
         this.forbidExtraction();
     }
 
-    public void setInputSides(EnumSet sides) {
-        for (ForgeDirection side : EnumSet.complementOf(sides)) {
+    public void setInputSides(final EnumSet<ForgeDirection> sides) {
+        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
             if (side != ForgeDirection.UNKNOWN) {
                 this.access.setInsert(side, false);
             }
         }
-
     }
 
-    public void setOutputSides(EnumSet sides) {
-        for (ForgeDirection side : EnumSet.complementOf(sides)) {
+    public void setOutputSides(final EnumSet<ForgeDirection> sides) {
+        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
             if (side != ForgeDirection.UNKNOWN) {
                 this.access.setExtract(side, false);
             }
         }
-
     }
 
     public void forbidExtraction() {
@@ -94,29 +95,29 @@ abstract class BaseSlot implements INBTTagable, IValidator {
         this.access.forbidInsertChange();
     }
 
-    public boolean canInsert(ForgeDirection dir) {
+    public boolean canInsert(final ForgeDirection dir) {
         return this.access.canInsert(dir);
     }
 
-    public boolean canExtract(ForgeDirection dir) {
+    public boolean canExtract(final ForgeDirection dir) {
         return this.access.canExtract(dir);
     }
 
-    public Collection getInputSides() {
+    public Collection<ForgeDirection> getInputSides() {
         return this.access.getInsertionSides();
     }
 
-    public Collection getOutputSides() {
+    public Collection<ForgeDirection> getOutputSides() {
         return this.access.getExtractionSides();
     }
 
-    public void setUnlocalisedName(String name) {
+    public void setUnlocalisedName(final String name) {
         this.unlocName = name;
     }
 
     public abstract String getName();
 
-    public Validator getValidator() {
+    public Validator<T> getValidator() {
         return this.validator;
     }
 }

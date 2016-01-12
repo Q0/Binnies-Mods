@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 class BinnieAction implements IActionExternal {
-    private static int incrementalID = 800;
+    private static int incrementalID;
     public static BinnieAction actionPauseProcess;
     public static BinnieAction actionCancelTask;
     private String desc;
@@ -21,16 +21,15 @@ class BinnieAction implements IActionExternal {
     private String tag;
     private int id;
 
-    BinnieAction(String desc, String tag, String iconFile) {
+    BinnieAction(final String desc, final String tag, final String iconFile) {
         this(desc, tag, BinnieCore.instance, iconFile);
     }
 
-    private BinnieAction(String desc, String tag, AbstractMod mod, String iconFile) {
-        super();
+    private BinnieAction(final String desc, final String tag, final AbstractMod mod, final String iconFile) {
         this.id = 0;
-        this.id = incrementalID++;
+        this.id = BinnieAction.incrementalID++;
         this.tag = tag;
-        StatementManager.registerStatement(this);
+        StatementManager.registerStatement((IStatement) this);
         this.icon = Binnie.Resource.getItemIcon(mod, iconFile);
         this.desc = desc;
     }
@@ -49,7 +48,7 @@ class BinnieAction implements IActionExternal {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {
+    public void registerIcons(final IIconRegister iconRegister) {
         this.icon.registerIcon(iconRegister);
     }
 
@@ -61,14 +60,18 @@ class BinnieAction implements IActionExternal {
         return 0;
     }
 
-    public IStatementParameter createParameter(int index) {
+    public IStatementParameter createParameter(final int index) {
         return null;
     }
 
     public IStatement rotateLeft() {
-        return this;
+        return (IStatement) this;
     }
 
-    public void actionActivate(TileEntity target, ForgeDirection side, IStatementContainer source, IStatementParameter[] parameters) {
+    public void actionActivate(final TileEntity target, final ForgeDirection side, final IStatementContainer source, final IStatementParameter[] parameters) {
+    }
+
+    static {
+        BinnieAction.incrementalID = 800;
     }
 }

@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneProject {
-    int id = 0;
+    int id;
     String name;
-    GameProfile leader = null;
-    List members = new ArrayList();
+    GameProfile leader;
+    List<GameProfile> members;
 
-    public GeneProject(int id, String name, GameProfile leader) {
-        super();
+    public GeneProject(final int id, final String name, final GameProfile leader) {
+        this.id = 0;
+        this.leader = null;
+        this.members = new ArrayList<GameProfile>();
         this.setID(id);
         this.setName(name);
         this.setLeader(leader);
@@ -22,7 +24,7 @@ public class GeneProject {
         return this.id;
     }
 
-    public void setID(int id) {
+    public void setID(final int id) {
         this.id = id;
     }
 
@@ -30,7 +32,7 @@ public class GeneProject {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -38,31 +40,27 @@ public class GeneProject {
         return this.leader;
     }
 
-    public void setLeader(GameProfile leader) {
-        this.leader = leader;
-        this.addPlayer(leader);
+    public void setLeader(final GameProfile leader) {
+        this.addPlayer(this.leader = leader);
     }
 
     public boolean isEmpty() {
         return this.members.isEmpty();
     }
 
-    public void addPlayer(GameProfile player) {
+    public void addPlayer(final GameProfile player) {
         if (!this.members.contains(player)) {
             this.members.add(player);
         }
-
         if (this.leader == null) {
             this.leader = player;
         }
-
     }
 
-    public void removePlayer(GameProfile player) {
+    public void removePlayer(final GameProfile player) {
         if (player == this.leader) {
-            throw new RuntimeException("Can\'t remove leader of a Gene Project");
-        } else {
-            this.members.remove(player);
+            throw new RuntimeException("Can't remove leader of a Gene Project");
         }
+        this.members.remove(player);
     }
 }

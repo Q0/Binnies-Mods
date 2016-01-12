@@ -6,20 +6,23 @@ import binnie.botany.api.EnumMoisture;
 import binnie.core.circuits.BinnieCircuit;
 import forestry.api.circuits.ChipsetManager;
 import forestry.api.farming.IFarmHousing;
+import forestry.api.farming.IFarmLogic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class CircuitGarden extends BinnieCircuit {
-    private Class logicClass;
-    private boolean isManual = false;
-    private boolean isFertilised = false;
+    private Class<? extends FarmLogic> logicClass;
+    private boolean isManual;
+    private boolean isFertilised;
     private ItemStack icon;
     private EnumMoisture moisture;
     private EnumAcidity acidity;
 
-    public CircuitGarden(EnumMoisture moisture, EnumAcidity ph, boolean manual, boolean fertilised, ItemStack recipe, ItemStack icon) {
-        super("garden." + moisture.getID() + (ph != null ? "." + ph.getID() : "") + (manual ? ".manual" : "") + (fertilised ? ".fert" : ""), 4, manual ? ChipsetManager.circuitRegistry.getLayout("forestry.farms.manual") : ChipsetManager.circuitRegistry.getLayout("forestry.farms.managed"), recipe);
+    public CircuitGarden(final EnumMoisture moisture, final EnumAcidity ph, final boolean manual, final boolean fertilised, final ItemStack recipe, final ItemStack icon) {
+        super("garden." + moisture.getID() + ((ph != null) ? ("." + ph.getID()) : "") + (manual ? ".manual" : "") + (fertilised ? ".fert" : ""), 4, manual ? ChipsetManager.circuitRegistry.getLayout("forestry.farms.manual") : ChipsetManager.circuitRegistry.getLayout("forestry.farms.managed"), recipe);
+        this.isManual = false;
+        this.isFertilised = false;
         this.isManual = manual;
         this.isFertilised = fertilised;
         this.moisture = moisture;
@@ -27,66 +30,64 @@ public class CircuitGarden extends BinnieCircuit {
         this.icon = icon;
         String info = "";
         if (moisture == EnumMoisture.Dry) {
-            info = info + "§eDry§f";
+            info += "§eDry§f";
         }
-
         if (moisture == EnumMoisture.Damp) {
-            info = info + "§9Damp§f";
+            info += "§9Damp§f";
         }
-
         if (this.acidity == EnumAcidity.Acid) {
             if (info.length() > 0) {
-                info = info + ", ";
+                info += ", ";
             }
-
-            info = info + "§cAcidic§f";
+            info += "§cAcidic§f";
         }
-
         if (this.acidity == EnumAcidity.Neutral) {
             if (info.length() > 0) {
-                info = info + ", ";
+                info += ", ";
             }
-
-            info = info + "§aNeutral§f";
+            info += "§aNeutral§f";
         }
-
         if (this.acidity == EnumAcidity.Alkaline) {
             if (info.length() > 0) {
-                info = info + ", ";
+                info += ", ";
             }
-
-            info = info + "§bAlkaline§f";
+            info += "§bAlkaline§f";
         }
-
         if (info.length() > 0) {
             info = " (" + info + "§f)";
         }
-
         this.addTooltipString("Flowers" + info);
     }
 
-    public boolean isCircuitable(TileEntity tile) {
+    @Override
+    public boolean isCircuitable(final TileEntity tile) {
         return tile instanceof IFarmHousing;
     }
 
-    public void onInsertion(int slot, TileEntity tile) {
-        if (this.isCircuitable(tile)) {
-            GardenLogic logic = new GardenLogic((IFarmHousing) tile);
-            logic.setData(this.moisture, this.acidity, this.isManual, this.isFertilised, this.icon, Binnie.Language.localise(this.getName()));
-            ((IFarmHousing) tile).setFarmLogic(ForgeDirection.values()[slot + 2], logic);
+    @Override
+    public void onInsertion(final int slot, final TileEntity tile) {
+        if (!this.isCircuitable(tile)) {
+            return;
         }
+        final GardenLogic logic = new GardenLogic((IFarmHousing) tile);
+        logic.setData(this.moisture, this.acidity, this.isManual, this.isFertilised, this.icon, Binnie.Language.localise(this.getName()));
+        ((IFarmHousing) tile).setFarmLogic(ForgeDirection.values()[slot + 2], (IFarmLogic) logic);
     }
 
-    public void onLoad(int slot, TileEntity tile) {
+    @Override
+    public void onLoad(final int slot, final TileEntity tile) {
         this.onInsertion(slot, tile);
     }
 
-    public void onRemoval(int slot, TileEntity tile) {
-        if (this.isCircuitable(tile)) {
-            ((IFarmHousing) tile).resetFarmLogic(ForgeDirection.values()[slot + 2]);
+    @Override
+    public void onRemoval(final int slot, final TileEntity tile) {
+        if (!this.isCircuitable(tile)) {
+            return;
         }
+        ((IFarmHousing) tile).resetFarmLogic(ForgeDirection.values()[slot + 2]);
     }
 
-    public void onTick(int slot, TileEntity tile) {
+    @Override
+    public void onTick(final int slot, final TileEntity tile) {
     }
 }

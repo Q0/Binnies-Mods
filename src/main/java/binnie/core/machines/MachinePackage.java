@@ -6,22 +6,24 @@ import net.minecraft.tileentity.TileEntity;
 
 public abstract class MachinePackage {
     private String uid;
-    private boolean active = true;
-    boolean powered = false;
-    private int metadata = -1;
+    private boolean active;
+    boolean powered;
+    private int metadata;
     private MachineGroup group;
 
     public String getUID() {
         return this.uid;
     }
 
-    protected MachinePackage(String uid, boolean powered) {
-        super();
+    protected MachinePackage(final String uid, final boolean powered) {
+        this.active = true;
+        this.powered = false;
+        this.metadata = -1;
         this.uid = uid;
         this.powered = powered;
     }
 
-    public abstract void createMachine(Machine var1);
+    public abstract void createMachine(final Machine p0);
 
     public abstract TileEntity createTileEntity();
 
@@ -32,10 +34,10 @@ public abstract class MachinePackage {
     }
 
     public final Integer getMetadata() {
-        return Integer.valueOf(this.metadata);
+        return this.metadata;
     }
 
-    public void assignMetadata(int meta) {
+    public void assignMetadata(final int meta) {
         this.metadata = meta;
     }
 
@@ -43,17 +45,17 @@ public abstract class MachinePackage {
         return this.group;
     }
 
-    public void setGroup(MachineGroup group) {
+    public void setGroup(final MachineGroup group) {
         this.group = group;
     }
 
-    public abstract void renderMachine(Machine var1, double var2, double var4, double var6, float var8, RenderBlocks var9);
+    public abstract void renderMachine(final Machine p0, final double p1, final double p2, final double p3, final float p4, final RenderBlocks p5);
 
     public boolean isActive() {
         return this.active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(final boolean active) {
         this.active = active;
     }
 

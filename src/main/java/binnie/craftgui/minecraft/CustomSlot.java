@@ -9,33 +9,35 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class CustomSlot extends Slot {
-    public boolean isItemValid(ItemStack par1ItemStack) {
+    public boolean isItemValid(final ItemStack par1ItemStack) {
         return this.inventory.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
     }
 
-    public CustomSlot(IInventory inventory, int index) {
+    public CustomSlot(final IInventory inventory, final int index) {
         super(inventory, index, 0, 0);
     }
 
     public InventorySlot getInventorySlot() {
-        IInventorySlots slots = (IInventorySlots) Machine.getInterface(IInventorySlots.class, this.inventory);
-        return slots != null ? slots.getSlot(this.getSlotIndex()) : null;
+        final IInventorySlots slots = Machine.getInterface(IInventorySlots.class, this.inventory);
+        if (slots != null) {
+            return slots.getSlot(this.getSlotIndex());
+        }
+        return null;
     }
 
     public boolean handleClick() {
-        InventorySlot slot = this.getInventorySlot();
+        final InventorySlot slot = this.getInventorySlot();
         return slot != null && slot.isRecipe();
     }
 
-    public void onSlotClick(ContainerCraftGUI container, int mouseButton, int modifier, EntityPlayer player) {
+    public void onSlotClick(final ContainerCraftGUI container, final int mouseButton, final int modifier, final EntityPlayer player) {
         ItemStack stack = player.inventory.getItemStack();
-        if (stack != null && mouseButton != 2) {
+        if (stack == null || mouseButton == 2) {
+            this.putStack((ItemStack) null);
+        } else {
             stack = stack.copy();
             stack.stackSize = 1;
             this.putStack(stack);
-        } else {
-            this.putStack((ItemStack) null);
         }
-
     }
 }

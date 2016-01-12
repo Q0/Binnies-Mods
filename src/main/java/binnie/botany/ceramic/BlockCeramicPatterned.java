@@ -12,17 +12,19 @@ import net.minecraft.item.ItemStack;
 public class BlockCeramicPatterned extends BlockDesign {
     public BlockCeramicPatterned() {
         super(CeramicDesignSystem.instance, Material.rock);
-        this.setHardness(1.0F);
-        this.setResistance(5.0F);
+        this.setHardness(1.0f);
+        this.setResistance(5.0f);
         this.setCreativeTab(CreativeTabBotany.instance);
         this.setBlockName("ceramicPattern");
     }
 
-    public ItemStack getCreativeStack(IDesign design) {
+    @Override
+    public ItemStack getCreativeStack(final IDesign design) {
         return ModuleCarpentry.getItemStack(this, CeramicColor.get(EnumFlowerColor.White), CeramicColor.get(EnumFlowerColor.Black), design);
     }
 
-    public String getBlockName(DesignBlock design) {
+    @Override
+    public String getBlockName(final DesignBlock design) {
         return design.getDesign().getName() + " Ceramic Block";
     }
 }

@@ -21,12 +21,11 @@ import forestry.api.lepidopterology.IButterflyRoot;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public enum ButterflySpecies implements IAlleleButterflySpecies {
     WhiteAdmiral("White Admiral", "Limenitis camilla", 16448250),
@@ -58,10 +57,12 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     BinnieResource texture;
     public IClassification branch;
     int colour;
-    private Map butterflyLoot = new HashMap();
-    private Map caterpillarLoot = new HashMap();
+    private Map<ItemStack, Float> butterflyLoot;
+    private Map<ItemStack, Float> caterpillarLoot;
 
-    private ButterflySpecies(String name, String scientific, int colour) {
+    private ButterflySpecies(final String name, final String scientific, final int colour) {
+        this.butterflyLoot = new HashMap<ItemStack, Float>();
+        this.caterpillarLoot = new HashMap<ItemStack, Float>();
         this.name = name;
         this.branchName = scientific.split(" ")[0].toLowerCase();
         this.scientific = scientific.split(" ")[1];
@@ -127,8 +128,8 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     }
 
     public IAllele[] getTemplate() {
-        IAllele[] def = (IAllele[]) this.getRoot().getDefaultTemplate().clone();
-        def[0] = this;
+        final IAllele[] def = this.getRoot().getDefaultTemplate().clone();
+        def[0] = (IAllele) this;
         return def;
     }
 
@@ -137,73 +138,72 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     }
 
     public float getRarity() {
-        return 0.5F;
+        return 0.5f;
     }
 
     public boolean isNocturnal() {
         return false;
     }
 
-    public int getIconColour(int renderPass) {
-        return renderPass > 0 ? 16777215 : this.colour;
+    public int getIconColour(final int renderPass) {
+        return (renderPass > 0) ? 16777215 : this.colour;
     }
 
-    public Map getButterflyLoot() {
-        return new HashMap();
+    public Map<ItemStack, Float> getButterflyLoot() {
+        return new HashMap<ItemStack, Float>();
     }
 
-    public Map getCaterpillarLoot() {
-        return new HashMap();
+    public Map<ItemStack, Float> getCaterpillarLoot() {
+        return new HashMap<ItemStack, Float>();
     }
 
     public int getComplexity() {
         return 4;
     }
 
-    public float getResearchSuitability(ItemStack itemstack) {
+    public float getResearchSuitability(final ItemStack itemstack) {
         if (itemstack == null) {
-            return 0.0F;
-        } else if (itemstack.getItem() == Items.glass_bottle) {
-            return 0.9F;
-        } else {
-            for (ItemStack stack : this.butterflyLoot.keySet()) {
-                if (stack.isItemEqual(itemstack)) {
-                    return 1.0F;
-                }
-            }
-
-            for (ItemStack stack : this.caterpillarLoot.keySet()) {
-                if (stack.isItemEqual(itemstack)) {
-                    return 1.0F;
-                }
-            }
-
-            if (itemstack.getItem() == Mods.Forestry.item("honeyDrop")) {
-                return 0.5F;
-            } else if (itemstack.getItem() == Mods.Forestry.item("honeydew")) {
-                return 0.7F;
-            } else if (itemstack.getItem() == Mods.Forestry.item("beeComb")) {
-                return 0.4F;
-            } else if (AlleleManager.alleleRegistry.isIndividual(itemstack)) {
-                return 1.0F;
-            } else {
-                for (Entry<ItemStack, Float> entry : this.getRoot().getResearchCatalysts().entrySet()) {
-                    if (((ItemStack) entry.getKey()).isItemEqual(itemstack)) {
-                        return ((Float) entry.getValue()).floatValue();
-                    }
-                }
-
-                return 0.0F;
+            return 0.0f;
+        }
+        if (itemstack.getItem() == Items.glass_bottle) {
+            return 0.9f;
+        }
+        for (final ItemStack stack : this.butterflyLoot.keySet()) {
+            if (stack.isItemEqual(itemstack)) {
+                return 1.0f;
             }
         }
+        for (final ItemStack stack : this.caterpillarLoot.keySet()) {
+            if (stack.isItemEqual(itemstack)) {
+                return 1.0f;
+            }
+        }
+        if (itemstack.getItem() == Mods.Forestry.item("honeyDrop")) {
+            return 0.5f;
+        }
+        if (itemstack.getItem() == Mods.Forestry.item("honeydew")) {
+            return 0.7f;
+        }
+        if (itemstack.getItem() == Mods.Forestry.item("beeComb")) {
+            return 0.4f;
+        }
+        if (AlleleManager.alleleRegistry.isIndividual(itemstack)) {
+            return 1.0f;
+        }
+        for (final Map.Entry<ItemStack, Float> entry : this.getRoot().getResearchCatalysts().entrySet()) {
+            if (entry.getKey().isItemEqual(itemstack)) {
+                return entry.getValue();
+            }
+        }
+        return 0.0f;
     }
 
-    public ItemStack[] getResearchBounty(World world, GameProfile researcher, IIndividual individual, int bountyLevel) {
+    public ItemStack[] getResearchBounty(final World world, final GameProfile researcher, final IIndividual individual, final int bountyLevel) {
         return new ItemStack[]{this.getRoot().getMemberStack(individual.copy(), EnumFlutterType.SERUM.ordinal())};
     }
 
-    public EnumSet getSpawnBiomes() {
-        return EnumSet.noneOf(Type.class);
+    public EnumSet<BiomeDictionary.Type> getSpawnBiomes() {
+        return EnumSet.noneOf(BiomeDictionary.Type.class);
     }
 
     public boolean strictSpawnMatch() {
@@ -211,7 +211,7 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     }
 
     public float getFlightDistance() {
-        return 5.0F;
+        return 5.0f;
     }
 
     public String getUnlocalizedName() {

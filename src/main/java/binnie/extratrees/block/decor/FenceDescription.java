@@ -8,18 +8,16 @@ public class FenceDescription {
     IPlankType plankType;
     IPlankType secondaryPlankType;
 
-    public FenceDescription(FenceType fenceType, IPlankType plankType, IPlankType secondaryPlankType) {
-        super();
+    public FenceDescription(final FenceType fenceType, final IPlankType plankType, final IPlankType secondaryPlankType) {
         this.fenceType = fenceType;
         this.plankType = plankType;
         this.secondaryPlankType = secondaryPlankType;
     }
 
-    public FenceDescription(int meta) {
-        super();
-        this.fenceType = new FenceType(meta >> 8 & 255);
-        this.plankType = WoodManager.getPlankType(meta & 255);
-        this.secondaryPlankType = WoodManager.getPlankType(meta >> 16 & 255);
+    public FenceDescription(final int meta) {
+        this.fenceType = new FenceType(meta >> 8 & 0xFF);
+        this.plankType = WoodManager.getPlankType(meta & 0xFF);
+        this.secondaryPlankType = WoodManager.getPlankType(meta >> 16 & 0xFF);
     }
 
     public FenceType getFenceType() {

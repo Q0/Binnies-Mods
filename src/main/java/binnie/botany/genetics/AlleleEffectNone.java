@@ -6,15 +6,11 @@ import forestry.api.genetics.IEffectData;
 import net.minecraft.world.World;
 
 public class AlleleEffectNone implements IAlleleFlowerEffect {
-    public AlleleEffectNone() {
-        super();
-    }
-
     public boolean isCombinable() {
         return true;
     }
 
-    public IEffectData validateStorage(IEffectData storedData) {
+    public IEffectData validateStorage(final IEffectData storedData) {
         return storedData;
     }
 
@@ -30,7 +26,8 @@ public class AlleleEffectNone implements IAlleleFlowerEffect {
         return "None";
     }
 
-    public IEffectData doEffect(IFlowerGenome genome, IEffectData storedData, World world, int x, int y, int z) {
+    @Override
+    public IEffectData doEffect(final IFlowerGenome genome, final IEffectData storedData, final World world, final int x, final int y, final int z) {
         return storedData;
     }
 

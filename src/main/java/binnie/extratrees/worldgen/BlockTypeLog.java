@@ -2,18 +2,18 @@ package binnie.extratrees.worldgen;
 
 import binnie.extratrees.block.ILogType;
 import forestry.api.arboriculture.ITree;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 public class BlockTypeLog extends BlockType {
     ILogType log;
 
-    public BlockTypeLog(ILogType log) {
-        super((Block) null, 0);
+    public BlockTypeLog(final ILogType log) {
+        super(null, 0);
         this.log = log;
     }
 
-    public void setBlock(World world, ITree tree, int x, int y, int z) {
+    @Override
+    public void setBlock(final World world, final ITree tree, final int x, final int y, final int z) {
         this.log.placeBlock(world, x, y, z);
     }
 }

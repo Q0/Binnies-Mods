@@ -12,29 +12,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class FarmableFlower implements IFarmable {
-    public FarmableFlower() {
-        super();
-    }
-
-    public boolean isSaplingAt(World world, int x, int y, int z) {
+    public boolean isSaplingAt(final World world, final int x, final int y, final int z) {
         return world.getBlock(x, y, z) == Botany.flower;
     }
 
-    public ICrop getCropAt(World world, int x, int y, int z) {
+    public ICrop getCropAt(final World world, final int x, final int y, final int z) {
         return null;
     }
 
-    public boolean isGermling(ItemStack itemstack) {
-        EnumFlowerStage stage = BotanyCore.speciesRoot.getType(itemstack);
+    public boolean isGermling(final ItemStack itemstack) {
+        final EnumFlowerStage stage = BotanyCore.speciesRoot.getType(itemstack);
         return stage == EnumFlowerStage.FLOWER || stage == EnumFlowerStage.SEED;
     }
 
-    public boolean isWindfall(ItemStack itemstack) {
+    public boolean isWindfall(final ItemStack itemstack) {
         return false;
     }
 
-    public boolean plantSaplingAt(EntityPlayer player, ItemStack germling, World world, int x, int y, int z) {
-        IFlower flower = BotanyCore.getFlowerRoot().getMember(germling);
+    public boolean plantSaplingAt(final EntityPlayer player, final ItemStack germling, final World world, final int x, final int y, final int z) {
+        final IFlower flower = BotanyCore.getFlowerRoot().getMember(germling);
         Gardening.plant(world, x, y, z, flower, player.getGameProfile());
         return true;
     }

@@ -16,12 +16,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TileEntityNursery extends TileEntityMachine implements IButterflyNursery {
-    public TileEntityNursery(Nursery.PackageNursery pack) {
+    public TileEntityNursery(final Nursery.PackageNursery pack) {
         super(pack);
     }
 
     IButterflyNursery getNursery() {
-        return (IButterflyNursery) this.getMachine().getInterface(IButterflyNursery.class);
+        return this.getMachine().getInterface(IButterflyNursery.class);
     }
 
     boolean hasNursery() {
@@ -56,7 +56,7 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return null;
     }
 
-    public boolean addProduct(ItemStack product, boolean all) {
+    public boolean addProduct(final ItemStack product, final boolean all) {
         return false;
     }
 
@@ -68,14 +68,13 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return null;
     }
 
-    public void setCaterpillar(IButterfly butterfly) {
+    public void setCaterpillar(final IButterfly butterfly) {
         if (this.hasNursery()) {
             this.getNursery().setCaterpillar(butterfly);
         }
-
     }
 
-    public boolean canNurse(IButterfly butterfly) {
+    public boolean canNurse(final IButterfly butterfly) {
         return this.getCaterpillar() == null;
     }
 
@@ -83,26 +82,26 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return this.getWorld().getBiomeGenForCoords(this.xCoord, this.zCoord);
     }
 
-    public void setErrorState(IErrorState state) {
+    public void setErrorState(final IErrorState state) {
     }
 
     public IErrorState getErrorState() {
         return null;
     }
 
-    public boolean setErrorCondition(boolean condition, IErrorState errorState) {
+    public boolean setErrorCondition(final boolean condition, final IErrorState errorState) {
         return false;
     }
 
-    public Set getErrorStates() {
-        return new HashSet();
+    public Set<IErrorState> getErrorStates() {
+        return new HashSet<IErrorState>();
     }
 
     public int getBiomeId() {
         return 0;
     }
 
-    public void setErrorState(int state) {
+    public void setErrorState(final int state) {
     }
 
     public int getErrorOrdinal() {

@@ -16,109 +16,101 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class MachineRendererLab {
-    public static MachineRendererLab instance = new MachineRendererLab();
-    private final EntityItem dummyEntityItem = new EntityItem((World) null);
-    private final EntityItem[] itemSides = new EntityItem[]{new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null)};
-    private final RenderItem customRenderItem = new RenderItem() {
-        public boolean shouldBob() {
-            return false;
-        }
-
-        public boolean shouldSpreadItems() {
-            return false;
-        }
-    };
+    public static MachineRendererLab instance;
+    private final EntityItem dummyEntityItem;
+    private final EntityItem[] itemSides;
+    private final RenderItem customRenderItem;
     private long lastTick;
-    private ModelMachine model = new ModelMachine();
+    private ModelMachine model;
 
     public MachineRendererLab() {
-        super();
-        this.customRenderItem.setRenderManager(RenderManager.instance);
+        this.dummyEntityItem = new EntityItem((World) null);
+        this.itemSides = new EntityItem[]{new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null)};
+        this.model = new ModelMachine();
+        (this.customRenderItem = new RenderItem() {
+            public boolean shouldBob() {
+                return false;
+            }
+
+            public boolean shouldSpreadItems() {
+                return false;
+            }
+        }).setRenderManager(RenderManager.instance);
     }
 
-    public void renderMachine(Machine machine, int colour, BinnieResource texture, double x, double y, double z, float var8) {
+    public void renderMachine(final Machine machine, final int colour, final BinnieResource texture, final double x, final double y, final double z, final float var8) {
         GL11.glPushMatrix();
         int i1 = 0;
-        int ix = machine.getTileEntity().xCoord;
-        int iy = machine.getTileEntity().yCoord;
-        int iz = machine.getTileEntity().zCoord;
+        final int ix = machine.getTileEntity().xCoord;
+        final int iy = machine.getTileEntity().yCoord;
+        final int iz = machine.getTileEntity().zCoord;
         if (machine.getTileEntity() != null) {
             i1 = ix * iy * iz + ix * iy - ix * iz + iy * iz - ix + iy - iz;
         }
-
-        label77:
+        final float phase = (float) Math.max(0.0, Math.sin((System.currentTimeMillis() + i1) * 0.003));
+        GL11.glTranslated(x + 0.5, y + 1.5, z + 0.5);
+        GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+        BinnieCore.proxy.bindTexture(texture);
+        GL11.glPushMatrix();
+        this.model.render((float) x, (float) y, (float) z, 0.0625f, 0.0625f, 0.0625f);
+        GL11.glPopMatrix();
+        final World world = machine.getWorld();
+        final LaboratoryMachine.ComponentGUIHolder holder = Machine.getInterface(LaboratoryMachine.ComponentGUIHolder.class, machine);
+        Label_0591:
         {
-            float phase = (float) Math.max(0.0D, Math.sin((double) (System.currentTimeMillis() + (long) i1) * 0.003D));
-            GL11.glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-            GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-            BinnieCore.proxy.bindTexture(texture);
-            GL11.glPushMatrix();
-            this.model.render((float) x, (float) y, (float) z, 0.0625F, 0.0625F, 0.0625F);
-            GL11.glPopMatrix();
-            World world = machine.getWorld();
-            LaboratoryMachine.ComponentGUIHolder holder = (LaboratoryMachine.ComponentGUIHolder) Machine.getInterface(LaboratoryMachine.ComponentGUIHolder.class, machine);
             if (world != null && holder != null && holder.getStack() != null) {
                 BinnieCore.proxy.getMinecraftInstance();
                 if (Minecraft.isFancyGraphicsEnabled()) {
-                    ItemStack stack = holder.getStack();
+                    final ItemStack stack = holder.getStack();
                     this.dummyEntityItem.worldObj = world;
                     this.dummyEntityItem.setEntityItemStack(stack);
                     if (world.getTotalWorldTime() != this.lastTick) {
                         this.lastTick = world.getTotalWorldTime();
                         this.dummyEntityItem.onUpdate();
                     }
-
                     this.dummyEntityItem.age = 0;
-                    this.dummyEntityItem.hoverStart = 0.0F;
+                    this.dummyEntityItem.hoverStart = 0.0f;
                     GL11.glPushMatrix();
-                    EntityPlayer player = BinnieCore.proxy.getPlayer();
-                    double dx = (double) ix + 0.5D - player.lastTickPosX;
-                    double dz = (double) iz + 0.5D - player.lastTickPosZ;
-                    double t = Math.atan2(dz, dx) * 180.0D / 3.1415D;
-                    GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-                    GL11.glTranslatef(0.0F, 0.0F, -0.55F);
-                    GL11.glRotatef(90.0F + (float) (-t), 0.0F, 0.0F, 1.0F);
-                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
-                    GL11.glScalef(1.2F, 1.2F, 1.2F);
-                    GL11.glRotatef(45.0F, 1.0F, 0.0F, 0.0F);
-                    GL11.glTranslatef(0.0F, 0.1F, 0.1F);
-                    this.customRenderItem.doRender(this.dummyEntityItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    final EntityPlayer player = BinnieCore.proxy.getPlayer();
+                    final double dx = ix + 0.5 - player.lastTickPosX;
+                    final double dz = iz + 0.5 - player.lastTickPosZ;
+                    final double t = Math.atan2(dz, dx) * 180.0 / 3.1415;
+                    GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+                    GL11.glTranslatef(0.0f, 0.0f, -0.55f);
+                    GL11.glRotatef(90.0f + (float) (-t), 0.0f, 0.0f, 1.0f);
+                    GL11.glTranslatef(0.0f, -0.125f, 0.0f);
+                    GL11.glScalef(1.2f, 1.2f, 1.2f);
+                    GL11.glRotatef(45.0f, 1.0f, 0.0f, 0.0f);
+                    GL11.glTranslatef(0.0f, 0.1f, 0.1f);
+                    this.customRenderItem.doRender(this.dummyEntityItem, 0.0, 0.0, 0.0, 0.0f, 0.0f);
                     GL11.glPopMatrix();
                     int rot = 0;
-                    EntityItem[] arr$ = this.itemSides;
-                    int len$ = arr$.length;
-                    int i$ = 0;
-
-                    while (true) {
-                        if (i$ >= len$) {
-                            break label77;
-                        }
-
-                        EntityItem item = arr$[i$];
+                    for (final EntityItem item : this.itemSides) {
                         GL11.glPushMatrix();
                         item.worldObj = world;
                         item.setEntityItemStack(stack);
                         item.age = 0;
-                        item.hoverStart = 0.0F;
-                        GL11.glRotatef((float) rot, 0.0F, 1.0F, 0.0F);
-                        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                        GL11.glTranslated(0.0D, -1.13D, 0.4D);
-                        GL11.glScalef(0.8F, 0.8F, 0.8F);
-                        this.customRenderItem.doRender(item, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                        item.hoverStart = 0.0f;
+                        GL11.glRotatef((float) rot, 0.0f, 1.0f, 0.0f);
+                        GL11.glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+                        GL11.glTranslated(0.0, -1.13, 0.4);
+                        GL11.glScalef(0.8f, 0.8f, 0.8f);
+                        this.customRenderItem.doRender(item, 0.0, 0.0, 0.0, 0.0f, 0.0f);
                         rot += 90;
                         GL11.glPopMatrix();
-                        ++i$;
                     }
+                    break Label_0591;
                 }
             }
-
             this.dummyEntityItem.setEntityItemStack((ItemStack) null);
-
-            for (EntityItem item : this.itemSides) {
-                item.setEntityItemStack((ItemStack) null);
+            for (final EntityItem item2 : this.itemSides) {
+                item2.setEntityItemStack((ItemStack) null);
             }
         }
-
         GL11.glPopMatrix();
+    }
+
+    static {
+        MachineRendererLab.instance = new MachineRendererLab();
     }
 }

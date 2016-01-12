@@ -33,207 +33,174 @@ public class Polymeriser {
     public static final int tankDNA = 1;
     public static final int slotSerum = 0;
     public static final int slotGold = 1;
-    public static final int[] slotSerumReserve = new int[]{2, 3, 4, 5};
-    public static final int[] slotSerumFinished = new int[]{6, 7, 8, 9};
+    public static final int[] slotSerumReserve;
+    public static final int[] slotSerumFinished;
 
-    public Polymeriser() {
-        super();
-    }
-
-    public static class ComponentPolymeriserFX extends MachineComponent implements IRender.RandomDisplayTick, IRender.DisplayTick {
-        public ComponentPolymeriserFX(IMachine machine) {
-            super(machine);
-        }
-
-        @SideOnly(Side.CLIENT)
-        public void onRandomDisplayTick(World world, int x, int y, int z, Random rand) {
-        }
-
-        @SideOnly(Side.CLIENT)
-        public void onDisplayTick(final World world, int x, int y, int z, Random rand) {
-            int tick = (int) (world.getTotalWorldTime() % 8L);
-            if ((tick == 0 || tick == 3) && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, (double) x + 0.5D, (double) z + 0.5D, 0.0D, x4, x5, x6) {
-                    double axisX = 0.0D;
-                    double axisZ = 0.0D;
-                    double angle = 0.0D;
-
-                    {
-                        this.motionX = 0.0D;
-                        this.motionZ = 0.0D;
-                        this.motionY = -0.006D;
-                        this.particleMaxAge = 140;
-                        this.axisX = this.posX;
-                        this.axisZ = this.posZ;
-                        this.particleGravity = 0.0F;
-                        this.angle = 0.7D + (double) ((int) (this.worldObj.getTotalWorldTime() % 2L)) * 3.1415D;
-                        this.noClip = true;
-                        this.setRBGColorF(0.8F, 0.0F, 1.0F);
-                    }
-
-                    public void onUpdate() {
-                        super.onUpdate();
-                        this.angle += 0.1D;
-                        this.motionY = -0.006D;
-                        double dist = 0.2D;
-                        if (this.particleAge > 60) {
-                            if (this.particleAge > 120) {
-                                dist = 0.1D;
-                            } else {
-                                dist = 0.2D - 0.1D * (double) (((float) this.particleAge - 60.0F) / 60.0F);
-                            }
-                        }
-
-                        this.setPosition(this.axisX + dist * Math.sin(this.angle), this.posY, this.axisZ + dist * Math.cos(this.angle));
-                        if (this.particleAge <= 40) {
-                            this.setAlphaF((float) this.particleAge / 40.0F);
-                        }
-
-                        if (this.particleAge > 80) {
-                            this.setRBGColorF(this.particleRed + (0.0F - this.particleRed) / 10.0F, this.particleGreen + (1.0F - this.particleGreen) / 10.0F, this.particleBlue + (1.0F - this.particleBlue) / 10.0F);
-                        }
-
-                    }
-
-                    public int getFXLayer() {
-                        return 0;
-                    }
-                });
-            }
-
-        }
-    }
-
-    public static class ComponentPolymeriserLogic extends ComponentProcessSetCost implements IProcess {
-        private static float chargePerProcess = 0.4F;
-        private float dnaDrain = 0.0F;
-        private float bacteriaDrain = 0.0F;
-
-        public ComponentPolymeriserLogic(Machine machine) {
-            super(machine, 96000, 2400);
-        }
-
-        private float getCatalyst() {
-            return this.getUtil().getSlotCharge(1) > 0.0F ? 0.2F : 1.0F;
-        }
-
-        public int getProcessLength() {
-            return (int) ((float) (super.getProcessLength() * this.getNumberOfGenes()) * this.getCatalyst());
-        }
-
-        public int getProcessEnergy() {
-            return (int) ((float) (super.getProcessEnergy() * this.getNumberOfGenes()) * this.getCatalyst());
-        }
-
-        private float getDNAPerProcess() {
-            return (float) (this.getNumberOfGenes() * 50);
-        }
-
-        public void onTickTask() {
-            super.onTickTask();
-            this.getUtil().useCharge(1, chargePerProcess * this.getProgressPerTick() / 100.0F);
-            this.dnaDrain += this.getDNAPerProcess() * this.getProgressPerTick() / 100.0F;
-            this.bacteriaDrain += 0.2F * this.getDNAPerProcess() * this.getProgressPerTick() / 100.0F;
-            if (this.dnaDrain >= 1.0F) {
-                this.getUtil().drainTank(1, 1);
-                --this.dnaDrain;
-            }
-
-            if (this.bacteriaDrain >= 1.0F) {
-                this.getUtil().drainTank(0, 1);
-                --this.bacteriaDrain;
-            }
-
-        }
-
-        private int getNumberOfGenes() {
-            ItemStack serum = this.getUtil().getStack(0);
-            return serum == null ? 1 : Engineering.getGenes(serum).length;
-        }
-
-        public String getTooltip() {
-            int n = this.getNumberOfGenes();
-            return "Replicating " + n + " genes" + (n > 1 ? "s" : "");
-        }
-
-        public ErrorState canWork() {
-            return (ErrorState) (this.getUtil().isSlotEmpty(0) ? new ErrorState.NoItem("No item to replicate", 0) : (!this.getUtil().getStack(0).isItemDamaged() ? new ErrorState.InvalidItem("Item filled", 0) : super.canWork()));
-        }
-
-        public ErrorState canProgress() {
-            return (ErrorState) (this.getUtil().getFluid(0) == null ? new ErrorState.InsufficientLiquid("Insufficient Bacteria", 0) : (this.getUtil().getFluid(1) == null ? new ErrorState.InsufficientLiquid("Insufficient DNA", 1) : super.canProgress()));
-        }
-
-        protected void onFinishTask() {
-            super.onFinishTask();
-            this.getUtil().damageItem(0, -1);
-        }
+    static {
+        slotSerumReserve = new int[]{2, 3, 4, 5};
+        slotSerumFinished = new int[]{6, 7, 8, 9};
     }
 
     public static class PackagePolymeriser extends GeneticMachine.PackageGeneticBase implements IMachineInformation {
         public PackagePolymeriser() {
-            super("polymeriser", GeneticsTexture.Polymeriser, '\ue5c3', true);
+            super("polymeriser", GeneticsTexture.Polymeriser, 58819, true);
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
             new ComponentGeneticGUI(machine, GeneticsGUI.Replicator);
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(1, "catalyst");
             inventory.getSlot(1).setValidator(new SlotValidator.Item(new ItemStack(Items.gold_nugget, 1), ModuleMachine.IconNugget));
             inventory.getSlot(1).forbidExtraction();
             inventory.addSlot(0, "process");
-            inventory.getSlot(0).setValidator(new Polymeriser.SlotValidatorUnfilledSerum());
+            inventory.getSlot(0).setValidator(new SlotValidatorUnfilledSerum());
             inventory.getSlot(0).forbidInteraction();
             inventory.getSlot(0).setReadOnly();
-
-            for (InventorySlot slot : inventory.addSlotArray(Polymeriser.slotSerumReserve, "input")) {
-                slot.setValidator(new Polymeriser.SlotValidatorUnfilledSerum());
+            for (final InventorySlot slot : inventory.addSlotArray(Polymeriser.slotSerumReserve, "input")) {
+                slot.setValidator(new SlotValidatorUnfilledSerum());
                 slot.forbidExtraction();
             }
-
-            for (InventorySlot slot : inventory.addSlotArray(Polymeriser.slotSerumFinished, "output")) {
+            for (final InventorySlot slot : inventory.addSlotArray(Polymeriser.slotSerumFinished, "output")) {
                 slot.setReadOnly();
             }
-
-            ComponentInventoryTransfer transfer = new ComponentInventoryTransfer(machine);
+            final ComponentInventoryTransfer transfer = new ComponentInventoryTransfer(machine);
             transfer.addRestock(Polymeriser.slotSerumReserve, 0, 1);
             transfer.addStorage(0, Polymeriser.slotSerumFinished, new ComponentInventoryTransfer.Condition() {
-                public boolean fufilled(ItemStack stack) {
+                @Override
+                public boolean fufilled(final ItemStack stack) {
                     return !stack.isItemDamaged();
                 }
             });
-            ComponentTankContainer tank = new ComponentTankContainer(machine);
+            final ComponentTankContainer tank = new ComponentTankContainer(machine);
             tank.addTank(0, "input", 1000);
-            tank.getTankSlot(0).setValidator(new Validator() {
-                public boolean isValid(FluidStack itemStack) {
+            tank.getTankSlot(0).setValidator(new Validator<FluidStack>() {
+                @Override
+                public boolean isValid(final FluidStack itemStack) {
                     return GeneticLiquid.BacteriaPoly.get(1).isFluidEqual(itemStack);
                 }
 
+                @Override
                 public String getTooltip() {
                     return "Polymerising Bacteria";
                 }
             });
             tank.addTank(1, "input", 1000);
-            tank.getTankSlot(1).setValidator(new Validator() {
-                public boolean isValid(FluidStack itemStack) {
+            tank.getTankSlot(1).setValidator(new Validator<FluidStack>() {
+                @Override
+                public boolean isValid(final FluidStack itemStack) {
                     return GeneticLiquid.RawDNA.get(1).isFluidEqual(itemStack);
                 }
 
+                @Override
                 public String getTooltip() {
                     return "Raw DNA";
                 }
             });
-            (new ComponentChargedSlots(machine)).addCharge(1);
+            new ComponentChargedSlots(machine).addCharge(1);
             new ComponentPowerReceptor(machine, 8000);
-            new Polymeriser.ComponentPolymeriserLogic(machine);
-            new Polymeriser.ComponentPolymeriserFX(machine);
+            new ComponentPolymeriserLogic(machine);
+            new ComponentPolymeriserFX(machine);
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
+        }
+    }
+
+    public static class ComponentPolymeriserLogic extends ComponentProcessSetCost implements IProcess {
+        private static float chargePerProcess;
+        private float dnaDrain;
+        private float bacteriaDrain;
+
+        public ComponentPolymeriserLogic(final Machine machine) {
+            super(machine, 96000, 2400);
+            this.dnaDrain = 0.0f;
+            this.bacteriaDrain = 0.0f;
+        }
+
+        private float getCatalyst() {
+            return (this.getUtil().getSlotCharge(1) > 0.0f) ? 0.2f : 1.0f;
+        }
+
+        @Override
+        public int getProcessLength() {
+            return (int) (super.getProcessLength() * this.getNumberOfGenes() * this.getCatalyst());
+        }
+
+        @Override
+        public int getProcessEnergy() {
+            return (int) (super.getProcessEnergy() * this.getNumberOfGenes() * this.getCatalyst());
+        }
+
+        private float getDNAPerProcess() {
+            return this.getNumberOfGenes() * 50;
+        }
+
+        public void onTickTask() {
+            super.onTickTask();
+            this.getUtil().useCharge(1, ComponentPolymeriserLogic.chargePerProcess * this.getProgressPerTick() / 100.0f);
+            this.dnaDrain += this.getDNAPerProcess() * this.getProgressPerTick() / 100.0f;
+            this.bacteriaDrain += 0.2f * this.getDNAPerProcess() * this.getProgressPerTick() / 100.0f;
+            if (this.dnaDrain >= 1.0f) {
+                this.getUtil().drainTank(1, 1);
+                --this.dnaDrain;
+            }
+            if (this.bacteriaDrain >= 1.0f) {
+                this.getUtil().drainTank(0, 1);
+                --this.bacteriaDrain;
+            }
+        }
+
+        private int getNumberOfGenes() {
+            final ItemStack serum = this.getUtil().getStack(0);
+            if (serum == null) {
+                return 1;
+            }
+            return Engineering.getGenes(serum).length;
+        }
+
+        @Override
+        public String getTooltip() {
+            final int n = this.getNumberOfGenes();
+            return "Replicating " + n + " genes" + ((n > 1) ? "s" : "");
+        }
+
+        @Override
+        public ErrorState canWork() {
+            if (this.getUtil().isSlotEmpty(0)) {
+                return new ErrorState.NoItem("No item to replicate", 0);
+            }
+            if (!this.getUtil().getStack(0).isItemDamaged()) {
+                return new ErrorState.InvalidItem("Item filled", 0);
+            }
+            return super.canWork();
+        }
+
+        @Override
+        public ErrorState canProgress() {
+            if (this.getUtil().getFluid(0) == null) {
+                return new ErrorState.InsufficientLiquid("Insufficient Bacteria", 0);
+            }
+            if (this.getUtil().getFluid(1) == null) {
+                return new ErrorState.InsufficientLiquid("Insufficient DNA", 1);
+            }
+            return super.canProgress();
+        }
+
+        @Override
+        protected void onFinishTask() {
+            super.onFinishTask();
+            this.getUtil().damageItem(0, -1);
+        }
+
+        static {
+            ComponentPolymeriserLogic.chargePerProcess = 0.4f;
         }
     }
 
@@ -242,12 +209,76 @@ public class Polymeriser {
             super(ModuleMachine.IconSerum);
         }
 
-        public boolean isValid(ItemStack itemStack) {
+        @Override
+        public boolean isValid(final ItemStack itemStack) {
             return itemStack.getItem() instanceof IItemChargable;
         }
 
+        @Override
         public String getTooltip() {
             return "Unfilled Serum";
+        }
+    }
+
+    public static class ComponentPolymeriserFX extends MachineComponent implements IRender.RandomDisplayTick, IRender.DisplayTick {
+        public ComponentPolymeriserFX(final IMachine machine) {
+            super(machine);
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void onRandomDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
+            final int tick = (int) (world.getTotalWorldTime() % 8L);
+            if ((tick == 0 || tick == 3) && this.getUtil().getProcess().isInProgress()) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, y + 1.8, z + 0.5, 0.0, 0.0, 0.0) {
+                    double axisX = this.posX;
+                    double axisZ = this.posZ;
+                    double angle = 0.7 + (int) (this.worldObj.getTotalWorldTime() % 2L) * 3.1415;
+
+                    {
+                        this.axisX = 0.0;
+                        this.axisZ = 0.0;
+                        this.angle = 0.0;
+                        this.motionX = 0.0;
+                        this.motionZ = 0.0;
+                        this.motionY = -0.006;
+                        this.particleMaxAge = 140;
+                        this.particleGravity = 0.0f;
+                        this.noClip = true;
+                        this.setRBGColorF(0.8f, 0.0f, 1.0f);
+                    }
+
+                    public void onUpdate() {
+                        super.onUpdate();
+                        this.angle += 0.1;
+                        this.motionY = -0.006;
+                        double dist = 0.2;
+                        if (this.particleAge > 60) {
+                            if (this.particleAge > 120) {
+                                dist = 0.1;
+                            } else {
+                                dist = 0.2 - 0.1 * ((this.particleAge - 60.0f) / 60.0f);
+                            }
+                        }
+                        this.setPosition(this.axisX + dist * Math.sin(this.angle), this.posY, this.axisZ + dist * Math.cos(this.angle));
+                        if (this.particleAge <= 40) {
+                            this.setAlphaF(this.particleAge / 40.0f);
+                        }
+                        if (this.particleAge > 80) {
+                            this.setRBGColorF(this.particleRed + (0.0f - this.particleRed) / 10.0f, this.particleGreen + (1.0f - this.particleGreen) / 10.0f, this.particleBlue + (1.0f - this.particleBlue) / 10.0f);
+                        }
+                    }
+
+                    public int getFXLayer() {
+                        return 0;
+                    }
+                });
+            }
         }
     }
 }

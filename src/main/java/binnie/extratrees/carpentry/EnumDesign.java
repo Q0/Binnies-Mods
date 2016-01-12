@@ -112,37 +112,37 @@ public enum EnumDesign implements IDesign {
     OverlappedSplitBarred("Overlapped Split Barred");
 
     String name;
-    ILayout topPattern = Layout.get(EnumPattern.Blank, false);
-    ILayout bottomPattern = Layout.get(EnumPattern.Blank, false);
-    ILayout northPattern = Layout.get(EnumPattern.Blank, false);
-    ILayout southPattern = Layout.get(EnumPattern.Blank, false);
-    ILayout eastPattern = Layout.get(EnumPattern.Blank, false);
-    ILayout westPattern = Layout.get(EnumPattern.Blank, false);
+    ILayout topPattern;
+    ILayout bottomPattern;
+    ILayout northPattern;
+    ILayout southPattern;
+    ILayout eastPattern;
+    ILayout westPattern;
 
-    void setEdgePatterns(ILayout north, ILayout east, ILayout south, ILayout west) {
+    void setEdgePatterns(final ILayout north, final ILayout east, final ILayout south, final ILayout west) {
         this.setNorthPattern(north);
         this.setEastPattern(east);
         this.setSouthPattern(south);
         this.setWestPattern(west);
     }
 
-    void setEdgePatterns(ILayout face) {
+    void setEdgePatterns(final ILayout face) {
         this.setEdgePatterns(face, face, face, face);
     }
 
-    void setupStriped(ILayout vert) {
+    void setupStriped(final ILayout vert) {
         this.setTopPattern(vert);
         this.setEdgePatterns(vert.invert(), EnumPattern.Blank.layout(true), vert, EnumPattern.Blank.layout());
     }
 
-    void setChequered(ILayout cheq) {
+    void setChequered(final ILayout cheq) {
         this.setAllPatterns(cheq);
         this.setNorthPattern(cheq.invert());
         this.setSouthPattern(cheq.invert());
         this.setBottomPattern(cheq.invert());
     }
 
-    void setStripedChequered(ILayout cheq, ILayout stripe) {
+    void setStripedChequered(final ILayout cheq, final ILayout stripe) {
         this.setAllPatterns(cheq);
         this.setNorthPattern(stripe.invert());
         this.setSouthPattern(stripe.invert());
@@ -150,7 +150,7 @@ public enum EnumDesign implements IDesign {
         this.setWestPattern(stripe);
     }
 
-    void setCornered(ILayout corner, ILayout edge) {
+    void setCornered(final ILayout corner, final ILayout edge) {
         this.setTopPattern(corner);
         this.setNorthPattern(EnumPattern.Blank.layout());
         this.setEastPattern(edge.flipHorizontal());
@@ -158,64 +158,64 @@ public enum EnumDesign implements IDesign {
         this.setWestPattern(EnumPattern.Blank.layout());
     }
 
-    void setEdged(ILayout edge) {
+    void setEdged(final ILayout edge) {
         this.setAllPatterns(edge);
         this.setWestPattern(EnumPattern.Blank.layout());
         this.setEastPattern(EnumPattern.Blank.layout(true));
         this.northPattern = this.northPattern.flipHorizontal();
     }
 
-    void setBarred(ILayout bar) {
+    void setBarred(final ILayout bar) {
         this.setAllPatterns(bar);
         this.setEastPattern(EnumPattern.Blank.layout(true));
         this.setWestPattern(EnumPattern.Blank.layout(true));
     }
 
-    void setDiagonal(ILayout diagonal, ILayout edged) {
+    void setDiagonal(final ILayout diagonal, final ILayout edged) {
         this.setAllPatterns(edged);
         this.setTopPattern(diagonal);
         this.northPattern = this.northPattern.flipHorizontal();
         this.southPattern = this.southPattern.flipHorizontal();
     }
 
-    void setSaltire(ILayout saltire, ILayout bar) {
+    void setSaltire(final ILayout saltire, final ILayout bar) {
         this.setTopPattern(saltire);
         this.setEdgePatterns(bar.invert());
     }
 
-    void setCross(ILayout saltire, ILayout bar) {
+    void setCross(final ILayout saltire, final ILayout bar) {
         this.setTopPattern(saltire);
         this.setEdgePatterns(bar);
     }
 
-    void setTSection(ILayout tsection, ILayout bar) {
+    void setTSection(final ILayout tsection, final ILayout bar) {
         this.setTopPattern(tsection);
         this.setEdgePatterns(bar);
         this.setWestPattern(EnumPattern.Blank.layout(true));
     }
 
-    void setBarredCorner(ILayout corner, ILayout bar) {
+    void setBarredCorner(final ILayout corner, final ILayout bar) {
         this.setTSection(corner, bar);
         this.setNorthPattern(EnumPattern.Blank.layout(true));
     }
 
-    void setStripedCorner(ILayout corner, ILayout striped) {
+    void setStripedCorner(final ILayout corner, final ILayout striped) {
         this.setCornered(corner, striped);
     }
 
-    void setLetterPattern(ILayout letter) {
+    void setLetterPattern(final ILayout letter) {
         this.setAllPatterns(EnumPattern.Blank.layout(true));
         this.setTopPattern(letter);
         this.setBottomPattern(EnumPattern.Blank.layout(true));
     }
 
-    void setBarredEndPattern(ILayout end, ILayout bar) {
+    void setBarredEndPattern(final ILayout end, final ILayout bar) {
         this.setAllPatterns(EnumPattern.Blank.layout(true));
         this.setTopPattern(end);
         this.setWestPattern(bar);
     }
 
-    void setDiagonalCorner(ILayout diagonal, ILayout bar, ILayout edged) {
+    void setDiagonalCorner(final ILayout diagonal, final ILayout bar, final ILayout edged) {
         this.setAllPatterns(EnumPattern.Blank.layout(true));
         this.setTopPattern(diagonal);
         this.setWestPattern(bar.invert());
@@ -223,7 +223,7 @@ public enum EnumDesign implements IDesign {
         this.setSouthPattern(edged);
     }
 
-    void setDiagonalTSection(ILayout diagonal, ILayout bar, ILayout edged) {
+    void setDiagonalTSection(final ILayout diagonal, final ILayout bar, final ILayout edged) {
         this.setAllPatterns(EnumPattern.Blank.layout(true));
         this.setTopPattern(diagonal);
         this.setWestPattern(bar.invert());
@@ -232,11 +232,17 @@ public enum EnumDesign implements IDesign {
         this.setSouthPattern(edged);
     }
 
-    private EnumDesign(String name) {
+    private EnumDesign(final String name) {
+        this.topPattern = Layout.get(EnumPattern.Blank, false);
+        this.bottomPattern = Layout.get(EnumPattern.Blank, false);
+        this.northPattern = Layout.get(EnumPattern.Blank, false);
+        this.eastPattern = Layout.get(EnumPattern.Blank, false);
+        this.southPattern = Layout.get(EnumPattern.Blank, false);
+        this.westPattern = Layout.get(EnumPattern.Blank, false);
         this.name = name;
     }
 
-    private void setAllPatterns(ILayout layout) {
+    private void setAllPatterns(final ILayout layout) {
         this.setTopPattern(layout);
         this.setBottomPattern(layout);
         this.setNorthPattern(layout);
@@ -245,226 +251,232 @@ public enum EnumDesign implements IDesign {
         this.setWestPattern(layout);
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public ILayout getTopPattern() {
         return this.topPattern;
     }
 
-    public void setTopPattern(ILayout layout) {
-        this.topPattern = layout;
-        this.setBottomPattern(layout);
+    public void setTopPattern(final ILayout layout) {
+        this.setBottomPattern(this.topPattern = layout);
     }
 
+    @Override
     public ILayout getBottomPattern() {
         return this.bottomPattern;
     }
 
-    public void setBottomPattern(ILayout layout) {
+    public void setBottomPattern(final ILayout layout) {
         this.bottomPattern = layout;
     }
 
+    @Override
     public ILayout getNorthPattern() {
         return this.northPattern;
     }
 
-    public void setNorthPattern(ILayout layout) {
+    public void setNorthPattern(final ILayout layout) {
         this.northPattern = layout;
     }
 
+    @Override
     public ILayout getSouthPattern() {
         return this.southPattern;
     }
 
-    public void setSouthPattern(ILayout layout) {
+    public void setSouthPattern(final ILayout layout) {
         this.southPattern = layout;
     }
 
+    @Override
     public ILayout getEastPattern() {
         return this.eastPattern;
     }
 
-    public void setEastPattern(ILayout layout) {
+    public void setEastPattern(final ILayout layout) {
         this.eastPattern = layout;
     }
 
+    @Override
     public ILayout getWestPattern() {
         return this.westPattern;
     }
 
-    public void setWestPattern(ILayout layout) {
+    public void setWestPattern(final ILayout layout) {
         this.westPattern = layout;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
     static {
-        EnumDesign.Category.Design.addDesign(Blank);
-        EnumDesign.Category.Design.addDesign(Octagon);
-        EnumDesign.Category.Design.addDesign(Diamond);
-        EnumDesign.Category.Design.addDesign(Ringed);
-        EnumDesign.Category.Design.addDesign(Squared);
-        EnumDesign.Category.Design.addDesign(Multiply);
-        EnumDesign.Category.Design.addDesign(Plus);
-        EnumDesign.Category.Design.addDesign(Circle);
-        EnumDesign.Category.Design.addDesign(Emblem1);
-        EnumDesign.Category.Design.addDesign(Emblem2);
-        EnumDesign.Category.Design.addDesign(Emblem3);
-        EnumDesign.Category.Design.addDesign(Emblem4);
-        EnumDesign.Category.Design.addDesign(Emblem5);
-        EnumDesign.Category.Design.addDesign(Creeper);
-        EnumDesign.Category.Stripes.addDesign(Chequered);
-        EnumDesign.Category.Stripes.addDesign(ChequeredB);
-        EnumDesign.Category.Stripes.addDesign(Tiled);
-        EnumDesign.Category.Stripes.addDesign(TiledB);
-        EnumDesign.Category.Stripes.addDesign(Striped);
-        EnumDesign.Category.Stripes.addDesign(ThinStriped);
-        EnumDesign.Category.Stripes.addDesign(ThinStripedCorner);
-        EnumDesign.Category.Stripes.addDesign(StripedCorner);
-        EnumDesign.Category.Stripes.addDesign(OrnateStripedCorner);
-        EnumDesign.Category.Edges.addDesign(Halved);
-        EnumDesign.Category.Edges.addDesign(Corner);
-        EnumDesign.Category.Edges.addDesign(ThickCorner);
-        EnumDesign.Category.Edges.addDesign(Edged);
-        EnumDesign.Category.Edges.addDesign(ThinCorner);
-        EnumDesign.Category.Edges.addDesign(ThinEdged);
-        EnumDesign.Category.Edges.addDesign(VeryThinCorner);
-        EnumDesign.Category.Edges.addDesign(ThinCurvedCorner);
-        EnumDesign.Category.Edges.addDesign(CurvedCorner);
-        EnumDesign.Category.Barred.addDesign(ThinBarred);
-        EnumDesign.Category.Barred.addDesign(ThinBarredCorner);
-        EnumDesign.Category.Barred.addDesign(ThinTSection);
-        EnumDesign.Category.Barred.addDesign(ThinCrossed);
-        EnumDesign.Category.Barred.addDesign(ThinBarredEnd);
-        EnumDesign.Category.Barred.addDesign(OrnateThinBarred);
-        EnumDesign.Category.Barred.addDesign(Barred);
-        EnumDesign.Category.Barred.addDesign(BarredCorner);
-        EnumDesign.Category.Barred.addDesign(TSection);
-        EnumDesign.Category.Barred.addDesign(Crossed);
-        EnumDesign.Category.Barred.addDesign(BarredEnd);
-        EnumDesign.Category.Barred.addDesign(OverlappedBarred);
-        EnumDesign.Category.Barred.addDesign(OrnateBarred);
-        EnumDesign.Category.Barred.addDesign(ThickBarred);
-        EnumDesign.Category.Barred.addDesign(ThickBarredCorner);
-        EnumDesign.Category.Barred.addDesign(ThickTSection);
-        EnumDesign.Category.Barred.addDesign(ThickCrossed);
-        EnumDesign.Category.Barred.addDesign(ThickBarredEnd);
-        EnumDesign.Category.Barred.addDesign(ThinCurvedBarredCorner);
-        EnumDesign.Category.Barred.addDesign(CurvedBarredCorner);
-        EnumDesign.Category.Barred.addDesign(ThinCurvedTSection);
-        EnumDesign.Category.Barred.addDesign(CurvedTSection);
-        EnumDesign.Category.Barred.addDesign(ThinCurvedCrossed);
-        EnumDesign.Category.Barred.addDesign(SplitBarred);
-        EnumDesign.Category.Barred.addDesign(SplitBarredCorner);
-        EnumDesign.Category.Barred.addDesign(SplitBarredTSection);
-        EnumDesign.Category.Barred.addDesign(SplitCrossed);
-        EnumDesign.Category.Barred.addDesign(SplitBarredEnd);
-        EnumDesign.Category.Barred.addDesign(OverlappedSplitBarred);
-        EnumDesign.Category.Diagonal.addDesign(ThinSaltire);
-        EnumDesign.Category.Diagonal.addDesign(Diagonal);
-        EnumDesign.Category.Diagonal.addDesign(DiagonalCorner);
-        EnumDesign.Category.Diagonal.addDesign(DiagonalTSection);
-        EnumDesign.Category.Diagonal.addDesign(DiagonalCurvedCorner);
-        EnumDesign.Category.Diagonal.addDesign(DiagonalCurvedTSection);
-        EnumDesign.Category.Diagonal.addDesign(Saltire);
-        EnumDesign.Category.Diagonal.addDesign(ThickDiagonal);
-        EnumDesign.Category.Diagonal.addDesign(ThickSaltire);
-        EnumDesign.Category.Diagonal.addDesign(DiagonalHalved);
-        EnumDesign.Category.Diagonal.addDesign(Diagonal1Edged);
-        EnumDesign.Category.Diagonal.addDesign(Diagonal2Edged);
-        EnumDesign.Category.Diagonal.addDesign(ThickDiagonal1Edged);
-        Octagon.setAllPatterns(EnumPattern.Octagon.layout());
-        Diamond.setAllPatterns(EnumPattern.Diamond.layout());
-        Ringed.setAllPatterns(EnumPattern.Ringed.layout());
-        Squared.setAllPatterns(EnumPattern.Squared.layout());
-        Multiply.setAllPatterns(EnumPattern.Multiply.layout());
-        ThinStriped.setupStriped(EnumPattern.ThinStriped.layout());
-        Striped.setupStriped(EnumPattern.Striped.layout());
-        Halved.setupStriped(EnumPattern.Halved.layout());
-        Chequered.setChequered(EnumPattern.Chequered.layout());
-        Tiled.setChequered(EnumPattern.Tiled.layout());
-        ChequeredB.setStripedChequered(EnumPattern.Chequered.layout(), EnumPattern.Halved.layout());
-        TiledB.setStripedChequered(EnumPattern.Tiled.layout(), EnumPattern.Striped.layout());
-        VeryThinCorner.setCornered(EnumPattern.VeryThinCorner.layout(), EnumPattern.ThinEdged.layout());
-        ThinCorner.setCornered(EnumPattern.ThinCorner.layout(), EnumPattern.Edged.layout());
-        Corner.setCornered(EnumPattern.Corner.layout(), EnumPattern.Halved.layout());
-        ThickCorner.setCornered(EnumPattern.ThickCorner.layout(), EnumPattern.Edged.layout(true).flipHorizontal());
-        ThinCurvedCorner.setCornered(EnumPattern.ThinCurvedCorner.layout(), EnumPattern.Edged.layout());
-        CurvedCorner.setCornered(EnumPattern.CurvedCorner.layout(), EnumPattern.Halved.layout());
-        Edged.setEdged(EnumPattern.Edged.layout());
-        ThinEdged.setEdged(EnumPattern.ThinEdged.layout());
-        ThinBarred.setBarred(EnumPattern.ThinBarred.layout());
-        Barred.setBarred(EnumPattern.Barred.layout());
-        ThickBarred.setBarred(EnumPattern.ThickBarred.layout());
-        Diagonal.setDiagonal(EnumPattern.Diagonal.layout(), EnumPattern.Edged.layout());
-        ThickDiagonal.setDiagonal(EnumPattern.ThickDiagonal.layout(), EnumPattern.Halved.layout());
-        ThinSaltire.setSaltire(EnumPattern.ThinSaltire.layout(), EnumPattern.ThickBarred.layout());
-        Saltire.setSaltire(EnumPattern.Saltire.layout(), EnumPattern.Barred.layout());
-        ThickSaltire.setSaltire(EnumPattern.ThickSaltire.layout(), EnumPattern.ThinBarred.layout());
-        ThinCrossed.setCross(EnumPattern.ThinCrossed.layout(), EnumPattern.ThinBarred.layout());
-        Crossed.setCross(EnumPattern.Crossed.layout(), EnumPattern.Barred.layout());
-        ThickCrossed.setCross(EnumPattern.ThickCrossed.layout(), EnumPattern.ThickBarred.layout());
-        ThinCurvedCrossed.setCross(EnumPattern.ThinCurvedCrossed.layout(), EnumPattern.ThinBarred.layout());
-        ThinTSection.setTSection(EnumPattern.ThinTSection.layout(), EnumPattern.ThinBarred.layout());
-        TSection.setTSection(EnumPattern.TSection.layout(), EnumPattern.Barred.layout());
-        ThickTSection.setTSection(EnumPattern.ThickTSection.layout(), EnumPattern.ThickBarred.layout());
-        ThinCurvedTSection.setTSection(EnumPattern.ThinCurvedTSection.layout(), EnumPattern.ThinBarred.layout());
-        CurvedTSection.setTSection(EnumPattern.CurvedTSection.layout(), EnumPattern.Barred.layout());
-        ThinBarredCorner.setBarredCorner(EnumPattern.ThinBarredCorner.layout(), EnumPattern.ThinBarred.layout());
-        BarredCorner.setBarredCorner(EnumPattern.BarredCorner.layout(), EnumPattern.Barred.layout());
-        ThickBarredCorner.setBarredCorner(EnumPattern.ThickBarredCorner.layout(), EnumPattern.ThickBarred.layout());
-        ThinCurvedBarredCorner.setBarredCorner(EnumPattern.ThinCurvedBarredCorner.layout(), EnumPattern.ThinBarred.layout());
-        CurvedBarredCorner.setBarredCorner(EnumPattern.BarredCurvedCorner.layout(), EnumPattern.Barred.layout());
-        ThinStripedCorner.setStripedCorner(EnumPattern.ThinStripedCorner.layout(), EnumPattern.ThinStriped.layout());
-        StripedCorner.setStripedCorner(EnumPattern.StripedCorner.layout(), EnumPattern.Striped.layout());
-        OrnateStripedCorner.setStripedCorner(EnumPattern.OrnateStripedCorner.layout(), EnumPattern.ThinStriped.layout());
-        Emblem1.setAllPatterns(EnumPattern.Emblem1.layout());
-        Emblem2.setAllPatterns(EnumPattern.Emblem2.layout());
-        Emblem3.setAllPatterns(EnumPattern.Emblem3.layout());
-        Emblem4.setAllPatterns(EnumPattern.Emblem4.layout());
-        Emblem5.setAllPatterns(EnumPattern.Emblem5.layout());
-        LetterA.setLetterPattern(EnumPattern.LetterA.layout());
-        LetterB.setLetterPattern(EnumPattern.LetterB.layout());
-        LetterF.setLetterPattern(EnumPattern.LetterF.layout());
-        LetterS.setLetterPattern(EnumPattern.LetterS.layout());
-        LetterT.setLetterPattern(EnumPattern.LetterT.layout());
-        BarredEnd.setBarredEndPattern(EnumPattern.BarredEnd.layout(), EnumPattern.Barred.layout());
-        DiagonalCorner.setDiagonalCorner(EnumPattern.DiagonalCorner.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
-        DiagonalTSection.setDiagonalTSection(EnumPattern.DiagonalTSection.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
-        DiagonalCurvedCorner.setDiagonalCorner(EnumPattern.DiagonalCurvedCorner.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
-        DiagonalCurvedTSection.setDiagonalTSection(EnumPattern.DiagonalCurvedTSection.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
-        OrnateBarred.setBarred(EnumPattern.OrnateBarred.layout());
-        OrnateThinBarred.setBarred(EnumPattern.OrnateThinBarred.layout());
-        SplitBarred.setBarred(EnumPattern.SplitBarred.layout());
-        SplitBarredCorner.setBarredCorner(EnumPattern.SplitBarredCorner.layout(), EnumPattern.SplitBarred.layout());
-        SplitBarredTSection.setTSection(EnumPattern.SplitBarredTSection.layout(), EnumPattern.SplitBarred.layout());
-        SplitCrossed.setCross(EnumPattern.SplitCrossed.layout(), EnumPattern.SplitBarred.layout());
-        SplitBarredEnd.setBarredEndPattern(EnumPattern.SplitBarredEnd.layout(), EnumPattern.SplitBarred.layout());
-        Circle.setAllPatterns(EnumPattern.Circle.layout());
-        Plus.setAllPatterns(EnumPattern.Plus.layout());
-        Creeper.setAllPatterns(EnumPattern.Blank.layout(true));
-        Creeper.setTopPattern(EnumPattern.Creeper.layout());
-        DiagonalHalved.setTopPattern(EnumPattern.DiagonalHalved.layout());
-        DiagonalHalved.setEdgePatterns(EnumPattern.Blank.layout(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout());
-        Diagonal1Edged.setTopPattern(EnumPattern.Diagonal1Edged.layout());
-        Diagonal1Edged.setEdgePatterns(EnumPattern.Edged.layout().flipHorizontal(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Edged.layout());
-        Diagonal2Edged.setTopPattern(EnumPattern.Diagonal2Edged.layout());
-        Diagonal2Edged.setEdgePatterns(EnumPattern.Edged.layout(), EnumPattern.Edged.layout().flipHorizontal(), EnumPattern.Edged.layout(), EnumPattern.Edged.layout().flipHorizontal());
-        ThickDiagonal1Edged.setTopPattern(EnumPattern.ThickDiagonal1Edged.layout());
-        ThickDiagonal1Edged.setEdgePatterns(EnumPattern.Halved.layout().flipHorizontal(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Halved.layout());
-        ThickBarredEnd.setBarredEndPattern(EnumPattern.ThickBarredEnd.layout(), EnumPattern.ThickBarred.layout());
-        ThinBarredEnd.setBarredEndPattern(EnumPattern.ThinBarredEnd.layout(), EnumPattern.ThinBarred.layout());
-        OverlappedSplitBarred.setAllPatterns(EnumPattern.SplitBarred.layout());
-        OverlappedSplitBarred.setTopPattern(EnumPattern.OverlappedSplitBarred.layout());
-        OverlappedBarred.setAllPatterns(EnumPattern.Barred.layout());
-        OverlappedBarred.setTopPattern(EnumPattern.OverlappedBarred.layout());
+        Category.Design.addDesign(EnumDesign.Blank);
+        Category.Design.addDesign(EnumDesign.Octagon);
+        Category.Design.addDesign(EnumDesign.Diamond);
+        Category.Design.addDesign(EnumDesign.Ringed);
+        Category.Design.addDesign(EnumDesign.Squared);
+        Category.Design.addDesign(EnumDesign.Multiply);
+        Category.Design.addDesign(EnumDesign.Plus);
+        Category.Design.addDesign(EnumDesign.Circle);
+        Category.Design.addDesign(EnumDesign.Emblem1);
+        Category.Design.addDesign(EnumDesign.Emblem2);
+        Category.Design.addDesign(EnumDesign.Emblem3);
+        Category.Design.addDesign(EnumDesign.Emblem4);
+        Category.Design.addDesign(EnumDesign.Emblem5);
+        Category.Design.addDesign(EnumDesign.Creeper);
+        Category.Stripes.addDesign(EnumDesign.Chequered);
+        Category.Stripes.addDesign(EnumDesign.ChequeredB);
+        Category.Stripes.addDesign(EnumDesign.Tiled);
+        Category.Stripes.addDesign(EnumDesign.TiledB);
+        Category.Stripes.addDesign(EnumDesign.Striped);
+        Category.Stripes.addDesign(EnumDesign.ThinStriped);
+        Category.Stripes.addDesign(EnumDesign.ThinStripedCorner);
+        Category.Stripes.addDesign(EnumDesign.StripedCorner);
+        Category.Stripes.addDesign(EnumDesign.OrnateStripedCorner);
+        Category.Edges.addDesign(EnumDesign.Halved);
+        Category.Edges.addDesign(EnumDesign.Corner);
+        Category.Edges.addDesign(EnumDesign.ThickCorner);
+        Category.Edges.addDesign(EnumDesign.Edged);
+        Category.Edges.addDesign(EnumDesign.ThinCorner);
+        Category.Edges.addDesign(EnumDesign.ThinEdged);
+        Category.Edges.addDesign(EnumDesign.VeryThinCorner);
+        Category.Edges.addDesign(EnumDesign.ThinCurvedCorner);
+        Category.Edges.addDesign(EnumDesign.CurvedCorner);
+        Category.Barred.addDesign(EnumDesign.ThinBarred);
+        Category.Barred.addDesign(EnumDesign.ThinBarredCorner);
+        Category.Barred.addDesign(EnumDesign.ThinTSection);
+        Category.Barred.addDesign(EnumDesign.ThinCrossed);
+        Category.Barred.addDesign(EnumDesign.ThinBarredEnd);
+        Category.Barred.addDesign(EnumDesign.OrnateThinBarred);
+        Category.Barred.addDesign(EnumDesign.Barred);
+        Category.Barred.addDesign(EnumDesign.BarredCorner);
+        Category.Barred.addDesign(EnumDesign.TSection);
+        Category.Barred.addDesign(EnumDesign.Crossed);
+        Category.Barred.addDesign(EnumDesign.BarredEnd);
+        Category.Barred.addDesign(EnumDesign.OverlappedBarred);
+        Category.Barred.addDesign(EnumDesign.OrnateBarred);
+        Category.Barred.addDesign(EnumDesign.ThickBarred);
+        Category.Barred.addDesign(EnumDesign.ThickBarredCorner);
+        Category.Barred.addDesign(EnumDesign.ThickTSection);
+        Category.Barred.addDesign(EnumDesign.ThickCrossed);
+        Category.Barred.addDesign(EnumDesign.ThickBarredEnd);
+        Category.Barred.addDesign(EnumDesign.ThinCurvedBarredCorner);
+        Category.Barred.addDesign(EnumDesign.CurvedBarredCorner);
+        Category.Barred.addDesign(EnumDesign.ThinCurvedTSection);
+        Category.Barred.addDesign(EnumDesign.CurvedTSection);
+        Category.Barred.addDesign(EnumDesign.ThinCurvedCrossed);
+        Category.Barred.addDesign(EnumDesign.SplitBarred);
+        Category.Barred.addDesign(EnumDesign.SplitBarredCorner);
+        Category.Barred.addDesign(EnumDesign.SplitBarredTSection);
+        Category.Barred.addDesign(EnumDesign.SplitCrossed);
+        Category.Barred.addDesign(EnumDesign.SplitBarredEnd);
+        Category.Barred.addDesign(EnumDesign.OverlappedSplitBarred);
+        Category.Diagonal.addDesign(EnumDesign.ThinSaltire);
+        Category.Diagonal.addDesign(EnumDesign.Diagonal);
+        Category.Diagonal.addDesign(EnumDesign.DiagonalCorner);
+        Category.Diagonal.addDesign(EnumDesign.DiagonalTSection);
+        Category.Diagonal.addDesign(EnumDesign.DiagonalCurvedCorner);
+        Category.Diagonal.addDesign(EnumDesign.DiagonalCurvedTSection);
+        Category.Diagonal.addDesign(EnumDesign.Saltire);
+        Category.Diagonal.addDesign(EnumDesign.ThickDiagonal);
+        Category.Diagonal.addDesign(EnumDesign.ThickSaltire);
+        Category.Diagonal.addDesign(EnumDesign.DiagonalHalved);
+        Category.Diagonal.addDesign(EnumDesign.Diagonal1Edged);
+        Category.Diagonal.addDesign(EnumDesign.Diagonal2Edged);
+        Category.Diagonal.addDesign(EnumDesign.ThickDiagonal1Edged);
+        EnumDesign.Octagon.setAllPatterns(EnumPattern.Octagon.layout());
+        EnumDesign.Diamond.setAllPatterns(EnumPattern.Diamond.layout());
+        EnumDesign.Ringed.setAllPatterns(EnumPattern.Ringed.layout());
+        EnumDesign.Squared.setAllPatterns(EnumPattern.Squared.layout());
+        EnumDesign.Multiply.setAllPatterns(EnumPattern.Multiply.layout());
+        EnumDesign.ThinStriped.setupStriped(EnumPattern.ThinStriped.layout());
+        EnumDesign.Striped.setupStriped(EnumPattern.Striped.layout());
+        EnumDesign.Halved.setupStriped(EnumPattern.Halved.layout());
+        EnumDesign.Chequered.setChequered(EnumPattern.Chequered.layout());
+        EnumDesign.Tiled.setChequered(EnumPattern.Tiled.layout());
+        EnumDesign.ChequeredB.setStripedChequered(EnumPattern.Chequered.layout(), EnumPattern.Halved.layout());
+        EnumDesign.TiledB.setStripedChequered(EnumPattern.Tiled.layout(), EnumPattern.Striped.layout());
+        EnumDesign.VeryThinCorner.setCornered(EnumPattern.VeryThinCorner.layout(), EnumPattern.ThinEdged.layout());
+        EnumDesign.ThinCorner.setCornered(EnumPattern.ThinCorner.layout(), EnumPattern.Edged.layout());
+        EnumDesign.Corner.setCornered(EnumPattern.Corner.layout(), EnumPattern.Halved.layout());
+        EnumDesign.ThickCorner.setCornered(EnumPattern.ThickCorner.layout(), EnumPattern.Edged.layout(true).flipHorizontal());
+        EnumDesign.ThinCurvedCorner.setCornered(EnumPattern.ThinCurvedCorner.layout(), EnumPattern.Edged.layout());
+        EnumDesign.CurvedCorner.setCornered(EnumPattern.CurvedCorner.layout(), EnumPattern.Halved.layout());
+        EnumDesign.Edged.setEdged(EnumPattern.Edged.layout());
+        EnumDesign.ThinEdged.setEdged(EnumPattern.ThinEdged.layout());
+        EnumDesign.ThinBarred.setBarred(EnumPattern.ThinBarred.layout());
+        EnumDesign.Barred.setBarred(EnumPattern.Barred.layout());
+        EnumDesign.ThickBarred.setBarred(EnumPattern.ThickBarred.layout());
+        EnumDesign.Diagonal.setDiagonal(EnumPattern.Diagonal.layout(), EnumPattern.Edged.layout());
+        EnumDesign.ThickDiagonal.setDiagonal(EnumPattern.ThickDiagonal.layout(), EnumPattern.Halved.layout());
+        EnumDesign.ThinSaltire.setSaltire(EnumPattern.ThinSaltire.layout(), EnumPattern.ThickBarred.layout());
+        EnumDesign.Saltire.setSaltire(EnumPattern.Saltire.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThickSaltire.setSaltire(EnumPattern.ThickSaltire.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.ThinCrossed.setCross(EnumPattern.ThinCrossed.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.Crossed.setCross(EnumPattern.Crossed.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThickCrossed.setCross(EnumPattern.ThickCrossed.layout(), EnumPattern.ThickBarred.layout());
+        EnumDesign.ThinCurvedCrossed.setCross(EnumPattern.ThinCurvedCrossed.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.ThinTSection.setTSection(EnumPattern.ThinTSection.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.TSection.setTSection(EnumPattern.TSection.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThickTSection.setTSection(EnumPattern.ThickTSection.layout(), EnumPattern.ThickBarred.layout());
+        EnumDesign.ThinCurvedTSection.setTSection(EnumPattern.ThinCurvedTSection.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.CurvedTSection.setTSection(EnumPattern.CurvedTSection.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThinBarredCorner.setBarredCorner(EnumPattern.ThinBarredCorner.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.BarredCorner.setBarredCorner(EnumPattern.BarredCorner.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThickBarredCorner.setBarredCorner(EnumPattern.ThickBarredCorner.layout(), EnumPattern.ThickBarred.layout());
+        EnumDesign.ThinCurvedBarredCorner.setBarredCorner(EnumPattern.ThinCurvedBarredCorner.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.CurvedBarredCorner.setBarredCorner(EnumPattern.BarredCurvedCorner.layout(), EnumPattern.Barred.layout());
+        EnumDesign.ThinStripedCorner.setStripedCorner(EnumPattern.ThinStripedCorner.layout(), EnumPattern.ThinStriped.layout());
+        EnumDesign.StripedCorner.setStripedCorner(EnumPattern.StripedCorner.layout(), EnumPattern.Striped.layout());
+        EnumDesign.OrnateStripedCorner.setStripedCorner(EnumPattern.OrnateStripedCorner.layout(), EnumPattern.ThinStriped.layout());
+        EnumDesign.Emblem1.setAllPatterns(EnumPattern.Emblem1.layout());
+        EnumDesign.Emblem2.setAllPatterns(EnumPattern.Emblem2.layout());
+        EnumDesign.Emblem3.setAllPatterns(EnumPattern.Emblem3.layout());
+        EnumDesign.Emblem4.setAllPatterns(EnumPattern.Emblem4.layout());
+        EnumDesign.Emblem5.setAllPatterns(EnumPattern.Emblem5.layout());
+        EnumDesign.LetterA.setLetterPattern(EnumPattern.LetterA.layout());
+        EnumDesign.LetterB.setLetterPattern(EnumPattern.LetterB.layout());
+        EnumDesign.LetterF.setLetterPattern(EnumPattern.LetterF.layout());
+        EnumDesign.LetterS.setLetterPattern(EnumPattern.LetterS.layout());
+        EnumDesign.LetterT.setLetterPattern(EnumPattern.LetterT.layout());
+        EnumDesign.BarredEnd.setBarredEndPattern(EnumPattern.BarredEnd.layout(), EnumPattern.Barred.layout());
+        EnumDesign.DiagonalCorner.setDiagonalCorner(EnumPattern.DiagonalCorner.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
+        EnumDesign.DiagonalTSection.setDiagonalTSection(EnumPattern.DiagonalTSection.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
+        EnumDesign.DiagonalCurvedCorner.setDiagonalCorner(EnumPattern.DiagonalCurvedCorner.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
+        EnumDesign.DiagonalCurvedTSection.setDiagonalTSection(EnumPattern.DiagonalCurvedTSection.layout(), EnumPattern.Barred.layout(), EnumPattern.Edged.layout());
+        EnumDesign.OrnateBarred.setBarred(EnumPattern.OrnateBarred.layout());
+        EnumDesign.OrnateThinBarred.setBarred(EnumPattern.OrnateThinBarred.layout());
+        EnumDesign.SplitBarred.setBarred(EnumPattern.SplitBarred.layout());
+        EnumDesign.SplitBarredCorner.setBarredCorner(EnumPattern.SplitBarredCorner.layout(), EnumPattern.SplitBarred.layout());
+        EnumDesign.SplitBarredTSection.setTSection(EnumPattern.SplitBarredTSection.layout(), EnumPattern.SplitBarred.layout());
+        EnumDesign.SplitCrossed.setCross(EnumPattern.SplitCrossed.layout(), EnumPattern.SplitBarred.layout());
+        EnumDesign.SplitBarredEnd.setBarredEndPattern(EnumPattern.SplitBarredEnd.layout(), EnumPattern.SplitBarred.layout());
+        EnumDesign.Circle.setAllPatterns(EnumPattern.Circle.layout());
+        EnumDesign.Plus.setAllPatterns(EnumPattern.Plus.layout());
+        EnumDesign.Creeper.setAllPatterns(EnumPattern.Blank.layout(true));
+        EnumDesign.Creeper.setTopPattern(EnumPattern.Creeper.layout());
+        EnumDesign.DiagonalHalved.setTopPattern(EnumPattern.DiagonalHalved.layout());
+        EnumDesign.DiagonalHalved.setEdgePatterns(EnumPattern.Blank.layout(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout());
+        EnumDesign.Diagonal1Edged.setTopPattern(EnumPattern.Diagonal1Edged.layout());
+        EnumDesign.Diagonal1Edged.setEdgePatterns(EnumPattern.Edged.layout().flipHorizontal(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Edged.layout());
+        EnumDesign.Diagonal2Edged.setTopPattern(EnumPattern.Diagonal2Edged.layout());
+        EnumDesign.Diagonal2Edged.setEdgePatterns(EnumPattern.Edged.layout(), EnumPattern.Edged.layout().flipHorizontal(), EnumPattern.Edged.layout(), EnumPattern.Edged.layout().flipHorizontal());
+        EnumDesign.ThickDiagonal1Edged.setTopPattern(EnumPattern.ThickDiagonal1Edged.layout());
+        EnumDesign.ThickDiagonal1Edged.setEdgePatterns(EnumPattern.Halved.layout().flipHorizontal(), EnumPattern.Blank.layout(true), EnumPattern.Blank.layout(true), EnumPattern.Halved.layout());
+        EnumDesign.ThickBarredEnd.setBarredEndPattern(EnumPattern.ThickBarredEnd.layout(), EnumPattern.ThickBarred.layout());
+        EnumDesign.ThinBarredEnd.setBarredEndPattern(EnumPattern.ThinBarredEnd.layout(), EnumPattern.ThinBarred.layout());
+        EnumDesign.OverlappedSplitBarred.setAllPatterns(EnumPattern.SplitBarred.layout());
+        EnumDesign.OverlappedSplitBarred.setTopPattern(EnumPattern.OverlappedSplitBarred.layout());
+        EnumDesign.OverlappedBarred.setAllPatterns(EnumPattern.Barred.layout());
+        EnumDesign.OverlappedBarred.setTopPattern(EnumPattern.OverlappedBarred.layout());
     }
 
-    static enum Category implements IDesignCategory {
+    enum Category implements IDesignCategory {
         Design("Designs & Emblems"),
         Stripes("Squares & Stripes"),
         Edges("Edges"),
@@ -473,25 +485,30 @@ public enum EnumDesign implements IDesign {
         Diagonal("Diagonals");
 
         String name;
-        List designs = new ArrayList();
+        List<IDesign> designs;
 
-        private Category(String name) {
+        private Category(final String name) {
+            this.designs = new ArrayList<IDesign>();
             this.name = name;
             CarpentryManager.carpentryInterface.registerDesignCategory(this);
         }
 
+        @Override
         public String getName() {
             return this.name;
         }
 
-        public List getDesigns() {
+        @Override
+        public List<IDesign> getDesigns() {
             return this.designs;
         }
 
-        public void addDesign(IDesign design) {
+        @Override
+        public void addDesign(final IDesign design) {
             this.designs.add(design);
         }
 
+        @Override
         public String getId() {
             return this.toString().toLowerCase();
         }

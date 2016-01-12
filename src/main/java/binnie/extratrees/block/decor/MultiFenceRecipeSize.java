@@ -14,23 +14,17 @@ import java.util.List;
 public class MultiFenceRecipeSize implements IRecipe {
     ItemStack cached;
 
-    public MultiFenceRecipeSize() {
-        super();
-    }
-
-    public boolean matches(InventoryCrafting inv, World world) {
+    public boolean matches(final InventoryCrafting inv, final World world) {
         String pattern = "";
-        List<IPlankType> types = new ArrayList();
-
+        final List<IPlankType> types = new ArrayList<IPlankType>();
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
-            IPlankType type = stack == null ? null : WoodManager.get(stack);
+            final ItemStack stack = inv.getStackInSlot(i);
+            final IPlankType type = (stack == null) ? null : WoodManager.get(stack);
             if (stack != null && type == null) {
                 return false;
             }
-
             if (stack == null) {
-                pattern = pattern + " ";
+                pattern += " ";
             } else {
                 if (!types.contains(type)) {
                     types.add(type);
@@ -38,35 +32,31 @@ public class MultiFenceRecipeSize implements IRecipe {
                         return false;
                     }
                 }
-
-                pattern = pattern + types.indexOf(type);
+                pattern += types.indexOf(type);
             }
         }
-
         if (types.isEmpty()) {
             return false;
-        } else {
-            ItemStack fence = null;
-            if (pattern.contains("0100 0   ")) {
-                fence = WoodManager.getFence((IPlankType) types.get(0), (IPlankType) types.get(1), new FenceType(0, false, false), 4);
-            } else if (pattern.contains("0000 0   ")) {
-                fence = WoodManager.getFence((IPlankType) types.get(0), (IPlankType) types.get(0), new FenceType(0, false, false), 4);
-            } else if (pattern.contains("0100 0 1 ")) {
-                fence = WoodManager.getFence((IPlankType) types.get(0), (IPlankType) types.get(1), new FenceType(1, false, false), 4);
-            } else if (pattern.contains("0000 0 0 ")) {
-                fence = WoodManager.getFence((IPlankType) types.get(0), (IPlankType) types.get(0), new FenceType(1, false, false), 4);
-            } else if (pattern.contains(" 0 1 1101")) {
-                fence = WoodManager.getFence((IPlankType) types.get(1), (IPlankType) types.get(0), new FenceType(2, false, false), 4);
-            } else if (pattern.contains(" 0 0 0000")) {
-                fence = WoodManager.getFence((IPlankType) types.get(0), (IPlankType) types.get(0), new FenceType(2, false, false), 4);
-            }
-
-            this.cached = fence;
-            return fence != null;
         }
+        ItemStack fence = null;
+        if (pattern.contains("0100 0   ")) {
+            fence = WoodManager.getFence(types.get(0), types.get(1), new FenceType(0, false, false), 4);
+        } else if (pattern.contains("0000 0   ")) {
+            fence = WoodManager.getFence(types.get(0), types.get(0), new FenceType(0, false, false), 4);
+        } else if (pattern.contains("0100 0 1 ")) {
+            fence = WoodManager.getFence(types.get(0), types.get(1), new FenceType(1, false, false), 4);
+        } else if (pattern.contains("0000 0 0 ")) {
+            fence = WoodManager.getFence(types.get(0), types.get(0), new FenceType(1, false, false), 4);
+        } else if (pattern.contains(" 0 1 1101")) {
+            fence = WoodManager.getFence(types.get(1), types.get(0), new FenceType(2, false, false), 4);
+        } else if (pattern.contains(" 0 0 0000")) {
+            fence = WoodManager.getFence(types.get(0), types.get(0), new FenceType(2, false, false), 4);
+        }
+        this.cached = fence;
+        return fence != null;
     }
 
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(final InventoryCrafting inv) {
         return this.getRecipeOutput();
     }
 
@@ -75,15 +65,12 @@ public class MultiFenceRecipeSize implements IRecipe {
     }
 
     public ItemStack getRecipeOutput() {
-        return this.cached == null ? new ItemStack(Blocks.fence) : this.cached;
+        return (this.cached == null) ? new ItemStack(Blocks.fence) : this.cached;
     }
 
     public static void generateTypes() {
-        int type = 0;
-
+        final int type = 0;
         for (int type2 = 0; type2 < 2; ++type2) {
-            ;
         }
-
     }
 }

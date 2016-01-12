@@ -6,19 +6,19 @@ import binnie.botany.api.EnumSoilType;
 import net.minecraft.world.World;
 
 public interface IBlockSoil {
-    EnumAcidity getPH(World var1, int var2, int var3, int var4);
+    EnumAcidity getPH(final World p0, final int p1, final int p2, final int p3);
 
-    EnumMoisture getMoisture(World var1, int var2, int var3, int var4);
+    EnumMoisture getMoisture(final World p0, final int p1, final int p2, final int p3);
 
-    EnumSoilType getType(World var1, int var2, int var3, int var4);
+    EnumSoilType getType(final World p0, final int p1, final int p2, final int p3);
 
-    boolean fertilise(World var1, int var2, int var3, int var4, EnumSoilType var5);
+    boolean fertilise(final World p0, final int p1, final int p2, final int p3, final EnumSoilType p4);
 
-    boolean degrade(World var1, int var2, int var3, int var4, EnumSoilType var5);
+    boolean degrade(final World p0, final int p1, final int p2, final int p3, final EnumSoilType p4);
 
-    boolean setPH(World var1, int var2, int var3, int var4, EnumAcidity var5);
+    boolean setPH(final World p0, final int p1, final int p2, final int p3, final EnumAcidity p4);
 
-    boolean setMoisture(World var1, int var2, int var3, int var4, EnumMoisture var5);
+    boolean setMoisture(final World p0, final int p1, final int p2, final int p3, final EnumMoisture p4);
 
-    boolean resistsWeeds(World var1, int var2, int var3, int var4);
+    boolean resistsWeeds(final World p0, final int p1, final int p2, final int p3);
 }

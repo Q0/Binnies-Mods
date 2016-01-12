@@ -8,16 +8,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class FarmableVanillaFlower extends FarmableFlower {
-    public FarmableVanillaFlower() {
-        super();
-    }
-
-    public boolean isGermling(ItemStack itemstack) {
+    @Override
+    public boolean isGermling(final ItemStack itemstack) {
         return BotanyCore.getFlowerRoot().getConversion(itemstack) != null;
     }
 
-    public boolean plantSaplingAt(EntityPlayer player, ItemStack germling, World world, int x, int y, int z) {
-        IFlower flower = BotanyCore.getFlowerRoot().getConversion(germling);
+    @Override
+    public boolean plantSaplingAt(final EntityPlayer player, final ItemStack germling, final World world, final int x, final int y, final int z) {
+        final IFlower flower = BotanyCore.getFlowerRoot().getConversion(germling);
         return Gardening.plant(world, x, y, z, flower, player.getGameProfile());
     }
 }

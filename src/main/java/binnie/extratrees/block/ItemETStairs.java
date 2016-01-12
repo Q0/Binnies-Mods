@@ -14,28 +14,27 @@ import net.minecraft.world.World;
 
 public class ItemETStairs extends ItemBlock {
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(final int par1) {
         return PlankType.ExtraTreePlanks.values()[par1].getIcon();
     }
 
-    public ItemETStairs(Block block) {
+    public ItemETStairs(final Block block) {
         super(block);
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setUnlocalizedName("stairs");
     }
 
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-        boolean done = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-        TileEntityMetadata tile = (TileEntityMetadata) world.getTileEntity(x, y, z);
+    public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ, final int metadata) {
+        final boolean done = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+        final TileEntityMetadata tile = (TileEntityMetadata) world.getTileEntity(x, y, z);
         if (tile != null) {
             tile.setTileMetadata(stack.getItemDamage(), false);
         }
-
         return done;
     }
 
     @SideOnly(Side.CLIENT)
-    public String getItemStackDisplayName(ItemStack par1ItemStack) {
+    public String getItemStackDisplayName(final ItemStack par1ItemStack) {
         return ((IBlockMetadata) this.field_150939_a).getBlockName(par1ItemStack);
     }
 }

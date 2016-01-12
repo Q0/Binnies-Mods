@@ -10,6 +10,7 @@ import binnie.extratrees.api.IDesignSystem;
 import binnie.extratrees.api.IPattern;
 import binnie.extratrees.carpentry.DesignerManager;
 import binnie.extratrees.carpentry.EnumPattern;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,28 +20,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CeramicDesignSystem implements IDesignSystem {
-    public static CeramicDesignSystem instance = new CeramicDesignSystem();
-    Map primary = new HashMap();
-    Map secondary = new HashMap();
+    public static CeramicDesignSystem instance;
+    Map<Integer, IIcon> primary;
+    Map<Integer, IIcon> secondary;
 
     CeramicDesignSystem() {
-        super();
+        this.primary = new HashMap<Integer, IIcon>();
+        this.secondary = new HashMap<Integer, IIcon>();
         DesignerManager.instance.registerDesignSystem(this);
     }
 
+    @Override
     public IDesignMaterial getDefaultMaterial() {
         return CeramicColor.get(EnumFlowerColor.White);
     }
 
+    @Override
     public IDesignMaterial getDefaultMaterial2() {
         return CeramicColor.get(EnumFlowerColor.Black);
     }
 
-    public IDesignMaterial getMaterial(int id) {
+    @Override
+    public IDesignMaterial getMaterial(final int id) {
         return CeramicColor.get(EnumFlowerColor.get(id));
     }
 
-    public int getMaterialIndex(IDesignMaterial id) {
+    @Override
+    public int getMaterialIndex(final IDesignMaterial id) {
         return ((CeramicColor) id).color.ordinal();
     }
 
@@ -48,31 +54,45 @@ public class CeramicDesignSystem implements IDesignSystem {
         return "ceramic";
     }
 
-    public IIcon getPrimaryIcon(IPattern pattern) {
-        return pattern instanceof EnumPattern ? (IIcon) this.primary.get(Integer.valueOf(((EnumPattern) pattern).ordinal())) : null;
-    }
-
-    public IIcon getSecondaryIcon(IPattern pattern) {
-        return pattern instanceof EnumPattern ? (IIcon) this.secondary.get(Integer.valueOf(((EnumPattern) pattern).ordinal())) : null;
-    }
-
-    public void registerIcons(IIconRegister register) {
-        for (EnumPattern pattern : EnumPattern.values()) {
-            this.primary.put(Integer.valueOf(pattern.ordinal()), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".0"));
-            this.secondary.put(Integer.valueOf(pattern.ordinal()), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".1"));
+    @Override
+    public IIcon getPrimaryIcon(final IPattern pattern) {
+        if (pattern instanceof EnumPattern) {
+            return this.primary.get(((EnumPattern) pattern).ordinal());
         }
+        return null;
+    }
 
+    @Override
+    public IIcon getSecondaryIcon(final IPattern pattern) {
+        if (pattern instanceof EnumPattern) {
+            return this.secondary.get(((EnumPattern) pattern).ordinal());
+        }
+        return null;
+    }
+
+    @Override
+    public void registerIcons(final IIconRegister register) {
+        for (final EnumPattern pattern : EnumPattern.values()) {
+            this.primary.put(pattern.ordinal(), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".0"));
+            this.secondary.put(pattern.ordinal(), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".1"));
+        }
     }
 
     public AbstractMod getMod() {
         return Botany.instance;
     }
 
+    @Override
     public ItemStack getAdhesive() {
         return BotanyItems.Mortar.get(1);
     }
 
-    public IDesignMaterial getMaterial(ItemStack itemStack) {
-        return itemStack.getItem() == Item.getItemFromBlock(Botany.ceramic) ? this.getMaterial(itemStack.getItemDamage()) : null;
+    @Override
+    public IDesignMaterial getMaterial(final ItemStack itemStack) {
+        return (itemStack.getItem() == Item.getItemFromBlock((Block) Botany.ceramic)) ? this.getMaterial(itemStack.getItemDamage()) : null;
+    }
+
+    static {
+        CeramicDesignSystem.instance = new CeramicDesignSystem();
     }
 }

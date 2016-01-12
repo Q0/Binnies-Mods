@@ -46,10 +46,11 @@ public enum CraftGUITexture {
 
     String name;
 
-    private CraftGUITexture(String name) {
+    private CraftGUITexture(final String name) {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }

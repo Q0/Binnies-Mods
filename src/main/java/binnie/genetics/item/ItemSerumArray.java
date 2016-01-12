@@ -25,79 +25,87 @@ public class ItemSerumArray extends ItemGene implements IItemSerum {
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemstack, EntityPlayer entityPlayer, List list, boolean par4) {
+    @Override
+    public void addInformation(final ItemStack itemstack, final EntityPlayer entityPlayer, final List list, final boolean par4) {
         super.addInformation(itemstack, entityPlayer, list, par4);
     }
 
-    public int getCharges(ItemStack stack) {
+    @Override
+    public int getCharges(final ItemStack stack) {
         return stack.getItem().getMaxDamage() - stack.getItemDamage();
     }
 
-    public IGene[] getGenes(ItemStack stack) {
-        return (IGene[]) this.getGeneItem(stack).getGenes().toArray(new IGene[0]);
+    @Override
+    public IGene[] getGenes(final ItemStack stack) {
+        return this.getGeneItem(stack).getGenes().toArray(new IGene[0]);
     }
 
-    public ISpeciesRoot getSpeciesRoot(ItemStack stack) {
+    @Override
+    public ISpeciesRoot getSpeciesRoot(final ItemStack stack) {
         return this.getGeneItem(stack).getSpeciesRoot();
     }
 
-    public IGene getGene(ItemStack stack, int chromosome) {
+    @Override
+    public IGene getGene(final ItemStack stack, final int chromosome) {
         return this.getGeneItem(stack).getGene(chromosome);
     }
 
-    public GeneArrayItem getGeneItem(ItemStack stack) {
+    @Override
+    public GeneArrayItem getGeneItem(final ItemStack stack) {
         return new GeneArrayItem(stack);
     }
 
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
-        for (ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
-            for (IIndividual template : root.getIndividualTemplates()) {
-                if (!template.getGenome().getPrimary().isSecret()) {
-                    IGeneItem item = new GeneArrayItem();
-
-                    for (IChromosomeType type : root.getKaryotype()) {
-                        IChromosome c = template.getGenome().getChromosomes()[type.ordinal()];
-                        if (c != null) {
-                            IAllele active = c.getActiveAllele();
-                            if (active != null) {
-                                item.addGene(new Gene(active, type, root));
-                            }
+    @Override
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
+        for (final ISpeciesRoot root : AlleleManager.alleleRegistry.getSpeciesRoot().values()) {
+            for (final IIndividual template : root.getIndividualTemplates()) {
+                if (template.getGenome().getPrimary().isSecret()) {
+                    continue;
+                }
+                final IGeneItem item = new GeneArrayItem();
+                for (final IChromosomeType type : root.getKaryotype()) {
+                    final IChromosome c = template.getGenome().getChromosomes()[type.ordinal()];
+                    if (c != null) {
+                        final IAllele active = c.getActiveAllele();
+                        if (active != null) {
+                            item.addGene(new Gene(active, type, root));
                         }
                     }
-
-                    ItemStack array = new ItemStack(this);
-                    item.writeToItem(array);
-                    itemList.add(array);
                 }
+                final ItemStack array = new ItemStack((Item) this);
+                item.writeToItem(array);
+                itemList.add(array);
             }
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    @Override
+    public void registerIcons(final IIconRegister register) {
         this.icons[0] = Genetics.proxy.getIcon(register, "machines/genome.glass");
         this.icons[1] = Genetics.proxy.getIcon(register, "machines/genome.cap");
         this.icons[2] = Genetics.proxy.getIcon(register, "machines/genome.edges");
         this.icons[3] = Genetics.proxy.getIcon(register, "machines/genome.dna");
     }
 
-    public String getItemStackDisplayName(ItemStack itemstack) {
-        IGeneItem gene = this.getGeneItem(itemstack);
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemstack) {
+        final IGeneItem gene = this.getGeneItem(itemstack);
         return Binnie.Genetics.getSystem(gene.getSpeciesRoot()).getDescriptor() + " Serum Array";
     }
 
-    public ItemStack addGene(ItemStack stack, IGene gene) {
-        IGeneItem geneI = this.getGeneItem(stack);
+    @Override
+    public ItemStack addGene(final ItemStack stack, final IGene gene) {
+        final IGeneItem geneI = this.getGeneItem(stack);
         geneI.addGene(gene);
         geneI.writeToItem(stack);
         return stack;
     }
 
-    public static ItemStack create(IGene gene) {
-        ItemStack item = new ItemStack(Genetics.itemSerumArray);
+    public static ItemStack create(final IGene gene) {
+        final ItemStack item = new ItemStack((Item) Genetics.itemSerumArray);
         item.setItemDamage(item.getMaxDamage());
-        GeneArrayItem seq = new GeneArrayItem(gene);
+        final GeneArrayItem seq = new GeneArrayItem(gene);
         seq.writeToItem(item);
         return item;
     }

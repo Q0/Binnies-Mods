@@ -5,33 +5,25 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 public class AlcoholEffect {
-    public AlcoholEffect() {
-        super();
-    }
-
-    public static void makeDrunk(EntityPlayer player, float strength) {
-        int existingStrength = player.isPotionActive(Potion.confusion) ? player.getActivePotionEffect(Potion.confusion).getAmplifier() : 0;
-        int existingTime = player.isPotionActive(Potion.confusion) ? player.getActivePotionEffect(Potion.confusion).getDuration() : 0;
-        int time = (int) (100.0D * Math.sqrt((double) strength)) + existingTime;
-        float intensity = 0.1F * strength + (float) existingStrength + (float) (existingTime / 500);
+    public static void makeDrunk(final EntityPlayer player, final float strength) {
+        final int existingStrength = player.isPotionActive(Potion.confusion) ? player.getActivePotionEffect(Potion.confusion).getAmplifier() : 0;
+        final int existingTime = player.isPotionActive(Potion.confusion) ? player.getActivePotionEffect(Potion.confusion).getDuration() : 0;
+        int time = (int) (100.0 * Math.sqrt(strength)) + existingTime;
+        final float intensity = 0.1f * strength + existingStrength + existingTime / 500;
         if (time < 5) {
             time = 5;
         }
-
-        float slowIntense = (intensity - 10.0F) / 4.0F;
-        if (slowIntense < 0.0F) {
-            slowIntense = 0.0F;
+        float slowIntense = (intensity - 10.0f) / 4.0f;
+        if (slowIntense < 0.0f) {
+            slowIntense = 0.0f;
         }
-
-        float blindIntense = (intensity - 25.0F) / 2.0F;
-        if (blindIntense < 0.0F) {
-            blindIntense = 0.0F;
+        float blindIntense = (intensity - 25.0f) / 2.0f;
+        if (blindIntense < 0.0f) {
+            blindIntense = 0.0f;
         }
-
         player.addPotionEffect(new PotionEffect(Potion.confusion.id, time, (int) intensity, false));
-        if (slowIntense > 0.0F) {
+        if (slowIntense > 0.0f) {
             player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, time, (int) slowIntense, false));
         }
-
     }
 }

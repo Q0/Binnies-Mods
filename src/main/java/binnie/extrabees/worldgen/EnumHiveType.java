@@ -1,5 +1,7 @@
 package binnie.extrabees.worldgen;
 
+import forestry.api.apiculture.IHiveDrop;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,9 @@ public enum EnumHiveType {
     Nether,
     Marble;
 
-    public List drops = new ArrayList();
+    public List<IHiveDrop> drops;
 
     private EnumHiveType() {
+        this.drops = new ArrayList<IHiveDrop>();
     }
 }

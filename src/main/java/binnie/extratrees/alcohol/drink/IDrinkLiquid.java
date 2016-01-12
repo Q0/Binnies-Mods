@@ -13,9 +13,9 @@ public interface IDrinkLiquid {
 
     String getIdentifier();
 
-    void setIdent(String var1);
+    void setIdent(final String p0);
 
     float getABV();
 
-    FluidStack get(int var1);
+    FluidStack get(final int p0);
 }

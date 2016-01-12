@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class CreativeTabGenetics extends CreativeTabs {
-    public static CreativeTabs instance = new CreativeTabGenetics();
+    public static CreativeTabs instance;
 
     public ItemStack getIconItemStack() {
         return GeneticsItems.EmptySerum.get(1);
@@ -31,5 +31,9 @@ public class CreativeTabGenetics extends CreativeTabs {
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem() {
         return null;
+    }
+
+    static {
+        CreativeTabGenetics.instance = new CreativeTabGenetics();
     }
 }

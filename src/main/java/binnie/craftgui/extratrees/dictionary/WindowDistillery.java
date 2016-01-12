@@ -15,33 +15,36 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowDistillery extends Window {
-    public WindowDistillery(EntityPlayer player, IInventory inventory, Side side) {
-        super(224.0F, 192.0F, player, inventory, side);
+    public WindowDistillery(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(224.0f, 192.0f, player, inventory, side);
     }
 
+    @Override
     protected AbstractMod getMod() {
         return ExtraTrees.instance;
     }
 
+    @Override
     protected String getName() {
         return "Distillery";
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle(Machine.getMachine(this.getInventory()).getPackage().getDisplayName());
         int x = 16;
-        (new ControlLiquidTank(this, x, 35)).setTankID(Distillery.tankInput);
-        x = x + 34;
-        new ControlDistilleryProgress(this, (float) x, 32.0F);
-        x = x + 64;
-        (new ControlLiquidTank(this, x, 35)).setTankID(Distillery.tankOutput);
-        x = x + 34;
+        new ControlLiquidTank(this, x, 35).setTankID(Distillery.tankInput);
+        x += 34;
+        new ControlDistilleryProgress(this, x, 32.0f);
+        x += 64;
+        new ControlLiquidTank(this, x, 35).setTankID(Distillery.tankOutput);
+        x += 34;
         new ControlEnergyBar(this, x, 36, 60, 16, Position.Left);
         new ControlPlayerInventory(this);
-        new ControlErrorState(this, (float) (x + 21), 62.0F);
+        new ControlErrorState(this, x + 21, 62.0f);
     }
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowDistillery(player, inventory, side);
     }
 }

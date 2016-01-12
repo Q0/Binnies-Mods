@@ -5,6 +5,7 @@ import binnie.craftgui.controls.ControlText;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.TextJustification;
+import binnie.craftgui.minecraft.Window;
 import binnie.craftgui.mod.database.ControlSpeciesBox;
 import binnie.craftgui.mod.database.DatabaseTab;
 import binnie.craftgui.mod.database.PageAbstract;
@@ -14,16 +15,17 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
 
-public class PageWood extends PageAbstract {
-    public PageWood(IWidget parent, DatabaseTab tab) {
+public class PageWood extends PageAbstract<ItemStack> {
+    public PageWood(final IWidget parent, final DatabaseTab tab) {
         super(parent, tab);
     }
 
-    public void onValueChanged(ItemStack species) {
+    @Override
+    public void onValueChanged(final ItemStack species) {
         this.deleteAllChildren();
-        WindowAbstractDatabase database = (WindowAbstractDatabase) WindowAbstractDatabase.get(this);
-        new ControlText(this, new IArea(0.0F, 0.0F, this.size().x(), 24.0F), ((DatabaseTab) this.getValue()).toString(), TextJustification.MiddleCenter);
-        Collection<IAlleleSpecies> trees = ((TreeBreedingSystem) database.getBreedingSystem()).getTreesThatHaveWood(species, database.isNEI(), database.getWorld(), database.getUsername());
-        (new ControlSpeciesBox(this, 4.0F, 24.0F, this.size().x() - 8.0F, this.size().y() - 4.0F - 24.0F)).setOptions(trees);
+        final WindowAbstractDatabase database = Window.get(this);
+        new ControlText(this, new IArea(0.0f, 0.0f, this.size().x(), 24.0f), this.getValue().toString(), TextJustification.MiddleCenter);
+        final Collection<IAlleleSpecies> trees = ((TreeBreedingSystem) database.getBreedingSystem()).getTreesThatHaveWood(species, database.isNEI(), database.getWorld(), database.getUsername());
+        new ControlSpeciesBox(this, 4.0f, 24.0f, this.size().x() - 8.0f, this.size().y() - 4.0f - 24.0f).setOptions(trees);
     }
 }

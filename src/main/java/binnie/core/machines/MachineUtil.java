@@ -19,143 +19,135 @@ import java.util.Random;
 public class MachineUtil {
     private IMachine machine;
 
-    public MachineUtil(IMachine machine) {
-        super();
+    public MachineUtil(final IMachine machine) {
         this.machine = machine;
     }
 
     public IInventory getInventory() {
-        return (IInventory) this.machine.getInterface(IInventory.class);
+        return this.machine.getInterface(IInventory.class);
     }
 
     public ITankMachine getTankContainer() {
-        return (ITankMachine) this.machine.getInterface(ITankMachine.class);
+        return this.machine.getInterface(ITankMachine.class);
     }
 
     public IPoweredMachine getPoweredMachine() {
-        return (IPoweredMachine) this.machine.getInterface(IPoweredMachine.class);
+        return this.machine.getInterface(IPoweredMachine.class);
     }
 
-    public boolean isSlotEmpty(int slot) {
+    public boolean isSlotEmpty(final int slot) {
         return this.getInventory().getStackInSlot(slot) == null;
     }
 
-    public IFluidTank getTank(int id) {
+    public IFluidTank getTank(final int id) {
         return this.getTankContainer().getTanks()[id];
     }
 
-    public boolean spaceInTank(int id, int amount) {
-        IFluidTank tank = this.getTank(id);
-        int space = tank.getCapacity() - tank.getFluidAmount();
+    public boolean spaceInTank(final int id, final int amount) {
+        final IFluidTank tank = this.getTank(id);
+        final int space = tank.getCapacity() - tank.getFluidAmount();
         return amount <= space;
     }
 
-    public ItemStack getStack(int slot) {
+    public ItemStack getStack(final int slot) {
         return this.getInventory().getStackInSlot(slot);
     }
 
-    public void deleteStack(int slot) {
-        this.setStack(slot, (ItemStack) null);
+    public void deleteStack(final int slot) {
+        this.setStack(slot, null);
     }
 
-    public ItemStack decreaseStack(int slotWood, int amount) {
+    public ItemStack decreaseStack(final int slotWood, final int amount) {
         return this.getInventory().decrStackSize(slotWood, amount);
     }
 
-    public void setStack(int slot, ItemStack stack) {
+    public void setStack(final int slot, final ItemStack stack) {
         this.getInventory().setInventorySlotContents(slot, stack);
     }
 
-    public void fillTank(int id, FluidStack liquidStack) {
-        IFluidTank tank = this.getTank(id);
+    public void fillTank(final int id, final FluidStack liquidStack) {
+        final IFluidTank tank = this.getTank(id);
         tank.fill(liquidStack, true);
     }
 
-    public void addStack(int slot, ItemStack addition) {
+    public void addStack(final int slot, final ItemStack addition) {
         if (this.isSlotEmpty(slot)) {
             this.setStack(slot, addition);
         } else {
-            ItemStack merge = this.getStack(slot);
+            final ItemStack merge = this.getStack(slot);
             if (merge.isItemEqual(addition) && merge.stackSize + addition.stackSize <= merge.getMaxStackSize()) {
-                merge.stackSize += addition.stackSize;
+                final ItemStack itemStack = merge;
+                itemStack.stackSize += addition.stackSize;
                 this.setStack(slot, merge);
             }
         }
-
     }
 
-    public FluidStack drainTank(int tank, int amount) {
+    public FluidStack drainTank(final int tank, final int amount) {
         return this.getTank(tank).drain(amount, true);
     }
 
-    public boolean liquidInTank(int tank, int amount) {
+    public boolean liquidInTank(final int tank, final int amount) {
         return this.getTank(tank).drain(amount, false) != null && this.getTank(tank).drain(amount, false).amount == amount;
     }
 
-    public void damageItem(int slot, int damage) {
-        ItemStack item = this.getStack(slot);
+    public void damageItem(final int slot, final int damage) {
+        final ItemStack item = this.getStack(slot);
         if (damage < 0) {
             item.setItemDamage(Math.max(0, item.getItemDamage() + damage));
         } else if (item.attemptDamageItem(damage, new Random())) {
-            this.setStack(slot, (ItemStack) null);
+            this.setStack(slot, null);
         }
-
         this.setStack(slot, item);
     }
 
-    public boolean isTankEmpty(int tankInput) {
+    public boolean isTankEmpty(final int tankInput) {
         return this.getTank(tankInput).getFluidAmount() == 0;
     }
 
-    public FluidStack getFluid(int tankInput) {
-        return this.getTank(tankInput).getFluid() == null ? null : this.getTank(tankInput).getFluid();
+    public FluidStack getFluid(final int tankInput) {
+        return (this.getTank(tankInput).getFluid() == null) ? null : this.getTank(tankInput).getFluid();
     }
 
-    public ItemStack[] getStacks(int[] slotGrains) {
-        ItemStack[] stacks = new ItemStack[slotGrains.length];
-
+    public ItemStack[] getStacks(final int[] slotGrains) {
+        final ItemStack[] stacks = new ItemStack[slotGrains.length];
         for (int i = 0; i < slotGrains.length; ++i) {
             stacks[i] = this.getStack(slotGrains[i]);
         }
-
         return stacks;
     }
 
-    public ItemStack hasIngredients(int recipe, int[] inventory) {
+    public ItemStack hasIngredients(final int recipe, final int[] inventory) {
         return null;
     }
 
-    public boolean hasIngredients(int[] recipe, int[] inventory) {
-        ItemStackSet requiredStacks = new ItemStackSet();
-
-        for (ItemStack stack : this.getStacks(recipe)) {
+    public boolean hasIngredients(final int[] recipe, final int[] inventory) {
+        final ItemStackSet requiredStacks = new ItemStackSet();
+        for (final ItemStack stack : this.getStacks(recipe)) {
             requiredStacks.add(stack);
         }
-
-        ItemStackSet inventoryStacks = new ItemStackSet();
-
-        for (ItemStack stack : this.getStacks(inventory)) {
-            inventoryStacks.add(stack);
+        final ItemStackSet inventoryStacks = new ItemStackSet();
+        for (final ItemStack stack2 : this.getStacks(inventory)) {
+            inventoryStacks.add(stack2);
         }
-
         requiredStacks.removeAll(inventoryStacks);
         return requiredStacks.isEmpty();
     }
 
-    public void useEnergyMJ(float powerUsage) {
-        this.getPoweredMachine().getInterface().useEnergy(PowerSystem.MJ, (double) powerUsage, true);
+    public void useEnergyMJ(final float powerUsage) {
+        this.getPoweredMachine().getInterface().useEnergy(PowerSystem.MJ, powerUsage, true);
     }
 
-    public boolean hasEnergyMJ(float powerUsage) {
-        return this.getPoweredMachine().getInterface().useEnergy(PowerSystem.MJ, (double) powerUsage, false) >= (double) powerUsage;
+    public boolean hasEnergyMJ(final float powerUsage) {
+        return this.getPoweredMachine().getInterface().useEnergy(PowerSystem.MJ, powerUsage, false) >= powerUsage;
     }
 
-    public float getSlotCharge(int slot) {
-        return ((IChargedSlots) this.machine.getInterface(IChargedSlots.class)).getCharge(slot);
+    public float getSlotCharge(final int slot) {
+        return this.machine.getInterface(IChargedSlots.class).getCharge(slot);
     }
 
-    public void useCharge(int slot, float loss) {
-        ((IChargedSlots) this.machine.getInterface(IChargedSlots.class)).alterCharge(slot, -loss);
+    public void useCharge(final int slot, final float loss) {
+        this.machine.getInterface(IChargedSlots.class).alterCharge(slot, -loss);
     }
 
     public Random getRandom() {
@@ -167,18 +159,16 @@ public class MachineUtil {
     }
 
     public IProcess getProcess() {
-        return (IProcess) this.machine.getInterface(IProcess.class);
+        return this.machine.getInterface(IProcess.class);
     }
 
-    public List getNonNullStacks(int[] slotacclimatiser) {
-        List<ItemStack> stacks = new ArrayList();
-
-        for (ItemStack stack : this.getStacks(slotacclimatiser)) {
+    public List<ItemStack> getNonNullStacks(final int[] slotacclimatiser) {
+        final List<ItemStack> stacks = new ArrayList<ItemStack>();
+        for (final ItemStack stack : this.getStacks(slotacclimatiser)) {
             if (stack != null) {
                 stacks.add(stack);
             }
         }
-
         return stacks;
     }
 

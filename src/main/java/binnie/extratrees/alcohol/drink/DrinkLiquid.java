@@ -10,43 +10,50 @@ public class DrinkLiquid implements IDrinkLiquid {
     float abv;
     public String ident;
 
-    public DrinkLiquid(String name, int colour, float transparency, float abv) {
-        super();
+    public DrinkLiquid(final String name, final int colour, final float transparency, final float abv) {
         this.name = name;
         this.colour = colour;
         this.transparency = transparency;
         this.abv = abv;
     }
 
+    @Override
     public boolean isConsumable() {
         return true;
     }
 
+    @Override
     public int getColour() {
         return this.colour;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public float getTransparency() {
         return this.transparency;
     }
 
+    @Override
     public String getIdentifier() {
         return this.ident;
     }
 
-    public void setIdent(String lowerCase) {
+    @Override
+    public void setIdent(final String lowerCase) {
         this.ident = lowerCase;
     }
 
+    @Override
     public float getABV() {
         return this.abv;
     }
 
-    public FluidStack get(int amount) {
+    @Override
+    public FluidStack get(final int amount) {
         return Binnie.Liquid.getLiquidStack(this.ident, amount);
     }
 }

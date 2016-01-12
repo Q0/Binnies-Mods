@@ -31,40 +31,32 @@ import binnie.core.network.BinniePacketHandler;
 import binnie.core.network.IPacketID;
 import binnie.core.proxy.IProxyCore;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import forestry.api.genetics.IIndividual;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.event.world.BlockEvent;
 
-@Mod(
-        modid = "Botany",
-        name = "Botany",
-        useMetadata = true,
-        dependencies = "after:BinnieCore"
-)
+@Mod(modid = "Botany", name = "Botany", useMetadata = true, dependencies = "after:BinnieCore")
 public class Botany extends AbstractMod {
-    public static final float AGE_CHANCE = 0.2F;
-    @Instance("Botany")
+    public static final float AGE_CHANCE = 0.2f;
+    @Mod.Instance("Botany")
     public static Botany instance;
-    @SidedProxy(
-            clientSide = "binnie.botany.proxy.ProxyClient",
-            serverSide = "binnie.botany.proxy.ProxyServer"
-    )
+    @SidedProxy(clientSide = "binnie.botany.proxy.ProxyClient", serverSide = "binnie.botany.proxy.ProxyServer")
     public static Proxy proxy;
     public static BlockFlower flower;
     public static Item seed;
@@ -95,237 +87,232 @@ public class Botany extends AbstractMod {
     public static BlockStained stained;
     public static BlockCeramicBrick ceramicBrick;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
+    @Mod.EventHandler
+    public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleCore());
         this.addModule(new ModuleGenetics());
         this.addModule(new ModuleGardening());
         this.preInit();
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
+    @Mod.EventHandler
+    public void init(final FMLInitializationEvent evt) {
         this.init();
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
+    @Mod.EventHandler
+    public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
     }
 
     public Botany() {
-        super();
-        instance = this;
+        Botany.instance = this;
     }
 
+    @Override
     public IBinnieGUID[] getGUIDs() {
         return BotanyGUI.values();
     }
 
-    public Class[] getConfigs() {
-        return new Class[0];
+    @Override
+    public Class<?>[] getConfigs() {
+        return (Class<?>[]) new Class[0];
     }
 
+    @Override
     public IPacketID[] getPacketIDs() {
         return PacketID.values();
     }
 
+    @Override
     public IProxyCore getProxy() {
-        return proxy;
+        return Botany.proxy;
     }
 
+    @Override
     public String getChannel() {
         return "BOT";
     }
 
+    @Override
     public String getModID() {
         return "botany";
     }
 
-    protected Class getPacketHandler() {
-        return Botany.PacketHandler.class;
+    @Override
+    protected Class<? extends BinniePacketHandler> getPacketHandler() {
+        return PacketHandler.class;
     }
 
     @SubscribeEvent
-    public void onShearFlower(PlayerInteractEvent event) {
-        if (event.action == Action.RIGHT_CLICK_BLOCK) {
-            if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() == Items.shears) {
-                TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-                if (tile instanceof TileEntityFlower) {
-                    TileEntityFlower flower = (TileEntityFlower) tile;
-                    flower.onShear();
-                    event.entityPlayer.getHeldItem().damageItem(1, event.entityPlayer);
-                }
+    public void onShearFlower(final PlayerInteractEvent event) {
+        if (event.action != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() == Items.shears) {
+            final TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            if (tile instanceof TileEntityFlower) {
+                final TileEntityFlower flower = (TileEntityFlower) tile;
+                flower.onShear();
+                event.entityPlayer.getHeldItem().damageItem(1, (EntityLivingBase) event.entityPlayer);
             }
-
-            if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() == pollen) {
-                TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-                if (tile instanceof TileEntityFlower) {
-                    TileEntityFlower flower = (TileEntityFlower) tile;
-                    IFlower pollen = BotanyCore.getFlowerRoot().getMember(event.entityPlayer.getHeldItem());
-                    if (pollen != null && flower.canMateWith(pollen)) {
-                        flower.mateWith(pollen);
-                        if (!event.entityPlayer.capabilities.isCreativeMode) {
-                            --event.entityPlayer.getHeldItem().stackSize;
-                        }
+        }
+        if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() == Botany.pollen) {
+            final TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            if (tile instanceof TileEntityFlower) {
+                final TileEntityFlower flower = (TileEntityFlower) tile;
+                final IFlower pollen = BotanyCore.getFlowerRoot().getMember(event.entityPlayer.getHeldItem());
+                if (pollen != null && flower.canMateWith((IIndividual) pollen)) {
+                    flower.mateWith((IIndividual) pollen);
+                    if (!event.entityPlayer.capabilities.isCreativeMode) {
+                        final ItemStack heldItem = event.entityPlayer.getHeldItem();
+                        --heldItem.stackSize;
                     }
                 }
             }
-
         }
     }
 
     @SubscribeEvent
-    public void onFertiliseSoil(PlayerInteractEvent event) {
-        if (event.action == Action.RIGHT_CLICK_BLOCK) {
-            if (event.world != null) {
-                if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null) {
-                    int y = event.y;
-                    Block block = event.world.getBlock(event.x, y, event.z);
-                    if (block == null || !Gardening.isSoil(block)) {
-                        --y;
-                        block = event.world.getBlock(event.x, y, event.z);
-                    }
-
-                    if (block == null) {
+    public void onFertiliseSoil(final PlayerInteractEvent event) {
+        if (event.action != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (event.world == null) {
+            return;
+        }
+        if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null) {
+            int y = event.y;
+            Block block = event.world.getBlock(event.x, y, event.z);
+            if (block == null || !Gardening.isSoil(block)) {
+                block = event.world.getBlock(event.x, --y, event.z);
+            }
+            if (block == null) {
+                return;
+            }
+            if (Gardening.isSoil(block)) {
+                final IBlockSoil soil = (IBlockSoil) block;
+                if (Gardening.isNutrientFertiliser(event.entityPlayer.getHeldItem()) && soil.getType(event.world, event.x, y, event.z) != EnumSoilType.FLOWERBED) {
+                    final EnumSoilType type = soil.getType(event.world, event.x, y, event.z);
+                    final int next = Math.min(type.ordinal() + Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 2);
+                    if (soil.fertilise(event.world, event.x, y, event.z, EnumSoilType.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
+                        final ItemStack heldItem = event.entityPlayer.getHeldItem();
+                        --heldItem.stackSize;
                         return;
                     }
-
-                    if (Gardening.isSoil(block)) {
-                        IBlockSoil soil = (IBlockSoil) block;
-                        if (Gardening.isNutrientFertiliser(event.entityPlayer.getHeldItem()) && soil.getType(event.world, event.x, y, event.z) != EnumSoilType.FLOWERBED) {
-                            EnumSoilType type = soil.getType(event.world, event.x, y, event.z);
-                            int next = Math.min(type.ordinal() + Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 2);
-                            if (soil.fertilise(event.world, event.x, y, event.z, EnumSoilType.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
-                                --event.entityPlayer.getHeldItem().stackSize;
-                                return;
-                            }
-                        }
-
-                        if (Gardening.isAcidFertiliser(event.entityPlayer.getHeldItem()) && soil.getPH(event.world, event.x, y, event.z) != EnumAcidity.Acid) {
-                            EnumAcidity pH = soil.getPH(event.world, event.x, y, event.z);
-                            int next = Math.max(pH.ordinal() - Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 0);
-                            if (soil.setPH(event.world, event.x, y, event.z, EnumAcidity.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
-                                --event.entityPlayer.getHeldItem().stackSize;
-                                return;
-                            }
-                        }
-
-                        if (Gardening.isAlkalineFertiliser(event.entityPlayer.getHeldItem()) && soil.getPH(event.world, event.x, y, event.z) != EnumAcidity.Alkaline) {
-                            EnumAcidity pH = soil.getPH(event.world, event.x, y, event.z);
-                            int next = Math.min(pH.ordinal() + Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 2);
-                            if (soil.setPH(event.world, event.x, y, event.z, EnumAcidity.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
-                                --event.entityPlayer.getHeldItem().stackSize;
-                                return;
-                            }
-                        }
-
-                        if (Gardening.isWeedkiller(event.entityPlayer.getHeldItem()) && Gardening.addWeedKiller(event.world, event.x, y, event.z) && !event.entityPlayer.capabilities.isCreativeMode) {
-                            --event.entityPlayer.getHeldItem().stackSize;
-                            return;
-                        }
+                }
+                if (Gardening.isAcidFertiliser(event.entityPlayer.getHeldItem()) && soil.getPH(event.world, event.x, y, event.z) != EnumAcidity.Acid) {
+                    final EnumAcidity pH = soil.getPH(event.world, event.x, y, event.z);
+                    final int next = Math.max(pH.ordinal() - Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 0);
+                    if (soil.setPH(event.world, event.x, y, event.z, EnumAcidity.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
+                        final ItemStack heldItem2 = event.entityPlayer.getHeldItem();
+                        --heldItem2.stackSize;
+                        return;
                     }
                 }
-
+                if (Gardening.isAlkalineFertiliser(event.entityPlayer.getHeldItem()) && soil.getPH(event.world, event.x, y, event.z) != EnumAcidity.Alkaline) {
+                    final EnumAcidity pH = soil.getPH(event.world, event.x, y, event.z);
+                    final int next = Math.min(pH.ordinal() + Gardening.getFertiliserStrength(event.entityPlayer.getHeldItem()), 2);
+                    if (soil.setPH(event.world, event.x, y, event.z, EnumAcidity.values()[next]) && !event.entityPlayer.capabilities.isCreativeMode) {
+                        final ItemStack heldItem3 = event.entityPlayer.getHeldItem();
+                        --heldItem3.stackSize;
+                        return;
+                    }
+                }
+                if (Gardening.isWeedkiller(event.entityPlayer.getHeldItem()) && Gardening.addWeedKiller(event.world, event.x, y, event.z) && !event.entityPlayer.capabilities.isCreativeMode) {
+                    final ItemStack heldItem4 = event.entityPlayer.getHeldItem();
+                    --heldItem4.stackSize;
+                }
             }
         }
     }
 
     @SubscribeEvent
-    public void plantVanilla(PlaceEvent event) {
-        World world = event.world;
-        int x = event.x;
-        int y = event.y;
-        int z = event.z;
-        Block block = world.getBlock(x, y - 1, z);
-        if (block instanceof IBlockSoil) {
-            IFlower flower = BotanyCore.getFlowerRoot().getConversion(event.itemInHand);
-            if (flower != null) {
-                Gardening.plant(world, x, y, z, flower, event.player.getGameProfile());
-            }
-
+    public void plantVanilla(final BlockEvent.PlaceEvent event) {
+        final World world = event.world;
+        final int x = event.x;
+        final int y = event.y;
+        final int z = event.z;
+        final Block block = world.getBlock(x, y - 1, z);
+        if (!(block instanceof IBlockSoil)) {
+            return;
+        }
+        final IFlower flower = BotanyCore.getFlowerRoot().getConversion(event.itemInHand);
+        if (flower != null) {
+            Gardening.plant(world, x, y, z, flower, event.player.getGameProfile());
         }
     }
 
-    /**
-     * @deprecated
-     */
     @Deprecated
-    public void onPlantVanilla(PlayerInteractEvent event) {
-        if (BinnieCore.proxy.isSimulating(event.world)) {
-            if (event.action == Action.RIGHT_CLICK_BLOCK) {
-                if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null) {
-                    World world = event.world;
-                    int x = event.x;
-                    int y = event.y;
-                    int z = event.z;
-                    Block block = world.getBlock(x, y, z);
-                    int py = -1;
-                    if (block instanceof IBlockSoil && (world.isAirBlock(x, y + 1, z) || world.getBlock(x, y, z).isReplaceable(world, x, y, z))) {
-                        py = 1;
-                    }
-
-                    if (py >= 0) {
-                        IFlower flower = BotanyCore.getFlowerRoot().getConversion(event.entityPlayer.getHeldItem());
-                        if (flower != null && Gardening.plant(world, x, y + py, z, flower, event.entityPlayer.getGameProfile()) && !event.entityPlayer.capabilities.isCreativeMode) {
-                            --event.entityPlayer.getHeldItem().stackSize;
-                        }
-                    }
+    public void onPlantVanilla(final PlayerInteractEvent event) {
+        if (!BinnieCore.proxy.isSimulating(event.world)) {
+            return;
+        }
+        if (event.action != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null) {
+            final World world = event.world;
+            final int x = event.x;
+            final int y = event.y;
+            final int z = event.z;
+            final Block block = world.getBlock(x, y, z);
+            int py = -1;
+            if (block instanceof IBlockSoil && (world.isAirBlock(x, y + 1, z) || world.getBlock(x, y, z).isReplaceable((IBlockAccess) world, x, y, z))) {
+                py = 1;
+            }
+            if (py >= 0) {
+                final IFlower flower = BotanyCore.getFlowerRoot().getConversion(event.entityPlayer.getHeldItem());
+                if (flower != null && Gardening.plant(world, x, y + py, z, flower, event.entityPlayer.getGameProfile()) && !event.entityPlayer.capabilities.isCreativeMode) {
+                    final ItemStack heldItem = event.entityPlayer.getHeldItem();
+                    --heldItem.stackSize;
                 }
-
             }
         }
     }
 
     @SubscribeEvent
-    public void onBonemeal(BonemealEvent event) {
-        Block block = event.world.getBlock(event.x, event.y, event.z);
+    public void onBonemeal(final BonemealEvent event) {
+        final Block block = event.world.getBlock(event.x, event.y, event.z);
         if (Gardening.isSoil(block)) {
-            IBlockSoil soil = (IBlockSoil) block;
+            final IBlockSoil soil = (IBlockSoil) block;
             if (soil.fertilise(event.world, event.x, event.y, event.z, EnumSoilType.LOAM)) {
-                event.setResult(Result.ALLOW);
+                event.setResult(Event.Result.ALLOW);
             }
         }
-
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+        final TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
         if (tile instanceof TileEntityFlower && ((TileEntityFlower) tile).onBonemeal()) {
-            event.setResult(Result.ALLOW);
+            event.setResult(Event.Result.ALLOW);
         }
-
     }
 
+    @Override
     public boolean isActive() {
         return BinnieCore.isBotanyActive();
     }
 
-    @EventHandler
-    public void onIMC(IMCEvent event) {
-        for (IMCMessage message : event.getMessages()) {
+    @Mod.EventHandler
+    public void onIMC(final FMLInterModComms.IMCEvent event) {
+        for (final FMLInterModComms.IMCMessage message : event.getMessages()) {
             if (message.key.equals("add-nutrient-fertiliser-1")) {
-                ModuleGardening.queuedNutrientFertilisers.put(message.getItemStackValue(), Integer.valueOf(1));
+                ModuleGardening.queuedNutrientFertilisers.put(message.getItemStackValue(), 1);
             }
-
             if (message.key.equals("add-nutrient-fertiliser-2")) {
-                ModuleGardening.queuedNutrientFertilisers.put(message.getItemStackValue(), Integer.valueOf(2));
+                ModuleGardening.queuedNutrientFertilisers.put(message.getItemStackValue(), 2);
             }
-
             if (message.key.equals("add-acid-fertiliser-1")) {
-                ModuleGardening.queuedAcidFertilisers.put(message.getItemStackValue(), Integer.valueOf(1));
+                ModuleGardening.queuedAcidFertilisers.put(message.getItemStackValue(), 1);
             }
-
             if (message.key.equals("add-acid-fertiliser-2")) {
-                ModuleGardening.queuedAcidFertilisers.put(message.getItemStackValue(), Integer.valueOf(2));
+                ModuleGardening.queuedAcidFertilisers.put(message.getItemStackValue(), 2);
             }
-
             if (message.key.equals("add-alkaline-fertiliser-1")) {
-                ModuleGardening.queuedAlkalineFertilisers.put(message.getItemStackValue(), Integer.valueOf(1));
+                ModuleGardening.queuedAlkalineFertilisers.put(message.getItemStackValue(), 1);
             }
-
             if (message.key.equals("add-alkaline-fertiliser-2")) {
-                ModuleGardening.queuedAlkalineFertilisers.put(message.getItemStackValue(), Integer.valueOf(1));
+                ModuleGardening.queuedAlkalineFertilisers.put(message.getItemStackValue(), 1);
             }
         }
-
     }
 
     public static class PacketHandler extends BinniePacketHandler {

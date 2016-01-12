@@ -5,9 +5,9 @@ import java.util.List;
 public interface IDesignCategory {
     String getName();
 
-    List getDesigns();
+    List<IDesign> getDesigns();
 
-    void addDesign(IDesign var1);
+    void addDesign(final IDesign p0);
 
     String getId();
 }

@@ -18,33 +18,31 @@ public class Gene implements INBTTagable, IGene {
         return this.root;
     }
 
+    @Override
     public String toString() {
         return this.getAlleleName();
     }
 
-    public Gene(IAllele allele, IChromosomeType chromosome, ISpeciesRoot root) {
-        super();
+    public Gene(final IAllele allele, final IChromosomeType chromosome, final ISpeciesRoot root) {
         this.allele = allele;
         this.chromosome = chromosome;
         this.root = root;
     }
 
-    public Gene(NBTTagCompound nbt) {
-        super();
+    public Gene(final NBTTagCompound nbt) {
         this.readFromNBT(nbt);
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         this.allele = AlleleManager.alleleRegistry.getAllele(nbt.getString("allele"));
         this.root = AlleleManager.alleleRegistry.getSpeciesRoot(nbt.getString("root"));
-        int chromoID = nbt.getByte("chromo");
+        final int chromoID = nbt.getByte("chromo");
         if (this.root != null && chromoID >= 0 && chromoID < this.root.getKaryotype().length) {
             this.chromosome = this.root.getKaryotype()[chromoID];
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void writeToNBT(final NBTTagCompound nbt) {
         nbt.setString("allele", this.allele.getUID());
         nbt.setString("root", this.root.getUID());
         nbt.setByte("chromo", (byte) this.chromosome.ordinal());
@@ -54,18 +52,18 @@ public class Gene implements INBTTagable, IGene {
         return this.allele == null || this.chromosome == null || this.root == null;
     }
 
-    public static Gene create(NBTTagCompound nbt) {
-        Gene gene = new Gene(nbt);
+    public static Gene create(final NBTTagCompound nbt) {
+        final Gene gene = new Gene(nbt);
         return gene.isCorrupted() ? null : gene;
     }
 
-    public static Gene create(IAllele allele, IChromosomeType chromosome, ISpeciesRoot root) {
-        Gene gene = new Gene(allele, chromosome, root);
+    public static Gene create(final IAllele allele, final IChromosomeType chromosome, final ISpeciesRoot root) {
+        final Gene gene = new Gene(allele, chromosome, root);
         return gene.isCorrupted() ? null : gene;
     }
 
     public NBTTagCompound getNBTTagCompound() {
-        NBTTagCompound nbt = new NBTTagCompound();
+        final NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt);
         return nbt;
     }
@@ -86,13 +84,13 @@ public class Gene implements INBTTagable, IGene {
         return this.allele;
     }
 
-    public boolean equals(Object obj) {
+    @Override
+    public boolean equals(final Object obj) {
         if (!(obj instanceof Gene)) {
             return false;
-        } else {
-            Gene g = (Gene) obj;
-            return this.allele == g.allele && this.chromosome.ordinal() == g.chromosome.ordinal() && this.root == g.root;
         }
+        final Gene g = (Gene) obj;
+        return this.allele == g.allele && this.chromosome.ordinal() == g.chromosome.ordinal() && this.root == g.root;
     }
 
     public String getAlleleName() {

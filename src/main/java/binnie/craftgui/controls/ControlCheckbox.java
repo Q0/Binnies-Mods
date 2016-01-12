@@ -13,53 +13,55 @@ import binnie.craftgui.events.EventMouse;
 import binnie.craftgui.events.EventValueChanged;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 
-public class ControlCheckbox extends Control implements IControlValue {
+public class ControlCheckbox extends Control implements IControlValue<Boolean> {
     boolean value;
     String text;
 
-    public ControlCheckbox(IWidget parent, float x, float y, boolean bool) {
-        this(parent, x, y, 0.0F, "", bool);
+    public ControlCheckbox(final IWidget parent, final float x, final float y, final boolean bool) {
+        this(parent, x, y, 0.0f, "", bool);
     }
 
-    public ControlCheckbox(IWidget parent, float x, float y, float w, String text, boolean bool) {
-        super(parent, x, y, w > 16.0F ? w : 16.0F, 16.0F);
+    public ControlCheckbox(final IWidget parent, final float x, final float y, final float w, final String text, final boolean bool) {
+        super(parent, x, y, (w > 16.0f) ? w : 16.0f, 16.0f);
         this.text = text;
         this.value = bool;
-        if (w > 16.0F) {
-            (new ControlText(this, new IArea(16.0F, 1.0F, w - 16.0F, 16.0F), text, TextJustification.MiddleCenter)).setColour(4473924);
+        if (w > 16.0f) {
+            new ControlText(this, new IArea(16.0f, 1.0f, w - 16.0f, 16.0f), text, TextJustification.MiddleCenter).setColour(4473924);
         }
-
         this.addAttribute(Attribute.MouseOver);
-        this.addEventHandler((new EventMouse.Down.Handler() {
-            public void onEvent(EventMouse.Down event) {
+        this.addEventHandler(new EventMouse.Down.Handler() {
+            @Override
+            public void onEvent(final EventMouse.Down event) {
                 ControlCheckbox.this.toggleValue();
             }
-        }).setOrigin(EventHandler.Origin.Self, this));
+        }.setOrigin(EventHandler.Origin.Self, this));
     }
 
-    protected void onValueChanged(boolean value) {
+    protected void onValueChanged(final boolean value) {
     }
 
+    @Override
     public Boolean getValue() {
-        return Boolean.valueOf(this.value);
+        return this.value;
     }
 
-    public void setValue(Boolean value) {
-        this.value = value.booleanValue();
-        this.onValueChanged(value.booleanValue());
-        this.callEvent(new EventValueChanged(this, value));
+    @Override
+    public void setValue(final Boolean value) {
+        this.value = value;
+        this.onValueChanged(value);
+        this.callEvent(new EventValueChanged<Object>(this, value));
     }
 
     public void toggleValue() {
-        this.setValue(Boolean.valueOf(!this.getValue().booleanValue()));
+        this.setValue(Boolean.valueOf(!this.getValue()));
     }
 
+    @Override
     public void onRenderBackground() {
-        Object texture = this.getValue().booleanValue() ? CraftGUITexture.CheckboxChecked : CraftGUITexture.Checkbox;
+        Object texture = this.getValue() ? CraftGUITexture.CheckboxChecked : CraftGUITexture.Checkbox;
         if (this.isMouseOver()) {
-            texture = this.getValue().booleanValue() ? CraftGUITexture.CheckboxCheckedHighlighted : CraftGUITexture.CheckboxHighlighted;
+            texture = (this.getValue() ? CraftGUITexture.CheckboxCheckedHighlighted : CraftGUITexture.CheckboxHighlighted);
         }
-
         CraftGUI.Render.texture(texture, IPoint.ZERO);
     }
 }

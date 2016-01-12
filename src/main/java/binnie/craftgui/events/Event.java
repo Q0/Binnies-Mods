@@ -5,8 +5,7 @@ import binnie.craftgui.core.IWidget;
 public class Event {
     IWidget origin;
 
-    public Event(IWidget origin) {
-        super();
+    public Event(final IWidget origin) {
         this.origin = origin;
     }
 
@@ -14,7 +13,7 @@ public class Event {
         return this.origin;
     }
 
-    public boolean isOrigin(IWidget widget) {
+    public boolean isOrigin(final IWidget widget) {
         return this.origin == widget;
     }
 }

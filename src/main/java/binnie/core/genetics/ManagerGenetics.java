@@ -1,38 +1,22 @@
 package binnie.core.genetics;
 
-import binnie.botany.genetics.AlleleColor;
-import forestry.api.genetics.IAlleleInteger;
-import forestry.api.genetics.IAlleleFloat;
-import forestry.api.genetics.IGenome;
-import java.util.Comparator;
-import java.util.TreeSet;
 import binnie.Binnie;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import forestry.api.genetics.IIndividual;
-import net.minecraft.item.ItemStack;
-import java.util.Collection;
-import forestry.api.genetics.EnumTolerance;
-import java.util.Iterator;
 import binnie.botany.api.IFlowerRoot;
-import forestry.api.lepidopterology.IButterflyRoot;
-import forestry.api.apiculture.IBeeRoot;
-import forestry.api.genetics.AlleleManager;
-import forestry.api.arboriculture.ITreeRoot;
-import net.minecraft.world.World;
-import forestry.api.genetics.IAlleleSpecies;
+import binnie.botany.genetics.AlleleColor;
 import binnie.core.BinnieCore;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import forestry.api.genetics.IAllele;
-import forestry.api.genetics.IChromosomeType;
-import java.util.List;
-import forestry.api.genetics.ISpeciesRoot;
-import java.util.Map;
 import binnie.core.ManagerBase;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import forestry.api.apiculture.IBeeRoot;
+import forestry.api.arboriculture.ITreeRoot;
+import forestry.api.genetics.*;
+import forestry.api.lepidopterology.IButterflyRoot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
 
-public class ManagerGenetics extends ManagerBase
-{
+import java.util.*;
+
+public class ManagerGenetics extends ManagerBase {
     public BreedingSystem beeBreedingSystem;
     public BreedingSystem treeBreedingSystem;
     public BreedingSystem mothBreedingSystem;
@@ -73,19 +57,19 @@ public class ManagerGenetics extends ManagerBase
     }
 
     public ITreeRoot getTreeRoot() {
-        return (ITreeRoot)AlleleManager.alleleRegistry.getSpeciesRoot("rootTrees");
+        return (ITreeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootTrees");
     }
 
     public IBeeRoot getBeeRoot() {
-        return (IBeeRoot)AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
+        return (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
     }
 
     public IButterflyRoot getButterflyRoot() {
-        return (IButterflyRoot)AlleleManager.alleleRegistry.getSpeciesRoot("rootButterflies");
+        return (IButterflyRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootButterflies");
     }
 
     public IFlowerRoot getFlowerRoot() {
-        return (IFlowerRoot)AlleleManager.alleleRegistry.getSpeciesRoot("rootFlowers");
+        return (IFlowerRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootFlowers");
     }
 
     public BreedingSystem getSystem(final String string) {
@@ -176,14 +160,13 @@ public class ManagerGenetics extends ManagerBase
                             continue;
                         }
                         alleles.add(a2);
+                    } catch (Exception ex) {
                     }
-                    catch (Exception ex) {}
                 }
                 system.addExtraAlleles(chromosome, alleles);
                 if (alleles.size() == 0) {
                     this.invalidChromosomeTypes.add(chromosome);
-                }
-                else {
+                } else {
                     final List<IAllele> alleleList = new ArrayList<IAllele>();
                     alleleList.addAll(alleles);
                     chromosomeMap.put(chromosome, alleleList);
@@ -205,18 +188,17 @@ public class ManagerGenetics extends ManagerBase
         return this.invalidChromosomeTypes.contains(type);
     }
 
-    static class ComparatorAllele implements Comparator<IAllele>
-    {
+    static class ComparatorAllele implements Comparator<IAllele> {
         @Override
         public int compare(final IAllele o1, final IAllele o2) {
             if (o1 == null || o2 == null) {
                 throw new NullPointerException("Allele is null!");
             }
             if (o1 instanceof IAlleleFloat && o2 instanceof IAlleleFloat) {
-                return Float.valueOf(((IAlleleFloat)o1).getValue()).compareTo(Float.valueOf(((IAlleleFloat)o2).getValue()));
+                return Float.valueOf(((IAlleleFloat) o1).getValue()).compareTo(Float.valueOf(((IAlleleFloat) o2).getValue()));
             }
             if (o1 instanceof IAlleleInteger && o2 instanceof IAlleleInteger && !(o1 instanceof AlleleColor)) {
-                return Integer.valueOf(((IAlleleInteger)o1).getValue()).compareTo(Integer.valueOf(((IAlleleInteger)o2).getValue()));
+                return Integer.valueOf(((IAlleleInteger) o1).getValue()).compareTo(Integer.valueOf(((IAlleleInteger) o2).getValue()));
             }
             if (o1.getName() != null && o2.getName() != null) {
                 return o1.getName().compareTo(o2.getName());

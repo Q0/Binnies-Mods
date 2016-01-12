@@ -10,9 +10,9 @@ public interface ITankMachine extends IFluidHandler, IValidatedTankContainer {
 
     IFluidTank[] getTanks();
 
-    TankSlot addTank(int var1, String var2, int var3);
+    TankSlot addTank(final int p0, final String p1, final int p2);
 
-    IFluidTank getTank(int var1);
+    IFluidTank getTank(final int p0);
 
-    TankSlot getTankSlot(int var1);
+    TankSlot getTankSlot(final int p0);
 }

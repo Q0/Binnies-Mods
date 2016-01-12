@@ -22,7 +22,7 @@ public enum GUIIcon {
     String path;
     BinnieIcon icon;
 
-    private GUIIcon(String path) {
+    private GUIIcon(final String path) {
         this.path = path;
     }
 

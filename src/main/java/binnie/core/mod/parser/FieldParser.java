@@ -7,47 +7,44 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class FieldParser {
-    public static Collection parsers = new ArrayList();
+    public static Collection<FieldParser> parsers;
 
-    public FieldParser() {
-        super();
+    public abstract boolean isHandled(final Field p0, final AbstractMod p1);
+
+    public void preInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
     }
 
-    public abstract boolean isHandled(Field var1, AbstractMod var2);
-
-    public void preInit(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+    public void init(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
     }
 
-    public void init(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+    public void postInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
     }
 
-    public void postInit(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-    }
-
-    public static void preInitParse(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-        for (FieldParser parser : parsers) {
+    public static void preInitParse(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+        for (final FieldParser parser : FieldParser.parsers) {
             if (parser.isHandled(field, mod)) {
                 parser.preInit(field, mod);
             }
         }
-
     }
 
-    public static void initParse(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-        for (FieldParser parser : parsers) {
+    public static void initParse(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+        for (final FieldParser parser : FieldParser.parsers) {
             if (parser.isHandled(field, mod)) {
                 parser.init(field, mod);
             }
         }
-
     }
 
-    public static void postInitParse(Field field, AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-        for (FieldParser parser : parsers) {
+    public static void postInitParse(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+        for (final FieldParser parser : FieldParser.parsers) {
             if (parser.isHandled(field, mod)) {
                 parser.postInit(field, mod);
             }
         }
+    }
 
+    static {
+        FieldParser.parsers = new ArrayList<FieldParser>();
     }
 }

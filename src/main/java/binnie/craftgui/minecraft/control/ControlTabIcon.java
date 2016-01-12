@@ -6,24 +6,28 @@ import binnie.craftgui.controls.tab.ControlTabBar;
 import binnie.craftgui.core.geometry.IPoint;
 import net.minecraft.item.ItemStack;
 
-public class ControlTabIcon extends ControlTab {
+public class ControlTabIcon<T> extends ControlTab<T> {
     private ControlItemDisplay item;
 
-    public ControlTabIcon(ControlTabBar parent, float x, float y, float w, float h, Object value) {
+    public ControlTabIcon(final ControlTabBar<T> parent, final float x, final float y, final float w, final float h, final T value) {
         super(parent, x, y, w, h, value);
-        this.item = new ControlItemDisplay(this, -8.0F + w / 2.0F, -8.0F + h / 2.0F);
+        this.item = new ControlItemDisplay(this, -8.0f + w / 2.0f, -8.0f + h / 2.0f);
         this.item.hastooltip = false;
     }
 
     public ItemStack getItemStack() {
-        return this.value instanceof IItemStackRepresentitive ? ((IItemStackRepresentitive) this.value).getItemStackRepresentitive() : null;
+        if (this.value instanceof IItemStackRepresentitive) {
+            return ((IItemStackRepresentitive) this.value).getItemStackRepresentitive();
+        }
+        return null;
     }
 
+    @Override
     public void onUpdateClient() {
         super.onUpdateClient();
         this.item.setItemStack(this.getItemStack());
-        float x = (float) ((ControlTabBar) this.getParent()).getDirection().x();
-        this.item.setOffset(new IPoint(!this.isCurrentSelection() && !this.isMouseOver() ? -4.0F * x : 0.0F, 0.0F));
+        final float x = ((ControlTabBar) this.getParent()).getDirection().x();
+        this.item.setOffset(new IPoint((this.isCurrentSelection() || this.isMouseOver()) ? 0.0f : (-4.0f * x), 0.0f));
     }
 
     public boolean hasOutline() {

@@ -16,39 +16,40 @@ import org.lwjgl.opengl.GL11;
 public class AnalystPageGenome extends ControlAnalystPage {
     boolean active;
 
-    public AnalystPageGenome(IWidget parent, IArea area, boolean active, IIndividual ind) {
+    public AnalystPageGenome(final IWidget parent, final IArea area, final boolean active, final IIndividual ind) {
         super(parent, area);
         this.active = active;
         this.setColour(26265);
         int y = 4;
-        (new ControlTextCentered(this, (float) y, "§n" + this.getTitle())).setColour(this.getColour());
-        y = y + 16;
-        ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(ind.getClass());
-        BreedingSystem system = Binnie.Genetics.getSystem(root);
-        Control scaled = new Control(this, 0.0F, (float) y, 0.0F, 0.0F) {
+        new ControlTextCentered(this, y, "§n" + this.getTitle()).setColour(this.getColour());
+        y += 16;
+        final ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot((Class) ind.getClass());
+        final BreedingSystem system = Binnie.Genetics.getSystem(root);
+        final Control scaled = new Control(this, 0.0f, (float) y, 0.0f, 0.0f) {
+            @Override
             public void onRenderBackground() {
                 GL11.glPushMatrix();
-                GL11.glTranslatef(10.0F, -15.0F, 0.0F);
-                GL11.glScalef(0.9F, 0.95F, 1.0F);
+                GL11.glTranslatef(10.0f, -15.0f, 0.0f);
+                GL11.glScalef(0.9f, 0.95f, 1.0f);
             }
 
+            @Override
             public void onRenderForeground() {
                 GL11.glPopMatrix();
             }
         };
-
-        for (IChromosomeType chromo : system.getActiveKaryotype()) {
-            IAllele allele = active ? ind.getGenome().getActiveAllele(chromo) : ind.getGenome().getInactiveAllele(chromo);
-            String alleleName = system.getAlleleName(chromo, allele);
-            float height = CraftGUI.Render.textHeight(alleleName, this.w() / 2.0F - 2.0F);
-            (new ControlText(scaled, new IArea(0.0F, (float) y + (height - 9.0F) / 2.0F, this.w() / 2.0F - 2.0F, 0.0F), system.getChromosomeShortName(chromo) + " :", TextJustification.TopRight)).setColour(this.getColour());
-            (new ControlText(scaled, new IArea(this.w() / 2.0F + 2.0F, (float) y, this.w() / 2.0F - 2.0F, 0.0F), alleleName, TextJustification.TopLeft)).setColour(this.getColour());
-            y = (int) ((float) y + 3.0F + height);
+        for (final IChromosomeType chromo : system.getActiveKaryotype()) {
+            final IAllele allele = active ? ind.getGenome().getActiveAllele(chromo) : ind.getGenome().getInactiveAllele(chromo);
+            final String alleleName = system.getAlleleName(chromo, allele);
+            final float height = CraftGUI.Render.textHeight(alleleName, this.w() / 2.0f - 2.0f);
+            new ControlText(scaled, new IArea(0.0f, y + (height - 9.0f) / 2.0f, this.w() / 2.0f - 2.0f, 0.0f), system.getChromosomeShortName(chromo) + " :", TextJustification.TopRight).setColour(this.getColour());
+            new ControlText(scaled, new IArea(this.w() / 2.0f + 2.0f, y, this.w() / 2.0f - 2.0f, 0.0f), alleleName, TextJustification.TopLeft).setColour(this.getColour());
+            y += (int) (3.0f + height);
         }
-
-        this.setSize(new IPoint(this.w(), (float) (y + 8)));
+        this.setSize(new IPoint(this.w(), y + 8));
     }
 
+    @Override
     public String getTitle() {
         return (this.active ? "Active" : "Inactive") + " Genome";
     }

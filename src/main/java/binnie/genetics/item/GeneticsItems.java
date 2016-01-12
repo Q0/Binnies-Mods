@@ -26,30 +26,36 @@ public enum GeneticsItems implements IItemMisc {
     String name;
     String iconPath;
 
-    private GeneticsItems(String name, String iconPath) {
+    private GeneticsItems(final String name, final String iconPath) {
         this.name = name;
         this.iconPath = iconPath;
     }
 
-    public IIcon getIcon(ItemStack stack) {
+    @Override
+    public IIcon getIcon(final ItemStack stack) {
         return this.icon;
     }
 
-    public void registerIcons(IIconRegister register) {
+    @Override
+    public void registerIcons(final IIconRegister register) {
         this.icon = Genetics.proxy.getIcon(register, this.iconPath);
     }
 
-    public void addInformation(List par3List) {
+    @Override
+    public void addInformation(final List par3List) {
     }
 
-    public String getName(ItemStack stack) {
+    @Override
+    public String getName(final ItemStack stack) {
         return this.name;
     }
 
-    public ItemStack get(int size) {
-        return Genetics.itemGenetics == null ? null : new ItemStack(Genetics.itemGenetics, size, this.ordinal());
+    @Override
+    public ItemStack get(final int size) {
+        return (Genetics.itemGenetics == null) ? null : new ItemStack(Genetics.itemGenetics, size, this.ordinal());
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }

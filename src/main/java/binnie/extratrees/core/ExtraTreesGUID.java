@@ -25,48 +25,54 @@ public enum ExtraTreesGUID implements IBinnieGUID {
     Infuser,
     SetSquare;
 
-    private ExtraTreesGUID() {
-    }
-
-    public Window getWindow(EntityPlayer player, World world, int x, int y, int z, Side side) {
+    @Override
+    public Window getWindow(final EntityPlayer player, final World world, final int x, final int y, final int z, final Side side) {
         Window window = null;
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         IInventory object = null;
         if (tileEntity instanceof IInventory) {
             object = (IInventory) tileEntity;
         }
-
         switch (this) {
             case Database:
-            case DatabaseNEI:
-                window = WindowArboristDatabase.create(player, side, this != Database);
+            case DatabaseNEI: {
+                window = WindowArboristDatabase.create(player, side, this != ExtraTreesGUID.Database);
                 break;
-            case Woodworker:
+            }
+            case Woodworker: {
                 window = WindowWoodworker.create(player, object, side);
                 break;
-            case Lumbermill:
+            }
+            case Lumbermill: {
                 window = WindowLumbermill.create(player, object, side);
                 break;
-            case KitchenBottleRack:
+            }
+            case KitchenBottleRack: {
                 window = WindowBottleRack.create(player, object, side);
                 break;
-            case Press:
+            }
+            case Press: {
                 window = WindowPress.create(player, object, side);
                 break;
-            case Brewery:
+            }
+            case Brewery: {
                 window = WindowBrewery.create(player, object, side);
                 break;
-            case Distillery:
+            }
+            case Distillery: {
                 window = WindowDistillery.create(player, object, side);
                 break;
+            }
             case MothDatabase:
-            case MothDatabaseNEI:
-                window = WindowLepidopteristDatabase.create(player, side, this != MothDatabase);
+            case MothDatabaseNEI: {
+                window = WindowLepidopteristDatabase.create(player, side, this != ExtraTreesGUID.MothDatabase);
                 break;
-            case SetSquare:
+            }
+            case SetSquare: {
                 window = WindowSetSquare.create(player, world, x, y, z, side);
+                break;
+            }
         }
-
         return window;
     }
 }

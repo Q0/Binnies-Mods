@@ -13,49 +13,54 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum KitchenMachine implements IMachineType {
-    Worktop((Class) null),
-    Cupboard((Class) null),
-    BottleRack(BottleRack.PackageBottleRack.class);
+    Worktop((Class<? extends MachinePackage>) null),
+    Cupboard((Class<? extends MachinePackage>) null),
+    BottleRack((Class<? extends MachinePackage>) BottleRack.PackageBottleRack.class);
 
-    Class clss;
+    Class<? extends MachinePackage> clss;
 
-    private KitchenMachine(Class clss) {
+    private KitchenMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
-    public Class getPackageClass() {
+    @Override
+    public Class<? extends MachinePackage> getPackageClass() {
         return this.clss;
     }
 
+    @Override
     public boolean isActive() {
         return this.clss != null;
     }
 
-    public ItemStack get(int i) {
+    public ItemStack get(final int i) {
         return new ItemStack(ExtraTrees.blockKitchen, i, this.ordinal());
     }
 
     public abstract static class PackageKitchenMachine extends MachinePackage {
         BinnieResource textureName;
 
-        protected PackageKitchenMachine(String uid, String textureName) {
+        protected PackageKitchenMachine(final String uid, final String textureName) {
             super(uid, false);
             this.textureName = Binnie.Resource.getFile(ExtraTrees.instance, ResourceType.Tile, textureName);
         }
 
-        protected PackageKitchenMachine(String uid, BinnieResource textureName) {
+        protected PackageKitchenMachine(final String uid, final BinnieResource textureName) {
             super(uid, false);
             this.textureName = textureName;
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
         }
 
-        public void renderMachine(Machine machine, double x, double y, double z, float var8, RenderBlocks renderer) {
+        @Override
+        public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
             MachineRendererKitchen.instance.renderMachine(machine, this.textureName, x, y, z, var8, renderer);
         }
     }

@@ -15,10 +15,10 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 public abstract class ItemGene extends Item {
-    IIcon[] icons = new IIcon[4];
+    IIcon[] icons;
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         return this.icons[pass];
     }
 
@@ -31,38 +31,38 @@ public abstract class ItemGene extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.icons[0] = Genetics.proxy.getIcon(register, "machines/serum.glass");
         this.icons[1] = Genetics.proxy.getIcon(register, "machines/serum.cap");
         this.icons[2] = Genetics.proxy.getIcon(register, "machines/serum.edges");
         this.icons[3] = Genetics.proxy.getIcon(register, "machines/serum.dna");
     }
 
-    public int getRenderPasses(int metadata) {
+    public int getRenderPasses(final int metadata) {
         return 4;
     }
 
-    public ItemGene(String unlocName) {
-        super();
+    public ItemGene(final String unlocName) {
+        this.icons = new IIcon[4];
         this.setMaxStackSize(1);
         this.setMaxDamage(16);
         this.setUnlocalizedName(unlocName);
         this.setCreativeTab(CreativeTabGenetics.instance);
     }
 
-    public int getColorFromItemStack(ItemStack itemstack, int j) {
-        IGeneItem gene = this.getGeneItem(itemstack);
+    public int getColorFromItemStack(final ItemStack itemstack, final int j) {
+        final IGeneItem gene = this.getGeneItem(itemstack);
         return gene.getColour(j);
     }
 
-    public int getCharges(ItemStack stack) {
-        return stack == null ? 0 : stack.getItem().getMaxDamage() - stack.getItemDamage();
+    public int getCharges(final ItemStack stack) {
+        return (stack == null) ? 0 : (stack.getItem().getMaxDamage() - stack.getItemDamage());
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemstack, EntityPlayer entityPlayer, List list, boolean par4) {
+    public void addInformation(final ItemStack itemstack, final EntityPlayer entityPlayer, final List list, final boolean par4) {
         super.addInformation(itemstack, entityPlayer, list, par4);
-        int damage = this.getMaxDamage() - itemstack.getItemDamage();
+        final int damage = this.getMaxDamage() - itemstack.getItemDamage();
         if (damage == 0) {
             list.add("Empty");
         } else if (damage == 1) {
@@ -70,19 +70,18 @@ public abstract class ItemGene extends Item {
         } else {
             list.add(damage + " Charges");
         }
-
-        IGeneItem gene = this.getGeneItem(itemstack);
+        final IGeneItem gene = this.getGeneItem(itemstack);
         gene.getInfo(list);
     }
 
-    public abstract String getItemStackDisplayName(ItemStack var1);
+    public abstract String getItemStackDisplayName(final ItemStack p0);
 
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
     }
 
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
 
-    public abstract IGeneItem getGeneItem(ItemStack var1);
+    public abstract IGeneItem getGeneItem(final ItemStack p0);
 }

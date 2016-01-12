@@ -10,16 +10,16 @@ import java.util.Random;
 public interface IRender {
     public interface DisplayTick {
         @SideOnly(Side.CLIENT)
-        void onDisplayTick(World var1, int var2, int var3, int var4, Random var5);
+        void onDisplayTick(final World p0, final int p1, final int p2, final int p3, final Random p4);
     }
 
     public interface RandomDisplayTick {
         @SideOnly(Side.CLIENT)
-        void onRandomDisplayTick(World var1, int var2, int var3, int var4, Random var5);
+        void onRandomDisplayTick(final World p0, final int p1, final int p2, final int p3, final Random p4);
     }
 
     public interface Render {
         @SideOnly(Side.CLIENT)
-        void renderInWorld(RenderItem var1, double var2, double var4, double var6);
+        void renderInWorld(final RenderItem p0, final double p1, final double p2, final double p3);
     }
 }

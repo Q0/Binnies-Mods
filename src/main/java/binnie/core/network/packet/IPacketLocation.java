@@ -4,7 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 interface IPacketLocation {
-    TileEntity getTarget(World var1);
+    TileEntity getTarget(final World p0);
 
     int getX();
 

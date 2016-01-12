@@ -6,32 +6,42 @@ import java.util.List;
 import java.util.Map;
 
 public class BeeModifierLogic {
-    private Map modifiers = new HashMap();
-    private List booleanModifiers = new ArrayList();
+    private Map<EnumBeeModifier, Float[]> modifiers;
+    private List<EnumBeeBooleanModifier> booleanModifiers;
 
     public BeeModifierLogic() {
-        super();
+        this.modifiers = new HashMap<EnumBeeModifier, Float[]>();
+        this.booleanModifiers = new ArrayList<EnumBeeBooleanModifier>();
     }
 
-    public float getModifier(EnumBeeModifier modifier, float currentModifier) {
+    public float getModifier(final EnumBeeModifier modifier, final float currentModifier) {
         if (!this.modifiers.containsKey(modifier)) {
-            return 1.0F;
+            return 1.0f;
+        }
+        final float mult = this.modifiers.get(modifier)[0];
+        final float max = this.modifiers.get(modifier)[1];
+        if (max >= 1.0f) {
+            if (max <= currentModifier) {
+                return 1.0f;
+            }
+            return Math.min(max / currentModifier, mult);
         } else {
-            float mult = ((Float[]) this.modifiers.get(modifier))[0].floatValue();
-            float max = ((Float[]) this.modifiers.get(modifier))[1].floatValue();
-            return max >= 1.0F ? (max <= currentModifier ? 1.0F : Math.min(max / currentModifier, mult)) : (max >= currentModifier ? 1.0F : Math.max(max / currentModifier, mult));
+            if (max >= currentModifier) {
+                return 1.0f;
+            }
+            return Math.max(max / currentModifier, mult);
         }
     }
 
-    public boolean getModifier(EnumBeeBooleanModifier modifier) {
+    public boolean getModifier(final EnumBeeBooleanModifier modifier) {
         return this.booleanModifiers.contains(modifier);
     }
 
-    public void setModifier(EnumBeeBooleanModifier modifier) {
+    public void setModifier(final EnumBeeBooleanModifier modifier) {
         this.booleanModifiers.add(modifier);
     }
 
-    public void setModifier(EnumBeeModifier modifier, float mult, float max) {
-        this.modifiers.put(modifier, new Float[]{Float.valueOf(mult), Float.valueOf(max)});
+    public void setModifier(final EnumBeeModifier modifier, final float mult, final float max) {
+        this.modifiers.put(modifier, new Float[]{mult, max});
     }
 }

@@ -9,11 +9,11 @@ import java.util.List;
 public interface IGeneItem {
     ISpeciesRoot getSpeciesRoot();
 
-    void getInfo(List var1);
+    void getInfo(final List p0);
 
-    int getColour(int var1);
+    int getColour(final int p0);
 
-    void writeToItem(ItemStack var1);
+    void writeToItem(final ItemStack p0);
 
-    void addGene(IGene var1);
+    void addGene(final IGene p0);
 }

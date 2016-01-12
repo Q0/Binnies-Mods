@@ -10,7 +10,7 @@ class BinnieFluid extends Fluid {
         return this.name;
     }
 
-    public BinnieFluid(IFluidType fluid) {
+    public BinnieFluid(final IFluidType fluid) {
         super(fluid.getIdentifier());
         this.fluidType = fluid;
         this.name = fluid.getName();

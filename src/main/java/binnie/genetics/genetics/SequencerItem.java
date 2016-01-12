@@ -8,23 +8,25 @@ public class SequencerItem extends GeneItem {
     public int sequenced;
     public boolean analysed;
 
-    public SequencerItem(ItemStack stack) {
+    public SequencerItem(final ItemStack stack) {
         super(stack);
     }
 
-    public SequencerItem(IGene gene) {
+    public SequencerItem(final IGene gene) {
         super(gene);
         this.sequenced = 0;
         this.analysed = false;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    @Override
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.sequenced = nbt.getByte("seq");
         this.analysed = nbt.getBoolean("ana");
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    @Override
+    public void writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setByte("seq", (byte) this.sequenced);
         nbt.setBoolean("ana", this.analysed);

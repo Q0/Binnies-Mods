@@ -15,93 +15,120 @@ import java.util.TreeSet;
 
 class MothBreedingSystem extends BreedingSystem {
     public MothBreedingSystem() {
-        super();
         this.iconUndiscovered = Binnie.Resource.getItemIcon(ExtraTrees.instance, "icon/undiscoveredMoth");
         this.iconDiscovered = Binnie.Resource.getItemIcon(ExtraTrees.instance, "icon/discoveredMoth");
     }
 
-    public float getChance(IMutation mutation, EntityPlayer player, IAllele species1, IAllele species2) {
-        return 0.0F;
+    @Override
+    public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
+        return 0.0f;
     }
 
+    @Override
     public ISpeciesRoot getSpeciesRoot() {
-        return Binnie.Genetics.getButterflyRoot();
+        return (ISpeciesRoot) Binnie.Genetics.getButterflyRoot();
     }
 
+    @Override
     public int getColour() {
-        return '\uf2f2';
+        return 62194;
     }
 
-    public Class getTrackerClass() {
-        return ILepidopteristTracker.class;
+    @Override
+    public Class<? extends IBreedingTracker> getTrackerClass() {
+        return (Class<? extends IBreedingTracker>) ILepidopteristTracker.class;
     }
 
-    public String getAlleleName(IChromosomeType chromosome, IAllele allele) {
+    @Override
+    public String getAlleleName(final IChromosomeType chromosome, final IAllele allele) {
         if (chromosome == EnumButterflyChromosome.METABOLISM) {
-            int metabolism = ((IAlleleInteger) allele).getValue();
-            return metabolism >= 19 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.highest") : (metabolism >= 16 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.higher") : (metabolism >= 13 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.high") : (metabolism >= 10 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.normal") : (metabolism >= 7 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slow") : (metabolism >= 4 ? Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slower") : Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slowest"))))));
-        } else if (chromosome == EnumButterflyChromosome.FERTILITY) {
-            int metabolism = ((IAlleleInteger) allele).getValue();
-            return metabolism + "x";
+            final int metabolism = ((IAlleleInteger) allele).getValue();
+            if (metabolism >= 19) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.highest");
+            }
+            if (metabolism >= 16) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.higher");
+            }
+            if (metabolism >= 13) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.high");
+            }
+            if (metabolism >= 10) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.normal");
+            }
+            if (metabolism >= 7) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slow");
+            }
+            if (metabolism >= 4) {
+                return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slower");
+            }
+            return Binnie.Language.localise(BinnieCore.instance, "allele.metabolism.slowest");
         } else {
+            if (chromosome == EnumButterflyChromosome.FERTILITY) {
+                final int metabolism = ((IAlleleInteger) allele).getValue();
+                return metabolism + "x";
+            }
             return super.getAlleleName(chromosome, allele);
         }
     }
 
-    public boolean isDNAManipulable(ItemStack member) {
+    @Override
+    public boolean isDNAManipulable(final ItemStack member) {
         return ((IButterflyRoot) this.getSpeciesRoot()).getType(member) == EnumFlutterType.SERUM;
     }
 
+    @Override
     public int[] getActiveTypes() {
         return new int[]{EnumFlutterType.BUTTERFLY.ordinal(), EnumFlutterType.CATERPILLAR.ordinal(), EnumFlutterType.SERUM.ordinal()};
     }
 
-    public void addExtraAlleles(IChromosomeType chromosome, TreeSet alleles) {
+    @Override
+    public void addExtraAlleles(final IChromosomeType chromosome, final TreeSet<IAllele> alleles) {
         switch ((EnumButterflyChromosome) chromosome) {
-            case FERTILITY:
-                for (ForestryAllele.Int a : ForestryAllele.Int.values()) {
+            case FERTILITY: {
+                for (final ForestryAllele.Int a : ForestryAllele.Int.values()) {
                     alleles.add(a.getAllele());
                 }
-
-                return;
-            case LIFESPAN:
-                for (ForestryAllele.Lifespan a : ForestryAllele.Lifespan.values()) {
+                break;
+            }
+            case LIFESPAN: {
+                for (final ForestryAllele.Lifespan a2 : ForestryAllele.Lifespan.values()) {
+                    alleles.add(a2.getAllele());
+                }
+                break;
+            }
+            case METABOLISM: {
+                for (final ForestryAllele.Int a : ForestryAllele.Int.values()) {
                     alleles.add(a.getAllele());
                 }
-
-                return;
-            case METABOLISM:
-                for (ForestryAllele.Int a : ForestryAllele.Int.values()) {
-                    alleles.add(a.getAllele());
-                }
-
-                return;
+                break;
+            }
             case TOLERANT_FLYER:
             case FIRE_RESIST:
-            case NOCTURNAL:
-                for (ForestryAllele.Bool a : ForestryAllele.Bool.values()) {
-                    alleles.add(a.getAllele());
+            case NOCTURNAL: {
+                for (final ForestryAllele.Bool a3 : ForestryAllele.Bool.values()) {
+                    alleles.add(a3.getAllele());
                 }
-
-                return;
-            case SIZE:
-                for (ForestryAllele.Size a : ForestryAllele.Size.values()) {
-                    alleles.add(a.getAllele());
+                break;
+            }
+            case SIZE: {
+                for (final ForestryAllele.Size a4 : ForestryAllele.Size.values()) {
+                    alleles.add(a4.getAllele());
                 }
-
-                return;
-            case SPEED:
-                for (ForestryAllele.Speed a : ForestryAllele.Speed.values()) {
-                    alleles.add(a.getAllele());
+                break;
+            }
+            case SPEED: {
+                for (final ForestryAllele.Speed a5 : ForestryAllele.Speed.values()) {
+                    alleles.add(a5.getAllele());
                 }
-
-                return;
+                break;
+            }
             case HUMIDITY_TOLERANCE:
-            case TEMPERATURE_TOLERANCE:
-                for (Tolerance a : Tolerance.values()) {
-                    alleles.add(a.getAllele());
+            case TEMPERATURE_TOLERANCE: {
+                for (final Tolerance a6 : Tolerance.values()) {
+                    alleles.add(a6.getAllele());
                 }
+                break;
+            }
         }
-
     }
 }

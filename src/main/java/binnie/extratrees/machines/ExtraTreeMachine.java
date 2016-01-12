@@ -15,47 +15,49 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public enum ExtraTreeMachine implements IMachineType {
-    Lumbermill(Lumbermill.PackageLumbermill.class),
-    Woodworker(Designer.PackageWoodworker.class),
-    Panelworker(Designer.PackagePanelworker.class),
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    Nursery(Nursery.PackageNursery.class),
-    Press(Press.PackagePress.class),
-    Brewery(Brewery.PackageBrewery.class),
-    Distillery(Distillery.PackageDistillery.class),
-    Glassworker(Designer.PackageGlassworker.class),
-    Tileworker(Designer.PackageTileworker.class);
+    Lumbermill((Class<? extends MachinePackage>) Lumbermill.PackageLumbermill.class),
+    Woodworker((Class<? extends MachinePackage>) Designer.PackageWoodworker.class),
+    Panelworker((Class<? extends MachinePackage>) Designer.PackagePanelworker.class),
+    Nursery((Class<? extends MachinePackage>) Nursery.PackageNursery.class),
+    Press((Class<? extends MachinePackage>) Press.PackagePress.class),
+    Brewery((Class<? extends MachinePackage>) Brewery.PackageBrewery.class),
+    Distillery((Class<? extends MachinePackage>) Distillery.PackageDistillery.class),
+    Glassworker((Class<? extends MachinePackage>) Designer.PackageGlassworker.class),
+    Tileworker((Class<? extends MachinePackage>) Designer.PackageTileworker.class);
 
-    Class clss;
+    Class<? extends MachinePackage> clss;
 
-    private ExtraTreeMachine(Class clss) {
+    private ExtraTreeMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
-    public Class getPackageClass() {
+    @Override
+    public Class<? extends MachinePackage> getPackageClass() {
         return this.clss;
     }
 
+    @Override
     public boolean isActive() {
-        return this == Tileworker ? BinnieCore.isBotanyActive() : this != Nursery;
+        if (this == ExtraTreeMachine.Tileworker) {
+            return BinnieCore.isBotanyActive();
+        }
+        return this != ExtraTreeMachine.Nursery;
     }
 
-    public ItemStack get(int i) {
+    public ItemStack get(final int i) {
         return new ItemStack(ExtraTrees.blockMachine, i, this.ordinal());
     }
 
     public static class ComponentExtraTreeGUI extends MachineComponent implements IInteraction.RightClick {
         ExtraTreesGUID id;
 
-        public ComponentExtraTreeGUI(Machine machine, ExtraTreesGUID id) {
+        public ComponentExtraTreeGUI(final Machine machine, final ExtraTreesGUID id) {
             super(machine);
             this.id = id;
         }
 
-        public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
+        @Override
+        public void onRightClick(final World world, final EntityPlayer player, final int x, final int y, final int z) {
             ExtraTrees.proxy.openGui(this.id, player, x, y, z);
         }
     }
@@ -63,24 +65,27 @@ public enum ExtraTreeMachine implements IMachineType {
     public abstract static class PackageExtraTreeMachine extends MachinePackage {
         BinnieResource textureName;
 
-        protected PackageExtraTreeMachine(String uid, String textureName, boolean powered) {
+        protected PackageExtraTreeMachine(final String uid, final String textureName, final boolean powered) {
             super(uid, powered);
             this.textureName = Binnie.Resource.getFile(ExtraTrees.instance, ResourceType.Tile, textureName);
         }
 
-        protected PackageExtraTreeMachine(String uid, BinnieResource textureName, boolean powered) {
+        protected PackageExtraTreeMachine(final String uid, final BinnieResource textureName, final boolean powered) {
             super(uid, powered);
             this.textureName = textureName;
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
         }
 
-        public void renderMachine(Machine machine, double x, double y, double z, float var8, RenderBlocks renderer) {
+        @Override
+        public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
             MachineRendererForestry.renderMachine(this.textureName.getShortPath(), x, y, z, var8);
         }
     }

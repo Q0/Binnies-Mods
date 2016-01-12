@@ -22,7 +22,7 @@ public class BlockStainedDesign extends BlockDesign {
         this.setBlockName("stainedGlass");
     }
 
-    public int quantityDropped(Random p_149745_1_) {
+    public int quantityDropped(final Random p_149745_1_) {
         return 0;
     }
 
@@ -40,17 +40,19 @@ public class BlockStainedDesign extends BlockDesign {
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
-        p_149646_1_.getBlock(p_149646_2_ - Facing.offsetsXForSide[p_149646_5_], p_149646_3_ - Facing.offsetsYForSide[p_149646_5_], p_149646_4_ - Facing.offsetsZForSide[p_149646_5_]);
-        Block block = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
-        return block != this && block != Botany.stained ? super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_) : false;
+    public boolean shouldSideBeRendered(final IBlockAccess p_149646_1_, final int p_149646_2_, final int p_149646_3_, final int p_149646_4_, final int p_149646_5_) {
+        final Block block2 = p_149646_1_.getBlock(p_149646_2_ - Facing.offsetsXForSide[p_149646_5_], p_149646_3_ - Facing.offsetsYForSide[p_149646_5_], p_149646_4_ - Facing.offsetsZForSide[p_149646_5_]);
+        final Block block3 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
+        return block3 != this && block3 != Botany.stained && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
     }
 
-    public ItemStack getCreativeStack(IDesign design) {
+    @Override
+    public ItemStack getCreativeStack(final IDesign design) {
         return ModuleCarpentry.getItemStack(this, GlassType.get(0), GlassType.get(1), design);
     }
 
-    public String getBlockName(DesignBlock design) {
-        return Binnie.Language.localise(ExtraTrees.instance, "block.stainedglass.name", new Object[]{design.getDesign().getName()});
+    @Override
+    public String getBlockName(final DesignBlock design) {
+        return Binnie.Language.localise(ExtraTrees.instance, "block.stainedglass.name", design.getDesign().getName());
     }
 }

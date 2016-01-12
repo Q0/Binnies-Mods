@@ -28,50 +28,52 @@ public class WindowWoodworker extends Window {
     ControlTextEdit textEdit;
     ControlTileSelect tileSelect;
 
+    @Override
     public void initialiseClient() {
         this.setTitle(Machine.getMachine(this.getInventory()).getPackage().getDisplayName());
-        (new ControlText(this, new IArea(190.0F, 36.0F, 114.0F, 10.0F), BinnieCore.proxy.localise("gui.design"), TextJustification.TopCenter)).setColour(4473924);
-        new Panel(this, 188.0F, 48.0F, 118.0F, 126.0F, MinecraftGUI.PanelType.Gray);
-        this.textEdit = new ControlTextEdit(this, 188.0F, 178.0F, 118.0F, 12.0F);
-        ControlScrollableContent scroll = new ControlScrollableContent(this, 190.0F, 50.0F, 114.0F, 122.0F, 12.0F);
-        this.tileSelect = new ControlTileSelect(scroll, 0.0F, 0.0F);
-        scroll.setScrollableContent(this.tileSelect);
-        (new ControlPlayerInventory(this)).setPosition(new IPoint(14.0F, 96.0F));
-        new ControlErrorState(this, 76.0F, 65.0F);
+        new ControlText(this, new IArea(190.0f, 36.0f, 114.0f, 10.0f), BinnieCore.proxy.localise("gui.design"), TextJustification.TopCenter).setColour(4473924);
+        new Panel(this, 188.0f, 48.0f, 118.0f, 126.0f, MinecraftGUI.PanelType.Gray);
+        this.textEdit = new ControlTextEdit(this, 188.0f, 178.0f, 118.0f, 12.0f);
+        final ControlScrollableContent scroll = new ControlScrollableContent(this, 190.0f, 50.0f, 114.0f, 122.0f, 12.0f);
+        scroll.setScrollableContent(this.tileSelect = new ControlTileSelect(scroll, 0.0f, 0.0f));
+        new ControlPlayerInventory(this).setPosition(new IPoint(14.0f, 96.0f));
+        new ControlErrorState(this, 76.0f, 65.0f);
         if (this.getInventory() != null) {
-            ControlSlot slotWood1 = new ControlSlot(this, 22.0F, 34.0F);
+            final ControlSlot slotWood1 = new ControlSlot(this, 22.0f, 34.0f);
             slotWood1.assign(Designer.design1Slot);
-            ControlSlot slotWood2 = new ControlSlot(this, 62.0F, 34.0F);
+            final ControlSlot slotWood2 = new ControlSlot(this, 62.0f, 34.0f);
             slotWood2.assign(Designer.design2Slot);
-            ControlSlot slotBeeswax = new ControlSlot(this, 42.0F, 64.0F);
+            final ControlSlot slotBeeswax = new ControlSlot(this, 42.0f, 64.0f);
             slotBeeswax.assign(Designer.beeswaxSlot);
-            new ControlRecipeSlot(this, 112, 34);
+            final ControlRecipeSlot slotFinished = new ControlRecipeSlot(this, 112, 34);
         }
-
     }
 
-    public WindowWoodworker(EntityPlayer player, IInventory inventory, Side side) {
-        super(320.0F, 216.0F, player, inventory, side);
-        this.addEventHandler((new EventTextEdit.Handler() {
-            public void onEvent(EventTextEdit event) {
-                WindowWoodworker.this.tileSelect.refresh((String) event.getValue());
+    public WindowWoodworker(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(320.0f, 216.0f, player, inventory, side);
+        this.addEventHandler(new EventTextEdit.Handler() {
+            @Override
+            public void onEvent(final EventTextEdit event) {
+                WindowWoodworker.this.tileSelect.refresh(event.getValue());
             }
-        }).setOrigin(EventHandler.Origin.DirectChild, this));
+        }.setOrigin(EventHandler.Origin.DirectChild, this));
     }
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowWoodworker(player, inventory, side);
     }
 
+    @Override
     protected AbstractMod getMod() {
         return ExtraTrees.instance;
     }
 
+    @Override
     protected String getName() {
         return "Woodworker";
     }
 
     public DesignerType getDesignerType() {
-        return ((Designer.ComponentWoodworkerRecipe) Machine.getInterface(Designer.ComponentWoodworkerRecipe.class, this.getInventory())).getDesignerType();
+        return Machine.getInterface(Designer.ComponentWoodworkerRecipe.class, this.getInventory()).getDesignerType();
     }
 }

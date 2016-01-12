@@ -19,44 +19,41 @@ public enum BinnieCorePacketID implements IPacketID {
     CraftGUIAction,
     TileDescriptionSync;
 
-    private BinnieCorePacketID() {
-    }
-
-    public void onMessage(MessageBinnie message, MessageContext context) {
-        if (this == NetworkEntityUpdate) {
-            MessageUpdate packet = new MessageUpdate(message);
-            TileEntity tile = packet.getTileEntity(BinnieCore.proxy.getWorld());
+    @Override
+    public void onMessage(final MessageBinnie message, final MessageContext context) {
+        if (this == BinnieCorePacketID.NetworkEntityUpdate) {
+            final MessageUpdate packet = new MessageUpdate(message);
+            final TileEntity tile = packet.getTileEntity(BinnieCore.proxy.getWorld());
             if (tile instanceof INetworkedEntity) {
                 ((INetworkedEntity) tile).readFromPacket(packet.payload);
             }
-        } else if (this == TileMetadata) {
-            MessageMetadata packet = new MessageMetadata(message);
-            TileEntity tile = packet.getTileEntity(BinnieCore.proxy.getWorld());
+        } else if (this == BinnieCorePacketID.TileMetadata) {
+            final MessageMetadata packet2 = new MessageMetadata(message);
+            final TileEntity tile = packet2.getTileEntity(BinnieCore.proxy.getWorld());
             if (tile instanceof TileEntityMetadata) {
-                ((TileEntityMetadata) tile).setTileMetadata(packet.meta, true);
+                ((TileEntityMetadata) tile).setTileMetadata(packet2.meta, true);
             }
-        } else if (this == CraftGUIAction && context.side == Side.CLIENT) {
-            MessageCraftGUI packet = new MessageCraftGUI(message);
-            EntityPlayer player = BinnieCore.proxy.getPlayer();
-            if (player.openContainer instanceof ContainerCraftGUI && packet.getTagCompound() != null) {
-                ((ContainerCraftGUI) player.openContainer).recieveNBT(Side.CLIENT, player, packet.getTagCompound());
+        } else if (this == BinnieCorePacketID.CraftGUIAction && context.side == Side.CLIENT) {
+            final MessageCraftGUI packet3 = new MessageCraftGUI(message);
+            final EntityPlayer player = BinnieCore.proxy.getPlayer();
+            if (player.openContainer instanceof ContainerCraftGUI && packet3.getTagCompound() != null) {
+                ((ContainerCraftGUI) player.openContainer).recieveNBT(Side.CLIENT, player, packet3.getTagCompound());
             }
-        } else if (this == CraftGUIAction && context.side == Side.SERVER && context.netHandler instanceof NetHandlerPlayServer) {
-            MessageCraftGUI packet = new MessageCraftGUI(message);
-            EntityPlayer player = ((NetHandlerPlayServer) context.netHandler).playerEntity;
-            if (player.openContainer instanceof ContainerCraftGUI && packet.getTagCompound() != null) {
-                ((ContainerCraftGUI) player.openContainer).recieveNBT(Side.SERVER, player, packet.getTagCompound());
+        } else if (this == BinnieCorePacketID.CraftGUIAction && context.side == Side.SERVER && context.netHandler instanceof NetHandlerPlayServer) {
+            final MessageCraftGUI packet3 = new MessageCraftGUI(message);
+            final EntityPlayer player = (EntityPlayer) ((NetHandlerPlayServer) context.netHandler).playerEntity;
+            if (player.openContainer instanceof ContainerCraftGUI && packet3.getTagCompound() != null) {
+                ((ContainerCraftGUI) player.openContainer).recieveNBT(Side.SERVER, player, packet3.getTagCompound());
             }
-        } else if (this == TileDescriptionSync && context.side == Side.CLIENT) {
-            MessageTileNBT packet = new MessageTileNBT(message);
-            TileEntity tile = packet.getTarget(BinnieCore.proxy.getWorld());
-            if (tile != null && packet.getTagCompound() != null) {
-                IMachine machine = Machine.getMachine(tile);
+        } else if (this == BinnieCorePacketID.TileDescriptionSync && context.side == Side.CLIENT) {
+            final MessageTileNBT packet4 = new MessageTileNBT(message);
+            final TileEntity tile = packet4.getTarget(BinnieCore.proxy.getWorld());
+            if (tile != null && packet4.getTagCompound() != null) {
+                final IMachine machine = Machine.getMachine(tile);
                 if (machine != null && machine instanceof INetwork.TilePacketSync) {
-                    ((INetwork.TilePacketSync) machine).syncFromNBT(packet.getTagCompound());
+                    ((INetwork.TilePacketSync) machine).syncFromNBT(packet4.getTagCompound());
                 }
             }
         }
-
     }
 }

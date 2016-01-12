@@ -8,25 +8,25 @@ public interface IFlower extends IIndividual {
 
     IFlowerGenome getMate();
 
-    void mate(IFlower var1);
+    void mate(final IFlower p0);
 
     int getAge();
 
     void age();
 
-    void setAge(int var1);
+    void setAge(final int p0);
 
-    IFlower getOffspring(World var1);
+    IFlower getOffspring(final World p0);
 
     int getMaxAge();
 
     boolean isWilted();
 
-    void setWilted(boolean var1);
+    void setWilted(final boolean p0);
 
     boolean hasFlowered();
 
-    void setFlowered(boolean var1);
+    void setFlowered(final boolean p0);
 
     void removeMate();
 }

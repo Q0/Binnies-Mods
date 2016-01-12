@@ -6,27 +6,27 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ICarpentryInterface {
-    boolean registerCarpentryWood(int var1, IDesignMaterial var2);
+    boolean registerCarpentryWood(final int p0, final IDesignMaterial p1);
 
-    int getCarpentryWoodIndex(IDesignMaterial var1);
+    int getCarpentryWoodIndex(final IDesignMaterial p0);
 
-    IDesignMaterial getWoodMaterial(int var1);
+    IDesignMaterial getWoodMaterial(final int p0);
 
-    boolean registerDesign(int var1, IDesign var2);
+    boolean registerDesign(final int p0, final IDesign p1);
 
-    int getDesignIndex(IDesign var1);
+    int getDesignIndex(final IDesign p0);
 
-    IDesign getDesign(int var1);
+    IDesign getDesign(final int p0);
 
-    ILayout getLayout(IPattern var1, boolean var2);
+    ILayout getLayout(final IPattern p0, final boolean p1);
 
-    IDesignMaterial getWoodMaterial(ItemStack var1);
+    IDesignMaterial getWoodMaterial(final ItemStack p0);
 
-    boolean registerDesignCategory(IDesignCategory var1);
+    boolean registerDesignCategory(final IDesignCategory p0);
 
-    IDesignCategory getDesignCategory(String var1);
+    IDesignCategory getDesignCategory(final String p0);
 
-    Collection getAllDesignCategories();
+    Collection<IDesignCategory> getAllDesignCategories();
 
-    List getSortedDesigns();
+    List<IDesign> getSortedDesigns();
 }

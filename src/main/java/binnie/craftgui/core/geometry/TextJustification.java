@@ -1,20 +1,20 @@
 package binnie.craftgui.core.geometry;
 
 public enum TextJustification {
-    TopLeft(0.0F, 0.0F),
-    TopCenter(0.5F, 0.0F),
-    TopRight(1.0F, 0.0F),
-    MiddleLeft(0.0F, 0.5F),
-    MiddleCenter(0.5F, 0.5F),
-    MiddleRight(1.0F, 0.5F),
-    BottomLeft(0.0F, 1.0F),
-    BottomCenter(0.5F, 1.0F),
-    BottomRight(1.0F, 1.0F);
+    TopLeft(0.0f, 0.0f),
+    TopCenter(0.5f, 0.0f),
+    TopRight(1.0f, 0.0f),
+    MiddleLeft(0.0f, 0.5f),
+    MiddleCenter(0.5f, 0.5f),
+    MiddleRight(1.0f, 0.5f),
+    BottomLeft(0.0f, 1.0f),
+    BottomCenter(0.5f, 1.0f),
+    BottomRight(1.0f, 1.0f);
 
     float xOffset;
     float yOffset;
 
-    private TextJustification(float xOffset, float yOffset) {
+    private TextJustification(final float xOffset, final float yOffset) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }

@@ -10,35 +10,57 @@ import binnie.genetics.item.ItemSerumArray;
 import net.minecraft.item.ItemStack;
 
 public class Engineering {
-    public Engineering() {
-        super();
+    public static boolean isGeneAcceptor(final ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        if (stack.getItem() instanceof IItemSerum) {
+            return ((IItemSerum) stack.getItem()).getCharges(stack) == 0;
+        }
+        return stack.getItem() == Genetics.itemGenetics && (stack.getItemDamage() == GeneticsItems.EmptySerum.ordinal() || stack.getItemDamage() == GeneticsItems.EmptyGenome.ordinal());
     }
 
-    public static boolean isGeneAcceptor(ItemStack stack) {
-        return stack == null ? false : (stack.getItem() instanceof IItemSerum ? ((IItemSerum) stack.getItem()).getCharges(stack) == 0 : stack.getItem() == Genetics.itemGenetics && (stack.getItemDamage() == GeneticsItems.EmptySerum.ordinal() || stack.getItemDamage() == GeneticsItems.EmptyGenome.ordinal()));
+    public static boolean canAcceptGene(final ItemStack stack, final IGene gene) {
+        if (stack.getItem() instanceof ItemSerum) {
+            return true;
+        }
+        if (stack.getItem() instanceof IItemSerum) {
+            return ((IItemSerum) stack.getItem()).getSpeciesRoot(stack) == gene.getSpeciesRoot();
+        }
+        return isGeneAcceptor(stack);
     }
 
-    public static boolean canAcceptGene(ItemStack stack, IGene gene) {
-        return stack.getItem() instanceof ItemSerum ? true : (stack.getItem() instanceof IItemSerum ? ((IItemSerum) stack.getItem()).getSpeciesRoot(stack) == gene.getSpeciesRoot() : isGeneAcceptor(stack));
+    public static IGene getGene(final ItemStack stack, final int chromosome) {
+        if (stack.getItem() instanceof IItemSerum) {
+            return ((IItemSerum) stack.getItem()).getGene(stack, chromosome);
+        }
+        return null;
     }
 
-    public static IGene getGene(ItemStack stack, int chromosome) {
-        return stack.getItem() instanceof IItemSerum ? ((IItemSerum) stack.getItem()).getGene(stack, chromosome) : null;
-    }
-
-    public static ItemStack addGene(ItemStack stack, IGene gene) {
+    public static ItemStack addGene(final ItemStack stack, final IGene gene) {
         if (stack.getItem() instanceof IItemSerum) {
             ((IItemSerum) stack.getItem()).addGene(stack, gene);
         }
-
-        return stack.getItem() == Genetics.itemGenetics && stack.getItemDamage() == GeneticsItems.EmptySerum.ordinal() ? ItemSerum.create(gene) : (stack.getItem() == Genetics.itemGenetics && stack.getItemDamage() == GeneticsItems.EmptyGenome.ordinal() ? ItemSerumArray.create(gene) : stack);
+        if (stack.getItem() == Genetics.itemGenetics && stack.getItemDamage() == GeneticsItems.EmptySerum.ordinal()) {
+            return ItemSerum.create(gene);
+        }
+        if (stack.getItem() == Genetics.itemGenetics && stack.getItemDamage() == GeneticsItems.EmptyGenome.ordinal()) {
+            return ItemSerumArray.create(gene);
+        }
+        return stack;
     }
 
-    public static IGene[] getGenes(ItemStack serum) {
-        return serum.getItem() instanceof IItemSerum ? ((IItemSerum) serum.getItem()).getGenes(serum) : (serum.getItem() == Genetics.itemSequencer ? new IGene[]{(new SequencerItem(serum)).gene} : new IGene[0]);
+    public static IGene[] getGenes(final ItemStack serum) {
+        if (serum.getItem() instanceof IItemSerum) {
+            return ((IItemSerum) serum.getItem()).getGenes(serum);
+        }
+        if (serum.getItem() == Genetics.itemSequencer) {
+            return new IGene[]{new SequencerItem(serum).gene};
+        }
+        return new IGene[0];
     }
 
-    public static int getCharges(ItemStack serum) {
+    public static int getCharges(final ItemStack serum) {
         return ((IItemChargable) serum.getItem()).getCharges(serum);
     }
 }

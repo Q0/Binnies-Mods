@@ -9,13 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 public class MachineComponent implements INBTTagable {
     private IMachine machine;
 
-    public MachineComponent(IMachine machine) {
-        super();
+    public MachineComponent(final IMachine machine) {
         this.setMachine(machine);
         machine.addComponent(this);
     }
 
-    public void setMachine(IMachine machine) {
+    public void setMachine(final IMachine machine) {
         this.machine = machine;
     }
 
@@ -23,10 +22,10 @@ public class MachineComponent implements INBTTagable {
         return this.machine;
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
     }
 
     public void onUpdate() {
@@ -43,7 +42,7 @@ public class MachineComponent implements INBTTagable {
         return new MachinePayload(Binnie.Machine.getNetworkID(this.getClass()));
     }
 
-    public void recieveData(MachinePayload payload) {
+    public void recieveData(final MachinePayload payload) {
     }
 
     public MachineUtil getUtil() {
@@ -54,6 +53,6 @@ public class MachineComponent implements INBTTagable {
     }
 
     public IInventory getInventory() {
-        return (IInventory) this.getMachine().getInterface(IInventory.class);
+        return this.getMachine().getInterface(IInventory.class);
     }
 }

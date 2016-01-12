@@ -3,20 +3,18 @@ package binnie.craftgui.minecraft;
 import binnie.core.IInitializable;
 
 public class ModuleCraftGUI implements IInitializable {
-    public ModuleCraftGUI() {
-        super();
-    }
-
+    @Override
     public void preInit() {
     }
 
+    @Override
     public void init() {
     }
 
+    @Override
     public void postInit() {
-        for (GUIIcon icon : GUIIcon.values()) {
+        for (final GUIIcon icon : GUIIcon.values()) {
             icon.register();
         }
-
     }
 }

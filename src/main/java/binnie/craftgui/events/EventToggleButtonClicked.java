@@ -5,7 +5,7 @@ import binnie.craftgui.core.IWidget;
 public class EventToggleButtonClicked extends Event {
     boolean toggled;
 
-    public EventToggleButtonClicked(IWidget origin, boolean toggled) {
+    public EventToggleButtonClicked(final IWidget origin, final boolean toggled) {
         super(origin);
         this.toggled = toggled;
     }

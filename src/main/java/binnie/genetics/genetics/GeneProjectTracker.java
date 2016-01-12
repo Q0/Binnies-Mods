@@ -8,111 +8,107 @@ import net.minecraft.world.WorldSavedData;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class GeneProjectTracker extends WorldSavedData {
-    Map projects = new HashMap();
-    Map TeamInvites = new HashMap();
+    Map<Integer, GeneProject> projects;
+    Map<GameProfile, Set<Integer>> TeamInvites;
 
-    public GeneProjectTracker(String s) {
+    public GeneProjectTracker(final String s) {
         super(s);
+        this.projects = new HashMap<Integer, GeneProject>();
+        this.TeamInvites = new HashMap<GameProfile, Set<Integer>>();
     }
 
-    public static GeneProjectTracker getTracker(World world) {
-        String filename = "GeneProjectTracker.common";
-        GeneProjectTracker tracker = (GeneProjectTracker) world.loadItemData(GeneProjectTracker.class, filename);
+    public static GeneProjectTracker getTracker(final World world) {
+        final String filename = "GeneProjectTracker.common";
+        GeneProjectTracker tracker = (GeneProjectTracker) world.loadItemData((Class) GeneProjectTracker.class, filename);
         if (tracker == null) {
             tracker = new GeneProjectTracker(filename);
-            world.setItemData(filename, tracker);
+            world.setItemData(filename, (WorldSavedData) tracker);
         }
-
         return tracker;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void writeToNBT(final NBTTagCompound nbt) {
     }
 
-    public int createProject(String name, GameProfile leader) {
+    public int createProject(final String name, final GameProfile leader) {
         int i;
-        for (i = 1; this.projects.keySet().contains(Integer.valueOf(i)); ++i) {
-            ;
+        for (i = 1; this.projects.keySet().contains(i); ++i) {
         }
-
-        GeneProject project = new GeneProject(i, name, leader);
-        this.projects.put(Integer.valueOf(i), project);
+        final GeneProject project = new GeneProject(i, name, leader);
+        this.projects.put(i, project);
         this.markDirty();
         return i;
     }
 
-    public void removeProject(int id) {
-        this.projects.remove(Integer.valueOf(id));
-
-        for (Entry<GameProfile, Set<Integer>> entry : this.TeamInvites.entrySet()) {
-            ((Set) entry.getValue()).remove(Integer.valueOf(id));
+    public void removeProject(final int id) {
+        this.projects.remove(id);
+        for (final Map.Entry<GameProfile, Set<Integer>> entry : this.TeamInvites.entrySet()) {
+            entry.getValue().remove(id);
         }
-
         this.markDirty();
     }
 
-    public void leaveProject(int id, GameProfile player) {
-        GeneProject project = (GeneProject) this.projects.get(Integer.valueOf(id));
-        if (project != null) {
-            project.removePlayer(player);
-            if (project.isEmpty()) {
-                this.removeProject(id);
-            }
-
-            this.markDirty();
+    public void leaveProject(final int id, final GameProfile player) {
+        final GeneProject project = this.projects.get(id);
+        if (project == null) {
+            return;
         }
+        project.removePlayer(player);
+        if (project.isEmpty()) {
+            this.removeProject(id);
+        }
+        this.markDirty();
     }
 
-    public void joinProject(int id, GameProfile player) {
-        GeneProject project = (GeneProject) this.projects.get(Integer.valueOf(id));
-        if (project != null) {
-            project.addPlayer(player);
-            this.markDirty();
+    public void joinProject(final int id, final GameProfile player) {
+        final GeneProject project = this.projects.get(id);
+        if (project == null) {
+            return;
         }
+        project.addPlayer(player);
+        this.markDirty();
     }
 
-    public void reassignPlayer(int id, int id2, GameProfile player) {
-        GeneProject project = (GeneProject) this.projects.get(Integer.valueOf(id));
-        if (project != null) {
-            GeneProject project2 = (GeneProject) this.projects.get(Integer.valueOf(id2));
-            if (project2 != null) {
-                this.leaveProject(id, player);
-                this.joinProject(id2, player);
-            }
+    public void reassignPlayer(final int id, final int id2, final GameProfile player) {
+        final GeneProject project = this.projects.get(id);
+        if (project == null) {
+            return;
         }
+        final GeneProject project2 = this.projects.get(id2);
+        if (project2 == null) {
+            return;
+        }
+        this.leaveProject(id, player);
+        this.joinProject(id2, player);
     }
 
-    public void renameProject(int id, String newName) {
-        GeneProject project = (GeneProject) this.projects.get(Integer.valueOf(id));
+    public void renameProject(final int id, final String newName) {
+        final GeneProject project = this.projects.get(id);
         if (project != null) {
             project.setName(newName);
         }
-
         this.markDirty();
     }
 
-    public void invitePlayer(int id, GameProfile player) {
+    public void invitePlayer(final int id, final GameProfile player) {
         if (!this.TeamInvites.containsKey(player)) {
-            this.TeamInvites.put(player, new LinkedHashSet());
+            this.TeamInvites.put(player, new LinkedHashSet<Integer>());
         }
-
-        ((Set) this.TeamInvites.get(player)).add(Integer.valueOf(id));
+        this.TeamInvites.get(player).add(id);
         this.markDirty();
     }
 
-    public void revokeInvite(int id, GameProfile player) {
+    public void revokeInvite(final int id, final GameProfile player) {
         if (!this.TeamInvites.containsKey(player)) {
-            this.TeamInvites.put(player, new LinkedHashSet());
+            this.TeamInvites.put(player, new LinkedHashSet<Integer>());
         }
-
-        ((Set) this.TeamInvites.get(player)).add(Integer.valueOf(id));
+        this.TeamInvites.get(player).add(id);
         this.markDirty();
     }
 }

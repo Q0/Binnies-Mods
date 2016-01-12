@@ -6,8 +6,4 @@ import binnie.craftgui.resource.minecraft.CraftGUIResourceManager;
 public class CraftGUI {
     public static CraftGUIResourceManager ResourceManager;
     public static Renderer Render;
-
-    public CraftGUI() {
-        super();
-    }
 }

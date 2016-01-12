@@ -7,9 +7,9 @@ public interface IControlScrollable extends IWidget {
 
     float getPercentageIndex();
 
-    void movePercentage(float var1);
+    void movePercentage(final float p0);
 
-    void setPercentageIndex(float var1);
+    void setPercentageIndex(final float p0);
 
     float getMovementRange();
 }

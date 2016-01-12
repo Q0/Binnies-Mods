@@ -9,37 +9,43 @@ import binnie.craftgui.resource.minecraft.CraftGUITextureSheet;
 import binnie.craftgui.resource.minecraft.StandardTexture;
 
 public class ControlColourMixSymbol extends Control implements ITooltip {
-    static Texture MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
-    static Texture MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
-    IColourMix value = null;
+    static Texture MutationPlus;
+    static Texture MutationArrow;
+    IColourMix value;
     int type;
 
+    @Override
     public void onRenderBackground() {
         super.onRenderBackground();
         if (this.type == 0) {
-            CraftGUI.Render.texture(MutationPlus, IPoint.ZERO);
+            CraftGUI.Render.texture(ControlColourMixSymbol.MutationPlus, IPoint.ZERO);
         } else {
-            CraftGUI.Render.texture(MutationArrow, IPoint.ZERO);
+            CraftGUI.Render.texture(ControlColourMixSymbol.MutationArrow, IPoint.ZERO);
         }
-
     }
 
-    protected ControlColourMixSymbol(IWidget parent, int x, int y, int type) {
-        super(parent, (float) x, (float) y, (float) (16 + type * 16), 16.0F);
+    protected ControlColourMixSymbol(final IWidget parent, final int x, final int y, final int type) {
+        super(parent, x, y, 16 + type * 16, 16.0f);
+        this.value = null;
         this.type = type;
         this.addAttribute(Attribute.MouseOver);
     }
 
-    public void setValue(IColourMix value) {
+    public void setValue(final IColourMix value) {
         this.value = value;
         this.setColour(16777215);
     }
 
-    public void getTooltip(Tooltip tooltip) {
+    @Override
+    public void getTooltip(final Tooltip tooltip) {
         if (this.type == 1) {
-            float chance = (float) this.value.getChance();
+            final float chance = this.value.getChance();
             tooltip.add("Current Chance - " + chance + "%");
         }
+    }
 
+    static {
+        ControlColourMixSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
+        ControlColourMixSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
     }
 }

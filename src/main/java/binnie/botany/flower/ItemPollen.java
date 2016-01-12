@@ -7,10 +7,12 @@ public class ItemPollen extends ItemBotany {
         super("pollen");
     }
 
+    @Override
     public EnumFlowerStage getStage() {
         return EnumFlowerStage.POLLEN;
     }
 
+    @Override
     public String getTag() {
         return " Pollen";
     }

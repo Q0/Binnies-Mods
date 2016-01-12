@@ -8,31 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tooltip {
-    List tooltip = new ArrayList();
-    Tooltip.ITooltipType type = Tooltip.Type.Standard;
-    public int maxWidth = 256;
+    List<String> tooltip;
+    ITooltipType type;
+    public int maxWidth;
 
     public Tooltip() {
-        super();
+        this.tooltip = new ArrayList<String>();
+        this.type = Type.Standard;
+        this.maxWidth = 256;
     }
 
-    public void add(String string) {
+    public void add(final String string) {
         this.tooltip.add(string);
     }
 
-    public String getLine(int index) {
-        String string = (String) this.getList().get(index);
+    public String getLine(final int index) {
+        final String string = this.getList().get(index);
         return string;
     }
 
-    public void add(List list) {
-        for (Object obj : list) {
+    public void add(final List list) {
+        for (final Object obj : list) {
             this.tooltip.add((String) obj);
         }
-
     }
 
-    public List getList() {
+    public List<String> getList() {
         return this.tooltip;
     }
 
@@ -40,43 +41,40 @@ public class Tooltip {
         return this.tooltip.size() > 0;
     }
 
-    public void setType(Tooltip.ITooltipType type) {
+    public void setType(final ITooltipType type) {
         this.type = type;
     }
 
-    public void setMaxWidth(int w) {
+    public void setMaxWidth(final int w) {
         this.maxWidth = w;
     }
 
-    public Tooltip.ITooltipType getType() {
+    public ITooltipType getType() {
         return this.type;
     }
 
-    public void add(ItemStack item, String string) {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public void add(final ItemStack item, final String string) {
+        final NBTTagCompound nbt = new NBTTagCompound();
         item.writeToNBT(nbt);
         nbt.setByte("nbt-type", (byte) 105);
         this.add("~~~" + nbt.toString() + "~~~" + string);
     }
 
-    public void add(FluidStack item, String string) {
-        NBTTagCompound nbt = new NBTTagCompound();
+    public void add(final FluidStack item, final String string) {
+        final NBTTagCompound nbt = new NBTTagCompound();
         item.writeToNBT(nbt);
         nbt.setByte("nbt-type", (byte) 102);
         this.add("~~~" + nbt.toString() + "~~~" + string);
     }
 
-    public interface ITooltipType {
-    }
-
-    public static enum Type implements Tooltip.ITooltipType {
+    public enum Type implements ITooltipType {
         Standard,
         Help,
         Information,
         User,
         Power;
+    }
 
-        private Type() {
-        }
+    public interface ITooltipType {
     }
 }

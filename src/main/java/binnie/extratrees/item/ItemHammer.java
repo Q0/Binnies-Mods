@@ -6,20 +6,21 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemHammer extends Item implements IToolHammer {
-    boolean isDurableHammer = false;
+    boolean isDurableHammer;
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.itemIcon = ExtraTrees.proxy.getIcon(register, this.isDurableHammer ? "durableHammer" : "carpentryHammer");
     }
 
-    public ItemHammer(boolean durable) {
-        super();
+    public ItemHammer(final boolean durable) {
+        this.isDurableHammer = false;
         this.isDurableHammer = durable;
         this.setCreativeTab(CreativeTabs.tabTools);
         this.setUnlocalizedName(durable ? "durableHammer" : "hammer");
@@ -27,15 +28,15 @@ public class ItemHammer extends Item implements IToolHammer {
         this.setMaxDamage(durable ? 1562 : 251);
     }
 
-    public String getItemStackDisplayName(ItemStack i) {
+    public String getItemStackDisplayName(final ItemStack i) {
         return this.isDurableHammer ? "Master Carpentry Hammer" : "Carpentry Hammer";
     }
 
-    public boolean isActive(ItemStack item) {
+    public boolean isActive(final ItemStack item) {
         return true;
     }
 
-    public void onHammerUsed(ItemStack item, EntityPlayer player) {
-        item.damageItem(1, player);
+    public void onHammerUsed(final ItemStack item, final EntityPlayer player) {
+        item.damageItem(1, (EntityLivingBase) player);
     }
 }

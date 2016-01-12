@@ -8,16 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidatorIcon {
-    private List iconsInput = new ArrayList();
-    private List iconsOutput = new ArrayList();
+    private List<BinnieIcon> iconsInput;
+    private List<BinnieIcon> iconsOutput;
 
-    public ValidatorIcon(AbstractMod mod, String pathInput, String pathOutput) {
-        super();
+    public ValidatorIcon(final AbstractMod mod, final String pathInput, final String pathOutput) {
+        this.iconsInput = new ArrayList<BinnieIcon>();
+        this.iconsOutput = new ArrayList<BinnieIcon>();
         this.iconsInput.add(Binnie.Resource.getItemIcon(mod, pathInput));
         this.iconsOutput.add(Binnie.Resource.getItemIcon(mod, pathOutput));
     }
 
-    public BinnieIcon getIcon(boolean input) {
-        return input ? (BinnieIcon) this.iconsInput.get(0) : (BinnieIcon) this.iconsOutput.get(0);
+    public BinnieIcon getIcon(final boolean input) {
+        return input ? this.iconsInput.get(0) : this.iconsOutput.get(0);
     }
 }

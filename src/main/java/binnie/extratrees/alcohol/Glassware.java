@@ -5,7 +5,6 @@ import binnie.extratrees.ExtraTrees;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
 
 public enum Glassware {
     BeerMug(16, 10, 14),
@@ -30,27 +29,30 @@ public enum Glassware {
     public IIcon glass;
     public IIcon contents;
 
-    public String getName(String liquid) {
-        return liquid == null ? ExtraTrees.proxy.localise("item.glassware." + this.name().toLowerCase()) : Binnie.Language.localise(ExtraTrees.instance, "item.glassware." + this.name().toLowerCase() + ".usage", new Object[]{liquid});
+    public String getName(final String liquid) {
+        if (liquid == null) {
+            return ExtraTrees.proxy.localise("item.glassware." + this.name().toLowerCase());
+        }
+        return Binnie.Language.localise(ExtraTrees.instance, "item.glassware." + this.name().toLowerCase() + ".usage", liquid);
     }
 
     public int getCapacity() {
         return this.capacity;
     }
 
-    private Glassware(int capacity, int contentBottom, int contentHeight) {
+    private Glassware(final int capacity, final int contentBottom, final int contentHeight) {
         this.capacity = 30 * capacity;
-        this.contentBottom = (float) contentBottom / 32.0F;
-        this.contentHeight = (float) contentHeight / 32.0F;
+        this.contentBottom = contentBottom / 32.0f;
+        this.contentHeight = contentHeight / 32.0f;
     }
 
-    public void registerIcons(IIconRegister par1IconRegister) {
+    public void registerIcons(final IIconRegister par1IconRegister) {
         this.glass = ExtraTrees.proxy.getIcon(par1IconRegister, "glassware/" + this.toString().toLowerCase() + ".glass");
         this.contents = ExtraTrees.proxy.getIcon(par1IconRegister, "glassware/" + this.toString().toLowerCase() + ".contents");
     }
 
-    public ItemStack get(int i) {
-        return ExtraTrees.drink.getStack(this, (FluidStack) null);
+    public ItemStack get(final int i) {
+        return ExtraTrees.drink.getStack(this, null);
     }
 
     public float getContentBottom() {

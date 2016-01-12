@@ -10,36 +10,30 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public class BlockDrinkRenderer implements ISimpleBlockRenderingHandler {
-    public BlockDrinkRenderer() {
-        super();
+    public void renderInventoryBlock(final Block block, final int metadata, final int modelId, final RenderBlocks renderer) {
     }
 
-    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-    }
-
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(final IBlockAccess world, final int x, final int y, final int z, final Block block, final int modelId, final RenderBlocks renderer) {
         GL11.glPushMatrix();
         Tessellator.instance.setColorRGBA(255, 255, 255, 150);
-        Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.instance;
         renderer.renderFaceYPos(block, (double) x, (double) y, (double) z, Blocks.dirt.getIcon(0, 0));
-        float s = 0.0625F;
-
+        final float s = 0.0625f;
         for (int h = 0; h < 16; ++h) {
-            float d1 = 8.0F * s;
-            float d2 = 8.0F * s;
-            float h1 = (float) h * s;
-            float h2 = (float) h * s;
-            tess.addVertexWithUV((double) ((float) x + 0.5F - d1), (double) ((float) y + h1), (double) ((float) z + 0.5F - d1), 0.0D, 0.0D);
-            tess.addVertexWithUV((double) ((float) x + 0.5F - d1), (double) ((float) y + h2), (double) ((float) z + 0.5F - d1), 0.0D, 0.0D);
-            tess.addVertexWithUV((double) ((float) x + 0.5F + d1), (double) ((float) y + h2), (double) ((float) z + 0.5F - d1), 0.0D, 0.0D);
-            tess.addVertexWithUV((double) ((float) x + 0.5F + d1), (double) ((float) y + h1), (double) ((float) z + 0.5F - d1), 0.0D, 0.0D);
+            final float d1 = 8.0f * s;
+            final float d2 = 8.0f * s;
+            final float h2 = h * s;
+            final float h3 = h * s;
+            tess.addVertexWithUV((double) (x + 0.5f - d1), (double) (y + h2), (double) (z + 0.5f - d1), 0.0, 0.0);
+            tess.addVertexWithUV((double) (x + 0.5f - d1), (double) (y + h3), (double) (z + 0.5f - d1), 0.0, 0.0);
+            tess.addVertexWithUV((double) (x + 0.5f + d1), (double) (y + h3), (double) (z + 0.5f - d1), 0.0, 0.0);
+            tess.addVertexWithUV((double) (x + 0.5f + d1), (double) (y + h2), (double) (z + 0.5f - d1), 0.0, 0.0);
         }
-
         GL11.glPopMatrix();
         return false;
     }
 
-    public boolean shouldRender3DInInventory(int modelId) {
+    public boolean shouldRender3DInInventory(final int modelId) {
         return false;
     }
 

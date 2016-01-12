@@ -1,7 +1,7 @@
 package binnie.core.machines;
 
 interface IBlockMachine {
-    MachinePackage getPackage(int var1);
+    MachinePackage getPackage(final int p0);
 
-    String getMachineName(int var1);
+    String getMachineName(final int p0);
 }

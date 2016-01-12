@@ -6,7 +6,7 @@ public abstract class EventKey extends Event {
     char character;
     int key;
 
-    public EventKey(IWidget origin, char character, int key) {
+    public EventKey(final IWidget origin, final char character, final int key) {
         super(origin);
         this.character = character;
         this.key = key;
@@ -21,25 +21,25 @@ public abstract class EventKey extends Event {
     }
 
     public static class Down extends EventKey {
-        public Down(IWidget origin, char character, int key) {
+        public Down(final IWidget origin, final char character, final int key) {
             super(origin, character, key);
         }
 
-        public abstract static class Handler extends EventHandler {
+        public abstract static class Handler extends EventHandler<Down> {
             public Handler() {
-                super(EventKey.Down.class);
+                super(Down.class);
             }
         }
     }
 
     public static class Up extends EventKey {
-        public Up(IWidget origin, char character, int key) {
+        public Up(final IWidget origin, final char character, final int key) {
             super(origin, character, key);
         }
 
-        public abstract static class Handler extends EventHandler {
+        public abstract static class Handler extends EventHandler<Up> {
             public Handler() {
-                super(EventKey.Up.class);
+                super(Up.class);
             }
         }
     }

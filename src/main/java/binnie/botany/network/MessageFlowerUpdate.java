@@ -12,28 +12,30 @@ import java.io.IOException;
 public class MessageFlowerUpdate extends MessageCoordinates {
     public TileEntityFlower.RenderInfo render;
 
-    public MessageFlowerUpdate(int posX, int posY, int posZ, TileEntityFlower.RenderInfo render) {
+    public MessageFlowerUpdate(final int posX, final int posY, final int posZ, final TileEntityFlower.RenderInfo render) {
         super(PacketID.FlowerUpdate.ordinal(), posX, posY, posZ);
         this.render = render;
     }
 
-    public MessageFlowerUpdate(MessageBinnie message) {
+    public MessageFlowerUpdate(final MessageBinnie message) {
         super(message);
     }
 
-    public void writeData(ByteBuf data) throws IOException {
+    @Override
+    public void writeData(final ByteBuf data) throws IOException {
         super.writeData(data);
         data.writeByte(this.render.primary.getID());
         data.writeByte(this.render.secondary.getID());
         data.writeByte(this.render.stem.getID());
         data.writeByte(this.render.type.ordinal());
-        data.writeByte(this.render.age);
-        data.writeByte(this.render.section);
+        data.writeByte((int) this.render.age);
+        data.writeByte((int) this.render.section);
         data.writeBoolean(this.render.wilted);
         data.writeBoolean(this.render.flowered);
     }
 
-    public void readData(ByteBuf data) throws IOException {
+    @Override
+    public void readData(final ByteBuf data) throws IOException {
         super.readData(data);
         this.render = new TileEntityFlower.RenderInfo();
         this.render.primary = EnumFlowerColor.values()[data.readByte()];

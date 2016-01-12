@@ -3,7 +3,7 @@ package binnie.botany.api;
 import forestry.api.genetics.IAlleleInteger;
 
 public interface IFlowerColour {
-    int getColor(boolean var1);
+    int getColor(final boolean p0);
 
     IAlleleInteger getAllele();
 

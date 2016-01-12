@@ -27,137 +27,89 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class Lumbermill {
-    public static int slotWood = 0;
-    public static int slotPlanks = 1;
-    public static int slotBark = 2;
-    public static int slotSawdust = 3;
-    public static int tankWater = 0;
-    static Map recipes = new HashMap();
+    public static int slotWood;
+    public static int slotPlanks;
+    public static int slotBark;
+    public static int slotSawdust;
+    public static int tankWater;
+    static Map<ItemStack, ItemStack> recipes;
 
-    public Lumbermill() {
-        super();
-    }
-
-    public static ItemStack getPlankProduct(ItemStack item) {
+    public static ItemStack getPlankProduct(final ItemStack item) {
         ItemStack stack = null;
-        if (recipes.isEmpty()) {
+        if (Lumbermill.recipes.isEmpty()) {
             calculateLumbermillProducts();
         }
-
-        for (Entry<ItemStack, ItemStack> entry : recipes.entrySet()) {
-            if (((ItemStack) entry.getKey()).isItemEqual(item)) {
-                stack = ((ItemStack) entry.getValue()).copy();
+        for (final Map.Entry<ItemStack, ItemStack> entry : Lumbermill.recipes.entrySet()) {
+            if (entry.getKey().isItemEqual(item)) {
+                stack = entry.getValue().copy();
                 break;
             }
         }
-
         stack.stackSize = 6;
         return stack;
     }
 
     private static void calculateLumbermillProducts() {
-        for (IPlankType type : WoodManager.getAllPlankTypes()) {
-            for (ItemStack wood : getRecipeResult(type.getStack())) {
-                recipes.put(wood, type.getStack());
+        for (final IPlankType type : WoodManager.getAllPlankTypes()) {
+            for (final ItemStack wood : getRecipeResult(type.getStack())) {
+                Lumbermill.recipes.put(wood, type.getStack());
             }
         }
-
     }
 
-    private static Collection getRecipeResult(ItemStack output) {
-        List<ItemStack> list = new ArrayList();
-        Iterator i$ = CraftingManager.getInstance().getRecipeList().iterator();
-
-        while (true) {
-            Object recipeO;
-            while (true) {
-                while (true) {
-                    if (!i$.hasNext()) {
-                        return list;
-                    }
-
-                    recipeO = i$.next();
-                    if (!(recipeO instanceof ShapelessRecipes)) {
-                        break;
-                    }
-
-                    ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
-                    if (recipe.recipeItems.size() == 1 && recipe.recipeItems.get(0) instanceof ItemStack) {
-                        ItemStack input = (ItemStack) recipe.recipeItems.get(0);
-                        if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                            list.add(input);
-                        }
-                        break;
-                    }
+    private static Collection<ItemStack> getRecipeResult(final ItemStack output) {
+        final List<ItemStack> list = new ArrayList<ItemStack>();
+        for (final Object recipeO : CraftingManager.getInstance().getRecipeList()) {
+            if (recipeO instanceof ShapelessRecipes) {
+                final ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
+                if (recipe.recipeItems.size() != 1) {
+                    continue;
                 }
-
-                if (!(recipeO instanceof ShapedRecipes)) {
-                    break;
+                if (!(recipe.recipeItems.get(0) instanceof ItemStack)) {
+                    continue;
                 }
-
-                ShapedRecipes recipe = (ShapedRecipes) recipeO;
-                if (recipe.recipeItems.length == 1) {
-                    ItemStack input = recipe.recipeItems[0];
-                    if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                        list.add(input);
-                    }
-                    break;
+                final ItemStack input = recipe.recipeItems.get(0);
+                if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
+                    list.add(input);
                 }
             }
-
+            if (recipeO instanceof ShapedRecipes) {
+                final ShapedRecipes recipe2 = (ShapedRecipes) recipeO;
+                if (recipe2.recipeItems.length != 1) {
+                    continue;
+                }
+                final ItemStack input = recipe2.recipeItems[0];
+                if (recipe2.getRecipeOutput() != null && recipe2.getRecipeOutput().isItemEqual(output)) {
+                    list.add(input);
+                }
+            }
             if (recipeO instanceof ShapelessOreRecipe) {
-                ShapelessOreRecipe recipe = (ShapelessOreRecipe) recipeO;
-                if (recipe.getInput().size() == 1 && recipe.getInput().get(0) instanceof ItemStack) {
-                    ItemStack input = (ItemStack) recipe.getInput().get(0);
-                    if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                        list.add(input);
-                    }
+                final ShapelessOreRecipe recipe3 = (ShapelessOreRecipe) recipeO;
+                if (recipe3.getInput().size() != 1) {
+                    continue;
                 }
+                if (!(recipe3.getInput().get(0) instanceof ItemStack)) {
+                    continue;
+                }
+                final ItemStack input = recipe3.getInput().get(0);
+                if (recipe3.getRecipeOutput() == null || !recipe3.getRecipeOutput().isItemEqual(output)) {
+                    continue;
+                }
+                list.add(input);
             }
         }
+        return list;
     }
 
-    public static class ComponentLumbermillLogic extends ComponentProcessSetCost implements IProcess {
-        public ComponentLumbermillLogic(Machine machine) {
-            super(machine, 900, 30);
-        }
-
-        public ErrorState canWork() {
-            if (this.getUtil().isSlotEmpty(Lumbermill.slotWood)) {
-                return new ErrorState.NoItem("No Wood", Lumbermill.slotWood);
-            } else {
-                ItemStack result = Lumbermill.getPlankProduct(this.getUtil().getStack(Lumbermill.slotWood));
-                if (!this.getUtil().isSlotEmpty(Lumbermill.slotPlanks) && result != null) {
-                    ItemStack currentPlank = this.getUtil().getStack(Lumbermill.slotPlanks);
-                    if (!result.isItemEqual(currentPlank) || result.stackSize + currentPlank.stackSize > currentPlank.getMaxStackSize()) {
-                        return new ErrorState.NoSpace("No room for new planks", new int[]{Lumbermill.slotPlanks});
-                    }
-                }
-
-                return super.canWork();
-            }
-        }
-
-        public ErrorState canProgress() {
-            return (ErrorState) (!this.getUtil().liquidInTank(Lumbermill.tankWater, 5) ? new ErrorState.InsufficientLiquid("Not Enough Water", Lumbermill.tankWater) : super.canProgress());
-        }
-
-        protected void onFinishTask() {
-            ItemStack result = Lumbermill.getPlankProduct(this.getUtil().getStack(Lumbermill.slotWood));
-            if (result != null) {
-                this.getUtil().addStack(Lumbermill.slotPlanks, result);
-                this.getUtil().addStack(Lumbermill.slotSawdust, ((ItemMisc) ExtraTrees.itemMisc).getStack(ExtraTreeItems.Sawdust, 1));
-                this.getUtil().addStack(Lumbermill.slotBark, ((ItemMisc) ExtraTrees.itemMisc).getStack(ExtraTreeItems.Bark, 1));
-                this.getUtil().decreaseStack(Lumbermill.slotWood, 1);
-            }
-        }
-
-        protected void onTickTask() {
-            this.getUtil().drainTank(Lumbermill.tankWater, 10);
-        }
+    static {
+        Lumbermill.slotWood = 0;
+        Lumbermill.slotPlanks = 1;
+        Lumbermill.slotBark = 2;
+        Lumbermill.slotSawdust = 3;
+        Lumbermill.tankWater = 0;
+        Lumbermill.recipes = new HashMap<ItemStack, ItemStack>();
     }
 
     public static class PackageLumbermill extends ExtraTreeMachine.PackageExtraTreeMachine implements IMachineInformation {
@@ -165,11 +117,12 @@ public class Lumbermill {
             super("lumbermill", ExtraTreeTexture.lumbermillTexture, true);
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
             new ExtraTreeMachine.ComponentExtraTreeGUI(machine, ExtraTreesGUID.Lumbermill);
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(Lumbermill.slotWood, "input");
-            inventory.getSlot(Lumbermill.slotWood).setValidator(new Lumbermill.SlotValidatorLog());
+            inventory.getSlot(Lumbermill.slotWood).setValidator(new SlotValidatorLog());
             inventory.getSlot(Lumbermill.slotWood).forbidExtraction();
             inventory.addSlot(Lumbermill.slotPlanks, "output");
             inventory.addSlot(Lumbermill.slotBark, "byproduct");
@@ -177,18 +130,66 @@ public class Lumbermill {
             inventory.getSlot(Lumbermill.slotPlanks).setReadOnly();
             inventory.getSlot(Lumbermill.slotBark).setReadOnly();
             inventory.getSlot(Lumbermill.slotSawdust).setReadOnly();
-            ComponentTankContainer tanks = new ComponentTankContainer(machine);
+            final ComponentTankContainer tanks = new ComponentTankContainer(machine);
             tanks.addTank(Lumbermill.tankWater, "input", 10000);
             tanks.getTankSlot(Lumbermill.tankWater).setValidator(new TankValidator.Basic("water"));
             new ComponentPowerReceptor(machine);
-            new Lumbermill.ComponentLumbermillLogic(machine);
+            new ComponentLumbermillLogic(machine);
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
+        }
+    }
+
+    public static class ComponentLumbermillLogic extends ComponentProcessSetCost implements IProcess {
+        public ComponentLumbermillLogic(final Machine machine) {
+            super(machine, 900, 30);
+        }
+
+        @Override
+        public ErrorState canWork() {
+            if (this.getUtil().isSlotEmpty(Lumbermill.slotWood)) {
+                return new ErrorState.NoItem("No Wood", Lumbermill.slotWood);
+            }
+            final ItemStack result = Lumbermill.getPlankProduct(this.getUtil().getStack(Lumbermill.slotWood));
+            if (!this.getUtil().isSlotEmpty(Lumbermill.slotPlanks) && result != null) {
+                final ItemStack currentPlank = this.getUtil().getStack(Lumbermill.slotPlanks);
+                if (!result.isItemEqual(currentPlank) || result.stackSize + currentPlank.stackSize > currentPlank.getMaxStackSize()) {
+                    return new ErrorState.NoSpace("No room for new planks", new int[]{Lumbermill.slotPlanks});
+                }
+            }
+            return super.canWork();
+        }
+
+        @Override
+        public ErrorState canProgress() {
+            if (!this.getUtil().liquidInTank(Lumbermill.tankWater, 5)) {
+                return new ErrorState.InsufficientLiquid("Not Enough Water", Lumbermill.tankWater);
+            }
+            return super.canProgress();
+        }
+
+        @Override
+        protected void onFinishTask() {
+            final ItemStack result = Lumbermill.getPlankProduct(this.getUtil().getStack(Lumbermill.slotWood));
+            if (result == null) {
+                return;
+            }
+            this.getUtil().addStack(Lumbermill.slotPlanks, result);
+            this.getUtil().addStack(Lumbermill.slotSawdust, ((ItemMisc) ExtraTrees.itemMisc).getStack(ExtraTreeItems.Sawdust, 1));
+            this.getUtil().addStack(Lumbermill.slotBark, ((ItemMisc) ExtraTrees.itemMisc).getStack(ExtraTreeItems.Bark, 1));
+            this.getUtil().decreaseStack(Lumbermill.slotWood, 1);
+        }
+
+        @Override
+        protected void onTickTask() {
+            this.getUtil().drainTank(Lumbermill.tankWater, 10);
         }
     }
 
@@ -197,11 +198,13 @@ public class Lumbermill {
             super(SlotValidator.IconBlock);
         }
 
-        public boolean isValid(ItemStack itemStack) {
-            String name = OreDictionary.getOreName(OreDictionary.getOreID(itemStack));
+        @Override
+        public boolean isValid(final ItemStack itemStack) {
+            final String name = OreDictionary.getOreName(OreDictionary.getOreID(itemStack));
             return name.contains("logWood") && Lumbermill.getPlankProduct(itemStack) != null;
         }
 
+        @Override
         public String getTooltip() {
             return "Logs";
         }

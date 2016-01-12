@@ -7,35 +7,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MachineRendererForestry {
-    static Map instances = new HashMap();
+    static Map<String, Object> instances;
     static Method renderMethod;
 
-    public MachineRendererForestry() {
-        super();
-    }
-
-    private static void loadMethod(String file, boolean waterTank, boolean productTank) {
+    private static void loadMethod(final String file, final boolean waterTank, final boolean productTank) {
         try {
-            Class clss = Class.forName("forestry.core.render.RenderMachine");
-            Object instance = clss.getConstructor(new Class[]{String.class}).newInstance(new Object[]{file});
-            renderMethod = clss.getMethod("render", new Class[]{Integer.TYPE, Integer.TYPE, ForgeDirection.class, Double.TYPE, Double.TYPE, Double.TYPE});
-            instances.put(file, instance);
-        } catch (Exception var5) {
-            ;
+            final Class clss = Class.forName("forestry.core.render.RenderMachine");
+            final Object instance = clss.getConstructor(String.class).newInstance(file);
+            MachineRendererForestry.renderMethod = clss.getMethod("render", Integer.TYPE, Integer.TYPE, ForgeDirection.class, Double.TYPE, Double.TYPE, Double.TYPE);
+            MachineRendererForestry.instances.put(file, instance);
+        } catch (Exception ex) {
         }
-
     }
 
-    public static void renderMachine(String name, double x, double y, double z, float var8) {
-        if (!instances.containsKey(name)) {
+    public static void renderMachine(final String name, final double x, final double y, final double z, final float var8) {
+        if (!MachineRendererForestry.instances.containsKey(name)) {
             loadMethod(name, false, false);
         }
-
         try {
-            renderMethod.invoke(instances.get(name), new Object[]{Integer.valueOf(0), Integer.valueOf(0), ForgeDirection.UP, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)});
-        } catch (Exception var9) {
-            ;
+            MachineRendererForestry.renderMethod.invoke(MachineRendererForestry.instances.get(name), 0, 0, ForgeDirection.UP, x, y, z);
+        } catch (Exception ex) {
         }
+    }
 
+    static {
+        MachineRendererForestry.instances = new HashMap<String, Object>();
     }
 }

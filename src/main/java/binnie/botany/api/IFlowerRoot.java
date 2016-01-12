@@ -9,29 +9,29 @@ import net.minecraft.world.World;
 import java.util.Collection;
 
 public interface IFlowerRoot extends ISpeciesRoot {
-    IFlower getMember(ItemStack var1);
+    IFlower getMember(final ItemStack p0);
 
-    IFlower templateAsIndividual(IAllele[] var1);
+    IFlower templateAsIndividual(final IAllele[] p0);
 
-    IFlower templateAsIndividual(IAllele[] var1, IAllele[] var2);
+    IFlower templateAsIndividual(final IAllele[] p0, final IAllele[] p1);
 
-    IFlowerGenome templateAsGenome(IAllele[] var1);
+    IFlowerGenome templateAsGenome(final IAllele[] p0);
 
-    IFlowerGenome templateAsGenome(IAllele[] var1, IAllele[] var2);
+    IFlowerGenome templateAsGenome(final IAllele[] p0, final IAllele[] p1);
 
-    IBotanistTracker getBreedingTracker(World var1, GameProfile var2);
+    IBotanistTracker getBreedingTracker(final World p0, final GameProfile p1);
 
-    Collection getMutations(boolean var1);
+    Collection<IFlowerMutation> getMutations(final boolean p0);
 
-    EnumFlowerStage getType(ItemStack var1);
+    EnumFlowerStage getType(final ItemStack p0);
 
-    IFlower getFlower(World var1, IFlowerGenome var2);
+    IFlower getFlower(final World p0, final IFlowerGenome p1);
 
-    void addConversion(ItemStack var1, IAllele[] var2);
+    void addConversion(final ItemStack p0, final IAllele[] p1);
 
-    IFlower getConversion(ItemStack var1);
+    IFlower getConversion(final ItemStack p0);
 
-    Collection getColourMixes(boolean var1);
+    Collection<IColourMix> getColourMixes(final boolean p0);
 
-    void registerColourMix(IColourMix var1);
+    void registerColourMix(final IColourMix p0);
 }

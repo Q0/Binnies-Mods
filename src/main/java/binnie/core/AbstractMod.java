@@ -1,25 +1,24 @@
 package binnie.core;
 
-import cpw.mods.fml.relauncher.Side;
-import binnie.core.network.packet.MessageBinnie;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import java.util.Iterator;
-import binnie.core.mod.parser.FieldParser;
 import binnie.Binnie;
-import binnie.core.network.BinniePacketHandler;
-import binnie.core.proxy.IProxyCore;
 import binnie.core.gui.IBinnieGUID;
+import binnie.core.mod.parser.FieldParser;
+import binnie.core.network.BinniePacketHandler;
 import binnie.core.network.IPacketID;
-import net.minecraftforge.common.MinecraftForge;
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.reflect.Field;
-import java.util.LinkedHashSet;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import binnie.core.network.IPacketProvider;
+import binnie.core.network.packet.MessageBinnie;
+import binnie.core.proxy.IProxyCore;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.common.MinecraftForge;
 
-public abstract class AbstractMod implements IPacketProvider, IInitializable
-{
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+public abstract class AbstractMod implements IPacketProvider, IInitializable {
     private SimpleNetworkWrapper wrapper;
     private LinkedHashSet<Field> fields;
     protected List<IInitializable> modules;
@@ -28,7 +27,7 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable
         this.fields = new LinkedHashSet<Field>();
         this.modules = new ArrayList<IInitializable>();
         BinnieCore.registerMod(this);
-        MinecraftForge.EVENT_BUS.register((Object)this);
+        MinecraftForge.EVENT_BUS.register((Object) this);
     }
 
     public abstract boolean isActive();
@@ -89,8 +88,7 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable
         for (final Field field4 : this.fields) {
             try {
                 FieldParser.preInitParse(field4, this);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -102,16 +100,15 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable
             return;
         }
         this.getProxy().init();
-        (this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.getChannel())).registerMessage((Class)this.getPacketHandler(), (Class)MessageBinnie.class, 1, Side.CLIENT);
-        this.wrapper.registerMessage((Class)this.getPacketHandler(), (Class)MessageBinnie.class, 1, Side.SERVER);
+        (this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.getChannel())).registerMessage((Class) this.getPacketHandler(), (Class) MessageBinnie.class, 1, Side.CLIENT);
+        this.wrapper.registerMessage((Class) this.getPacketHandler(), (Class) MessageBinnie.class, 1, Side.SERVER);
         for (final IInitializable module : this.modules) {
             module.init();
         }
         for (final Field field : this.fields) {
             try {
                 FieldParser.initParse(field, this);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -129,8 +126,7 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable
         for (final Field field : this.fields) {
             try {
                 FieldParser.postInitParse(field, this);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -138,6 +134,6 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable
 
     protected final void addModule(final IInitializable init) {
         this.modules.add(init);
-        MinecraftForge.EVENT_BUS.register((Object)init);
+        MinecraftForge.EVENT_BUS.register((Object) init);
     }
 }

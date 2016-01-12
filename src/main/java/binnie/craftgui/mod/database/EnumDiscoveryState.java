@@ -5,7 +5,4 @@ public enum EnumDiscoveryState {
     Undetermined,
     Discovered,
     Undiscovered;
-
-    private EnumDiscoveryState() {
-    }
 }

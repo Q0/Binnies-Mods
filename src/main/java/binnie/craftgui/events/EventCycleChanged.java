@@ -5,7 +5,7 @@ import binnie.craftgui.core.IWidget;
 public class EventCycleChanged extends Event {
     public int value;
 
-    public EventCycleChanged(IWidget origin, int value) {
+    public EventCycleChanged(final IWidget origin, final int value) {
         super(origin);
         this.value = value;
     }

@@ -23,18 +23,24 @@ public class ItemHoneyDrop extends ItemProduct {
         this.setUnlocalizedName("honeyDrop");
     }
 
-    public int getColorFromItemStack(ItemStack itemStack, int j) {
-        int i = itemStack.getItemDamage();
-        return j == 0 ? EnumHoneyDrop.get(itemStack).colour[0] : EnumHoneyDrop.get(itemStack).colour[1];
+    public int getColorFromItemStack(final ItemStack itemStack, final int j) {
+        final int i = itemStack.getItemDamage();
+        if (j == 0) {
+            return EnumHoneyDrop.get(itemStack).colour[0];
+        }
+        return EnumHoneyDrop.get(itemStack).colour[1];
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int i, int j) {
-        return j > 0 ? this.icon1 : this.icon2;
+    public IIcon getIconFromDamageForRenderPass(final int i, final int j) {
+        if (j > 0) {
+            return this.icon1;
+        }
+        return this.icon2;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.icon1 = BinnieCore.proxy.getIcon(register, "forestry", "honeyDrop.0");
         this.icon2 = BinnieCore.proxy.getIcon(register, "forestry", "honeyDrop.1");
     }

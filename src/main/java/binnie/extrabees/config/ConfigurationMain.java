@@ -5,37 +5,29 @@ import binnie.core.mod.config.ConfigProperty;
 import binnie.core.mod.config.PropBoolean;
 import binnie.core.mod.config.PropInteger;
 
-@ConfigFile(
-        filename = "/config/forestry/extrabees/main.conf"
-)
+@ConfigFile(filename = "/config/forestry/extrabees/main.conf")
 public class ConfigurationMain {
-    @ConfigProperty(
-            key = "canQuarryMineHives"
-    )
+    @ConfigProperty(key = "canQuarryMineHives")
     @PropBoolean
-    public static boolean canQuarryMineHives = true;
-    @ConfigProperty(
-            key = "waterHiveRate"
-    )
+    public static boolean canQuarryMineHives;
+    @ConfigProperty(key = "waterHiveRate")
     @PropInteger
-    public static int waterHiveRate = 1;
-    @ConfigProperty(
-            key = "rockHiveRate"
-    )
+    public static int waterHiveRate;
+    @ConfigProperty(key = "rockHiveRate")
     @PropInteger
-    public static int rockHiveRate = 2;
-    @ConfigProperty(
-            key = "netherHiveRate"
-    )
+    public static int rockHiveRate;
+    @ConfigProperty(key = "netherHiveRate")
     @PropInteger
-    public static int netherHiveRate = 2;
-    @ConfigProperty(
-            key = "marbleHiveRate"
-    )
+    public static int netherHiveRate;
+    @ConfigProperty(key = "marbleHiveRate")
     @PropInteger
-    public static int marbleHiveRate = 2;
+    public static int marbleHiveRate;
 
-    public ConfigurationMain() {
-        super();
+    static {
+        ConfigurationMain.canQuarryMineHives = true;
+        ConfigurationMain.waterHiveRate = 1;
+        ConfigurationMain.rockHiveRate = 2;
+        ConfigurationMain.netherHiveRate = 2;
+        ConfigurationMain.marbleHiveRate = 2;
     }
 }

@@ -7,20 +7,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.Map;
 
 public interface INetwork {
-    public interface GuiNBT extends INetwork.RecieveGuiNBT, INetwork.SendGuiNBT {
-    }
-
-    public interface RecieveGuiNBT {
-        void recieveGuiNBT(Side var1, EntityPlayer var2, String var3, NBTTagCompound var4);
-    }
-
     public interface SendGuiNBT {
-        void sendGuiNBT(Map var1);
+        void sendGuiNBT(final Map<String, NBTTagCompound> p0);
     }
 
     public interface TilePacketSync {
-        void syncToNBT(NBTTagCompound var1);
+        void syncToNBT(final NBTTagCompound p0);
 
-        void syncFromNBT(NBTTagCompound var1);
+        void syncFromNBT(final NBTTagCompound p0);
+    }
+
+    public interface RecieveGuiNBT {
+        void recieveGuiNBT(final Side p0, final EntityPlayer p1, final String p2, final NBTTagCompound p3);
+    }
+
+    public interface GuiNBT extends RecieveGuiNBT, SendGuiNBT {
     }
 }

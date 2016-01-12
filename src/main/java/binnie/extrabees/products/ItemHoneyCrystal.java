@@ -10,34 +10,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemHoneyCrystal extends Item {
-    private int maxCharge = 8000;
-    private int transferLimit = 500;
-    private int tier = 1;
+    private int maxCharge;
+    private int transferLimit;
+    private int tier;
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystal");
     }
 
     public ItemHoneyCrystal() {
-        super();
+        this.maxCharge = 8000;
+        this.transferLimit = 500;
+        this.tier = 1;
         this.setMaxDamage(27);
         this.setMaxStackSize(1);
         this.setCreativeTab(Tabs.tabApiculture);
         this.setUnlocalizedName("honeyCrystal");
     }
 
-    public String getItemStackDisplayName(ItemStack i) {
+    public String getItemStackDisplayName(final ItemStack i) {
         return ExtraBees.proxy.localise("item.honeycrystal");
     }
 
-    public static NBTTagCompound getOrCreateNbtData(ItemStack itemStack) {
+    public static NBTTagCompound getOrCreateNbtData(final ItemStack itemStack) {
         NBTTagCompound ret = itemStack.getTagCompound();
         if (ret == null) {
             ret = new NBTTagCompound();
             itemStack.setTagCompound(ret);
         }
-
         return ret;
     }
 }

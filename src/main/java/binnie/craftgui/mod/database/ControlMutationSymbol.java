@@ -12,54 +12,59 @@ import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IMutation;
 
 class ControlMutationSymbol extends Control implements ITooltip {
-    private static Texture MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
-    private static Texture MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
-    private IMutation value = null;
+    private static Texture MutationPlus;
+    private static Texture MutationArrow;
+    private IMutation value;
     private boolean discovered;
     private int type;
 
+    @Override
     public void onRenderBackground() {
         super.onRenderBackground();
         if (this.type == 0) {
-            CraftGUI.Render.texture(MutationPlus, IPoint.ZERO);
+            CraftGUI.Render.texture(ControlMutationSymbol.MutationPlus, IPoint.ZERO);
         } else {
-            CraftGUI.Render.texture(MutationArrow, IPoint.ZERO);
+            CraftGUI.Render.texture(ControlMutationSymbol.MutationArrow, IPoint.ZERO);
         }
-
     }
 
-    protected ControlMutationSymbol(IWidget parent, int x, int y, int type) {
-        super(parent, (float) x, (float) y, (float) (16 + type * 16), 16.0F);
+    protected ControlMutationSymbol(final IWidget parent, final int x, final int y, final int type) {
+        super(parent, x, y, 16 + type * 16, 16.0f);
+        this.value = null;
         this.type = type;
         this.addAttribute(Attribute.MouseOver);
     }
 
-    public void setValue(IMutation value) {
+    public void setValue(final IMutation value) {
         this.value = value;
-        boolean isNEI = ((WindowAbstractDatabase) this.getSuperParent()).isNEI();
-        BreedingSystem system = ((WindowAbstractDatabase) this.getSuperParent()).getBreedingSystem();
-        this.discovered = isNEI ? true : system.isMutationDiscovered(value, Window.get(this).getWorld(), Window.get(this).getUsername());
+        final boolean isNEI = ((WindowAbstractDatabase) this.getSuperParent()).isNEI();
+        final BreedingSystem system = ((WindowAbstractDatabase) this.getSuperParent()).getBreedingSystem();
+        this.discovered = (isNEI || system.isMutationDiscovered(value, Window.get(this).getWorld(), Window.get(this).getUsername()));
         if (this.discovered) {
             this.setColour(16777215);
         } else {
             this.setColour(7829367);
         }
-
     }
 
-    public void getTooltip(Tooltip tooltip) {
+    @Override
+    public void getTooltip(final Tooltip tooltip) {
         if (this.type == 1 && this.discovered) {
-            IAllele species1 = this.value.getAllele0();
-            IAllele species2 = this.value.getAllele1();
-            BreedingSystem system = ((WindowAbstractDatabase) this.getSuperParent()).getBreedingSystem();
-            float chance = system.getChance(this.value, Window.get(this).getPlayer(), species1, species2);
+            final IAllele species1 = this.value.getAllele0();
+            final IAllele species2 = this.value.getAllele1();
+            final BreedingSystem system = ((WindowAbstractDatabase) this.getSuperParent()).getBreedingSystem();
+            final float chance = system.getChance(this.value, Window.get(this).getPlayer(), species1, species2);
             tooltip.add("Current Chance - " + chance + "%");
             if (this.value.getSpecialConditions() != null) {
-                for (String string : this.value.getSpecialConditions()) {
+                for (final String string : this.value.getSpecialConditions()) {
                     tooltip.add(string);
                 }
             }
         }
+    }
 
+    static {
+        ControlMutationSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
+        ControlMutationSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
     }
 }

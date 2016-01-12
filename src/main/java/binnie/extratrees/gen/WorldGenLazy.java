@@ -3,29 +3,35 @@ package binnie.extratrees.gen;
 import forestry.api.arboriculture.ITree;
 
 public class WorldGenLazy {
-    public WorldGenLazy() {
-        super();
-    }
-
     public static class Tree extends WorldGenTree {
-        public Tree(ITree tree) {
+        public Tree(final ITree tree) {
             super(tree);
         }
 
+        @Override
         public void generate() {
             this.generateTreeTrunk(this.height, this.girth);
-            float leafSpawn = (float) this.height;
-            float bottom = (float) (this.height / 2 - 1);
-            float width = (float) this.height * this.randBetween(0.35F, 0.4F);
-            if ((double) width < 1.2D) {
-                width = 1.55F;
+            float leafSpawn = this.height;
+            final float bottom = this.height / 2 - 1;
+            float width = this.height * this.randBetween(0.35f, 0.4f);
+            if (width < 1.2) {
+                width = 1.55f;
             }
-
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), width - 1.0F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), width, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), width - 0.5F, 1, this.leaf, false);
+            final float f = 0.0f;
+            final float h = leafSpawn;
+            leafSpawn = h - 1.0f;
+            this.generateCylinder(new Vector(f, h, 0.0f), width - 1.0f, 1, this.leaf, false);
+            final float f2 = 0.0f;
+            final float h2 = leafSpawn;
+            leafSpawn = h2 - 1.0f;
+            this.generateCylinder(new Vector(f2, h2, 0.0f), width, 1, this.leaf, false);
+            final float f3 = 0.0f;
+            final float h3 = leafSpawn;
+            leafSpawn = h3 - 1.0f;
+            this.generateCylinder(new Vector(f3, h3, 0.0f), width - 0.5f, 1, this.leaf, false);
         }
 
+        @Override
         public void preGenerate() {
             this.height = this.determineHeight(4, 1);
             this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));

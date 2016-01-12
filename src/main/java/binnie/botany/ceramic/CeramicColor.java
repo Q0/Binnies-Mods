@@ -11,33 +11,35 @@ import java.util.Map;
 
 public class CeramicColor implements IDesignMaterial {
     EnumFlowerColor color;
-    static Map map = new LinkedHashMap();
+    static Map<EnumFlowerColor, CeramicColor> map;
 
-    CeramicColor(EnumFlowerColor color) {
-        super();
+    CeramicColor(final EnumFlowerColor color) {
         this.color = color;
     }
 
-    public static CeramicColor get(EnumFlowerColor c) {
-        return (CeramicColor) map.get(c);
+    public static CeramicColor get(final EnumFlowerColor c) {
+        return CeramicColor.map.get(c);
     }
 
+    @Override
     public ItemStack getStack() {
         return TileEntityMetadata.getItemStack(Botany.ceramic, this.color.ordinal());
     }
 
+    @Override
     public String getName() {
         return this.color.getName();
     }
 
+    @Override
     public int getColour() {
         return this.color.getColor(false);
     }
 
     static {
-        for (EnumFlowerColor c : EnumFlowerColor.values()) {
-            map.put(c, new CeramicColor(c));
+        CeramicColor.map = new LinkedHashMap<EnumFlowerColor, CeramicColor>();
+        for (final EnumFlowerColor c : EnumFlowerColor.values()) {
+            CeramicColor.map.put(c, new CeramicColor(c));
         }
-
     }
 }

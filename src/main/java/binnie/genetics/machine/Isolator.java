@@ -31,143 +31,15 @@ import java.util.Random;
 public class Isolator {
     public static final int slotEnzyme = 0;
     public static final int slotSequencerVial = 1;
-    public static final int[] slotReserve = new int[]{2, 3, 4};
+    public static final int[] slotReserve;
     public static final int slotTarget = 5;
     public static final int slotResult = 6;
-    public static final int[] slotFinished = new int[]{7, 8, 9, 10, 11, 12};
+    public static final int[] slotFinished;
     public static final int tankEthanol = 0;
 
-    public Isolator() {
-        super();
-    }
-
-    public static class ComponentIsolaterFX extends MachineComponent implements IRender.RandomDisplayTick, IRender.DisplayTick {
-        public ComponentIsolaterFX(IMachine machine) {
-            super(machine);
-        }
-
-        @SideOnly(Side.CLIENT)
-        public void onRandomDisplayTick(final World world, int x, int y, int z, Random rand) {
-            if (this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, (double) x + 0.4D + 0.2D * rand.nextDouble(), (double) z + 0.4D + rand.nextDouble() * 0.2D, 0.0D, x4, x5, x6) {
-                    double axisX = 0.0D;
-                    double axisZ = 0.0D;
-                    double angle = 0.0D;
-
-                    {
-                        this.motionX = 0.0D;
-                        this.motionZ = 0.0D;
-                        this.motionY = -0.012D;
-                        this.particleMaxAge = 100;
-                        this.particleGravity = 0.0F;
-                        this.noClip = true;
-                        this.setRBGColorF(0.8F, 0.4F, 0.0F);
-                    }
-
-                    public void onUpdate() {
-                        super.onUpdate();
-                        this.angle += 0.06D;
-                        this.setAlphaF((float) Math.sin(3.14D * (double) this.particleAge / (double) this.particleMaxAge));
-                    }
-
-                    public int getFXLayer() {
-                        return 0;
-                    }
-                });
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        public void onDisplayTick(final World world, int x, int y, int z, Random rand) {
-            int tick = (int) (world.getTotalWorldTime() % 6L);
-            if ((tick == 0 || tick == 5) && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, (double) x + 0.5D, (double) z + 0.5D, 0.0D, x4, x5, x6) {
-                    double axisX = 0.0D;
-                    double axisZ = 0.0D;
-                    double angle = 0.0D;
-
-                    {
-                        this.motionX = 0.0D;
-                        this.motionZ = 0.0D;
-                        this.motionY = 0.012D;
-                        this.particleMaxAge = 100;
-                        this.axisX = this.posX;
-                        this.axisZ = this.posZ;
-                        this.particleGravity = 0.0F;
-                        this.angle = 0.7D + (double) ((int) (this.worldObj.getTotalWorldTime() % 2L)) * 3.1415D;
-                        this.noClip = true;
-                        this.setRBGColorF(0.8F, 0.0F, 1.0F);
-                    }
-
-                    public void onUpdate() {
-                        super.onUpdate();
-                        this.angle += 0.06D;
-                        this.setPosition(this.axisX + 0.26D * Math.sin(this.angle), this.posY, this.axisZ + 0.26D * Math.cos(this.angle));
-                        this.setAlphaF((float) Math.cos(1.57D * (double) this.particleAge / (double) this.particleMaxAge));
-                    }
-
-                    public int getFXLayer() {
-                        return 0;
-                    }
-                });
-            }
-
-        }
-    }
-
-    public static class ComponentIsolatorLogic extends ComponentProcessSetCost implements IProcess {
-        float enzymePerProcess = 0.5F;
-        float ethanolPerProcess = 10.0F;
-
-        public ComponentIsolatorLogic(Machine machine) {
-            super(machine, 192000, 4800);
-        }
-
-        public ErrorState canWork() {
-            return (ErrorState) (this.getUtil().isSlotEmpty(5) ? new ErrorState.NoItem("No individual to isolate", 5) : (!this.getUtil().isSlotEmpty(6) ? new ErrorState.NoSpace("No room for DNA sequences", Isolator.slotFinished) : (this.getUtil().isSlotEmpty(1) ? new ErrorState.NoItem("No empty sequencer vials", 1) : super.canWork())));
-        }
-
-        public ErrorState canProgress() {
-            return (ErrorState) (!this.getUtil().liquidInTank(0, (int) this.ethanolPerProcess) ? new ErrorState.InsufficientLiquid("Insufficient ethanol", 0) : (this.getUtil().getSlotCharge(0) == 0.0F ? new ErrorState.NoItem("No enzyme", 0) : super.canProgress()));
-        }
-
-        protected void onFinishTask() {
-            super.onFinishTask();
-            Random rand = this.getMachine().getWorld().rand;
-            ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(this.getUtil().getStack(5));
-            if (root != null) {
-                IIndividual individual = root.getMember(this.getUtil().getStack(5));
-                if (individual != null) {
-                    IAllele allele = null;
-                    IChromosomeType chromosome = null;
-                    Gene gene = null;
-                    if (this.getMachine().getWorld().rand.nextFloat() < 2.0F) {
-                        while (gene == null) {
-                            try {
-                                chromosome = root.getKaryotype()[rand.nextInt(root.getKaryotype().length)];
-                                allele = rand.nextBoolean() ? individual.getGenome().getActiveAllele(chromosome) : individual.getGenome().getInactiveAllele(chromosome);
-                                gene = Gene.create(allele, chromosome, root);
-                            } catch (Exception var8) {
-                                ;
-                            }
-                        }
-                    }
-
-                    ItemStack serum = ItemSequence.create(gene);
-                    this.getUtil().setStack(6, serum);
-                    this.getUtil().decreaseStack(1, 1);
-                    if (rand.nextFloat() < 0.05F) {
-                        this.getUtil().decreaseStack(5, 1);
-                    }
-
-                    this.getUtil().drainTank(0, (int) this.ethanolPerProcess);
-                }
-            }
-        }
-
-        protected void onTickTask() {
-            ((IChargedSlots) this.getMachine().getInterface(IChargedSlots.class)).alterCharge(0, -this.enzymePerProcess * this.getProgressPerTick() / 100.0F);
-        }
+    static {
+        slotReserve = new int[]{2, 3, 4};
+        slotFinished = new int[]{7, 8, 9, 10, 11, 12};
     }
 
     public static class PackageIsolator extends GeneticMachine.PackageGeneticBase implements IMachineInformation {
@@ -175,9 +47,10 @@ public class Isolator {
             super("isolator", GeneticsTexture.Isolator, 16740111, true);
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
             new ComponentGeneticGUI(machine, GeneticsGUI.Isolator);
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(0, "enzyme");
             inventory.getSlot(0).setValidator(new SlotValidator.Item(GeneticsItems.Enzyme.get(1), ModuleMachine.IconEnzyme));
             inventory.getSlot(0).forbidExtraction();
@@ -185,12 +58,10 @@ public class Isolator {
             inventory.getSlot(1).setValidator(new SlotValidator.Item(GeneticsItems.EmptySequencer.get(1), ModuleMachine.IconSequencer));
             inventory.getSlot(1).forbidExtraction();
             inventory.addSlotArray(Isolator.slotReserve, "input");
-
-            for (InventorySlot slot : inventory.getSlots(Isolator.slotReserve)) {
+            for (final InventorySlot slot : inventory.getSlots(Isolator.slotReserve)) {
                 slot.setValidator(new SlotValidator.Individual());
                 slot.forbidExtraction();
             }
-
             inventory.addSlot(5, "process");
             inventory.getSlot(5).setValidator(new SlotValidator.Individual());
             inventory.getSlot(5).setReadOnly();
@@ -199,43 +70,191 @@ public class Isolator {
             inventory.getSlot(6).setReadOnly();
             inventory.getSlot(6).forbidInteraction();
             inventory.addSlotArray(Isolator.slotFinished, "output");
-
-            for (InventorySlot slot : inventory.getSlots(Isolator.slotFinished)) {
+            for (final InventorySlot slot : inventory.getSlots(Isolator.slotFinished)) {
                 slot.setReadOnly();
                 slot.forbidInsertion();
             }
-
-            ComponentTankContainer tanks = new ComponentTankContainer(machine);
+            final ComponentTankContainer tanks = new ComponentTankContainer(machine);
             tanks.addTank(0, "input", 1000);
             tanks.getTankSlot(0).setValidator(new TankValidator() {
                 @Override
-                public boolean isValid(Object var1) {
-                    return false;
-                }
-
                 public String getTooltip() {
                     return "Ethanol";
                 }
 
-                public boolean isValid(FluidStack stack) {
+                @Override
+                public boolean isValid(final FluidStack stack) {
                     return stack.getFluid().getName() == "bioethanol";
                 }
             });
-            ComponentChargedSlots chargedSlots = new ComponentChargedSlots(machine);
+            final ComponentChargedSlots chargedSlots = new ComponentChargedSlots(machine);
             chargedSlots.addCharge(0);
-            ComponentInventoryTransfer transfer = new ComponentInventoryTransfer(machine);
+            final ComponentInventoryTransfer transfer = new ComponentInventoryTransfer(machine);
             transfer.addRestock(Isolator.slotReserve, 5, 1);
             transfer.addStorage(6, Isolator.slotFinished);
             new ComponentPowerReceptor(machine, 20000);
-            new Isolator.ComponentIsolatorLogic(machine);
-            new Isolator.ComponentIsolaterFX(machine);
+            new ComponentIsolatorLogic(machine);
+            new ComponentIsolaterFX(machine);
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
+        }
+    }
+
+    public static class ComponentIsolatorLogic extends ComponentProcessSetCost implements IProcess {
+        float enzymePerProcess;
+        float ethanolPerProcess;
+
+        public ComponentIsolatorLogic(final Machine machine) {
+            super(machine, 192000, 4800);
+            this.enzymePerProcess = 0.5f;
+            this.ethanolPerProcess = 10.0f;
+        }
+
+        @Override
+        public ErrorState canWork() {
+            if (this.getUtil().isSlotEmpty(5)) {
+                return new ErrorState.NoItem("No individual to isolate", 5);
+            }
+            if (!this.getUtil().isSlotEmpty(6)) {
+                return new ErrorState.NoSpace("No room for DNA sequences", Isolator.slotFinished);
+            }
+            if (this.getUtil().isSlotEmpty(1)) {
+                return new ErrorState.NoItem("No empty sequencer vials", 1);
+            }
+            return super.canWork();
+        }
+
+        @Override
+        public ErrorState canProgress() {
+            if (!this.getUtil().liquidInTank(0, (int) this.ethanolPerProcess)) {
+                return new ErrorState.InsufficientLiquid("Insufficient ethanol", 0);
+            }
+            if (this.getUtil().getSlotCharge(0) == 0.0f) {
+                return new ErrorState.NoItem("No enzyme", 0);
+            }
+            return super.canProgress();
+        }
+
+        @Override
+        protected void onFinishTask() {
+            super.onFinishTask();
+            final Random rand = this.getMachine().getWorld().rand;
+            final ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(this.getUtil().getStack(5));
+            if (root == null) {
+                return;
+            }
+            final IIndividual individual = root.getMember(this.getUtil().getStack(5));
+            if (individual == null) {
+                return;
+            }
+            IAllele allele = null;
+            IChromosomeType chromosome = null;
+            Gene gene = null;
+            if (this.getMachine().getWorld().rand.nextFloat() < 2.0f) {
+                while (gene == null) {
+                    try {
+                        chromosome = root.getKaryotype()[rand.nextInt(root.getKaryotype().length)];
+                        allele = (rand.nextBoolean() ? individual.getGenome().getActiveAllele(chromosome) : individual.getGenome().getInactiveAllele(chromosome));
+                        gene = Gene.create(allele, chromosome, root);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            final ItemStack serum = ItemSequence.create(gene);
+            this.getUtil().setStack(6, serum);
+            this.getUtil().decreaseStack(1, 1);
+            if (rand.nextFloat() < 0.05f) {
+                this.getUtil().decreaseStack(5, 1);
+            }
+            this.getUtil().drainTank(0, (int) this.ethanolPerProcess);
+        }
+
+        @Override
+        protected void onTickTask() {
+            this.getMachine().getInterface(IChargedSlots.class).alterCharge(0, -this.enzymePerProcess * this.getProgressPerTick() / 100.0f);
+        }
+    }
+
+    public static class ComponentIsolaterFX extends MachineComponent implements IRender.RandomDisplayTick, IRender.DisplayTick {
+        public ComponentIsolaterFX(final IMachine machine) {
+            super(machine);
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void onRandomDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
+            if (!this.getUtil().getProcess().isInProgress()) {
+                return;
+            }
+            BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.4 + 0.2 * rand.nextDouble(), y + 1.6, z + 0.4 + rand.nextDouble() * 0.2, 0.0, 0.0, 0.0) {
+                double axisX = 0.0;
+                double axisZ = 0.0;
+                double angle = 0.0;
+
+                {
+                    this.motionX = 0.0;
+                    this.motionZ = 0.0;
+                    this.motionY = -0.012;
+                    this.particleMaxAge = 100;
+                    this.particleGravity = 0.0f;
+                    this.noClip = true;
+                    this.setRBGColorF(0.8f, 0.4f, 0.0f);
+                }
+
+                public void onUpdate() {
+                    super.onUpdate();
+                    this.angle += 0.06;
+                    this.setAlphaF((float) Math.sin(3.14 * this.particleAge / this.particleMaxAge));
+                }
+
+                public int getFXLayer() {
+                    return 0;
+                }
+            });
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
+            final int tick = (int) (world.getTotalWorldTime() % 6L);
+            if ((tick == 0 || tick == 5) && this.getUtil().getProcess().isInProgress()) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, (double) (y + 1), z + 0.5, 0.0, 0.0, 0.0) {
+                    double axisX = this.posX;
+                    double axisZ = this.posZ;
+                    double angle = 0.7 + (int) (this.worldObj.getTotalWorldTime() % 2L) * 3.1415;
+
+                    {
+                        this.axisX = 0.0;
+                        this.axisZ = 0.0;
+                        this.angle = 0.0;
+                        this.motionX = 0.0;
+                        this.motionZ = 0.0;
+                        this.motionY = 0.012;
+                        this.particleMaxAge = 100;
+                        this.particleGravity = 0.0f;
+                        this.noClip = true;
+                        this.setRBGColorF(0.8f, 0.0f, 1.0f);
+                    }
+
+                    public void onUpdate() {
+                        super.onUpdate();
+                        this.angle += 0.06;
+                        this.setPosition(this.axisX + 0.26 * Math.sin(this.angle), this.posY, this.axisZ + 0.26 * Math.cos(this.angle));
+                        this.setAlphaF((float) Math.cos(1.57 * this.particleAge / this.particleMaxAge));
+                    }
+
+                    public int getFXLayer() {
+                        return 0;
+                    }
+                });
+            }
         }
     }
 }

@@ -16,10 +16,12 @@ public enum FruitPod implements IIconProvider {
     RedBanana,
     Papayimar;
 
-    short[] textures = new short[]{BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID()};
-    IIcon[] icons = new IIcon[3];
+    short[] textures;
+    IIcon[] icons;
 
     private FruitPod() {
+        this.textures = new short[]{BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID(), BinnieCore.proxy.getUniqueTextureUID()};
+        this.icons = new IIcon[3];
     }
 
     public short[] getTextures() {
@@ -27,13 +29,16 @@ public enum FruitPod implements IIconProvider {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(short texUID) {
-        int index = this.textures[0] - texUID;
-        return index >= 0 && index < 3 ? this.icons[index] : null;
+    public IIcon getIcon(final short texUID) {
+        final int index = this.textures[0] - texUID;
+        if (index >= 0 && index < 3) {
+            return this.icons[index];
+        }
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.icons[0] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".0");
         this.icons[1] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".1");
         this.icons[2] = ExtraTrees.proxy.getIcon(register, "pods/" + this.toString().toLowerCase() + ".2");

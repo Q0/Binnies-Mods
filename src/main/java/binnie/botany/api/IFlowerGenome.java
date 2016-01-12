@@ -31,9 +31,9 @@ public interface IFlowerGenome extends IGenome {
 
     float getSappiness();
 
-    boolean canTolerate(EnumAcidity var1);
+    boolean canTolerate(final EnumAcidity p0);
 
-    boolean canTolerate(EnumMoisture var1);
+    boolean canTolerate(final EnumMoisture p0);
 
-    boolean canTolerate(EnumTemperature var1);
+    boolean canTolerate(final EnumTemperature p0);
 }

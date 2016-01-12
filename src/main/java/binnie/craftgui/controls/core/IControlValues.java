@@ -2,8 +2,8 @@ package binnie.craftgui.controls.core;
 
 import java.util.Collection;
 
-public interface IControlValues extends IControlValue {
-    Collection getValues();
+public interface IControlValues<T> extends IControlValue<T> {
+    Collection<T> getValues();
 
-    void setValues(Collection var1);
+    void setValues(final Collection<T> p0);
 }

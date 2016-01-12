@@ -9,10 +9,6 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 public enum ExtraTreeItems implements IItemMisc {
-    /**
-     * @deprecated
-     */
-    @Deprecated
     CarpentryHammer("Fake Hammer", "carpentryHammer"),
     Sawdust("Sawdust", "sawdust"),
     Bark("Bark", "bark"),
@@ -32,31 +28,37 @@ public enum ExtraTreeItems implements IItemMisc {
     String iconPath;
     IIcon icon;
 
-    private ExtraTreeItems(String name, String iconPath) {
+    private ExtraTreeItems(final String name, final String iconPath) {
         this.name = name;
         this.iconPath = iconPath;
     }
 
-    public IIcon getIcon(ItemStack stack) {
+    @Override
+    public IIcon getIcon(final ItemStack stack) {
         return this.icon;
     }
 
-    public void registerIcons(IIconRegister register) {
+    @Override
+    public void registerIcons(final IIconRegister register) {
         this.icon = ExtraTrees.proxy.getIcon(register, this.iconPath);
     }
 
-    public void addInformation(List par3List) {
+    @Override
+    public void addInformation(final List par3List) {
     }
 
-    public String getName(ItemStack stack) {
+    @Override
+    public String getName(final ItemStack stack) {
         return this.name;
     }
 
+    @Override
     public boolean isActive() {
-        return this != CarpentryHammer;
+        return this != ExtraTreeItems.CarpentryHammer;
     }
 
-    public ItemStack get(int i) {
+    @Override
+    public ItemStack get(final int i) {
         return new ItemStack(ExtraTrees.itemMisc, i, this.ordinal());
     }
 }

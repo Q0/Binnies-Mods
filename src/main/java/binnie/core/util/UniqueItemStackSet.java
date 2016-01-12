@@ -3,21 +3,18 @@ package binnie.core.util;
 import net.minecraft.item.ItemStack;
 
 public class UniqueItemStackSet extends ItemStackSet {
-    public UniqueItemStackSet() {
-        super();
+    @Override
+    public boolean add(final ItemStack e) {
+        return e != null && this.getExisting(e) == null && this.itemStacks.add(e.copy());
     }
 
-    public boolean add(ItemStack e) {
-        return e != null && this.getExisting(e) == null ? this.itemStacks.add(e.copy()) : false;
-    }
-
-    public boolean remove(Object o) {
+    @Override
+    public boolean remove(final Object o) {
         if (this.contains(o)) {
-            ItemStack r = (ItemStack) o;
-            ItemStack existing = this.getExisting(r);
+            final ItemStack r = (ItemStack) o;
+            final ItemStack existing = this.getExisting(r);
             this.itemStacks.remove(existing);
         }
-
         return false;
     }
 }

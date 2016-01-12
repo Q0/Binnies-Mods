@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachinePayload {
-    private List intPayload = new ArrayList();
-    private List floatPayload = new ArrayList();
-    private List stringPayload = new ArrayList();
-    private int id = 0;
+    private List<Integer> intPayload;
+    private List<Float> floatPayload;
+    private List<String> stringPayload;
+    private int id;
 
-    public MachinePayload(int id) {
-        super();
+    public MachinePayload(final int id) {
+        this.intPayload = new ArrayList<Integer>();
+        this.floatPayload = new ArrayList<Float>();
+        this.stringPayload = new ArrayList<String>();
+        this.id = 0;
         this.id = id;
         this.intPayload.clear();
         this.floatPayload.clear();
@@ -18,39 +21,43 @@ public class MachinePayload {
     }
 
     public MachinePayload() {
-        super();
+        this.intPayload = new ArrayList<Integer>();
+        this.floatPayload = new ArrayList<Float>();
+        this.stringPayload = new ArrayList<String>();
+        this.id = 0;
     }
 
-    public void addInteger(int a) {
-        this.intPayload.add(Integer.valueOf(a));
+    public void addInteger(final int a) {
+        this.intPayload.add(a);
     }
 
-    public void addFloat(float a) {
-        this.floatPayload.add(Float.valueOf(a));
+    public void addFloat(final float a) {
+        this.floatPayload.add(a);
     }
 
-    public void addString(String a) {
+    public void addString(final String a) {
         this.stringPayload.add(a);
     }
 
     public int getInteger() {
-        return ((Integer) this.intPayload.remove(0)).intValue();
+        return this.intPayload.remove(0);
     }
 
     public float getFloat() {
-        return ((Float) this.floatPayload.remove(0)).floatValue();
+        return this.floatPayload.remove(0);
     }
 
     public String getString() {
-        return (String) this.stringPayload.remove(0);
+        return this.stringPayload.remove(0);
     }
 
-    public void append(MachinePayload other) {
-        if (other != null) {
-            this.intPayload.addAll(other.intPayload);
-            this.floatPayload.addAll(other.floatPayload);
-            this.stringPayload.addAll(other.stringPayload);
+    public void append(final MachinePayload other) {
+        if (other == null) {
+            return;
         }
+        this.intPayload.addAll(other.intPayload);
+        this.floatPayload.addAll(other.floatPayload);
+        this.stringPayload.addAll(other.stringPayload);
     }
 
     public boolean isEmpty() {
@@ -61,7 +68,7 @@ public class MachinePayload {
         return this.id;
     }
 
-    public void setID(int readInt) {
+    public void setID(final int readInt) {
         this.id = readInt;
     }
 }

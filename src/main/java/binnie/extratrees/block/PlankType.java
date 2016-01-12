@@ -16,74 +16,22 @@ import net.minecraft.util.IIcon;
 public class PlankType {
     public static final int MAX_PLANKS = 256;
 
-    public PlankType() {
-        super();
-    }
-
     public static void setup() {
-        for (PlankType.VanillaPlanks plank : PlankType.VanillaPlanks.values()) {
+        for (final VanillaPlanks plank : VanillaPlanks.values()) {
             CarpentryManager.carpentryInterface.registerCarpentryWood(plank.ordinal(), plank);
         }
-
-        for (PlankType.ExtraTreePlanks plank : PlankType.ExtraTreePlanks.values()) {
-            CarpentryManager.carpentryInterface.registerCarpentryWood(plank.ordinal() + 32, plank);
+        for (final ExtraTreePlanks plank2 : ExtraTreePlanks.values()) {
+            CarpentryManager.carpentryInterface.registerCarpentryWood(plank2.ordinal() + 32, plank2);
         }
-
-        for (PlankType.ForestryPlanks plank : PlankType.ForestryPlanks.values()) {
-            CarpentryManager.carpentryInterface.registerCarpentryWood(plank.ordinal() + 128, plank);
+        for (final ForestryPlanks plank3 : ForestryPlanks.values()) {
+            CarpentryManager.carpentryInterface.registerCarpentryWood(plank3.ordinal() + 128, plank3);
         }
-
-        for (PlankType.ExtraBiomesPlank plank : PlankType.ExtraBiomesPlank.values()) {
-            CarpentryManager.carpentryInterface.registerCarpentryWood(plank.ordinal() + 192, plank);
-        }
-
-    }
-
-    public static enum ExtraBiomesPlank implements IPlankType {
-        Redwood(10185538),
-        Fir(8288074),
-        Acacia(12561022);
-
-        int color;
-
-        private ExtraBiomesPlank(int color) {
-            this.color = color;
-        }
-
-        public String getName() {
-            return ExtraTrees.proxy.localise("block.planks.ebxl." + this.toString().toLowerCase());
-        }
-
-        public String getDescription() {
-            return ExtraTrees.proxy.localise("block.planks.ebxl." + this.toString().toLowerCase() + ".desc");
-        }
-
-        public int getColour() {
-            return this.color;
-        }
-
-        public ItemStack getStack() {
-            try {
-                Class clss = Class.forName("extrabiomes.api.Stuff");
-                Block block = (Block) ((Optional) clss.getField("planks").get((Object) null)).get();
-                return new ItemStack(block, 1, this.ordinal());
-            } catch (Exception var3) {
-                return null;
-            }
-        }
-
-        public IIcon getIcon() {
-            if (this.getStack() != null) {
-                int meta = this.getStack().getItemDamage();
-                Block block = ((ItemBlock) this.getStack().getItem()).field_150939_a;
-                return block.getIcon(2, meta);
-            } else {
-                return null;
-            }
+        for (final ExtraBiomesPlank plank4 : ExtraBiomesPlank.values()) {
+            CarpentryManager.carpentryInterface.registerCarpentryWood(plank4.ordinal() + 192, plank4);
         }
     }
 
-    public static enum ExtraTreePlanks implements IPlankType, IFenceProvider {
+    public enum ExtraTreePlanks implements IPlankType, IFenceProvider {
         Fir(12815444),
         Cedar(14181940),
         Hemlock(13088108),
@@ -123,41 +71,91 @@ public class PlankType {
         int color;
         IIcon icon;
 
-        private ExtraTreePlanks(int color) {
+        private ExtraTreePlanks(final int color) {
             this.color = color;
         }
 
+        @Override
         public String getName() {
             return ExtraTrees.proxy.localise("block.planks." + this.toString().toLowerCase());
         }
 
+        @Override
         public String getDescription() {
             return ExtraTrees.proxy.localise("block.planks." + this.toString().toLowerCase() + ".desc");
         }
 
+        @Override
         public int getColour() {
             return this.color;
         }
 
+        @Override
         public ItemStack getStack() {
             return TileEntityMetadata.getItemStack(ExtraTrees.blockPlanks, this.ordinal());
         }
 
-        public IIcon loadIcon(IIconRegister register) {
-            this.icon = ExtraTrees.proxy.getIcon(register, "planks/" + this.toString());
-            return this.icon;
+        public IIcon loadIcon(final IIconRegister register) {
+            return this.icon = ExtraTrees.proxy.getIcon(register, "planks/" + this.toString());
         }
 
+        @Override
         public IIcon getIcon() {
             return this.icon;
         }
 
+        @Override
         public ItemStack getFence() {
             return TileEntityMetadata.getItemStack(ExtraTrees.blockFence, WoodManager.getPlankTypeIndex(this));
         }
     }
 
-    public static enum ForestryPlanks implements IPlankType, IFenceProvider {
+    public enum VanillaPlanks implements IPlankType {
+        OAK(11833434),
+        SPRUCE(8412726),
+        BIRCH(14139781),
+        JUNGLE(11632732),
+        ACACIA(12215095),
+        DARKOAK(4599061);
+
+        int color;
+
+        private VanillaPlanks(final int color) {
+            this.color = color;
+        }
+
+        @Override
+        public String getName() {
+            return ExtraTrees.proxy.localise("block.planks.vanilla." + this.toString().toLowerCase());
+        }
+
+        @Override
+        public String getDescription() {
+            return ExtraTrees.proxy.localise("block.planks.vanilla." + this.toString().toLowerCase() + ".desc");
+        }
+
+        @Override
+        public int getColour() {
+            return this.color;
+        }
+
+        @Override
+        public ItemStack getStack() {
+            return new ItemStack(Blocks.planks, 1, this.ordinal());
+        }
+
+        @Override
+        public IIcon getIcon() {
+            if (this.getStack() != null) {
+                final int meta = this.getStack().getItemDamage();
+                final Block block = Blocks.planks;
+                return block.getIcon(2, meta);
+            }
+            return null;
+        }
+    }
+
+    public enum ForestryPlanks implements IPlankType, IFenceProvider {
         LARCH(14131085),
         TEAK(8223075),
         ACACIA(9745287),
@@ -190,89 +188,99 @@ public class PlankType {
 
         int color;
 
-        private ForestryPlanks(int color) {
+        private ForestryPlanks(final int color) {
             this.color = color;
         }
 
+        @Override
         public String getName() {
             return ExtraTrees.proxy.localise("block.planks.forestry." + this.toString().toLowerCase());
         }
 
+        @Override
         public String getDescription() {
             return ExtraTrees.proxy.localise("block.planks.forestry." + this.toString().toLowerCase() + ".desc");
         }
 
+        @Override
         public int getColour() {
             return this.color;
         }
 
+        @Override
         public ItemStack getStack() {
-            int n = this.ordinal() / 16 + 1;
-            Item stack = Mods.Forestry.item("planks" + (n == 1 ? "" : Integer.valueOf(n)));
+            final int n = this.ordinal() / 16 + 1;
+            final Item stack = Mods.Forestry.item("planks" + ((n == 1) ? "" : n));
             return new ItemStack(stack, 1, this.ordinal() % 16);
         }
 
+        @Override
         public IIcon getIcon() {
             if (this.getStack() != null) {
-                int meta = this.getStack().getItemDamage();
-                Block block = ((ItemBlock) this.getStack().getItem()).field_150939_a;
+                final int meta = this.getStack().getItemDamage();
+                final Block block = ((ItemBlock) this.getStack().getItem()).field_150939_a;
                 return block.getIcon(2, meta);
-            } else {
-                return null;
             }
+            return null;
         }
 
+        @Override
         public ItemStack getFence() {
             int ordinal;
             for (ordinal = this.ordinal(); ordinal >= 16; ordinal -= 16) {
-                ;
             }
-
-            int n = this.ordinal() / 16 + 1;
-            ItemStack fence = Mods.Forestry.stack("fences" + (n == 1 ? "" : Integer.valueOf(n)));
+            final int n = this.ordinal() / 16 + 1;
+            final ItemStack fence = Mods.Forestry.stack("fences" + ((n == 1) ? "" : n));
             fence.setItemDamage(ordinal);
             return fence;
         }
     }
 
-    public static enum VanillaPlanks implements IPlankType {
-        OAK(11833434),
-        SPRUCE(8412726),
-        BIRCH(14139781),
-        JUNGLE(11632732),
-        ACACIA(12215095),
-        DARKOAK(4599061);
+    public enum ExtraBiomesPlank implements IPlankType {
+        Redwood(10185538),
+        Fir(8288074),
+        Acacia(12561022);
 
         int color;
 
-        private VanillaPlanks(int color) {
+        private ExtraBiomesPlank(final int color) {
             this.color = color;
         }
 
+        @Override
         public String getName() {
-            return ExtraTrees.proxy.localise("block.planks.vanilla." + this.toString().toLowerCase());
+            return ExtraTrees.proxy.localise("block.planks.ebxl." + this.toString().toLowerCase());
         }
 
+        @Override
         public String getDescription() {
-            return ExtraTrees.proxy.localise("block.planks.vanilla." + this.toString().toLowerCase() + ".desc");
+            return ExtraTrees.proxy.localise("block.planks.ebxl." + this.toString().toLowerCase() + ".desc");
         }
 
+        @Override
         public int getColour() {
             return this.color;
         }
 
+        @Override
         public ItemStack getStack() {
-            return new ItemStack(Blocks.planks, 1, this.ordinal());
-        }
-
-        public IIcon getIcon() {
-            if (this.getStack() != null) {
-                int meta = this.getStack().getItemDamage();
-                Block block = Blocks.planks;
-                return block.getIcon(2, meta);
-            } else {
+            try {
+                final Class clss = Class.forName("extrabiomes.api.Stuff");
+                final Block block = (Block) ((Optional) clss.getField("planks").get(null)).get();
+                return new ItemStack(block, 1, this.ordinal());
+            } catch (Exception e) {
                 return null;
             }
+        }
+
+        @Override
+        public IIcon getIcon() {
+            if (this.getStack() != null) {
+                final int meta = this.getStack().getItemDamage();
+                final Block block = ((ItemBlock) this.getStack().getItem()).field_150939_a;
+                return block.getIcon(2, meta);
+            }
+            return null;
         }
     }
 }

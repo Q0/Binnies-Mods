@@ -1,5 +1,5 @@
 package binnie.craftgui.controls;
 
-public interface IControlSelectionOption {
-    Object getValue();
+public interface IControlSelectionOption<T> {
+    T getValue();
 }

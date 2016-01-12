@@ -9,25 +9,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowTest extends WindowMachine {
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowCompartment(player, inventory, side);
     }
 
-    public WindowTest(EntityPlayer player, IInventory inventory, Side side) {
+    public WindowTest(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(320, 240, player, inventory, side);
     }
 
+    @Override
     public void initialiseClient() {
     }
 
+    @Override
     public String getTitle() {
         return "Test";
     }
 
+    @Override
     protected AbstractMod getMod() {
         return BinnieCore.instance;
     }
 
+    @Override
     protected String getName() {
         return "Test";
     }

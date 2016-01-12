@@ -6,45 +6,45 @@ import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.minecraft.control.ControlProgressBase;
 
 public class ControlSplicerProgress extends ControlProgressBase {
-    float strength = 0.0F;
+    float strength;
 
-    public ControlSplicerProgress(IWidget parent, float x, float y, float w, float h) {
+    public ControlSplicerProgress(final IWidget parent, final float x, final float y, final float w, final float h) {
         super(parent, x, y, w, h);
-        this.strength = 0.0F;
+        this.strength = 0.0f;
+        this.strength = 0.0f;
     }
 
+    @Override
     public void onRenderBackground() {
-        float progress = this.getProcess().getCurrentProgress() / 100.0F;
-        float n = (float) this.getProcess().getProcessTime() / 12.0F;
-        float spacing = 10.0F;
-        float range = this.w();
-        float h = 8.0F;
-        float ooy = -((n - 1.0F) * spacing) - range / 2.0F;
-        float ddy = (n - 1.0F) * spacing + range;
-        float oy = ooy + ddy * progress;
-
-        for (int i = 0; (float) i < n; ++i) {
-            int seed = 432523;
-            int[] colours = new int[]{10027008, 30464, 255, 10057472};
-            int c1 = colours[(int) Math.abs(13.0D * Math.sin((double) i) + 48.0D * Math.cos((double) i) + 25.0D * Math.sin((double) (7 * i))) % 4];
-            int c2 = colours[(int) Math.abs(23.0D * Math.sin((double) i) + 28.0D * Math.cos((double) i) + 15.0D * Math.sin((double) (7 * i))) % 4];
-            int c3 = colours[(int) Math.abs(43.0D * Math.sin((double) i) + 38.0D * Math.cos((double) i) + 55.0D * Math.sin((double) (7 * i))) % 4];
-            int c4 = colours[(int) Math.abs(3.0D * Math.sin((double) i) + 18.0D * Math.cos((double) i) + 35.0D * Math.sin((double) (7 * i))) % 4];
-            float y = oy + (float) i * spacing;
-            if (y > -range / 2.0F && y < range / 2.0F) {
-                float percentView = (float) Math.sqrt((double) (1.0F - Math.abs(2.0F * y / range)));
-                float offMovement = (this.h() - 2.0F * h) / 2.0F;
-                int alpha = 16777216 * (int) (255.0F * percentView);
-                c1 = c1 + alpha;
-                c2 = c2 + alpha;
-                c3 = c3 + alpha;
-                c4 = c4 + alpha;
-                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0F + y, offMovement * percentView, 4.0F, h / 2.0F), c1);
-                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0F + y, offMovement * percentView + 4.0F, 4.0F, h / 2.0F), y < 0.0F ? c2 : c3);
-                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0F + y, this.h() - offMovement * percentView - 8.0F, 4.0F, h / 2.0F), y < 0.0F ? c3 : c2);
-                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0F + y, this.h() - offMovement * percentView - 4.0F, 4.0F, h / 2.0F), c4);
+        final float progress = this.getProcess().getCurrentProgress() / 100.0f;
+        final float n = this.getProcess().getProcessTime() / 12.0f;
+        final float spacing = 10.0f;
+        final float range = this.w();
+        final float h = 8.0f;
+        final float ooy = -((n - 1.0f) * spacing) - range / 2.0f;
+        final float ddy = (n - 1.0f) * spacing + range;
+        final float oy = ooy + ddy * progress;
+        for (int i = 0; i < n; ++i) {
+            final int seed = 432523;
+            final int[] colours = {10027008, 30464, 255, 10057472};
+            int c1 = colours[(int) Math.abs(13.0 * Math.sin(i) + 48.0 * Math.cos(i) + 25.0 * Math.sin(7 * i)) % 4];
+            int c2 = colours[(int) Math.abs(23.0 * Math.sin(i) + 28.0 * Math.cos(i) + 15.0 * Math.sin(7 * i)) % 4];
+            int c3 = colours[(int) Math.abs(43.0 * Math.sin(i) + 38.0 * Math.cos(i) + 55.0 * Math.sin(7 * i)) % 4];
+            int c4 = colours[(int) Math.abs(3.0 * Math.sin(i) + 18.0 * Math.cos(i) + 35.0 * Math.sin(7 * i)) % 4];
+            final float y = oy + i * spacing;
+            if (y > -range / 2.0f && y < range / 2.0f) {
+                final float percentView = (float) Math.sqrt(1.0f - Math.abs(2.0f * y / range));
+                final float offMovement = (this.h() - 2.0f * h) / 2.0f;
+                final int alpha = 16777216 * (int) (255.0f * percentView);
+                c1 += alpha;
+                c2 += alpha;
+                c3 += alpha;
+                c4 += alpha;
+                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0f + y, offMovement * percentView, 4.0f, h / 2.0f), c1);
+                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0f + y, offMovement * percentView + 4.0f, 4.0f, h / 2.0f), (y < 0.0f) ? c2 : c3);
+                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0f + y, this.h() - offMovement * percentView - 8.0f, 4.0f, h / 2.0f), (y < 0.0f) ? c3 : c2);
+                CraftGUI.Render.solidAlpha(new IArea(this.w() / 2.0f + y, this.h() - offMovement * percentView - 4.0f, 4.0f, h / 2.0f), c4);
             }
         }
-
     }
 }

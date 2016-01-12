@@ -10,10 +10,11 @@ public enum ResourceType {
 
     String name;
 
-    private ResourceType(String name) {
+    private ResourceType(final String name) {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }

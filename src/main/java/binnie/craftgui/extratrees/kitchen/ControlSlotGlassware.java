@@ -6,22 +6,25 @@ import binnie.craftgui.minecraft.control.ControlSlotBase;
 import binnie.extratrees.alcohol.Glassware;
 import net.minecraft.item.ItemStack;
 
-public class ControlSlotGlassware extends ControlSlotBase implements IControlValue {
+public class ControlSlotGlassware extends ControlSlotBase implements IControlValue<Glassware> {
     Glassware glassware;
 
-    public ControlSlotGlassware(IWidget parent, int x, int y, Glassware glassware) {
-        super(parent, (float) x, (float) y);
+    public ControlSlotGlassware(final IWidget parent, final int x, final int y, final Glassware glassware) {
+        super(parent, x, y);
         this.glassware = glassware;
     }
 
+    @Override
     public Glassware getValue() {
         return this.glassware;
     }
 
-    public void setValue(Glassware value) {
+    @Override
+    public void setValue(final Glassware value) {
         this.glassware = value;
     }
 
+    @Override
     public ItemStack getItemStack() {
         return this.glassware.get(1);
     }

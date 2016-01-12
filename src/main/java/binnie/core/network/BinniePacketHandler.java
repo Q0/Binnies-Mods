@@ -6,32 +6,29 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public abstract class BinniePacketHandler implements IMessageHandler {
+public abstract class BinniePacketHandler implements IMessageHandler<MessageBinnie, IMessage> {
     private IPacketProvider provider;
 
-    public BinniePacketHandler(AbstractMod mod) {
-        super();
+    public BinniePacketHandler(final AbstractMod mod) {
         this.setProvider(mod);
     }
 
-    public void setProvider(IPacketProvider provider) {
+    public void setProvider(final IPacketProvider provider) {
         this.provider = provider;
     }
 
-    public IMessage onMessage(MessageBinnie message, MessageContext ctx) {
+    public IMessage onMessage(final MessageBinnie message, final MessageContext ctx) {
         try {
-            int packetId = message.id;
-
-            for (IPacketID id : this.provider.getPacketIDs()) {
+            final int packetId = message.id;
+            for (final IPacketID id : this.provider.getPacketIDs()) {
                 if (id.ordinal() == packetId) {
                     id.onMessage(message, ctx);
                     return null;
                 }
             }
-
-            return null;
-        } catch (Exception var8) {
-            throw new RuntimeException(var8);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
+        return null;
     }
 }

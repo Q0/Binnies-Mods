@@ -12,67 +12,59 @@ import forestry.api.arboriculture.EnumTreeChromosome;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.ITreeGenome;
 import forestry.api.genetics.IAlleleBoolean;
+import forestry.api.genetics.IChromosomeType;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
 
 public class AnalystPageWood extends AnalystPageProduce {
-    public AnalystPageWood(IWidget parent, IArea area, ITree ind) {
+    public AnalystPageWood(final IWidget parent, final IArea area, final ITree ind) {
         super(parent, area);
         this.setColour(6697728);
-        ITreeGenome genome = ind.getGenome();
+        final ITreeGenome genome = ind.getGenome();
         int y = 4;
-        (new ControlTextCentered(this, (float) y, "§nWood")).setColour(this.getColour());
-        y = y + 12;
-        if (((IAlleleBoolean) ind.getGenome().getActiveAllele(EnumTreeChromosome.FIREPROOF)).getValue()) {
-            (new ControlIconDisplay(this, (this.w() - 16.0F) / 2.0F, (float) y, ModuleItem.iconNoFire.getIcon())).addTooltip("Fireproof");
+        new ControlTextCentered(this, y, "§nWood").setColour(this.getColour());
+        y += 12;
+        if (((IAlleleBoolean) ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.FIREPROOF)).getValue()) {
+            new ControlIconDisplay(this, (this.w() - 16.0f) / 2.0f, y, ModuleItem.iconNoFire.getIcon()).addTooltip("Fireproof");
         } else {
-            (new ControlIconDisplay(this, (this.w() - 16.0F) / 2.0F, (float) y, ModuleItem.iconFire.getIcon())).addTooltip("Flammable");
+            new ControlIconDisplay(this, (this.w() - 16.0f) / 2.0f, y, ModuleItem.iconFire.getIcon()).addTooltip("Flammable");
         }
-
-        y = y + 30;
-        Collection<ItemStack> products = new UniqueItemStackSet();
-
-        for (ItemStack stack : ind.getGenome().getPrimary().getLogStacks()) {
+        y += 30;
+        final Collection<ItemStack> products = new UniqueItemStackSet();
+        for (final ItemStack stack : ind.getGenome().getPrimary().getLogStacks()) {
             products.add(stack);
         }
-
         if (products.size() > 0) {
-            (new ControlTextCentered(this, (float) y, "Logs")).setColour(this.getColour());
-            y = y + 10;
-            int w = products.size() * 18 - 2;
-            int i = 0;
-
-            for (ItemStack stack : products) {
-                ControlItemDisplay d = new ControlItemDisplay(this, (this.w() - (float) w) / 2.0F + (float) (18 * i), (float) y);
+            new ControlTextCentered(this, y, "Logs").setColour(this.getColour());
+            y += 10;
+            final int w = products.size() * 18 - 2;
+            final int i = 0;
+            for (final ItemStack stack : products) {
+                final ControlItemDisplay d = new ControlItemDisplay(this, (this.w() - w) / 2.0f + 18 * i, y);
                 d.setTooltip();
                 d.setItemStack(stack);
             }
-
-            y = y + 26;
+            y += 26;
         }
-
-        Collection<ItemStack> allProducts = new UniqueItemStackSet();
-
-        for (ItemStack stack : products) {
-            allProducts.add(stack);
+        final Collection<ItemStack> allProducts = new UniqueItemStackSet();
+        for (final ItemStack stack2 : products) {
+            allProducts.add(stack2);
         }
-
-        Collection<ItemStack> refinedProducts = new UniqueItemStackSet();
+        final Collection<ItemStack> refinedProducts = new UniqueItemStackSet();
         refinedProducts.addAll(this.getAllProductsAndFluids(allProducts));
         if (refinedProducts.size() > 0) {
             y = this.getRefined("Refined Products", y, refinedProducts);
-            y = y + 8;
+            y += 8;
         }
-
         if (products.size() == 0) {
-            (new ControlTextCentered(this, (float) y, "This tree has no \nfruits or nuts")).setColour(this.getColour());
+            new ControlTextCentered(this, y, "This tree has no \nfruits or nuts").setColour(this.getColour());
             y += 28;
         }
-
-        this.setSize(new IPoint(this.w(), (float) (y + 8)));
+        this.setSize(new IPoint(this.w(), y + 8));
     }
 
+    @Override
     public String getTitle() {
         return "Wood";
     }

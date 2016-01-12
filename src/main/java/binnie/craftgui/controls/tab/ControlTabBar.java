@@ -9,66 +9,61 @@ import binnie.craftgui.events.EventValueChanged;
 
 import java.util.Collection;
 
-public class ControlTabBar extends Control implements IControlValue {
-    Object value;
+public class ControlTabBar<T> extends Control implements IControlValue<T> {
+    T value;
     Position position;
 
-    public ControlTabBar(IWidget parent, float x, float y, float width, float height, Position position) {
+    public ControlTabBar(final IWidget parent, final float x, final float y, final float width, final float height, final Position position) {
         super(parent, x, y, width, height);
         this.position = position;
-        this.addEventHandler((new EventValueChanged.Handler() {
-            public void onEvent(EventValueChanged event) {
+        this.addEventHandler(new EventValueChanged.Handler() {
+            @Override
+            public void onEvent(final EventValueChanged event) {
                 ControlTabBar.this.setValue(event.getValue());
             }
-        }).setOrigin(EventHandler.Origin.DirectChild, this));
+        }.setOrigin(EventHandler.Origin.DirectChild, this));
     }
 
-    public void setValues(Collection values) {
-        int i = 0;
-
+    public void setValues(final Collection<T> values) {
+        final int i = 0;
         while (i < this.getWidgets().size()) {
-            this.deleteChild((IWidget) this.getWidgets().get(0));
+            this.deleteChild(this.getWidgets().get(0));
         }
-
-        float length = (float) values.size();
+        final float length = values.size();
         int tabDimension = (int) (this.getSize().y() / length);
         if (this.position == Position.Top || this.position == Position.Bottom) {
             tabDimension = (int) (this.getSize().x() / length);
         }
-
-        int i = 0;
-
-        for (T value : values) {
-            if (this.position != Position.Top && this.position != Position.Bottom) {
-                this.createTab(0.0F, (float) (i * tabDimension), this.getSize().x(), (float) tabDimension, value);
+        int j = 0;
+        for (final T value : values) {
+            if (this.position == Position.Top || this.position == Position.Bottom) {
+                final IWidget tab = this.createTab(j * tabDimension, 0.0f, tabDimension, this.getSize().y(), value);
             } else {
-                this.createTab((float) (i * tabDimension), 0.0F, (float) tabDimension, this.getSize().y(), value);
+                final IWidget tab = this.createTab(0.0f, j * tabDimension, this.getSize().x(), tabDimension, value);
             }
-
-            ++i;
+            ++j;
         }
-
         if (this.value == null && !values.isEmpty()) {
             this.setValue(values.iterator().next());
         }
-
     }
 
-    public ControlTab createTab(float x, float y, float w, float h, Object value) {
-        return new ControlTab(this, x, y, w, h, value);
+    public ControlTab<T> createTab(final float x, final float y, final float w, final float h, final T value) {
+        return new ControlTab<T>(this, x, y, w, h, value);
     }
 
-    public Object getValue() {
+    @Override
+    public T getValue() {
         return this.value;
     }
 
-    public void setValue(Object value) {
-        boolean change = this.value != value;
+    @Override
+    public void setValue(final T value) {
+        final boolean change = this.value != value;
         this.value = value;
         if (change) {
-            this.callEvent(new EventValueChanged(this, value));
+            this.callEvent(new EventValueChanged<Object>(this, value));
         }
-
     }
 
     public Position getDirection() {

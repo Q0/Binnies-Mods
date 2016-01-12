@@ -5,7 +5,4 @@ public enum InventoryType {
     Machine,
     Window,
     Custom;
-
-    private InventoryType() {
-    }
 }

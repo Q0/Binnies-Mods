@@ -13,23 +13,21 @@ public enum BotanyGUI implements IBinnieGUID {
     Database,
     DatabaseNEI;
 
-    private BotanyGUI() {
-    }
-
-    public Window getWindow(EntityPlayer player, World world, int x, int y, int z, Side side) {
+    @Override
+    public Window getWindow(final EntityPlayer player, final World world, final int x, final int y, final int z, final Side side) {
         Window window = null;
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         IInventory object = null;
         if (tileEntity instanceof IInventory) {
             object = (IInventory) tileEntity;
         }
-
         switch (this) {
             case Database:
-            case DatabaseNEI:
-                window = WindowBotanistDatabase.create(player, side, this != Database);
-            default:
-                return window;
+            case DatabaseNEI: {
+                window = WindowBotanistDatabase.create(player, side, this != BotanyGUI.Database);
+                break;
+            }
         }
+        return window;
     }
 }

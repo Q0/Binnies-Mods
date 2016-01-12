@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 public interface IItemEnum {
     boolean isActive();
 
-    String getName(ItemStack var1);
+    String getName(final ItemStack p0);
 
     int ordinal();
 
-    ItemStack get(int var1);
+    ItemStack get(final int p0);
 }

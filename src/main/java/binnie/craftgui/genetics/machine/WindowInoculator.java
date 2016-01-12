@@ -1,7 +1,6 @@
 package binnie.craftgui.genetics.machine;
 
 import binnie.core.AbstractMod;
-import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.CraftGUIUtil;
 import binnie.craftgui.core.geometry.Position;
 import binnie.craftgui.core.geometry.TextJustification;
@@ -18,43 +17,52 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowInoculator extends WindowMachine {
-    static Texture ProgressBase = new StandardTexture(0, 72, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
-    static Texture Progress = new StandardTexture(0, 0, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
+    static Texture ProgressBase;
+    static Texture Progress;
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowInoculator(player, inventory, side);
     }
 
-    public WindowInoculator(EntityPlayer player, IInventory inventory, Side side) {
+    public WindowInoculator(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(266, 240, player, inventory, side);
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Inoculator");
         int x = 16;
-        int y = 32;
-        (new ControlLiquidTank(this, x, y + 18 + 16)).setTankID(0);
-        CraftGUIUtil.horizontalGrid((float) x, (float) y, new IWidget[]{(new ControlSlotArray(this, 0, 0, 2, 1)).create(Inoculator.slotSerumReserve), new ControlIconDisplay(this, 0.0F, 0.0F, GUIIcon.ArrowRight.getIcon()), (new ControlSlot(this, 0.0F, 0.0F)).assign(0), new ControlIconDisplay(this, 0.0F, 0.0F, GUIIcon.ArrowRight.getIcon()), (new ControlSlotArray(this, 0, 0, 2, 1)).create(Inoculator.slotSerumExpended)});
-        x = x + 18;
-        new ControlMachineProgress(this, x, y + 24, ProgressBase, Progress, Position.Left);
+        final int y = 32;
+        new ControlLiquidTank(this, x, y + 18 + 16).setTankID(0);
+        CraftGUIUtil.horizontalGrid(x, y, new ControlSlotArray(this, 0, 0, 2, 1).create(Inoculator.slotSerumReserve), new ControlIconDisplay(this, 0.0f, 0.0f, GUIIcon.ArrowRight.getIcon()), new ControlSlot(this, 0.0f, 0.0f).assign(0), new ControlIconDisplay(this, 0.0f, 0.0f, GUIIcon.ArrowRight.getIcon()), new ControlSlotArray(this, 0, 0, 2, 1).create(Inoculator.slotSerumExpended));
+        x += 18;
+        new ControlMachineProgress(this, x, y + 24, WindowInoculator.ProgressBase, WindowInoculator.Progress, Position.Left);
         new ControlEnergyBar(this, 91, 118, 60, 16, Position.Left);
-        new ControlErrorState(this, 161.0F, 118.0F);
-        x = x + 142;
-        CraftGUIUtil.verticalGrid((float) x, (float) y, TextJustification.MiddleLeft, 8.0F, new IWidget[]{(new ControlSlotArray(this, x, y, 4, 1)).create(Inoculator.slotReserve), (new ControlSlot(this, (float) x, (float) (y + 18 + 8))).assign(9), (new ControlSlotArray(this, x, y + 18 + 8 + 18 + 8, 4, 1)).create(Inoculator.slotFinished)});
-        new ControlIconDisplay(this, (float) (x + 18), (float) (y + 18 + 2), GUIIcon.ArrowUpLeft.getIcon());
-        new ControlIconDisplay(this, (float) (x + 18), (float) (y + 18 + 18), GUIIcon.ArrowLeftDown.getIcon());
+        new ControlErrorState(this, 161.0f, 118.0f);
+        x += 142;
+        CraftGUIUtil.verticalGrid(x, y, TextJustification.MiddleLeft, 8.0f, new ControlSlotArray(this, x, y, 4, 1).create(Inoculator.slotReserve), new ControlSlot(this, x, y + 18 + 8).assign(9), new ControlSlotArray(this, x, y + 18 + 8 + 18 + 8, 4, 1).create(Inoculator.slotFinished));
+        new ControlIconDisplay(this, x + 18, y + 18 + 2, GUIIcon.ArrowUpLeft.getIcon());
+        new ControlIconDisplay(this, x + 18, y + 18 + 18, GUIIcon.ArrowLeftDown.getIcon());
         new ControlPlayerInventory(this);
     }
 
+    @Override
     public String getTitle() {
         return "Inoculator";
     }
 
+    @Override
     protected AbstractMod getMod() {
         return Genetics.instance;
     }
 
+    @Override
     protected String getName() {
         return "Inoculator";
+    }
+
+    static {
+        WindowInoculator.ProgressBase = new StandardTexture(0, 72, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
+        WindowInoculator.Progress = new StandardTexture(0, 0, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
     }
 }

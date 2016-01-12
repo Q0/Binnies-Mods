@@ -3,13 +3,10 @@ package binnie.genetics.api;
 import net.minecraft.item.ItemStack;
 
 public interface IItemAnalysable {
-    boolean isAnalysed(ItemStack var1);
+    boolean isAnalysed(final ItemStack p0);
 
-    ItemStack analyse(ItemStack var1);
+    ItemStack analyse(final ItemStack p0);
 
-    /**
-     * @deprecated
-     */
     @Deprecated
-    float getAnalyseTimeMult(ItemStack var1);
+    float getAnalyseTimeMult(final ItemStack p0);
 }

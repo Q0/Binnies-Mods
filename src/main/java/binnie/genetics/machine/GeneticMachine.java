@@ -7,52 +7,58 @@ import binnie.core.machines.TileEntityMachine;
 import binnie.core.resource.BinnieResource;
 import binnie.core.resource.IBinnieTexture;
 import binnie.genetics.Genetics;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum GeneticMachine implements IMachineType {
-    Isolator(Isolator.PackageIsolator.class),
-    Sequencer(Sequencer.PackageSequencer.class),
-    Polymeriser(Polymeriser.PackagePolymeriser.class),
-    Inoculator(Inoculator.PackageInoculator.class);
+    Isolator((Class<? extends MachinePackage>) Isolator.PackageIsolator.class),
+    Sequencer((Class<? extends MachinePackage>) Sequencer.PackageSequencer.class),
+    Polymeriser((Class<? extends MachinePackage>) Polymeriser.PackagePolymeriser.class),
+    Inoculator((Class<? extends MachinePackage>) Inoculator.PackageInoculator.class);
 
-    Class clss;
+    Class<? extends MachinePackage> clss;
 
-    private GeneticMachine(Class clss) {
+    private GeneticMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
-    public Class getPackageClass() {
+    @Override
+    public Class<? extends MachinePackage> getPackageClass() {
         return this.clss;
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }
 
-    public ItemStack get(int i) {
-        return new ItemStack(Genetics.packageGenetic.getBlock(), i, this.ordinal());
+    public ItemStack get(final int i) {
+        return new ItemStack((Block) Genetics.packageGenetic.getBlock(), i, this.ordinal());
     }
 
     public abstract static class PackageGeneticBase extends MachinePackage {
         BinnieResource renderTexture;
         int colour;
 
-        protected PackageGeneticBase(String uid, IBinnieTexture renderTexture, int flashColour, boolean powered) {
+        protected PackageGeneticBase(final String uid, final IBinnieTexture renderTexture, final int flashColour, final boolean powered) {
             super(uid, powered);
             this.renderTexture = renderTexture.getTexture();
             this.colour = flashColour;
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityMachine(this);
         }
 
+        @Override
         public void register() {
         }
 
-        public void renderMachine(Machine machine, double x, double y, double z, float var8, RenderBlocks renderer) {
+        @Override
+        public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
             MachineRendererGenetics.instance.renderMachine(machine, this.colour, this.renderTexture, x, y, z, var8);
         }
     }

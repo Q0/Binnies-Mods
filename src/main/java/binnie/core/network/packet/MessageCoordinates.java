@@ -12,28 +12,30 @@ public class MessageCoordinates extends MessageBase {
     public int posY;
     public int posZ;
 
-    public MessageCoordinates(MessageBinnie message) {
+    public MessageCoordinates(final MessageBinnie message) {
         super(message);
     }
 
-    public MessageCoordinates(int id, ChunkCoordinates coordinates) {
+    public MessageCoordinates(final int id, final ChunkCoordinates coordinates) {
         this(id, coordinates.posX, coordinates.posY, coordinates.posZ);
     }
 
-    public MessageCoordinates(int id, int posX, int posY, int posZ) {
+    public MessageCoordinates(final int id, final int posX, final int posY, final int posZ) {
         super(id);
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
     }
 
-    public void writeData(ByteBuf data) throws IOException {
+    @Override
+    public void writeData(final ByteBuf data) throws IOException {
         data.writeInt(this.posX);
         data.writeInt(this.posY);
         data.writeInt(this.posZ);
     }
 
-    public void readData(ByteBuf data) throws IOException {
+    @Override
+    public void readData(final ByteBuf data) throws IOException {
         this.posX = data.readInt();
         this.posY = data.readInt();
         this.posZ = data.readInt();
@@ -43,7 +45,7 @@ public class MessageCoordinates extends MessageBase {
         return new ChunkCoordinates(this.posX, this.posY, this.posZ);
     }
 
-    public TileEntity getTileEntity(World world) {
+    public TileEntity getTileEntity(final World world) {
         return world.getTileEntity(this.posX, this.posY, this.posZ);
     }
 }

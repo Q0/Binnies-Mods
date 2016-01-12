@@ -15,47 +15,56 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowPolymeriser extends WindowMachine {
-    static Texture ProgressBase = new StandardTexture(76, 170, 160, 79, GeneticsTexture.GUIProcess.getTexture());
-    static Texture Progress = new StandardTexture(76, 91, 160, 79, GeneticsTexture.GUIProcess.getTexture());
+    static Texture ProgressBase;
+    static Texture Progress;
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowPolymeriser(player, inventory, side);
     }
 
-    public WindowPolymeriser(EntityPlayer player, IInventory inventory, Side side) {
+    public WindowPolymeriser(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(278, 212, player, inventory, side);
     }
 
+    @Override
     public void initialiseClient() {
         super.initialiseClient();
         int x = 16;
-        int y = 38;
-        (new ControlSlotArray(this, x, y, 1, 4)).create(Polymeriser.slotSerumReserve);
-        new ControlIconDisplay(this, (float) (x + 18), (float) (y + 1), GUIIcon.ArrowRight.getIcon());
-        x = x + 34;
-        new ControlMachineProgress(this, x + 18, y - 6, ProgressBase, Progress, Position.Left);
-        (new ControlSlot(this, (float) x, (float) y)).assign(0);
-        (new ControlLiquidTank(this, x, y + 18 + 16, true)).setTankID(0);
-        (new ControlLiquidTank(this, x, y + 18 + 16 + 18 + 8, true)).setTankID(1);
+        final int y = 38;
+        new ControlSlotArray(this, x, y, 1, 4).create(Polymeriser.slotSerumReserve);
+        new ControlIconDisplay(this, x + 18, y + 1, GUIIcon.ArrowRight.getIcon());
+        x += 34;
+        new ControlMachineProgress(this, x + 18, y - 6, WindowPolymeriser.ProgressBase, WindowPolymeriser.Progress, Position.Left);
+        new ControlSlot(this, x, y).assign(0);
+        new ControlLiquidTank(this, x, y + 18 + 16, true).setTankID(0);
+        new ControlLiquidTank(this, x, y + 18 + 16 + 18 + 8, true).setTankID(1);
         new ControlEnergyBar(this, x + 120, 96, 64, 16, Position.Left);
-        x = x + 40;
-        (new ControlSlot(this, (float) (x + 30), (float) (y + 18 + 8))).assign(1);
-        (new ControlSlotCharge(this, x + 30 + 20, y + 18 + 8, 1)).setColour(16766976);
-        x = x + 138;
-        (new ControlSlotArray(this, x, y + 9, 2, 2)).create(Polymeriser.slotSerumFinished);
-        new ControlErrorState(this, 244.0F, 97.0F);
+        x += 40;
+        new ControlSlot(this, x + 30, y + 18 + 8).assign(1);
+        new ControlSlotCharge(this, x + 30 + 20, y + 18 + 8, 1).setColour(16766976);
+        x += 138;
+        new ControlSlotArray(this, x, y + 9, 2, 2).create(Polymeriser.slotSerumFinished);
+        final ControlErrorState errorState = new ControlErrorState(this, 244.0f, 97.0f);
         new ControlPlayerInventory(this);
     }
 
+    @Override
     public String getTitle() {
         return "Polymeriser";
     }
 
+    @Override
     protected AbstractMod getMod() {
         return Genetics.instance;
     }
 
+    @Override
     protected String getName() {
         return "Polymeriser";
+    }
+
+    static {
+        WindowPolymeriser.ProgressBase = new StandardTexture(76, 170, 160, 79, GeneticsTexture.GUIProcess.getTexture());
+        WindowPolymeriser.Progress = new StandardTexture(76, 91, 160, 79, GeneticsTexture.GUIProcess.getTexture());
     }
 }

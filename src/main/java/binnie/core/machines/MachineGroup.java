@@ -1,17 +1,16 @@
 package binnie.core.machines;
 
-import net.minecraft.creativetab.CreativeTabs;
-import java.util.Collection;
-import java.util.Iterator;
-import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
 import binnie.Binnie;
+import binnie.core.AbstractMod;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import binnie.core.AbstractMod;
 
-public class MachineGroup
-{
+public class MachineGroup {
     private AbstractMod mod;
     private String blockName;
     private String uid;
@@ -33,12 +32,11 @@ public class MachineGroup
             if (type.getPackageClass() != null) {
                 if (type.isActive()) {
                     try {
-                        final MachinePackage pack = (MachinePackage)type.getPackageClass().newInstance();
+                        final MachinePackage pack = (MachinePackage) type.getPackageClass().newInstance();
                         pack.assignMetadata(type.ordinal());
                         pack.setActive(type.isActive());
                         this.addPackage(pack);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         throw new RuntimeException("Failed to create machine package " + type.toString(), e);
                     }
                 }
@@ -47,7 +45,7 @@ public class MachineGroup
         Binnie.Machine.registerMachineGroup(this);
         this.block = new BlockMachine(this, blockName);
         if (this.block != null) {
-            GameRegistry.registerBlock((Block)this.block, (Class)ItemMachine.class, blockName);
+            GameRegistry.registerBlock((Block) this.block, (Class) ItemMachine.class, blockName);
             for (final MachinePackage pack2 : this.getPackages()) {
                 pack2.register();
             }

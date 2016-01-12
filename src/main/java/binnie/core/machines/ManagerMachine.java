@@ -12,66 +12,67 @@ import java.util.Map;
 import java.util.Set;
 
 public class ManagerMachine extends ManagerBase {
-    private Map componentInterfaceMap = new HashMap();
-    private Map machineGroups = new HashMap();
-    private Map networkIDToComponent = new HashMap();
-    private Map componentToNetworkID = new HashMap();
-    private int nextNetworkID = 0;
+    private Map<Class<?>, Class<?>[]> componentInterfaceMap;
+    private Map<String, MachineGroup> machineGroups;
+    private Map<Integer, Class<?>> networkIDToComponent;
+    private Map<Class<?>, Integer> componentToNetworkID;
+    private int nextNetworkID;
     private int machineRenderID;
 
     public ManagerMachine() {
-        super();
+        this.componentInterfaceMap = new HashMap<Class<?>, Class<?>[]>();
+        this.machineGroups = new HashMap<String, MachineGroup>();
+        this.networkIDToComponent = new HashMap<Integer, Class<?>>();
+        this.componentToNetworkID = new HashMap<Class<?>, Integer>();
+        this.nextNetworkID = 0;
     }
 
-    public void registerMachineGroup(MachineGroup group) {
+    public void registerMachineGroup(final MachineGroup group) {
         this.machineGroups.put(group.getUID(), group);
     }
 
-    public MachineGroup getGroup(String name) {
-        return (MachineGroup) this.machineGroups.get(name);
+    public MachineGroup getGroup(final String name) {
+        return this.machineGroups.get(name);
     }
 
-    public MachinePackage getPackage(String group, String name) {
-        MachineGroup machineGroup = this.getGroup(group);
-        return machineGroup == null ? null : machineGroup.getPackage(name);
+    public MachinePackage getPackage(final String group, final String name) {
+        final MachineGroup machineGroup = this.getGroup(group);
+        return (machineGroup == null) ? null : machineGroup.getPackage(name);
     }
 
-    private void registerComponentClass(Class component) {
-        if (!this.componentInterfaceMap.containsKey(component)) {
-            Set<Class<?>> interfaces = new HashSet();
-            Class<?> currentClass = component;
-
-            while (currentClass != null) {
-                for (Class<?> clss : currentClass.getInterfaces()) {
-                    interfaces.add(clss);
-                }
-
-                currentClass = currentClass.getSuperclass();
-                if (currentClass == Object.class) {
-                    currentClass = null;
-                }
-            }
-
-            interfaces.remove(INBTTagable.class);
-            this.componentInterfaceMap.put(component, interfaces.toArray(new Class[0]));
-            int networkID = this.nextNetworkID++;
-            this.networkIDToComponent.put(Integer.valueOf(networkID), component);
-            this.componentToNetworkID.put(component, Integer.valueOf(networkID));
+    private void registerComponentClass(final Class<? extends MachineComponent> component) {
+        if (this.componentInterfaceMap.containsKey(component)) {
+            return;
         }
+        final Set<Class<?>> interfaces = new HashSet<Class<?>>();
+        for (Class<?> currentClass = component; currentClass != null; currentClass = null) {
+            for (final Class<?> clss : currentClass.getInterfaces()) {
+                interfaces.add(clss);
+            }
+            currentClass = currentClass.getSuperclass();
+            if (currentClass == Object.class) {
+            }
+        }
+        interfaces.remove(INBTTagable.class);
+        this.componentInterfaceMap.put(component, interfaces.toArray(new Class[0]));
+        final int networkID = this.nextNetworkID++;
+        this.networkIDToComponent.put(networkID, component);
+        this.componentToNetworkID.put(component, networkID);
     }
 
-    public int getNetworkID(Class component) {
-        return ((Integer) this.componentToNetworkID.get(component)).intValue();
+    public int getNetworkID(final Class<?> component) {
+        return this.componentToNetworkID.get(component);
     }
 
-    public Class getComponentClass(int networkID) {
-        return (Class) this.networkIDToComponent.get(Integer.valueOf(networkID));
+    public Class<?> getComponentClass(final int networkID) {
+        return this.networkIDToComponent.get(networkID);
     }
 
     public int getMachineRenderID() {
         return this.machineRenderID;
     }
 
+    @Override
     public void init() {
         this.machineRenderID = BinnieCore.proxy.getUniqueRenderID();
         SlotValidator.IconBee = new ValidatorIcon(BinnieCore.instance, "validator/bee.0", "validator/bee.1");
@@ -80,16 +81,16 @@ public class ManagerMachine extends ManagerBase {
         SlotValidator.IconBlock = new ValidatorIcon(BinnieCore.instance, "validator/block.0", "validator/block.1");
     }
 
+    @Override
     public void postInit() {
         BinnieCore.proxy.registerBlockRenderer(BinnieCore.proxy.createObject("binnie.core.machines.RendererMachine"));
         BinnieCore.proxy.registerTileEntity(TileEntityMachine.class, "binnie.tile.machine", BinnieCore.proxy.createObject("binnie.core.machines.RendererMachine"));
     }
 
-    public Class[] getComponentInterfaces(Class clss) {
+    public Class<?>[] getComponentInterfaces(final Class<? extends MachineComponent> clss) {
         if (!this.componentInterfaceMap.containsKey(clss)) {
             this.registerComponentClass(clss);
         }
-
-        return (Class[]) this.componentInterfaceMap.get(clss);
+        return this.componentInterfaceMap.get(clss);
     }
 }

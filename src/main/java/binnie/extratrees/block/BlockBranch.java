@@ -25,34 +25,38 @@ import java.util.List;
 
 public class BlockBranch extends BlockLog implements IBlockMetadata {
     public BlockBranch() {
-        super();
         this.setCreativeTab(Tabs.tabArboriculture);
         this.setBlockName("branch");
-        this.setResistance(5.0F);
-        this.setHardness(2.0F);
-        this.setStepSound(soundTypeWood);
+        this.setResistance(5.0f);
+        this.setHardness(2.0f);
+        this.setStepSound(BlockBranch.soundTypeWood);
     }
 
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
+    public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (int i = 0; i < ILogType.ExtraTreeLog.values().length; ++i) {
-            itemList.add(TileEntityMetadata.getItemStack(this, i));
+            itemList.add(TileEntityMetadata.getItemStack((Block) this, i));
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
-        return tile != null ? this.getIcon(side, tile.getTileMetadata(), world.getBlockMetadata(x, y, z)) : super.getIcon(world, x, y, z, side);
+    public IIcon getIcon(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+        final TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
+        if (tile != null) {
+            return this.getIcon(side, tile.getTileMetadata(), world.getBlockMetadata(x, y, z));
+        }
+        return super.getIcon(world, x, y, z, side);
     }
 
-    public IIcon getIcon(int side, int tileMeta, int blockMeta) {
-        int oriented = blockMeta & 12;
-        ILogType.ExtraTreeLog log = ILogType.ExtraTreeLog.values()[tileMeta];
-        return side > 3 ? log.getTrunk() : log.getBark();
+    public IIcon getIcon(final int side, final int tileMeta, final int blockMeta) {
+        final int oriented = blockMeta & 0xC;
+        final ILogType.ExtraTreeLog log = ILogType.ExtraTreeLog.values()[tileMeta];
+        if (side > 3) {
+            return log.getTrunk();
+        }
+        return log.getBark();
     }
 
-    public IIcon getIcon(int side, int tileMeta) {
+    public IIcon getIcon(final int side, final int tileMeta) {
         return this.getIcon(side, tileMeta, 0);
     }
 
@@ -60,54 +64,54 @@ public class BlockBranch extends BlockLog implements IBlockMetadata {
         return ExtraTrees.branchRenderId;
     }
 
-    public void dropAsStack(World world, int x, int y, int z, ItemStack drop) {
+    public void dropAsStack(final World world, final int x, final int y, final int z, final ItemStack drop) {
         this.dropBlockAsItem(world, x, y, z, drop);
     }
 
-    public ArrayList getDrops(World world, int x, int y, int z, int blockMeta, int fortune) {
+    public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int blockMeta, final int fortune) {
         return BlockMetadata.getBlockDropped(this, world, x, y, z, blockMeta);
     }
 
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    public boolean removedByPlayer(final World world, final EntityPlayer player, final int x, final int y, final int z) {
         return BlockMetadata.breakBlock(this, player, world, x, y, z);
     }
 
-    public TileEntity createNewTileEntity(World var1, int i) {
+    public TileEntity createNewTileEntity(final World var1, final int i) {
         return new TileEntityMetadata();
     }
 
-    public boolean hasTileEntity(int meta) {
+    public boolean hasTileEntity(final int meta) {
         return true;
     }
 
-    public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
+    public boolean onBlockEventReceived(final World par1World, final int par2, final int par3, final int par4, final int par5, final int par6) {
         super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-        TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-        return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+        final TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
+        return tileentity != null && tileentity.receiveClientEvent(par5, par6);
     }
 
-    public int getDroppedMeta(int blockMeta, int tileMeta) {
+    public int getDroppedMeta(final int blockMeta, final int tileMeta) {
         return tileMeta;
     }
 
-    public String getBlockName(ItemStack par1ItemStack) {
-        int meta = TileEntityMetadata.getItemDamage(par1ItemStack);
+    public String getBlockName(final ItemStack par1ItemStack) {
+        final int meta = TileEntityMetadata.getItemDamage(par1ItemStack);
         return ILogType.ExtraTreeLog.values()[meta].getName() + " Branch";
     }
 
-    public void getBlockTooltip(ItemStack par1ItemStack, List par3List) {
+    public void getBlockTooltip(final ItemStack par1ItemStack, final List par3List) {
     }
 
-    public int getPlacedMeta(ItemStack stack, World world, int x, int y, int z, ForgeDirection clickedBlock) {
+    public int getPlacedMeta(final ItemStack stack, final World world, final int x, final int y, final int z, final ForgeDirection clickedBlock) {
         return TileEntityMetadata.getItemDamage(stack);
     }
 
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+    public void breakBlock(final World par1World, final int par2, final int par3, final int par4, final Block par5, final int par6) {
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
         par1World.removeTileEntity(par2, par3, par4);
     }
 
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y, final int z) {
         return BlockMetadata.getPickBlock(world, x, y, z);
     }
 }

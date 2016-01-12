@@ -5,9 +5,6 @@ public enum EnumMoisture {
     Normal,
     Damp;
 
-    private EnumMoisture() {
-    }
-
     public String getID() {
         return this.name().toLowerCase();
     }

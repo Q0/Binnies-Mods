@@ -21,58 +21,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AlvearyMutator {
-    public static int slotMutator = 0;
-    static Map mutations = new HashMap();
+    public static int slotMutator;
+    static Map<ItemStack, Float> mutations;
 
-    public AlvearyMutator() {
-        super();
+    public static boolean isMutationItem(final ItemStack item) {
+        return getMutationMult(item) > 0.0f;
     }
 
-    public static boolean isMutationItem(ItemStack item) {
-        return getMutationMult(item) > 0.0F;
-    }
-
-    public static float getMutationMult(ItemStack item) {
+    public static float getMutationMult(final ItemStack item) {
         if (item == null) {
-            return 1.0F;
-        } else {
-            for (ItemStack comp : mutations.keySet()) {
-                if (ItemStack.areItemStackTagsEqual(item, comp) && item.isItemEqual(comp)) {
-                    return ((Float) mutations.get(comp)).floatValue();
-                }
-            }
-
-            return 1.0F;
+            return 1.0f;
         }
-    }
-
-    public static void addMutationItem(ItemStack item, float chance) {
-        if (item != null) {
-            mutations.put(item, Float.valueOf(chance));
-        }
-    }
-
-    public static Collection getMutagens() {
-        return mutations.keySet();
-    }
-
-    public static class ComponentMutatorModifier extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
-        public ComponentMutatorModifier(Machine machine) {
-            super(machine);
-        }
-
-        public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-            if (this.getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
-                return 1.0F;
-            } else {
-                float mult = AlvearyMutator.getMutationMult(this.getUtil().getStack(AlvearyMutator.slotMutator));
-                return Math.min(mult, 15.0F / currentModifier);
+        for (final ItemStack comp : AlvearyMutator.mutations.keySet()) {
+            if (ItemStack.areItemStackTagsEqual(item, comp) && item.isItemEqual(comp)) {
+                return AlvearyMutator.mutations.get(comp);
             }
         }
+        return 1.0f;
+    }
 
-        public void onPostQueenDeath(IBee queen) {
-            this.getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
+    public static void addMutationItem(final ItemStack item, final float chance) {
+        if (item == null) {
+            return;
         }
+        AlvearyMutator.mutations.put(item, chance);
+    }
+
+    public static Collection<ItemStack> getMutagens() {
+        return AlvearyMutator.mutations.keySet();
+    }
+
+    static {
+        AlvearyMutator.slotMutator = 0;
+        AlvearyMutator.mutations = new HashMap<ItemStack, Float>();
     }
 
     public static class PackageAlvearyMutator extends AlvearyMachine.AlvearyPackage implements IMachineInformation {
@@ -80,12 +61,13 @@ public class AlvearyMutator {
             super("mutator", ExtraBeeTexture.AlvearyMutator.getTexture(), false);
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
             new ComponentExtraBeeGUI(machine, ExtraBeeGUID.AlvearyMutator);
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(AlvearyMutator.slotMutator, "mutator");
-            inventory.getSlot(AlvearyMutator.slotMutator).setValidator(new AlvearyMutator.SlotValidatorMutator());
-            new AlvearyMutator.ComponentMutatorModifier(machine);
+            inventory.getSlot(AlvearyMutator.slotMutator).setValidator(new SlotValidatorMutator());
+            new ComponentMutatorModifier(machine);
         }
     }
 
@@ -94,12 +76,34 @@ public class AlvearyMutator {
             super(new ValidatorIcon(ExtraBees.instance, "validator/mutator.0", "validator/mutator.1"));
         }
 
-        public boolean isValid(ItemStack itemStack) {
+        @Override
+        public boolean isValid(final ItemStack itemStack) {
             return AlvearyMutator.isMutationItem(itemStack);
         }
 
+        @Override
         public String getTooltip() {
             return "Mutagenic Agents";
+        }
+    }
+
+    public static class ComponentMutatorModifier extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
+        public ComponentMutatorModifier(final Machine machine) {
+            super(machine);
+        }
+
+        @Override
+        public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+            if (this.getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
+                return 1.0f;
+            }
+            final float mult = AlvearyMutator.getMutationMult(this.getUtil().getStack(AlvearyMutator.slotMutator));
+            return Math.min(mult, 15.0f / currentModifier);
+        }
+
+        @Override
+        public void onPostQueenDeath(final IBee queen) {
+            this.getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
         }
     }
 }

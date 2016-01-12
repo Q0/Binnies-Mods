@@ -3,6 +3,7 @@ package binnie.extratrees.worldgen;
 import binnie.core.Mods;
 import com.mojang.authlib.GameProfile;
 import forestry.api.arboriculture.ITree;
+import forestry.api.world.ITreeGenData;
 import net.minecraft.world.World;
 
 public class BlockTypeLeaf extends BlockType {
@@ -10,7 +11,8 @@ public class BlockTypeLeaf extends BlockType {
         super(Mods.Forestry.block("leaves"), 0);
     }
 
-    public void setBlock(World world, ITree tree, int x, int y, int z) {
-        tree.setLeaves(world, (GameProfile) null, x, y, z);
+    @Override
+    public void setBlock(final World world, final ITree tree, final int x, final int y, final int z) {
+        ((ITreeGenData) tree).setLeaves(world, (GameProfile) null, x, y, z);
     }
 }

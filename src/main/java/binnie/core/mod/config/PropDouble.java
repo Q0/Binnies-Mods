@@ -7,23 +7,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
-@ConfigProperty.Type(
-        propertyClass = PropDouble.PropertyDouble.class
-)
+@ConfigProperty.Type(propertyClass = PropertyDouble.class)
 public @interface PropDouble {
-    public static class PropertyDouble extends PropertyBase {
-        public PropertyDouble(Field field, BinnieConfiguration file, ConfigProperty configProperty, PropDouble annotedProperty) throws IllegalArgumentException, IllegalAccessException {
+    public static class PropertyDouble extends PropertyBase<Double, PropDouble> {
+        public PropertyDouble(final Field field, final BinnieConfiguration file, final ConfigProperty configProperty, final PropDouble annotedProperty) throws IllegalArgumentException, IllegalAccessException {
             super(field, file, configProperty, annotedProperty);
         }
 
+        @Override
         protected Property getProperty() {
-            return this.file.get(this.getCategory(), this.getKey(), ((Double) this.defaultValue).doubleValue());
+            return this.file.get(this.getCategory(), this.getKey(), (double) this.defaultValue);
         }
 
+        @Override
         protected Double getConfigValue() {
-            return Double.valueOf(this.property.getDouble(((Double) this.defaultValue).doubleValue()));
+            return this.property.getDouble((double) this.defaultValue);
         }
 
+        @Override
         protected void addComments() {
             this.addComment("Default value is " + this.defaultValue + ".");
         }

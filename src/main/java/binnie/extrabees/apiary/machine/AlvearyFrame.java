@@ -15,48 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class AlvearyFrame {
-    public static int slotFrame = 0;
+    public static int slotFrame;
 
-    public AlvearyFrame() {
-        super();
-    }
-
-    public static class ComponentFrameModifier extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
-        public ComponentFrameModifier(Machine machine) {
-            super(machine);
-        }
-
-        public void wearOutEquipment(int amount) {
-            if (this.getHiveFrame() != null) {
-                World world = this.getMachine().getTileEntity().getWorldObj();
-                int wear = Math.round((float) (amount * 5) * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getWearModifier());
-                this.getInventory().setInventorySlotContents(AlvearyFrame.slotFrame, this.getHiveFrame().frameUsed((IBeeHousing) ((TileExtraBeeAlveary) this.getMachine().getTileEntity()).getCentralTE(), this.getInventory().getStackInSlot(AlvearyFrame.slotFrame), (IBee) null, wear));
-            }
-        }
-
-        public IHiveFrame getHiveFrame() {
-            return this.getInventory().getStackInSlot(AlvearyFrame.slotFrame) != null ? (IHiveFrame) this.getInventory().getStackInSlot(AlvearyFrame.slotFrame).getItem() : null;
-        }
-
-        public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
-            return this.getHiveFrame() == null ? 1.0F : this.getHiveFrame().getTerritoryModifier(genome, currentModifier);
-        }
-
-        public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-            return this.getHiveFrame() == null ? 1.0F : this.getHiveFrame().getMutationModifier(genome, mate, currentModifier);
-        }
-
-        public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-            return this.getHiveFrame() == null ? 1.0F : this.getHiveFrame().getLifespanModifier(genome, mate, currentModifier);
-        }
-
-        public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-            return this.getHiveFrame() == null ? 1.0F : this.getHiveFrame().getProductionModifier(genome, currentModifier);
-        }
-
-        public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
-            return this.getHiveFrame() == null ? 1.0F : this.getHiveFrame().getFloweringModifier(genome, currentModifier);
-        }
+    static {
+        AlvearyFrame.slotFrame = 0;
     }
 
     public static class PackageAlvearyFrame extends AlvearyMachine.AlvearyPackage implements IMachineInformation {
@@ -64,12 +26,13 @@ public class AlvearyFrame {
             super("frame", ExtraBeeTexture.AlvearyFrame.getTexture(), false);
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
             new ComponentExtraBeeGUI(machine, ExtraBeeGUID.AlvearyFrame);
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(AlvearyFrame.slotFrame, "frame");
-            inventory.getSlot(AlvearyFrame.slotFrame).setValidator(new AlvearyFrame.SlotValidatorFrame());
-            new AlvearyFrame.ComponentFrameModifier(machine);
+            inventory.getSlot(AlvearyFrame.slotFrame).setValidator(new SlotValidatorFrame());
+            new ComponentFrameModifier(machine);
         }
     }
 
@@ -78,12 +41,62 @@ public class AlvearyFrame {
             super(SlotValidator.IconFrame);
         }
 
-        public boolean isValid(ItemStack itemStack) {
+        @Override
+        public boolean isValid(final ItemStack itemStack) {
             return itemStack != null && itemStack.getItem() instanceof IHiveFrame;
         }
 
+        @Override
         public String getTooltip() {
             return "Hive Frames";
+        }
+    }
+
+    public static class ComponentFrameModifier extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
+        public ComponentFrameModifier(final Machine machine) {
+            super(machine);
+        }
+
+        @Override
+        public void wearOutEquipment(final int amount) {
+            if (this.getHiveFrame() == null) {
+                return;
+            }
+            final World world = this.getMachine().getTileEntity().getWorldObj();
+            final int wear = Math.round(amount * 5 * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getWearModifier());
+            this.getInventory().setInventorySlotContents(AlvearyFrame.slotFrame, this.getHiveFrame().frameUsed((IBeeHousing) ((TileExtraBeeAlveary) this.getMachine().getTileEntity()).getCentralTE(), this.getInventory().getStackInSlot(AlvearyFrame.slotFrame), (IBee) null, wear));
+        }
+
+        public IHiveFrame getHiveFrame() {
+            if (this.getInventory().getStackInSlot(AlvearyFrame.slotFrame) != null) {
+                return (IHiveFrame) this.getInventory().getStackInSlot(AlvearyFrame.slotFrame).getItem();
+            }
+            return null;
+        }
+
+        @Override
+        public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getTerritoryModifier(genome, currentModifier);
+        }
+
+        @Override
+        public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getMutationModifier(genome, mate, currentModifier);
+        }
+
+        @Override
+        public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getLifespanModifier(genome, mate, currentModifier);
+        }
+
+        @Override
+        public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getProductionModifier(genome, currentModifier);
+        }
+
+        @Override
+        public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getFloweringModifier(genome, currentModifier);
         }
     }
 }

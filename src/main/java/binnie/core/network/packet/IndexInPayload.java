@@ -1,12 +1,14 @@
 package binnie.core.network.packet;
 
 public class IndexInPayload {
-    public int intIndex = 0;
-    public int floatIndex = 0;
-    public int stringIndex = 0;
+    public int intIndex;
+    public int floatIndex;
+    public int stringIndex;
 
-    public IndexInPayload(int intIndex, int floatIndex, int stringIndex) {
-        super();
+    public IndexInPayload(final int intIndex, final int floatIndex, final int stringIndex) {
+        this.intIndex = 0;
+        this.floatIndex = 0;
+        this.stringIndex = 0;
         this.intIndex = intIndex;
         this.floatIndex = floatIndex;
         this.stringIndex = stringIndex;

@@ -14,53 +14,64 @@ public enum ExtraTreeLiquid implements ILiquidType {
     Latex("Latex", "latex", 14212041),
     Turpentine("Turpentine", "turpentine", 7951162);
 
-    public String name = "";
+    public String name;
     String ident;
     IIcon icon;
     int colour;
 
-    private ExtraTreeLiquid(String name, String ident, int colour) {
+    private ExtraTreeLiquid(final String name, final String ident, final int colour) {
+        this.name = "";
         this.name = name;
         this.ident = ident;
         this.colour = colour;
     }
 
+    @Override
     public IIcon getIcon() {
         return this.icon;
     }
 
-    public void registerIcon(IIconRegister register) {
+    @Override
+    public void registerIcon(final IIconRegister register) {
         this.icon = ExtraTrees.proxy.getIcon(register, "liquids/" + this.getIdentifier());
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public String getIdentifier() {
         return this.ident;
     }
 
+    @Override
     public int getColour() {
         return 16777215;
     }
 
-    public FluidStack get(int i) {
+    @Override
+    public FluidStack get(final int i) {
         return Binnie.Liquid.getLiquidStack(this.ident, i);
     }
 
+    @Override
     public int getTransparency() {
         return 255;
     }
 
-    public boolean canPlaceIn(FluidContainer container) {
+    @Override
+    public boolean canPlaceIn(final FluidContainer container) {
         return true;
     }
 
-    public boolean showInCreative(FluidContainer container) {
+    @Override
+    public boolean showInCreative(final FluidContainer container) {
         return container == FluidContainer.Bucket || container == FluidContainer.Can || container == FluidContainer.Capsule;
     }
 
+    @Override
     public int getContainerColour() {
         return this.colour;
     }

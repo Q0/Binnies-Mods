@@ -6,17 +6,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BlockMultiblockMachine extends BlockContainer {
-    public BlockMultiblockMachine(String blockName) {
+    public BlockMultiblockMachine(final String blockName) {
         super(Material.iron);
-        this.setHardness(1.5F);
+        this.setHardness(1.5f);
         this.setBlockName(blockName);
     }
 
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(final World world, final int metadata) {
         return new TileEntityMultiblockMachine();
     }
 
-    public TileEntity createNewTileEntity(World var1, int i) {
+    public TileEntity createNewTileEntity(final World var1, final int i) {
         return new TileEntityMultiblockMachine();
     }
 }

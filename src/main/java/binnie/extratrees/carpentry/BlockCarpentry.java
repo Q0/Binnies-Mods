@@ -13,16 +13,18 @@ public class BlockCarpentry extends BlockDesign {
         super(DesignSystem.Wood, Material.wood);
         this.setCreativeTab(Tabs.tabArboriculture);
         this.setBlockName("carpentry");
-        this.setResistance(5.0F);
-        this.setHardness(2.0F);
-        this.setStepSound(soundTypeWood);
+        this.setResistance(5.0f);
+        this.setHardness(2.0f);
+        this.setStepSound(BlockCarpentry.soundTypeWood);
     }
 
-    public ItemStack getCreativeStack(IDesign design) {
+    @Override
+    public ItemStack getCreativeStack(final IDesign design) {
         return ModuleCarpentry.getItemStack(this, PlankType.ExtraTreePlanks.Apple, PlankType.VanillaPlanks.BIRCH, design);
     }
 
-    public String getBlockName(DesignBlock design) {
-        return Binnie.Language.localise(ExtraTrees.instance, "block.woodentile.name", new Object[]{design.getDesign().getName()});
+    @Override
+    public String getBlockName(final DesignBlock design) {
+        return Binnie.Language.localise(ExtraTrees.instance, "block.woodentile.name", design.getDesign().getName());
     }
 }

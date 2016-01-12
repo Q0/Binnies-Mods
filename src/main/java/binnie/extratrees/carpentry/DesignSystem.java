@@ -20,104 +20,141 @@ public enum DesignSystem implements IDesignSystem {
     Wood,
     Glass;
 
-    Map primary = new HashMap();
-    Map secondary = new HashMap();
+    Map<Integer, IIcon> primary;
+    Map<Integer, IIcon> secondary;
 
     private DesignSystem() {
+        this.primary = new HashMap<Integer, IIcon>();
+        this.secondary = new HashMap<Integer, IIcon>();
         DesignerManager.instance.registerDesignSystem(this);
     }
 
+    @Override
     public IDesignMaterial getDefaultMaterial() {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return GlassType.get(0);
-            case Wood:
+            }
+            case Wood: {
                 return PlankType.ExtraTreePlanks.Fir;
-            default:
+            }
+            default: {
                 return null;
+            }
         }
     }
 
+    @Override
     public IDesignMaterial getDefaultMaterial2() {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return GlassType.get(1);
-            case Wood:
+            }
+            case Wood: {
                 return PlankType.ExtraTreePlanks.Whitebeam;
-            default:
+            }
+            default: {
                 return null;
+            }
         }
     }
 
-    public IDesignMaterial getMaterial(int id) {
+    @Override
+    public IDesignMaterial getMaterial(final int id) {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return GlassType.get(id);
-            case Wood:
+            }
+            case Wood: {
                 return CarpentryManager.carpentryInterface.getWoodMaterial(id);
-            default:
+            }
+            default: {
                 return null;
+            }
         }
     }
 
-    public int getMaterialIndex(IDesignMaterial id) {
+    @Override
+    public int getMaterialIndex(final IDesignMaterial id) {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return GlassType.getIndex(id);
-            case Wood:
+            }
+            case Wood: {
                 return CarpentryManager.carpentryInterface.getCarpentryWoodIndex(id);
-            default:
+            }
+            default: {
                 return 0;
+            }
         }
     }
 
     public String getTexturePath() {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return "glass";
-            case Wood:
+            }
+            case Wood: {
                 return "patterns";
-            default:
+            }
+            default: {
                 return "";
+            }
         }
     }
 
-    public IDesignMaterial getMaterial(ItemStack stack) {
+    @Override
+    public IDesignMaterial getMaterial(final ItemStack stack) {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return GlassType.get(stack);
-            case Wood:
+            }
+            case Wood: {
                 return CarpentryManager.carpentryInterface.getWoodMaterial(stack);
-            default:
+            }
+            default: {
                 return null;
+            }
         }
     }
 
+    @Override
     public ItemStack getAdhesive() {
         switch (this) {
-            case Glass:
+            case Glass: {
                 return ExtraTreeItems.GlassFitting.get(1);
-            case Wood:
+            }
+            case Wood: {
                 return ExtraTreeItems.WoodWax.get(1);
-            default:
+            }
+            default: {
                 return null;
+            }
         }
     }
 
-    public IIcon getPrimaryIcon(IPattern pattern) {
-        return pattern instanceof EnumPattern ? (IIcon) this.primary.get(Integer.valueOf(((EnumPattern) pattern).ordinal())) : null;
-    }
-
-    public IIcon getSecondaryIcon(IPattern pattern) {
-        return pattern instanceof EnumPattern ? (IIcon) this.secondary.get(Integer.valueOf(((EnumPattern) pattern).ordinal())) : null;
-    }
-
-    public void registerIcons(IIconRegister register) {
-        for (EnumPattern pattern : EnumPattern.values()) {
-            this.primary.put(Integer.valueOf(pattern.ordinal()), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".0"));
-            this.secondary.put(Integer.valueOf(pattern.ordinal()), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".1"));
+    @Override
+    public IIcon getPrimaryIcon(final IPattern pattern) {
+        if (pattern instanceof EnumPattern) {
+            return this.primary.get(((EnumPattern) pattern).ordinal());
         }
+        return null;
+    }
 
+    @Override
+    public IIcon getSecondaryIcon(final IPattern pattern) {
+        if (pattern instanceof EnumPattern) {
+            return this.secondary.get(((EnumPattern) pattern).ordinal());
+        }
+        return null;
+    }
+
+    @Override
+    public void registerIcons(final IIconRegister register) {
+        for (final EnumPattern pattern : EnumPattern.values()) {
+            this.primary.put(pattern.ordinal(), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".0"));
+            this.secondary.put(pattern.ordinal(), BinnieCore.proxy.getIcon(register, this.getMod().getModID(), this.getTexturePath() + "/" + pattern.toString().toLowerCase() + ".1"));
+        }
     }
 
     public AbstractMod getMod() {

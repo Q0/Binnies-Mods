@@ -7,13 +7,15 @@ import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.resource.Texture;
 
 public class ControlImage extends Control {
-    private Object key = null;
+    private Object key;
 
-    public ControlImage(IWidget parent, float x, float y, Texture text) {
+    public ControlImage(final IWidget parent, final float x, final float y, final Texture text) {
         super(parent, x, y, text.w(), text.h());
+        this.key = null;
         this.key = text;
     }
 
+    @Override
     public void onRenderForeground() {
         CraftGUI.Render.texture(this.key, IPoint.ZERO);
     }

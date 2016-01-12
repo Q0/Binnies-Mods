@@ -16,30 +16,20 @@ import binnie.genetics.item.ModuleItem;
 import binnie.genetics.machine.ModuleMachine;
 import binnie.genetics.proxy.Proxy;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.item.Item;
 
-@Mod(
-        modid = "Genetics",
-        name = "Genetics",
-        useMetadata = true,
-        dependencies = "after:BinnieCore"
-)
+@Mod(modid = "Genetics", name = "Genetics", useMetadata = true, dependencies = "after:BinnieCore")
 public class Genetics extends AbstractMod {
-    public static ItemSerumArray itemSerumArray = null;
-    @Instance("Genetics")
+    public static ItemSerumArray itemSerumArray;
+    @Mod.Instance("Genetics")
     public static Genetics instance;
-    @SidedProxy(
-            clientSide = "binnie.genetics.proxy.ProxyClient",
-            serverSide = "binnie.genetics.proxy.ProxyServer"
-    )
+    @SidedProxy(clientSide = "binnie.genetics.proxy.ProxyClient", serverSide = "binnie.genetics.proxy.ProxyServer")
     public static Proxy proxy;
-    public static String channel = "GEN";
+    public static String channel;
     public static Item itemGenetics;
     public static Item itemSerum;
     public static Item itemSequencer;
@@ -51,54 +41,65 @@ public class Genetics extends AbstractMod {
     public static Item registry;
     public static Item masterRegistry;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
+    @Mod.EventHandler
+    public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleItem());
         this.addModule(new ModuleMachine());
         this.preInit();
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
+    @Mod.EventHandler
+    public void init(final FMLInitializationEvent evt) {
         this.init();
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
+    @Mod.EventHandler
+    public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
     }
 
     public Genetics() {
-        super();
-        instance = this;
+        Genetics.instance = this;
     }
 
+    @Override
     public IBinnieGUID[] getGUIDs() {
         return GeneticsGUI.values();
     }
 
+    @Override
     public IPacketID[] getPacketIDs() {
         return GeneticsPacket.values();
     }
 
+    @Override
     public String getChannel() {
         return "GEN";
     }
 
+    @Override
     public IProxyCore getProxy() {
-        return proxy;
+        return Genetics.proxy;
     }
 
+    @Override
     public String getModID() {
         return "genetics";
     }
 
-    protected Class getPacketHandler() {
-        return Genetics.PacketHandler.class;
+    @Override
+    protected Class<? extends BinniePacketHandler> getPacketHandler() {
+        return PacketHandler.class;
     }
 
+    @Override
     public boolean isActive() {
         return BinnieCore.isGeneticsActive();
+    }
+
+    static {
+        Genetics.itemSerumArray = null;
+        Genetics.channel = "GEN";
     }
 
     public static class PacketHandler extends BinniePacketHandler {

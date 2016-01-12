@@ -6,90 +6,87 @@ enum AccessDirection {
     Out,
     Neither;
 
-    private AccessDirection() {
-    }
-
     boolean canInsert() {
-        return this == Both || this == In;
+        return this == AccessDirection.Both || this == AccessDirection.In;
     }
 
     boolean canExtract() {
-        return this == Both || this == Out;
+        return this == AccessDirection.Both || this == AccessDirection.Out;
     }
 
     boolean canAccess() {
-        return this != Neither;
+        return this != AccessDirection.Neither;
     }
 
-    AccessDirection changeInsert(boolean b) {
+    AccessDirection changeInsert(final boolean b) {
         if (b) {
-            if (this == Out) {
-                return Both;
+            if (this == AccessDirection.Out) {
+                return AccessDirection.Both;
             }
-
-            if (this == Neither) {
-                return In;
+            if (this == AccessDirection.Neither) {
+                return AccessDirection.In;
             }
         } else {
-            if (this == Both) {
-                return Out;
+            if (this == AccessDirection.Both) {
+                return AccessDirection.Out;
             }
-
-            if (this == In) {
-                return Neither;
+            if (this == AccessDirection.In) {
+                return AccessDirection.Neither;
             }
         }
-
         return this;
     }
 
-    AccessDirection changeExtract(boolean b) {
+    AccessDirection changeExtract(final boolean b) {
         if (b) {
-            if (this == In) {
-                return Both;
+            if (this == AccessDirection.In) {
+                return AccessDirection.Both;
             }
-
-            if (this == Neither) {
-                return Out;
+            if (this == AccessDirection.Neither) {
+                return AccessDirection.Out;
             }
         } else {
-            if (this == Both) {
-                return In;
+            if (this == AccessDirection.Both) {
+                return AccessDirection.In;
             }
-
-            if (this == Out) {
-                return Neither;
+            if (this == AccessDirection.Out) {
+                return AccessDirection.Neither;
             }
         }
-
         return this;
     }
 
     public String getTextColour() {
         switch (this) {
-            case Both:
+            case Both: {
                 return "§a";
-            case In:
+            }
+            case In: {
                 return "§e";
-            case Neither:
+            }
+            case Neither: {
                 return "§c";
-            case Out:
-            default:
+            }
+            default: {
                 return "§b";
+            }
         }
     }
 
     public int getShadeColour() {
         switch (this) {
-            case Both:
+            case Both: {
                 return 1431699285;
-            case In:
+            }
+            case In: {
                 return 1442840405;
-            case Neither:
+            }
+            case Neither: {
                 return 1442796885;
-            case Out:
-            default:
+            }
+            default: {
                 return 1431699455;
+            }
         }
     }
 }

@@ -5,107 +5,94 @@ import binnie.core.machines.MachineComponent;
 import binnie.core.machines.network.INetwork;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class ComponentChargedSlots extends MachineComponent implements INetwork.GuiNBT, IChargedSlots {
-    private Map charges = new HashMap();
+    private Map<Integer, Float> charges;
 
-    public ComponentChargedSlots(Machine machine) {
+    public ComponentChargedSlots(final Machine machine) {
         super(machine);
+        this.charges = new HashMap<Integer, Float>();
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.charges.clear();
-        NBTTagList list = nbttagcompound.getTagList("charges", 10);
-
+        final NBTTagList list = nbttagcompound.getTagList("charges", 10);
         for (int i = 0; i < list.tagCount(); ++i) {
-            NBTTagCompound tag = list.getCompoundTagAt(i);
-            this.charges.put(Integer.valueOf(tag.getByte("i")), Float.valueOf((float) tag.getByte("v") / 100.0F));
+            final NBTTagCompound tag = list.getCompoundTagAt(i);
+            this.charges.put((int) tag.getByte("i"), tag.getByte("v") / 100.0f);
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        NBTTagList chargeList = new NBTTagList();
-
-        for (Entry<Integer, Float> entry : this.charges.entrySet()) {
-            NBTTagCompound chargesNBT = new NBTTagCompound();
-            chargesNBT.setByte("i", (byte) (0 + ((Integer) entry.getKey()).intValue()));
-            chargesNBT.setByte("v", (byte) ((int) (((Float) entry.getValue()).floatValue() * 100.0F)));
-            chargeList.appendTag(chargesNBT);
+        final NBTTagList chargeList = new NBTTagList();
+        for (final Map.Entry<Integer, Float> entry : this.charges.entrySet()) {
+            final NBTTagCompound chargesNBT = new NBTTagCompound();
+            chargesNBT.setByte("i", (byte) (0 + entry.getKey()));
+            chargesNBT.setByte("v", (byte) (entry.getValue() * 100.0f));
+            chargeList.appendTag((NBTBase) chargesNBT);
         }
-
-        nbttagcompound.setTag("charges", chargeList);
+        nbttagcompound.setTag("charges", (NBTBase) chargeList);
     }
 
-    public void addCharge(int slot) {
-        this.charges.put(Integer.valueOf(slot), Float.valueOf(0.0F));
+    public void addCharge(final int slot) {
+        this.charges.put(slot, 0.0f);
     }
 
-    public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound nbt) {
+    public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound nbt) {
         if (name.equals("slot-charges")) {
-            Iterator i$ = this.charges.keySet().iterator();
-
-            while (i$.hasNext()) {
-                int i = ((Integer) i$.next()).intValue();
-                this.charges.put(Integer.valueOf(i), Float.valueOf((float) nbt.getShort("" + i) / 100.0F));
+            for (final int i : this.charges.keySet()) {
+                this.charges.put(i, nbt.getShort("" + i) / 100.0f);
             }
         }
-
     }
 
-    public void sendGuiNBT(Map nbt) {
-        NBTTagCompound tag = new NBTTagCompound();
-        Iterator i$ = this.charges.keySet().iterator();
-
-        while (i$.hasNext()) {
-            int i = ((Integer) i$.next()).intValue();
-            tag.setShort("" + i, (short) ((int) (((Float) this.charges.get(Integer.valueOf(i))).floatValue() * 100.0F)));
+    public void sendGuiNBT(final Map<String, NBTTagCompound> nbt) {
+        final NBTTagCompound tag = new NBTTagCompound();
+        for (final int i : this.charges.keySet()) {
+            tag.setShort("" + i, (short) (this.charges.get(i) * 100.0f));
         }
-
         nbt.put("slot-charges", tag);
     }
 
-    public float getCharge(int slot) {
-        return this.charges.containsKey(Integer.valueOf(slot)) ? ((Float) this.charges.get(Integer.valueOf(slot))).floatValue() : 0.0F;
+    @Override
+    public float getCharge(final int slot) {
+        return this.charges.containsKey(slot) ? this.charges.get(slot) : 0.0f;
     }
 
-    public void setCharge(int slot, float charge) {
-        if (charge > 1.0F) {
-            charge = 1.0F;
+    @Override
+    public void setCharge(final int slot, float charge) {
+        if (charge > 1.0f) {
+            charge = 1.0f;
         }
-
-        if (charge < 0.0F) {
-            charge = 0.0F;
+        if (charge < 0.0f) {
+            charge = 0.0f;
         }
-
-        if (this.charges.containsKey(Integer.valueOf(slot))) {
-            this.charges.put(Integer.valueOf(slot), Float.valueOf(charge));
+        if (this.charges.containsKey(slot)) {
+            this.charges.put(slot, charge);
         }
-
     }
 
+    @Override
     public void onUpdate() {
-        Iterator i$ = this.charges.keySet().iterator();
-
-        while (i$.hasNext()) {
-            int slot = ((Integer) i$.next()).intValue();
-            if (this.getCharge(slot) <= 0.0F && this.getUtil().decreaseStack(slot, 1) != null) {
-                this.setCharge(slot, 1.0F);
+        for (final int slot : this.charges.keySet()) {
+            if (this.getCharge(slot) <= 0.0f && this.getUtil().decreaseStack(slot, 1) != null) {
+                this.setCharge(slot, 1.0f);
             }
         }
-
     }
 
-    public void alterCharge(int slot, float charge) {
+    @Override
+    public void alterCharge(final int slot, final float charge) {
         this.setCharge(slot, this.getCharge(slot) + charge);
     }
 }

@@ -2,6 +2,7 @@ package binnie.craftgui.mod.database;
 
 import binnie.craftgui.controls.listbox.ControlList;
 import binnie.craftgui.controls.listbox.ControlListBox;
+import binnie.craftgui.controls.scroll.ControlScrollableContent;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.minecraft.Window;
 import com.mojang.authlib.GameProfile;
@@ -13,37 +14,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ControlSpeciesBox extends ControlListBox {
-    private IClassification branch = null;
+public class ControlSpeciesBox extends ControlListBox<IAlleleSpecies> {
+    private IClassification branch;
 
-    public IWidget createOption(IAlleleSpecies value, int y) {
-        return new ControlSpeciexBoxOption((ControlList) this.getContent(), value, y);
+    @Override
+    public IWidget createOption(final IAlleleSpecies value, final int y) {
+        return new ControlSpeciexBoxOption(((ControlScrollableContent<ControlList<IAlleleSpecies>>) this).getContent(), value, y);
     }
 
-    public ControlSpeciesBox(IWidget parent, float x, float y, float width, float height) {
-        super(parent, x, y, width, height, 12.0F);
+    public ControlSpeciesBox(final IWidget parent, final float x, final float y, final float width, final float height) {
+        super(parent, x, y, width, height, 12.0f);
+        this.branch = null;
     }
 
-    public void setBranch(IClassification branch) {
+    public void setBranch(final IClassification branch) {
         if (branch != this.branch) {
             this.branch = branch;
-            List<IAlleleSpecies> speciesList2 = new ArrayList();
-            this.movePercentage(-100.0F);
+            final List<IAlleleSpecies> speciesList2 = new ArrayList<IAlleleSpecies>();
+            this.movePercentage(-100.0f);
             this.setOptions(speciesList2);
-            EntityPlayer player = Window.get(this).getPlayer();
-            GameProfile playerName = Window.get(this).getUsername();
-            WindowAbstractDatabase db = (WindowAbstractDatabase) Window.get(this);
-            Collection<IAlleleSpecies> speciesList = !db.isNEI ? db.getBreedingSystem().getDiscoveredSpecies(db.getWorld(), playerName) : db.getBreedingSystem().getAllSpecies();
+            final EntityPlayer player = Window.get(this).getPlayer();
+            final GameProfile playerName = Window.get(this).getUsername();
+            final WindowAbstractDatabase db = Window.get(this);
+            final Collection<IAlleleSpecies> speciesList3 = db.isNEI ? db.getBreedingSystem().getAllSpecies() : db.getBreedingSystem().getDiscoveredSpecies(db.getWorld(), playerName);
             if (branch != null) {
-                for (IAlleleSpecies species : branch.getMemberSpecies()) {
-                    if (speciesList.contains(species)) {
+                for (final IAlleleSpecies species : branch.getMemberSpecies()) {
+                    if (speciesList3.contains(species)) {
                         speciesList2.add(species);
                     }
                 }
             }
-
             this.setOptions(speciesList2);
         }
-
     }
 }

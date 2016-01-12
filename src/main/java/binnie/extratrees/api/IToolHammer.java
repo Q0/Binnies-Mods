@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public interface IToolHammer {
-    boolean isActive(ItemStack var1);
+    boolean isActive(final ItemStack p0);
 
-    void onHammerUsed(ItemStack var1, EntityPlayer var2);
+    void onHammerUsed(final ItemStack p0, final EntityPlayer p1);
 }

@@ -2,15 +2,15 @@ package binnie.craftgui.events;
 
 import binnie.craftgui.core.IWidget;
 
-public class EventValuesChanged extends Event {
-    public Object[] values;
+public class EventValuesChanged<T> extends Event {
+    public T[] values;
 
-    public EventValuesChanged(IWidget origin, Object[] values) {
+    public EventValuesChanged(final IWidget origin, final T[] values) {
         super(origin);
         this.values = values;
     }
 
-    public Object[] getValues() {
-        return this.values;
+    public T[] getValues() {
+        return (T[]) this.values;
     }
 }

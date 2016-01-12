@@ -1,5 +1,5 @@
 package binnie.craftgui.core;
 
 public interface ITooltip {
-    void getTooltip(Tooltip var1);
+    void getTooltip(final Tooltip p0);
 }

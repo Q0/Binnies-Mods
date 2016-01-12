@@ -15,12 +15,11 @@ import net.minecraft.item.ItemStack;
 public class ItemHiveFrame extends Item implements IHiveFrame {
     EnumHiveFrame frame;
 
-    public String getItemStackDisplayName(ItemStack par1ItemStack) {
+    public String getItemStackDisplayName(final ItemStack par1ItemStack) {
         return this.frame.getName();
     }
 
-    public ItemHiveFrame(EnumHiveFrame frame) {
-        super();
+    public ItemHiveFrame(final EnumHiveFrame frame) {
         this.frame = frame;
         this.setMaxDamage(frame.maxDamage);
         this.setCreativeTab(Tabs.tabApiculture);
@@ -28,29 +27,32 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
         this.setUnlocalizedName("hiveFrame");
     }
 
-    public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+    public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
         return this.frame.getTerritoryModifier(genome, currentModifier);
     }
 
-    public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+    public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
         return this.frame.getMutationModifier(genome, mate, currentModifier);
     }
 
-    public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+    public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
         return this.frame.getLifespanModifier(genome, mate, currentModifier);
     }
 
-    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+    public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
         return this.frame.getProductionModifier(genome, currentModifier);
     }
 
-    public ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear) {
+    public ItemStack frameUsed(final IBeeHousing housing, final ItemStack frame, final IBee queen, final int wear) {
         frame.setItemDamage(frame.getItemDamage() + wear);
-        return frame.getItemDamage() >= frame.getMaxDamage() ? null : frame;
+        if (frame.getItemDamage() >= frame.getMaxDamage()) {
+            return null;
+        }
+        return frame;
     }
 
-    public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
     public boolean isSealed() {
@@ -70,11 +72,11 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.itemIcon = ExtraBees.proxy.getIcon(register, "frame" + this.frame.toString());
     }
 
-    public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 }

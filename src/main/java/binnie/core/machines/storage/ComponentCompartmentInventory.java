@@ -5,6 +5,7 @@ import binnie.core.machines.inventory.ComponentInventorySlots;
 import binnie.core.machines.network.INetwork;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -14,22 +15,20 @@ import java.util.Map;
 class ComponentCompartmentInventory extends ComponentInventorySlots implements INetwork.GuiNBT {
     private int numberOfTabs;
     private int slotsPerPage;
-    private Map tabs;
+    private Map<Integer, CompartmentTab> tabs;
 
-    public ComponentCompartmentInventory(IMachine machine, int sections) {
+    public ComponentCompartmentInventory(final IMachine machine, final int sections) {
         this(machine, sections, 4);
     }
 
-    public ComponentCompartmentInventory(IMachine machine, int tabs, int pageSize) {
+    public ComponentCompartmentInventory(final IMachine machine, final int tabs, final int pageSize) {
         super(machine);
-        this.tabs = new HashMap();
+        this.tabs = new HashMap<Integer, CompartmentTab>();
         this.numberOfTabs = tabs;
         this.slotsPerPage = pageSize;
-
         for (int i = 0; i < this.numberOfTabs * this.slotsPerPage; ++i) {
             this.addSlot(i, "compartment");
         }
-
     }
 
     public int getPageSize() {
@@ -40,82 +39,74 @@ class ComponentCompartmentInventory extends ComponentInventorySlots implements I
         return this.numberOfTabs;
     }
 
-    public int[] getSlotsForTab(int currentTab) {
-        int[] slots = new int[this.slotsPerPage];
-
+    public int[] getSlotsForTab(final int currentTab) {
+        final int[] slots = new int[this.slotsPerPage];
         for (int i = 0; i < this.slotsPerPage; ++i) {
             slots[i] = i + currentTab * this.slotsPerPage;
         }
-
         return slots;
     }
 
-    public CompartmentTab getTab(int i) {
-        if (!this.tabs.containsKey(Integer.valueOf(i))) {
-            this.tabs.put(Integer.valueOf(i), new CompartmentTab(i));
+    public CompartmentTab getTab(final int i) {
+        if (!this.tabs.containsKey(i)) {
+            this.tabs.put(i, new CompartmentTab(i));
         }
-
-        return (CompartmentTab) this.tabs.get(Integer.valueOf(i));
+        return this.tabs.get(i);
     }
 
-    public void sendGuiNBT(Map nbt) {
-        NBTTagList list = new NBTTagList();
-
+    @Override
+    public void sendGuiNBT(final Map<String, NBTTagCompound> nbt) {
+        final NBTTagList list = new NBTTagList();
         for (int i = 0; i < this.numberOfTabs; ++i) {
-            NBTTagCompound nbt2 = new NBTTagCompound();
+            final NBTTagCompound nbt2 = new NBTTagCompound();
             this.getTab(i).writeToNBT(nbt2);
-            list.appendTag(nbt2);
+            list.appendTag((NBTBase) nbt2);
         }
-
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("tabs", list);
+        final NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("tabs", (NBTBase) list);
         nbt.put("comp-tabs", tag);
     }
 
-    public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound nbt) {
+    @Override
+    public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound nbt) {
         if (name.equals("comp-tabs")) {
-            NBTTagList tags = nbt.getTagList("tabs", 10);
-
+            final NBTTagList tags = nbt.getTagList("tabs", 10);
             for (int i = 0; i < tags.tagCount(); ++i) {
-                NBTTagCompound tag = tags.getCompoundTagAt(i);
-                CompartmentTab tab = new CompartmentTab(0);
+                final NBTTagCompound tag = tags.getCompoundTagAt(i);
+                final CompartmentTab tab = new CompartmentTab(0);
                 tab.readFromNBT(tag);
-                this.tabs.put(Integer.valueOf(tab.getId()), tab);
+                this.tabs.put(tab.getId(), tab);
             }
         }
-
         if (name.equals("comp-change-tab")) {
-            CompartmentTab tab = new CompartmentTab(0);
-            tab.readFromNBT(nbt);
-            this.tabs.put(Integer.valueOf(tab.getId()), tab);
+            final CompartmentTab tab2 = new CompartmentTab(0);
+            tab2.readFromNBT(nbt);
+            this.tabs.put(tab2.getId(), tab2);
             this.getMachine().getTileEntity().markDirty();
         }
-
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    @Override
+    public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        NBTTagList tags = nbt.getTagList("tabs", 10);
-
+        final NBTTagList tags = nbt.getTagList("tabs", 10);
         for (int i = 0; i < tags.tagCount(); ++i) {
-            NBTTagCompound tag = tags.getCompoundTagAt(i);
-            CompartmentTab tab = new CompartmentTab(0);
+            final NBTTagCompound tag = tags.getCompoundTagAt(i);
+            final CompartmentTab tab = new CompartmentTab(0);
             tab.readFromNBT(tag);
-            this.tabs.put(Integer.valueOf(tab.getId()), tab);
+            this.tabs.put(tab.getId(), tab);
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    @Override
+    public void writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        NBTTagList list = new NBTTagList();
-
+        final NBTTagList list = new NBTTagList();
         for (int i = 0; i < this.numberOfTabs; ++i) {
-            NBTTagCompound nbt2 = new NBTTagCompound();
+            final NBTTagCompound nbt2 = new NBTTagCompound();
             this.getTab(i).writeToNBT(nbt2);
-            list.appendTag(nbt2);
+            list.appendTag((NBTBase) nbt2);
         }
-
-        nbt.setTag("tabs", list);
+        nbt.setTag("tabs", (NBTBase) list);
     }
 }

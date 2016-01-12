@@ -3,29 +3,25 @@ package binnie.extratrees.gen;
 import forestry.api.arboriculture.ITree;
 
 public class WorldGenWalnut {
-    public WorldGenWalnut() {
-        super();
-    }
-
     public static class BlackWalnut extends WorldGenTree {
-        public BlackWalnut(ITree tree) {
+        public BlackWalnut(final ITree tree) {
             super(tree);
         }
 
+        @Override
         public void generate() {
             this.generateTreeTrunk(this.height, this.girth);
             int leafSpawn = this.height + 1;
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.0F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 3.6F, 1, this.leaf, false);
-
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.0f, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 3.6f, 1, this.leaf, false);
             while (leafSpawn > this.randBetween(3, 4)) {
-                this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 3.8F, 1, this.leaf, false);
+                this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 3.8f, 1, this.leaf, false);
             }
-
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.7F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 1.8F, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.7f, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 1.8f, 1, this.leaf, false);
         }
 
+        @Override
         public void preGenerate() {
             this.height = this.determineHeight(9, 6);
             this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));
@@ -33,28 +29,27 @@ public class WorldGenWalnut {
     }
 
     public static class Butternut extends WorldGenTree {
-        public Butternut(ITree tree) {
+        public Butternut(final ITree tree) {
             super(tree);
         }
 
+        @Override
         public void generate() {
             this.generateTreeTrunk(this.height, this.girth);
             int leafSpawn = this.height + 1;
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.0F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 3.5F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 4.5F, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 5.0F, 1, this.leaf, false);
-
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.0f, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 3.5f, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 4.5f, 1, this.leaf, false);
+            this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 5.0f, 1, this.leaf, false);
             while (leafSpawn > 3) {
-                this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 5.0F, 1, this.leaf, false);
+                this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 5.0f, 1, this.leaf, false);
             }
-
             if (this.rand.nextBoolean()) {
-                this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 4.0F, 1, this.leaf, false);
+                this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 4.0f, 1, this.leaf, false);
             }
-
         }
 
+        @Override
         public void preGenerate() {
             this.height = this.determineHeight(6, 3);
             this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));

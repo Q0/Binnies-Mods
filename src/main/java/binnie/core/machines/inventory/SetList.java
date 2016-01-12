@@ -4,31 +4,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-public class SetList extends ArrayList implements Set {
+public class SetList<E> extends ArrayList<E> implements Set<E> {
     private static final long serialVersionUID = 1277112003159980135L;
 
-    public SetList() {
-        super();
+    @Override
+    public boolean add(final E e) {
+        return !this.contains(e) && super.add(e);
     }
 
-    public boolean add(Object e) {
-        return this.contains(e) ? false : super.add(e);
-    }
-
-    public void add(int index, Object e) {
+    @Override
+    public void add(final int index, final E e) {
         if (!this.contains(e)) {
             super.add(index, e);
         }
-
     }
 
-    public boolean addAll(Collection c) {
+    @Override
+    public boolean addAll(final Collection<? extends E> c) {
         return this.addAll(this.size(), c);
     }
 
-    public boolean addAll(int index, Collection c) {
-        Collection<E> copy = new ArrayList(c);
+    @Override
+    public boolean addAll(final int index, final Collection<? extends E> c) {
+        final Collection<E> copy = new ArrayList<E>(c);
         copy.removeAll(this);
-        return super.addAll(index, copy);
+        return super.addAll(index, (Collection<? extends E>) copy);
     }
 }

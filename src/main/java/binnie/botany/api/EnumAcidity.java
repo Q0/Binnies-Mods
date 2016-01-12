@@ -5,9 +5,6 @@ public enum EnumAcidity {
     Neutral,
     Alkaline;
 
-    private EnumAcidity() {
-    }
-
     public String getID() {
         return this.name().toLowerCase();
     }

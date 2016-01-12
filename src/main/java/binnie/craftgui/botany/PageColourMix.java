@@ -12,23 +12,24 @@ import binnie.craftgui.mod.database.PageAbstract;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageColourMix extends PageAbstract {
-    ControlText pageSpeciesFurther_Title = new ControlTextCentered(this, 8.0F, "Further Mixes");
-    ControlColourMixBox pageSpeciesFurther_List = new ControlColourMixBox(this, 4, 20, 136, 152, ControlColourMixBox.Type.Further);
+public class PageColourMix extends PageAbstract<IFlowerColour> {
+    ControlText pageSpeciesFurther_Title;
+    ControlColourMixBox pageSpeciesFurther_List;
 
-    public PageColourMix(IWidget parent, DatabaseTab tab) {
+    public PageColourMix(final IWidget parent, final DatabaseTab tab) {
         super(parent, tab);
+        this.pageSpeciesFurther_Title = new ControlTextCentered(this, 8.0f, "Further Mixes");
+        this.pageSpeciesFurther_List = new ControlColourMixBox(this, 4, 20, 136, 152, ControlColourMixBox.Type.Further);
     }
 
-    public void onValueChanged(IFlowerColour colour) {
-        List<IColourMix> mixes = new ArrayList();
-
-        for (IColourMix mix : BotanyCore.getFlowerRoot().getColourMixes(false)) {
+    @Override
+    public void onValueChanged(final IFlowerColour colour) {
+        final List<IColourMix> mixes = new ArrayList<IColourMix>();
+        for (final IColourMix mix : BotanyCore.getFlowerRoot().getColourMixes(false)) {
             if (mix.getColour1() == colour || mix.getColour2() == colour) {
                 mixes.add(mix);
             }
         }
-
         this.pageSpeciesFurther_List.setOptions(mixes);
     }
 }

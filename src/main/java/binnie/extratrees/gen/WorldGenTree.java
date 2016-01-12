@@ -23,31 +23,31 @@ public abstract class WorldGenTree extends WorldGenerator {
     protected int startZ;
     protected int girth;
     protected int height;
-    protected int minHeight = 3;
-    protected int maxHeight = 80;
-    protected boolean spawnPods = false;
-    protected int minPodHeight = 3;
+    protected int minHeight;
+    protected int maxHeight;
+    protected boolean spawnPods;
+    protected int minPodHeight;
     BlockType leaf;
     BlockType wood;
-    BlockType vine = new BlockType(Blocks.vine, 0);
-    BlockType air = new BlockTypeVoid();
-    float bushiness = 0.0F;
+    BlockType vine;
+    BlockType air;
+    float bushiness;
 
-    protected int randBetween(int a, int b) {
+    protected int randBetween(final int a, final int b) {
         return a + this.rand.nextInt(b - a);
     }
 
-    protected float randBetween(float a, float b) {
+    protected float randBetween(final float a, final float b) {
         return a + this.rand.nextFloat() * (b - a);
     }
 
     public void generate() {
         this.generateTreeTrunk(this.height, this.girth);
         int leafSpawn = this.height + 1;
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 1.0F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 1.5F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.9F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.9F, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 1.0f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 1.5f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.9f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.9f, 1, this.leaf, false);
     }
 
     public boolean canGrow() {
@@ -59,18 +59,18 @@ public abstract class WorldGenTree extends WorldGenerator {
         this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));
     }
 
-    protected int determineGirth(int base) {
+    protected int determineGirth(final int base) {
         return base;
     }
 
-    protected int modifyByHeight(int val, int min, int max) {
-        int determined = Math.round((float) val * this.treeGen.getHeightModifier());
-        return determined < min ? min : (determined > max ? max : determined);
+    protected int modifyByHeight(final int val, final int min, final int max) {
+        final int determined = Math.round(val * this.treeGen.getHeightModifier());
+        return (determined < min) ? min : ((determined > max) ? max : determined);
     }
 
-    protected int determineHeight(int required, int variation) {
-        int determined = Math.round((float) (required + this.rand.nextInt(variation)) * this.treeGen.getHeightModifier());
-        return determined < this.minHeight ? this.minHeight : (determined > this.maxHeight ? this.maxHeight : determined);
+    protected int determineHeight(final int required, final int variation) {
+        final int determined = Math.round((required + this.rand.nextInt(variation)) * this.treeGen.getHeightModifier());
+        return (determined < this.minHeight) ? this.minHeight : ((determined > this.maxHeight) ? this.maxHeight : determined);
     }
 
     public BlockType getLeaf() {
@@ -81,21 +81,26 @@ public abstract class WorldGenTree extends WorldGenerator {
         return new BlockTypeLog(((ExtraTreeSpecies) this.tree.getGenome().getPrimary()).getLog());
     }
 
-    public WorldGenTree(ITree tree) {
-        super();
+    public WorldGenTree(final ITree tree) {
+        this.minHeight = 3;
+        this.maxHeight = 80;
+        this.spawnPods = false;
+        this.minPodHeight = 3;
+        this.vine = new BlockType(Blocks.vine, 0);
+        this.air = new BlockTypeVoid();
+        this.bushiness = 0.0f;
         this.tree = tree;
-        this.spawnPods = tree.allowsFruitBlocks();
+        this.spawnPods = ((ITreeGenData) tree).allowsFruitBlocks();
         if (tree instanceof ITreeGenData) {
-            this.treeGen = tree;
+            this.treeGen = (ITreeGenData) tree;
         }
-
     }
 
-    public final boolean generate(World world, Random random, int x, int y, int z) {
+    public final boolean generate(final World world, final Random random, final int x, final int y, final int z) {
         return this.generate(world, random, x, y, z, false);
     }
 
-    public final boolean generate(World world, Random random, int x, int y, int z, boolean force) {
+    public final boolean generate(final World world, final Random random, final int x, final int y, final int z, final boolean force) {
         this.world = world;
         this.rand = random;
         this.startX = x;
@@ -106,31 +111,27 @@ public abstract class WorldGenTree extends WorldGenerator {
         this.preGenerate();
         if (!force && !this.canGrow()) {
             return false;
-        } else {
-            int offset = (this.girth - 1) / 2;
-
-            for (int x2 = 0; x2 < this.girth; ++x2) {
-                for (int y2 = 0; y2 < this.girth; ++y2) {
-                    this.addBlock(x2, 0, y2, new BlockTypeVoid(), true);
-                }
-            }
-
-            this.generate();
-            return true;
         }
+        final int offset = (this.girth - 1) / 2;
+        for (int x2 = 0; x2 < this.girth; ++x2) {
+            for (int y2 = 0; y2 < this.girth; ++y2) {
+                this.addBlock(x2, 0, y2, new BlockTypeVoid(), true);
+            }
+        }
+        this.generate();
+        return true;
     }
 
-    public final WorldGenTree.Vector getStartVector() {
-        return new WorldGenTree.Vector((float) this.startX, (float) this.startY, (float) this.startZ);
+    public final Vector getStartVector() {
+        return new Vector(this.startX, this.startY, this.startZ);
     }
 
-    protected void generateTreeTrunk(int height, int width) {
-        this.generateTreeTrunk(height, width, 0.0F);
+    protected void generateTreeTrunk(final int height, final int width) {
+        this.generateTreeTrunk(height, width, 0.0f);
     }
 
-    protected void generateTreeTrunk(int height, int width, float vines) {
-        int offset = (width - 1) / 2;
-
+    protected void generateTreeTrunk(final int height, final int width, final float vines) {
+        final int offset = (width - 1) / 2;
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < width; ++y) {
                 for (int i = 0; i < height; ++i) {
@@ -138,150 +139,143 @@ public abstract class WorldGenTree extends WorldGenerator {
                     if (this.rand.nextFloat() < vines) {
                         this.addVine(x - offset - 1, i, y - offset);
                     }
-
                     if (this.rand.nextFloat() < vines) {
                         this.addVine(x - offset + 1, i, y - offset);
                     }
-
                     if (this.rand.nextFloat() < vines) {
                         this.addVine(x - offset, i, y - offset - 1);
                     }
-
                     if (this.rand.nextFloat() < vines) {
                         this.addVine(x - offset, i, y - offset + 1);
                     }
                 }
             }
         }
-
-        if (this.spawnPods) {
-            for (int y = this.minPodHeight; y < height; ++y) {
-                for (int x = 0; x < this.girth; ++x) {
-                    for (int z = 0; z < this.girth; ++z) {
-                        if (x <= 0 || x >= this.girth || z <= 0 || z >= this.girth) {
-                            this.treeGen.trySpawnFruitBlock(this.world, this.startX + x + 1, this.startY + y, this.startZ + z);
-                            this.treeGen.trySpawnFruitBlock(this.world, this.startX + x - 1, this.startY + y, this.startZ + z);
-                            this.treeGen.trySpawnFruitBlock(this.world, this.startX + x, this.startY + y, this.startZ + z + 1);
-                            this.treeGen.trySpawnFruitBlock(this.world, this.startX + x, this.startY + y, this.startZ + z - 1);
-                        }
+        if (!this.spawnPods) {
+            return;
+        }
+        for (int y2 = this.minPodHeight; y2 < height; ++y2) {
+            for (int x2 = 0; x2 < this.girth; ++x2) {
+                for (int z = 0; z < this.girth; ++z) {
+                    if (x2 <= 0 || x2 >= this.girth || z <= 0 || z >= this.girth) {
+                        this.treeGen.trySpawnFruitBlock(this.world, this.startX + x2 + 1, this.startY + y2, this.startZ + z);
+                        this.treeGen.trySpawnFruitBlock(this.world, this.startX + x2 - 1, this.startY + y2, this.startZ + z);
+                        this.treeGen.trySpawnFruitBlock(this.world, this.startX + x2, this.startY + y2, this.startZ + z + 1);
+                        this.treeGen.trySpawnFruitBlock(this.world, this.startX + x2, this.startY + y2, this.startZ + z - 1);
                     }
                 }
             }
-
         }
     }
 
-    protected void generateSupportStems(int height, int girth, float chance, float maxHeight) {
-        int offset = 1;
-
-        for (int x = -offset; x < girth + offset; ++x) {
+    protected void generateSupportStems(final int height, final int girth, final float chance, final float maxHeight) {
+        for (int offset = 1, x = -offset; x < girth + offset; ++x) {
             for (int z = -offset; z < girth + offset; ++z) {
-                if ((x != -offset || z != -offset) && (x != girth + offset || z != girth + offset) && (x != -offset || z != girth + offset) && (x != girth + offset || z != -offset)) {
-                    int stemHeight = this.rand.nextInt(Math.round((float) height * maxHeight));
-                    if (this.rand.nextFloat() < chance) {
-                        for (int i = 0; i < stemHeight; ++i) {
-                            this.addWood(x, i, z, true);
+                if (x != -offset || z != -offset) {
+                    if (x != girth + offset || z != girth + offset) {
+                        if (x != -offset || z != girth + offset) {
+                            if (x != girth + offset || z != -offset) {
+                                final int stemHeight = this.rand.nextInt(Math.round(height * maxHeight));
+                                if (this.rand.nextFloat() < chance) {
+                                    for (int i = 0; i < stemHeight; ++i) {
+                                        this.addWood(x, i, z, true);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-
     }
 
-    protected final void clearBlock(int x, int y, int z) {
+    protected final void clearBlock(final int x, final int y, final int z) {
         this.air.setBlock(this.world, this.tree, this.startX + x, this.startY + y, this.startZ + z);
     }
 
-    protected final void addBlock(int x, int y, int z, BlockType type, boolean doReplace) {
+    protected final void addBlock(final int x, final int y, final int z, final BlockType type, final boolean doReplace) {
         if (doReplace || this.world.isAirBlock(this.startX + x, this.startY + y, this.startZ + z)) {
             type.setBlock(this.world, this.tree, this.startX + x, this.startY + y, this.startZ + z);
         }
-
     }
 
-    protected final void addWood(int x, int y, int z, boolean doReplace) {
+    protected final void addWood(final int x, final int y, final int z, final boolean doReplace) {
         this.addBlock(x, y, z, this.wood, doReplace);
     }
 
-    protected final void addLeaf(int x, int y, int z, boolean doReplace) {
+    protected final void addLeaf(final int x, final int y, final int z, final boolean doReplace) {
         this.addBlock(x, y, z, this.leaf, doReplace);
     }
 
-    protected final void addVine(int x, int y, int z) {
+    protected final void addVine(final int x, final int y, final int z) {
         this.addBlock(x, y, z, this.vine, false);
     }
 
-    protected final void generateCuboid(WorldGenTree.Vector start, WorldGenTree.Vector area, BlockType block, boolean doReplace) {
-        for (int x = (int) start.x; (float) x < (float) ((int) start.x) + area.x; ++x) {
-            for (int y = (int) start.y; (float) y < (float) ((int) start.y) + area.y; ++y) {
-                for (int z = (int) start.z; (float) z < (float) ((int) start.z) + area.z; ++z) {
+    protected final void generateCuboid(final Vector start, final Vector area, final BlockType block, final boolean doReplace) {
+        for (int x = (int) start.x; x < (int) start.x + area.x; ++x) {
+            for (int y = (int) start.y; y < (int) start.y + area.y; ++y) {
+                for (int z = (int) start.z; z < (int) start.z + area.z; ++z) {
                     this.addBlock(x, y, z, block, doReplace);
                 }
             }
         }
-
     }
 
-    protected final void generateCylinder(WorldGenTree.Vector center2, float radius, int height, BlockType block, boolean doReplace) {
-        float centerOffset = (float) (this.girth - 1) / 2.0F;
-        WorldGenTree.Vector center = new WorldGenTree.Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
-        WorldGenTree.Vector start = new WorldGenTree.Vector(center.x - radius, center.y, center.z - radius);
-        WorldGenTree.Vector area = new WorldGenTree.Vector(radius * 2.0F + 1.0F, (float) height, radius * 2.0F + 1.0F);
-
-        for (int x = (int) start.x; (float) x < (float) ((int) start.x) + area.x; ++x) {
-            for (int y = (int) start.y; (float) y < (float) ((int) start.y) + area.y; ++y) {
-                for (int z = (int) start.z; (float) z < (float) ((int) start.z) + area.z; ++z) {
-                    if (WorldGenTree.Vector.distance(new WorldGenTree.Vector((float) x, (float) y, (float) z), new WorldGenTree.Vector(center.x, (float) y, center.z)) <= (double) radius + 0.01D && (WorldGenTree.Vector.distance(new WorldGenTree.Vector((float) x, (float) y, (float) z), new WorldGenTree.Vector(center.x, (float) y, center.z)) < (double) (radius - 0.5F) || this.rand.nextFloat() >= this.bushiness)) {
-                        this.addBlock(x, y, z, block, doReplace);
-                    }
-                }
-            }
-        }
-
-    }
-
-    protected final void generateCircle(WorldGenTree.Vector center, float radius, int width, int height, BlockType block, boolean doReplace) {
-        this.generateCircle(center, radius, width, height, block, 1.0F, doReplace);
-    }
-
-    protected final void generateCircle(WorldGenTree.Vector center2, float radius, int width, int height, BlockType block, float chance, boolean doReplace) {
-        float centerOffset = this.girth % 2 == 0 ? 0.5F : 0.0F;
-        WorldGenTree.Vector center = new WorldGenTree.Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
-        WorldGenTree.Vector start = new WorldGenTree.Vector(center.x - radius, center.y, center.z - radius);
-        WorldGenTree.Vector area = new WorldGenTree.Vector(radius * 2.0F + 1.0F, (float) height, radius * 2.0F + 1.0F);
-
-        for (int x = (int) start.x; (float) x < (float) ((int) start.x) + area.x; ++x) {
-            for (int y = (int) start.y; (float) y < (float) ((int) start.y) + area.y; ++y) {
-                for (int z = (int) start.z; (float) z < (float) ((int) start.z) + area.z; ++z) {
-                    if (this.rand.nextFloat() <= chance) {
-                        double distance = WorldGenTree.Vector.distance(new WorldGenTree.Vector((float) x, (float) y, (float) z), new WorldGenTree.Vector(center.x, (float) y, center.z));
-                        if ((double) (radius - (float) width) - 0.01D < distance && distance <= (double) radius + 0.01D) {
+    protected final void generateCylinder(final Vector center2, final float radius, final int height, final BlockType block, final boolean doReplace) {
+        final float centerOffset = (this.girth - 1) / 2.0f;
+        final Vector center3 = new Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
+        final Vector start = new Vector(center3.x - radius, center3.y, center3.z - radius);
+        final Vector area = new Vector(radius * 2.0f + 1.0f, height, radius * 2.0f + 1.0f);
+        for (int x = (int) start.x; x < (int) start.x + area.x; ++x) {
+            for (int y = (int) start.y; y < (int) start.y + area.y; ++y) {
+                for (int z = (int) start.z; z < (int) start.z + area.z; ++z) {
+                    if (Vector.distance(new Vector(x, y, z), new Vector(center3.x, y, center3.z)) <= radius + 0.01) {
+                        if (Vector.distance(new Vector(x, y, z), new Vector(center3.x, y, center3.z)) < radius - 0.5f || this.rand.nextFloat() >= this.bushiness) {
                             this.addBlock(x, y, z, block, doReplace);
                         }
                     }
                 }
             }
         }
-
     }
 
-    protected final void generateSphere(WorldGenTree.Vector center2, int radius, BlockType block, boolean doReplace) {
-        float centerOffset = (float) (this.girth - 1) / 2.0F;
-        WorldGenTree.Vector center = new WorldGenTree.Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
-        WorldGenTree.Vector start = new WorldGenTree.Vector(center.x - (float) radius, center.y - (float) radius, center.z - (float) radius);
-        WorldGenTree.Vector area = new WorldGenTree.Vector((float) (radius * 2 + 1), (float) (radius * 2 + 1), (float) (radius * 2 + 1));
+    protected final void generateCircle(final Vector center, final float radius, final int width, final int height, final BlockType block, final boolean doReplace) {
+        this.generateCircle(center, radius, width, height, block, 1.0f, doReplace);
+    }
 
-        for (int x = (int) start.x; (float) x < (float) ((int) start.x) + area.x; ++x) {
-            for (int y = (int) start.y; (float) y < (float) ((int) start.y) + area.y; ++y) {
-                for (int z = (int) start.z; (float) z < (float) ((int) start.z) + area.z; ++z) {
-                    if (WorldGenTree.Vector.distance(new WorldGenTree.Vector((float) x, (float) y, (float) z), new WorldGenTree.Vector(center.x, center.y, center.z)) <= (double) radius + 0.01D) {
+    protected final void generateCircle(final Vector center2, final float radius, final int width, final int height, final BlockType block, final float chance, final boolean doReplace) {
+        final float centerOffset = (this.girth % 2 == 0) ? 0.5f : 0.0f;
+        final Vector center3 = new Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
+        final Vector start = new Vector(center3.x - radius, center3.y, center3.z - radius);
+        final Vector area = new Vector(radius * 2.0f + 1.0f, height, radius * 2.0f + 1.0f);
+        for (int x = (int) start.x; x < (int) start.x + area.x; ++x) {
+            for (int y = (int) start.y; y < (int) start.y + area.y; ++y) {
+                for (int z = (int) start.z; z < (int) start.z + area.z; ++z) {
+                    if (this.rand.nextFloat() <= chance) {
+                        final double distance = Vector.distance(new Vector(x, y, z), new Vector(center3.x, y, center3.z));
+                        if (radius - width - 0.01 < distance && distance <= radius + 0.01) {
+                            this.addBlock(x, y, z, block, doReplace);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected final void generateSphere(final Vector center2, final int radius, final BlockType block, final boolean doReplace) {
+        final float centerOffset = (this.girth - 1) / 2.0f;
+        final Vector center3 = new Vector(center2.x + centerOffset, center2.y, center2.z + centerOffset);
+        final Vector start = new Vector(center3.x - radius, center3.y - radius, center3.z - radius);
+        final Vector area = new Vector(radius * 2 + 1, radius * 2 + 1, radius * 2 + 1);
+        for (int x = (int) start.x; x < (int) start.x + area.x; ++x) {
+            for (int y = (int) start.y; y < (int) start.y + area.y; ++y) {
+                for (int z = (int) start.z; z < (int) start.z + area.z; ++z) {
+                    if (Vector.distance(new Vector(x, y, z), new Vector(center3.x, center3.y, center3.z)) <= radius + 0.01) {
                         this.addBlock(x, y, z, block, doReplace);
                     }
                 }
             }
         }
-
     }
 
     static class Vector {
@@ -289,15 +283,14 @@ public abstract class WorldGenTree extends WorldGenerator {
         float y;
         float z;
 
-        public Vector(float f, float h, float g) {
-            super();
+        public Vector(final float f, final float h, final float g) {
             this.x = f;
             this.y = h;
             this.z = g;
         }
 
-        public static double distance(WorldGenTree.Vector a, WorldGenTree.Vector b) {
-            return Math.sqrt(Math.pow((double) (a.x - b.x), 2.0D) + Math.pow((double) (a.y - b.y), 2.0D) + Math.pow((double) (a.z - b.z), 2.0D));
+        public static double distance(final Vector a, final Vector b) {
+            return Math.sqrt(Math.pow(a.x - b.x, 2.0) + Math.pow(a.y - b.y, 2.0) + Math.pow(a.z - b.z, 2.0));
         }
     }
 }

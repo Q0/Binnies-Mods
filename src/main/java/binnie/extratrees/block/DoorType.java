@@ -16,7 +16,7 @@ public enum DoorType {
     IIcon iconDoorUpperFlip;
     IIcon iconItem;
 
-    private DoorType(String iconName) {
+    private DoorType(final String iconName) {
         this.id = iconName;
     }
 

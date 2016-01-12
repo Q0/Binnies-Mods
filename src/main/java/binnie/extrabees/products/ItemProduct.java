@@ -10,29 +10,30 @@ import java.util.List;
 public class ItemProduct extends Item {
     IItemEnum[] types;
 
-    public ItemProduct(IItemEnum[] types) {
-        super();
+    public ItemProduct(final IItemEnum[] types) {
         this.setMaxStackSize(64);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.types = types;
     }
 
-    public IItemEnum get(ItemStack stack) {
-        int i = stack.getItemDamage();
-        return i >= 0 && i < this.types.length ? this.types[i] : this.types[0];
+    public IItemEnum get(final ItemStack stack) {
+        final int i = stack.getItemDamage();
+        if (i >= 0 && i < this.types.length) {
+            return this.types[i];
+        }
+        return this.types[0];
     }
 
-    public String getItemStackDisplayName(ItemStack itemstack) {
+    public String getItemStackDisplayName(final ItemStack itemstack) {
         return this.get(itemstack).getName(itemstack);
     }
 
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
-        for (IItemEnum type : this.types) {
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
+        for (final IItemEnum type : this.types) {
             if (type.isActive()) {
-                itemList.add(new ItemStack(this, 1, type.ordinal()));
+                itemList.add(new ItemStack((Item) this, 1, type.ordinal()));
             }
         }
-
     }
 }

@@ -14,32 +14,30 @@ import java.util.List;
 
 public class ItemClay extends Item {
     public ItemClay() {
-        super();
         this.setUnlocalizedName("clay");
         this.setHasSubtypes(true);
         this.setCreativeTab(CreativeTabBotany.instance);
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        int damage = stack.getItemDamage();
+    public int getColorFromItemStack(final ItemStack stack, final int p_82790_2_) {
+        final int damage = stack.getItemDamage();
         return EnumFlowerColor.get(damage).getColor(false);
     }
 
-    public String getItemStackDisplayName(ItemStack stack) {
+    public String getItemStackDisplayName(final ItemStack stack) {
         return EnumFlowerColor.get(stack.getItemDamage()).getName() + " Clay";
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List list) {
-        for (EnumFlowerColor c : EnumFlowerColor.values()) {
-            list.add(new ItemStack(this, 1, c.ordinal()));
+    public void getSubItems(final Item p_150895_1_, final CreativeTabs p_150895_2_, final List list) {
+        for (final EnumFlowerColor c : EnumFlowerColor.values()) {
+            list.add(new ItemStack((Item) this, 1, c.ordinal()));
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.itemIcon = Botany.proxy.getIcon(register, "clay");
     }
 }

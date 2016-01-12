@@ -16,56 +16,54 @@ public class TileEntityMachine extends TileEntityMachineBase implements INetwork
         if (this.machine != null) {
             this.machine.onUpdate();
         }
-
     }
 
     public boolean canUpdate() {
         return super.canUpdate();
     }
 
-    public TileEntityMachine(MachinePackage pack) {
-        super();
+    public TileEntityMachine(final MachinePackage pack) {
         this.setMachine(pack);
     }
 
     public TileEntityMachine() {
-        super();
     }
 
-    public void setMachine(MachinePackage pack) {
+    public void setMachine(final MachinePackage pack) {
         if (pack != null) {
             this.machine = new Machine(pack, this);
         }
-
     }
 
-    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+    public void readFromNBT(final NBTTagCompound nbtTagCompound) {
         super.readFromNBT(nbtTagCompound);
-        String name = nbtTagCompound.getString("name");
-        String group = nbtTagCompound.getString("group");
-        MachinePackage pack = Binnie.Machine.getPackage(group, name);
+        final String name = nbtTagCompound.getString("name");
+        final String group = nbtTagCompound.getString("group");
+        final MachinePackage pack = Binnie.Machine.getPackage(group, name);
         if (pack == null) {
             this.invalidate();
-        } else {
-            this.setMachine(pack);
-            this.getMachine().readFromNBT(nbtTagCompound);
+            return;
         }
+        this.setMachine(pack);
+        this.getMachine().readFromNBT(nbtTagCompound);
     }
 
-    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+    public void writeToNBT(final NBTTagCompound nbtTagCompound) {
         super.writeToNBT(nbtTagCompound);
-        String name = this.machine.getPackage().getUID();
-        String group = this.machine.getPackage().getGroup().getUID();
+        final String name = this.machine.getPackage().getUID();
+        final String group = this.machine.getPackage().getGroup().getUID();
         nbtTagCompound.setString("group", group);
         nbtTagCompound.setString("name", name);
         this.getMachine().writeToNBT(nbtTagCompound);
     }
 
-    public void writeToPacket(PacketPayload payload) {
+    @Override
+    public void writeToPacket(final PacketPayload payload) {
         this.machine.writeToPacket(payload);
     }
 
-    public void readFromPacket(PacketPayload payload) {
+    @Override
+    public void readFromPacket(final PacketPayload payload) {
         this.machine.readFromPacket(payload);
     }
 
@@ -77,28 +75,23 @@ public class TileEntityMachine extends TileEntityMachineBase implements INetwork
         if (this.getMachine() != null) {
             this.getMachine().onBlockDestroy();
         }
-
     }
 
     public final Packet getDescriptionPacket() {
-        return this.getMachine() != null ? this.getMachine().getDescriptionPacket() : null;
+        return (this.getMachine() != null) ? this.getMachine().getDescriptionPacket() : null;
     }
 
     public void invalidate() {
         super.invalidate();
-
-        for (IInteraction.Invalidation c : this.getMachine().getInterfaces(IInteraction.Invalidation.class)) {
+        for (final IInteraction.Invalidation c : this.getMachine().getInterfaces(IInteraction.Invalidation.class)) {
             c.onInvalidation();
         }
-
     }
 
     public void onChunkUnload() {
         super.onChunkUnload();
-
-        for (IInteraction.ChunkUnload c : this.getMachine().getInterfaces(IInteraction.ChunkUnload.class)) {
+        for (final IInteraction.ChunkUnload c : this.getMachine().getInterfaces(IInteraction.ChunkUnload.class)) {
             c.onChunkUnload();
         }
-
     }
 }

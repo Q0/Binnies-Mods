@@ -2,7 +2,6 @@ package binnie.craftgui.genetics.machine;
 
 import binnie.core.AbstractMod;
 import binnie.craftgui.controls.ControlText;
-import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.CraftGUIUtil;
 import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.Position;
@@ -21,57 +20,66 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class WindowSequencer extends WindowMachine {
-    static Texture ProgressBase = new StandardTexture(64, 114, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
-    static Texture Progress = new StandardTexture(64, 123, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
+    static Texture ProgressBase;
+    static Texture Progress;
     ControlText slotText;
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowSequencer(player, inventory, side);
     }
 
-    public WindowSequencer(EntityPlayer player, IInventory inventory, Side side) {
+    public WindowSequencer(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(226, 224, player, inventory, side);
     }
 
-    public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound action) {
+    @Override
+    public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound action) {
         if (side == Side.CLIENT && name.equals("username")) {
             this.slotText.setValue("§8Genes will be sequenced by " + action.getString("username"));
         }
-
         super.recieveGuiNBT(side, player, name, action);
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Sequencer");
         int x = 16;
         int y = 32;
-        CraftGUIUtil.horizontalGrid((float) x, (float) y, TextJustification.MiddleCenter, 2.0F, new IWidget[]{(new ControlSlotArray(this, 0, 0, 2, 2)).create(Sequencer.slotReserve), new ControlIconDisplay(this, 0.0F, 0.0F, GUIIcon.ArrowRight.getIcon()), new ControlSequencerProgress(this, 0, 0), new ControlIconDisplay(this, 0.0F, 0.0F, GUIIcon.ArrowRight.getIcon()), (new ControlSlot(this, 0.0F, 0.0F)).assign(6)});
-        ControlSlot slotTarget = new ControlSlot(this, (float) (x + 96), (float) (y + 16));
+        CraftGUIUtil.horizontalGrid(x, y, TextJustification.MiddleCenter, 2.0f, new ControlSlotArray(this, 0, 0, 2, 2).create(Sequencer.slotReserve), new ControlIconDisplay(this, 0.0f, 0.0f, GUIIcon.ArrowRight.getIcon()), new ControlSequencerProgress(this, 0, 0), new ControlIconDisplay(this, 0.0f, 0.0f, GUIIcon.ArrowRight.getIcon()), new ControlSlot(this, 0.0f, 0.0f).assign(6));
+        final ControlSlot slotTarget = new ControlSlot(this, x + 96, y + 16);
         slotTarget.assign(5);
         x = 34;
         y = 92;
-        this.slotText = new ControlText(this, new IArea(0.0F, (float) y, this.w(), 12.0F), "§8Userless. Will not save sequences", TextJustification.MiddleCenter);
-        y = y + 20;
-        ControlSlot slotDye = new ControlSlot(this, (float) x, (float) y);
+        this.slotText = new ControlText(this, new IArea(0.0f, y, this.w(), 12.0f), "§8Userless. Will not save sequences", TextJustification.MiddleCenter);
+        y += 20;
+        final ControlSlot slotDye = new ControlSlot(this, x, y);
         slotDye.assign(0);
-        x = x + 20;
-        (new ControlSlotCharge(this, x, y, 0)).setColour(16750848);
-        x = x + 32;
+        x += 20;
+        new ControlSlotCharge(this, x, y, 0).setColour(16750848);
+        x += 32;
         new ControlEnergyBar(this, x, y, 60, 16, Position.Left);
-        x = x + 92;
-        new ControlErrorState(this, (float) x, (float) (y + 1));
+        x += 92;
+        final ControlErrorState errorState = new ControlErrorState(this, x, y + 1);
         new ControlPlayerInventory(this);
     }
 
+    @Override
     public String getTitle() {
         return "Incubator";
     }
 
+    @Override
     protected AbstractMod getMod() {
         return Genetics.instance;
     }
 
+    @Override
     protected String getName() {
         return "Sequencer";
+    }
+
+    static {
+        WindowSequencer.ProgressBase = new StandardTexture(64, 114, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowSequencer.Progress = new StandardTexture(64, 123, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
     }
 }

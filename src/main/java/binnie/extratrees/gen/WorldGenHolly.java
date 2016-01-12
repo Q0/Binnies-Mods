@@ -3,36 +3,41 @@ package binnie.extratrees.gen;
 import forestry.api.arboriculture.ITree;
 
 public class WorldGenHolly {
-    public WorldGenHolly() {
-        super();
-    }
-
     public static class Holly extends WorldGenTree {
-        public Holly(ITree tree) {
+        public Holly(final ITree tree) {
             super(tree);
         }
 
+        @Override
         public void generate() {
             this.generateTreeTrunk(this.height, this.girth);
-            float leafSpawn = (float) (this.height + 1);
-            float bottom = 1.0F;
-            float width = (float) this.height * this.randBetween(0.4F, 0.45F);
-            if (width < 1.5F) {
-                width = 1.5F;
+            float leafSpawn = this.height + 1;
+            final float bottom = 1.0f;
+            float width = this.height * this.randBetween(0.4f, 0.45f);
+            if (width < 1.5f) {
+                width = 1.5f;
             }
-
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), 0.4F * width, 1, this.leaf, false);
-            this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), 0.8F * width, 1, this.leaf, false);
-
+            final float f = 0.0f;
+            final float h = leafSpawn;
+            leafSpawn = h - 1.0f;
+            this.generateCylinder(new Vector(f, h, 0.0f), 0.4f * width, 1, this.leaf, false);
+            final float f2 = 0.0f;
+            final float h2 = leafSpawn;
+            leafSpawn = h2 - 1.0f;
+            this.generateCylinder(new Vector(f2, h2, 0.0f), 0.8f * width, 1, this.leaf, false);
             while (leafSpawn > bottom) {
-                this.generateCylinder(new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F), width, 1, this.leaf, false);
+                final float f3 = 0.0f;
+                final float h3 = leafSpawn;
+                leafSpawn = h3 - 1.0f;
+                this.generateCylinder(new Vector(f3, h3, 0.0f), width, 1, this.leaf, false);
             }
-
-            WorldGenTree.Vector var10001 = new WorldGenTree.Vector(0.0F, leafSpawn--, 0.0F);
-            width = 1.0F;
-            this.generateCylinder(var10001, 1.0F, 1, this.leaf, false);
+            final float f4 = 0.0f;
+            final float h4 = leafSpawn;
+            leafSpawn = h4 - 1.0f;
+            this.generateCylinder(new Vector(f4, h4, 0.0f), width = 1.0f, 1, this.leaf, false);
         }
 
+        @Override
         public void preGenerate() {
             this.height = this.determineHeight(4, 2);
             this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));

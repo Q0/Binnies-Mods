@@ -22,8 +22,6 @@ import binnie.extratrees.item.ModuleItems;
 import binnie.extratrees.machines.ModuleMachine;
 import binnie.extratrees.proxy.Proxy;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -31,19 +29,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-@Mod(
-        modid = "ExtraTrees",
-        name = "Extra Trees",
-        useMetadata = true,
-        dependencies = "after:BinnieCore"
-)
+@Mod(modid = "ExtraTrees", name = "Extra Trees", useMetadata = true, dependencies = "after:BinnieCore")
 public class ExtraTrees extends AbstractMod {
-    @Instance("ExtraTrees")
+    @Mod.Instance("ExtraTrees")
     public static ExtraTrees instance;
-    @SidedProxy(
-            clientSide = "binnie.extratrees.proxy.ProxyClient",
-            serverSide = "binnie.extratrees.proxy.ProxyServer"
-    )
+    @SidedProxy(clientSide = "binnie.extratrees.proxy.ProxyClient", serverSide = "binnie.extratrees.proxy.ProxyServer")
     public static Proxy proxy;
     public static Item itemDictionary;
     public static Item itemDictionaryLepi;
@@ -75,8 +65,8 @@ public class ExtraTrees extends AbstractMod {
     public static int fenceID;
     public static int stairsID;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
+    @Mod.EventHandler
+    public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleBlocks());
         this.addModule(new ModuleItems());
         this.addModule(new ModuleAlcohol());
@@ -87,45 +77,51 @@ public class ExtraTrees extends AbstractMod {
         this.preInit();
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
+    @Mod.EventHandler
+    public void init(final FMLInitializationEvent evt) {
         this.init();
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
+    @Mod.EventHandler
+    public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
     }
 
     public ExtraTrees() {
-        super();
-        instance = this;
+        ExtraTrees.instance = this;
     }
 
+    @Override
     public IBinnieGUID[] getGUIDs() {
         return ExtraTreesGUID.values();
     }
 
+    @Override
     public Class[] getConfigs() {
         return new Class[]{ConfigurationMain.class};
     }
 
+    @Override
     public String getChannel() {
         return "ET";
     }
 
+    @Override
     public IProxyCore getProxy() {
-        return proxy;
+        return ExtraTrees.proxy;
     }
 
+    @Override
     public String getModID() {
         return "extratrees";
     }
 
-    protected Class getPacketHandler() {
-        return ExtraTrees.PacketHandler.class;
+    @Override
+    protected Class<? extends BinniePacketHandler> getPacketHandler() {
+        return PacketHandler.class;
     }
 
+    @Override
     public boolean isActive() {
         return BinnieCore.isExtraTreesActive();
     }

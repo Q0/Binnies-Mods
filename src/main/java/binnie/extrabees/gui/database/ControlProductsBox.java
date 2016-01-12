@@ -4,6 +4,7 @@ import binnie.Binnie;
 import binnie.core.BinnieCore;
 import binnie.craftgui.controls.listbox.ControlList;
 import binnie.craftgui.controls.listbox.ControlListBox;
+import binnie.craftgui.controls.scroll.ControlScrollableContent;
 import binnie.craftgui.core.IWidget;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeGenome;
@@ -12,67 +13,59 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
-public class ControlProductsBox extends ControlListBox {
+public class ControlProductsBox extends ControlListBox<Product> {
     private int index;
-    private ControlProductsBox.Type type;
-    IAlleleBeeSpecies species = null;
+    private Type type;
+    IAlleleBeeSpecies species;
 
-    public IWidget createOption(ControlProductsBox.Product value, int y) {
-        return new ControlProductsItem((ControlList) this.getContent(), value, y);
+    @Override
+    public IWidget createOption(final Product value, final int y) {
+        return new ControlProductsItem(((ControlScrollableContent<ControlList<Product>>) this).getContent(), value, y);
     }
 
-    public ControlProductsBox(IWidget parent, int x, int y, int width, int height, ControlProductsBox.Type type) {
-        super(parent, (float) x, (float) y, (float) width, (float) height, 12.0F);
+    public ControlProductsBox(final IWidget parent, final int x, final int y, final int width, final int height, final Type type) {
+        super(parent, x, y, width, height, 12.0f);
+        this.species = null;
         this.type = type;
     }
 
-    public void setSpecies(IAlleleBeeSpecies species) {
-        if (species != this.species) {
-            this.species = species;
-            if (species != null) {
-                IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
-                if (template == null) {
-                    return;
-                }
-
-                IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
-                float speed = genome.getSpeed();
-                float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getProductionModifier(genome, 1.0F);
-                List<ControlProductsBox.Product> strings = new ArrayList();
-                if (this.type == ControlProductsBox.Type.Products) {
-                    for (Entry<ItemStack, Integer> entry : species.getProducts().entrySet()) {
-                        strings.add(new ControlProductsBox.Product((ItemStack) entry.getKey(), speed * modeSpeed * (float) ((Integer) entry.getValue()).intValue()));
-                    }
-                } else {
-                    for (Entry<ItemStack, Integer> entry : species.getSpecialty().entrySet()) {
-                        strings.add(new ControlProductsBox.Product((ItemStack) entry.getKey(), speed * modeSpeed * (float) ((Integer) entry.getValue()).intValue()));
-                    }
-                }
-
-                this.setOptions(strings);
+    public void setSpecies(final IAlleleBeeSpecies species) {
+        if (species != this.species && (this.species = species) != null) {
+            final IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
+            if (template == null) {
+                return;
             }
+            final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
+            final float speed = genome.getSpeed();
+            final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getProductionModifier(genome, 1.0f);
+            final List<Product> strings = new ArrayList<Product>();
+            if (this.type == Type.Products) {
+                for (final Map.Entry<ItemStack, Integer> entry : species.getProducts().entrySet()) {
+                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
+                }
+            } else {
+                for (final Map.Entry<ItemStack, Integer> entry : species.getSpecialty().entrySet()) {
+                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
+                }
+            }
+            this.setOptions(strings);
         }
+    }
 
+    enum Type {
+        Products,
+        Specialties;
     }
 
     class Product {
         ItemStack item;
         float chance;
 
-        public Product(ItemStack item, float chance) {
-            super();
+        public Product(final ItemStack item, final float chance) {
             this.item = item;
             this.chance = chance;
-        }
-    }
-
-    static enum Type {
-        Products,
-        Specialties;
-
-        private Type() {
         }
     }
 }

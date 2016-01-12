@@ -10,58 +10,59 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 class DefaultTankContainer implements ITankMachine {
-    DefaultTankContainer() {
-        super();
-    }
-
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
         return 0;
     }
 
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
         return null;
     }
 
+    @Override
     public TankInfo[] getTankInfos() {
         return new TankInfo[0];
     }
 
-    public boolean isTankReadOnly(int tank) {
+    public boolean isTankReadOnly(final int tank) {
         return false;
     }
 
-    public boolean isLiquidValidForTank(FluidStack liquid, int tank) {
+    public boolean isLiquidValidForTank(final FluidStack liquid, final int tank) {
         return false;
     }
 
-    public TankSlot addTank(int index, String name, int capacity) {
+    @Override
+    public TankSlot addTank(final int index, final String name, final int capacity) {
         return null;
     }
 
-    public IFluidTank getTank(int index) {
+    @Override
+    public IFluidTank getTank(final int index) {
         return null;
     }
 
-    public TankSlot getTankSlot(int slot) {
+    @Override
+    public TankSlot getTankSlot(final int slot) {
         return null;
     }
 
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(final ForgeDirection from, final FluidStack resource, final boolean doDrain) {
         return null;
     }
 
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(final ForgeDirection from, final Fluid fluid) {
         return false;
     }
 
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(final ForgeDirection from, final Fluid fluid) {
         return false;
     }
 
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(final ForgeDirection from) {
         return new FluidTankInfo[0];
     }
 
+    @Override
     public IFluidTank[] getTanks() {
         return new IFluidTank[0];
     }

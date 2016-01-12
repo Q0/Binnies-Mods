@@ -2,20 +2,21 @@ package binnie.craftgui.minecraft.control;
 
 import binnie.craftgui.controls.core.Control;
 import binnie.craftgui.core.*;
-import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 
 public class ControlHelp extends Control implements ITooltip {
-    public ControlHelp(IWidget parent, float x, float y) {
-        super(parent, x, y, 16.0F, 16.0F);
+    public ControlHelp(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 16.0f, 16.0f);
         this.addAttribute(Attribute.MouseOver);
     }
 
+    @Override
     public void onRenderBackground() {
-        CraftGUI.Render.texture((Object) CraftGUITexture.HelpButton, (IArea) this.getArea());
+        CraftGUI.Render.texture(CraftGUITexture.HelpButton, this.getArea());
     }
 
-    public void getTooltip(Tooltip tooltip) {
+    @Override
+    public void getTooltip(final Tooltip tooltip) {
         tooltip.setType(Tooltip.Type.Help);
         tooltip.add("Help");
         tooltip.add("To activate help tooltips,");
@@ -23,7 +24,8 @@ public class ControlHelp extends Control implements ITooltip {
         tooltip.add("mouse over controls.");
     }
 
-    public void getHelpTooltip(Tooltip tooltip) {
+    @Override
+    public void getHelpTooltip(final Tooltip tooltip) {
         this.getTooltip(tooltip);
     }
 }

@@ -10,20 +10,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 public class ItemEncyclopedia extends Item {
-    boolean reinforced = false;
+    boolean reinforced;
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.itemIcon = Botany.proxy.getIcon(register, "encylopedia" + (this.reinforced ? "Iron" : ""));
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(final int par1) {
         return this.itemIcon;
     }
 
-    public ItemEncyclopedia(boolean reinforced) {
-        super();
+    public ItemEncyclopedia(final boolean reinforced) {
+        this.reinforced = false;
         this.reinforced = reinforced;
         this.setCreativeTab(CreativeTabBotany.instance);
         this.setUnlocalizedName("encylopedia" + (reinforced ? "Iron" : ""));
@@ -31,7 +31,7 @@ public class ItemEncyclopedia extends Item {
         this.setMaxDamage(reinforced ? 480 : 120);
     }
 
-    public String getItemStackDisplayName(ItemStack i) {
-        return (this.reinforced ? "Reinforced " : "") + "Florist\'s Encyclopaedia";
+    public String getItemStackDisplayName(final ItemStack i) {
+        return (this.reinforced ? "Reinforced " : "") + "Florist's Encyclopaedia";
     }
 }

@@ -36,20 +36,20 @@ import net.minecraft.util.IIcon;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class WindowGeneBank extends WindowMachine {
     public static IIcon[] iconsDNA;
     public boolean isNei;
     ControlGeneScroll genes;
 
-    public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound action) {
+    @Override
+    public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound action) {
         super.recieveGuiNBT(side, player, name, action);
         if (side == Side.SERVER && name.equals("gene-select")) {
-            Gene gene = new Gene(action.getCompoundTag("gene"));
+            final Gene gene = new Gene(action.getCompoundTag("gene"));
             if (gene != null && !gene.isCorrupted()) {
-                ItemStack held = this.getHeldItemStack();
-                ItemStack converted = Engineering.addGene(held, gene);
+                final ItemStack held = this.getHeldItemStack();
+                final ItemStack converted = Engineering.addGene(held, gene);
                 this.getPlayer().inventory.setItemStack(converted);
                 this.getPlayer().inventory.markDirty();
                 if (this.getPlayer() instanceof EntityPlayerMP) {
@@ -57,75 +57,75 @@ public class WindowGeneBank extends WindowMachine {
                 }
             }
         }
-
     }
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowGeneBank(player, inventory, side, false);
     }
 
-    public WindowGeneBank(EntityPlayer player, IInventory inventory, Side side, boolean isNEI) {
+    public WindowGeneBank(final EntityPlayer player, final IInventory inventory, final Side side, final boolean isNEI) {
         super(320, 224, player, inventory, side);
         this.isNei = isNEI;
     }
 
+    @Override
     public void initialiseServer() {
-        GeneTracker tracker = GeneTracker.getTracker(this.getWorld(), this.getUsername());
+        final GeneTracker tracker = GeneTracker.getTracker(this.getWorld(), this.getUsername());
         if (tracker != null) {
             tracker.synchToPlayer(this.getPlayer());
         }
-
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Gene Bank");
         this.addEventHandler(new EventValueChanged.Handler() {
-            public void onEvent(EventValueChanged event) {
+            @Override
+            public void onEvent(final EventValueChanged event) {
                 if (event.value instanceof BreedingSystem) {
                     WindowGeneBank.this.genes.setValue((BreedingSystem) event.value);
                 }
-
             }
         });
         int boxX = 100;
         int x = 16;
-        int y = 32;
+        final int y = 32;
         new ControlPlayerInventory(this, x, y);
-        x = x + 124;
-        int geneBoxWidth = 120;
-        new Panel(this, (float) (x + 24), 32.0F, (float) geneBoxWidth, 120.0F, MinecraftGUI.PanelType.Black);
-        new Panel(this, (float) (x + 24 + geneBoxWidth), 32.0F, 14.0F, 120.0F, MinecraftGUI.PanelType.Gray);
-        ControlScrollableContent scroll = new ControlScrollableContent(this, (float) (x + 24 + 2), 34.0F, (float) (geneBoxWidth + 10), 116.0F, 12.0F);
-        ControlTextEdit edit = new ControlTextEdit(this, (float) (x + 27 + geneBoxWidth - 70), 18.0F, 80.0F, 12.0F);
-        this.addEventHandler((new EventTextEdit.Handler() {
-            public void onEvent(EventTextEdit event) {
-                WindowGeneBank.this.genes.setFilter((String) event.getValue());
+        x += 124;
+        boxX = x;
+        final int geneBoxWidth = 120;
+        new Panel(this, boxX + 24, 32.0f, geneBoxWidth, 120.0f, MinecraftGUI.PanelType.Black);
+        new Panel(this, boxX + 24 + geneBoxWidth, 32.0f, 14.0f, 120.0f, MinecraftGUI.PanelType.Gray);
+        final ControlScrollableContent scroll = new ControlScrollableContent(this, boxX + 24 + 2, 34.0f, geneBoxWidth + 10, 116.0f, 12.0f);
+        final ControlTextEdit edit = new ControlTextEdit(this, boxX + 27 + geneBoxWidth - 70, 18.0f, 80.0f, 12.0f);
+        this.addEventHandler(new EventTextEdit.Handler() {
+            @Override
+            public void onEvent(final EventTextEdit event) {
+                WindowGeneBank.this.genes.setFilter(event.getValue());
             }
-        }).setOrigin(EventHandler.Origin.Self, edit));
-        this.genes = new ControlGeneScroll(scroll, 1.0F, 1.0F, (float) geneBoxWidth, 116.0F);
-        scroll.setScrollableContent(this.genes);
+        }.setOrigin(EventHandler.Origin.Self, edit));
+        scroll.setScrollableContent(this.genes = new ControlGeneScroll(scroll, 1.0f, 1.0f, geneBoxWidth, 116.0f));
         this.genes.setGenes(Binnie.Genetics.beeBreedingSystem);
-        ControlTabBar<BreedingSystem> tabBar = new ControlTabBar(this, (float) x, 32.0F, 24.0F, 120.0F, Position.Left) {
-            public ControlTab createTab(final float x, final float y, final float w, final float h, final BreedingSystem value) {
-                return new ControlTabIcon(this, x, y, w, h, value) {
-                    public void getTooltip(Tooltip tooltip) {
-                        tooltip.add(((BreedingSystem) this.getValue()).toString());
+        final ControlTabBar<BreedingSystem> tabBar = new ControlTabBar<BreedingSystem>(this, (float) boxX, 32.0f, 24.0f, 120.0f, Position.Left) {
+            @Override
+            public ControlTab<BreedingSystem> createTab(final float x, final float y, final float w, final float h, final BreedingSystem value) {
+                return new ControlTabIcon<BreedingSystem>(this, x, y, w, h, value) {
+                    @Override
+                    public void getTooltip(final Tooltip tooltip) {
+                        tooltip.add(this.getValue().toString());
                         int totalGenes = 0;
                         int seqGenes = 0;
-                        GeneTracker tracker = GeneTracker.getTracker(WindowGeneBank.this.getWorld(), WindowGeneBank.this.getUsername());
-                        Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(((BreedingSystem) this.getValue()).getSpeciesRoot());
-
-                        for (Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
-                            totalGenes += ((List) entry.getValue()).size();
-
-                            for (IAllele allele : (List) entry.getValue()) {
-                                Gene gene = new Gene(allele, (IChromosomeType) entry.getKey(), ((BreedingSystem) this.getValue()).getSpeciesRoot());
+                        final GeneTracker tracker = GeneTracker.getTracker(WindowGeneBank.this.getWorld(), WindowGeneBank.this.getUsername());
+                        final Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(this.getValue().getSpeciesRoot());
+                        for (final Map.Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
+                            totalGenes += entry.getValue().size();
+                            for (final IAllele allele : entry.getValue()) {
+                                final Gene gene = new Gene(allele, entry.getKey(), this.getValue().getSpeciesRoot());
                                 if (tracker.isSequenced(gene)) {
                                     ++seqGenes;
                                 }
                             }
                         }
-
                         tooltip.add("" + seqGenes + "/" + totalGenes + " Genes");
                     }
                 };
@@ -133,42 +133,41 @@ public class WindowGeneBank extends WindowMachine {
         };
         tabBar.setValues(Binnie.Genetics.getActiveSystems());
         tabBar.setValue(Binnie.Genetics.beeBreedingSystem);
-        boxX = x - 8;
-        ControlTabBar<String> infoTabs = new ControlTabBar(this, (float) (boxX + 8), 160.0F, 16.0F, 50.0F, Position.Left);
-        infoTabs.setValues(Arrays.asList(new String[]{"Stats", "Ranking"}));
+        boxX -= 8;
+        final ControlTabBar<String> infoTabs = new ControlTabBar<String>(this, boxX + 8, 160.0f, 16.0f, 50.0f, Position.Left);
+        infoTabs.setValues(Arrays.asList("Stats", "Ranking"));
         infoTabs.setValue("Info");
-        Panel panelProject = new Panel(this, (float) (boxX + 24), 160.0F, (float) (geneBoxWidth + 20), 50.0F, MinecraftGUI.PanelType.Black);
+        final Panel panelProject = new Panel(this, boxX + 24, 160.0f, geneBoxWidth + 20, 50.0f, MinecraftGUI.PanelType.Black);
         int totalGenes = 0;
         int seqGenes = 0;
-
-        for (BreedingSystem system : Binnie.Genetics.getActiveSystems()) {
-            GeneTracker tracker = GeneTracker.getTracker(this.getWorld(), this.getUsername());
-            Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(system.getSpeciesRoot());
-
-            for (Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
-                totalGenes += ((List) entry.getValue()).size();
-
-                for (IAllele allele : (List) entry.getValue()) {
-                    Gene gene = new Gene(allele, (IChromosomeType) entry.getKey(), system.getSpeciesRoot());
+        for (final BreedingSystem system : Binnie.Genetics.getActiveSystems()) {
+            final GeneTracker tracker = GeneTracker.getTracker(this.getWorld(), this.getUsername());
+            final Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(system.getSpeciesRoot());
+            for (final Map.Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
+                totalGenes += entry.getValue().size();
+                for (final IAllele allele : entry.getValue()) {
+                    final Gene gene = new Gene(allele, entry.getKey(), system.getSpeciesRoot());
                     if (tracker.isSequenced(gene)) {
                         ++seqGenes;
                     }
                 }
             }
         }
-
-        new ControlText(panelProject, new IPoint(4.0F, 4.0F), "§nFull Genome Project");
-        new ControlText(panelProject, new IPoint(4.0F, 18.0F), "§oSequenced §r" + seqGenes + "/" + totalGenes + " §oGenes");
+        new ControlText(panelProject, new IPoint(4.0f, 4.0f), "§nFull Genome Project");
+        new ControlText(panelProject, new IPoint(4.0f, 18.0f), "§oSequenced §r" + seqGenes + "/" + totalGenes + " §oGenes");
     }
 
+    @Override
     public String getTitle() {
         return "Gene Bank";
     }
 
+    @Override
     protected AbstractMod getMod() {
         return Genetics.instance;
     }
 
+    @Override
     protected String getName() {
         return "GeneBank";
     }
@@ -177,12 +176,12 @@ public class WindowGeneBank extends WindowMachine {
         IChromosomeType chromosome;
         BreedingSystem system;
 
-        public ChromosomeType(IChromosomeType chromosome, BreedingSystem system) {
-            super();
+        public ChromosomeType(final IChromosomeType chromosome, final BreedingSystem system) {
             this.chromosome = chromosome;
             this.system = system;
         }
 
+        @Override
         public String toString() {
             return this.system.getChromosomeName(this.chromosome);
         }

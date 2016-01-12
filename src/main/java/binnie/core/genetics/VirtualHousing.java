@@ -16,8 +16,7 @@ import java.util.Set;
 class VirtualHousing implements IHousing {
     private EntityPlayer player;
 
-    public VirtualHousing(EntityPlayer player) {
-        super();
+    public VirtualHousing(final EntityPlayer player) {
         this.player = player;
     }
 
@@ -49,14 +48,14 @@ class VirtualHousing implements IHousing {
         return this.player.worldObj;
     }
 
-    public void setErrorState(int state) {
+    public void setErrorState(final int state) {
     }
 
     public int getErrorOrdinal() {
         return 0;
     }
 
-    public boolean addProduct(ItemStack product, boolean all) {
+    public boolean addProduct(final ItemStack product, final boolean all) {
         return false;
     }
 
@@ -72,14 +71,14 @@ class VirtualHousing implements IHousing {
         return null;
     }
 
-    public void setErrorState(IErrorState state) {
+    public void setErrorState(final IErrorState state) {
     }
 
-    public boolean setErrorCondition(boolean condition, IErrorState errorState) {
+    public boolean setErrorCondition(final boolean condition, final IErrorState errorState) {
         return false;
     }
 
-    public Set getErrorStates() {
+    public Set<IErrorState> getErrorStates() {
         return null;
     }
 }

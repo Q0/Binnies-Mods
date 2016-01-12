@@ -23,66 +23,71 @@ public enum EnumHiveFrame implements IHiveFrame {
     Debug;
 
     Item item;
-    int maxDamage = 240;
-    BeeModifierLogic logic = new BeeModifierLogic();
+    int maxDamage;
+    BeeModifierLogic logic;
 
     public static void init() {
-        Cocoa.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.25F);
-        Cocoa.logic.setModifier(EnumBeeModifier.Production, 1.5F, 5.0F);
-        Cage.logic.setModifier(EnumBeeModifier.Territory, 0.5F, 0.1F);
-        Cage.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
-        Cage.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.5F);
-        Soul.logic.setModifier(EnumBeeModifier.Mutation, 1.5F, 5.0F);
-        Soul.logic.setModifier(EnumBeeModifier.Lifespan, 0.75F, 0.5F);
-        Soul.logic.setModifier(EnumBeeModifier.Production, 0.25F, 0.1F);
-        Soul.setMaxDamage(80);
-        Clay.logic.setModifier(EnumBeeModifier.Lifespan, 1.5F, 5.0F);
-        Clay.logic.setModifier(EnumBeeModifier.Mutation, 0.5F, 0.2F);
-        Clay.logic.setModifier(EnumBeeModifier.Production, 0.75F, 0.2F);
-        Debug.logic.setModifier(EnumBeeModifier.Lifespan, 1.0E-4F, 1.0E-4F);
-        GameRegistry.addRecipe(new ItemStack(Cocoa.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), new ItemStack(Items.dye, 1, 3)});
-        GameRegistry.addShapelessRecipe(new ItemStack(Cage.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars});
-        GameRegistry.addShapelessRecipe(new ItemStack(Soul.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand});
-        GameRegistry.addRecipe(new ItemStack(Clay.item), new Object[]{" c ", "cFc", " c ", Character.valueOf('F'), Mods.Forestry.stack("frameImpregnated"), Character.valueOf('c'), Items.clay_ball});
+        EnumHiveFrame.Cocoa.logic.setModifier(EnumBeeModifier.Lifespan, 0.75f, 0.25f);
+        EnumHiveFrame.Cocoa.logic.setModifier(EnumBeeModifier.Production, 1.5f, 5.0f);
+        EnumHiveFrame.Cage.logic.setModifier(EnumBeeModifier.Territory, 0.5f, 0.1f);
+        EnumHiveFrame.Cage.logic.setModifier(EnumBeeModifier.Lifespan, 0.75f, 0.5f);
+        EnumHiveFrame.Cage.logic.setModifier(EnumBeeModifier.Production, 0.75f, 0.5f);
+        EnumHiveFrame.Soul.logic.setModifier(EnumBeeModifier.Mutation, 1.5f, 5.0f);
+        EnumHiveFrame.Soul.logic.setModifier(EnumBeeModifier.Lifespan, 0.75f, 0.5f);
+        EnumHiveFrame.Soul.logic.setModifier(EnumBeeModifier.Production, 0.25f, 0.1f);
+        EnumHiveFrame.Soul.setMaxDamage(80);
+        EnumHiveFrame.Clay.logic.setModifier(EnumBeeModifier.Lifespan, 1.5f, 5.0f);
+        EnumHiveFrame.Clay.logic.setModifier(EnumBeeModifier.Mutation, 0.5f, 0.2f);
+        EnumHiveFrame.Clay.logic.setModifier(EnumBeeModifier.Production, 0.75f, 0.2f);
+        EnumHiveFrame.Debug.logic.setModifier(EnumBeeModifier.Lifespan, 1.0E-4f, 1.0E-4f);
+        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Cocoa.item), new Object[]{" c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', new ItemStack(Items.dye, 1, 3)});
+        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Cage.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars});
+        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Soul.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand});
+        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Clay.item), new Object[]{" c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', Items.clay_ball});
     }
 
     public int getIconIndex() {
         return 55 + this.ordinal();
     }
 
-    public void setMaxDamage(int damage) {
+    public void setMaxDamage(final int damage) {
         this.maxDamage = damage;
     }
 
     private EnumHiveFrame() {
+        this.maxDamage = 240;
+        this.logic = new BeeModifierLogic();
     }
 
-    public ItemStack frameUsed(IBeeHousing house, ItemStack frame, IBee queen, int wear) {
+    public ItemStack frameUsed(final IBeeHousing house, final ItemStack frame, final IBee queen, final int wear) {
         frame.setItemDamage(frame.getItemDamage() + wear);
-        return frame.getItemDamage() >= frame.getMaxDamage() ? null : frame;
+        if (frame.getItemDamage() >= frame.getMaxDamage()) {
+            return null;
+        }
+        return frame;
     }
 
-    public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+    public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Territory, currentModifier);
     }
 
-    public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+    public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
     }
 
-    public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+    public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
     }
 
-    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+    public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Production, currentModifier);
     }
 
-    public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
+    public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
     }
 
-    public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
+    public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
     }
 

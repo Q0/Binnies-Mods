@@ -11,27 +11,23 @@ public final class MessageBinnie implements IMessage {
     ByteBuf data;
 
     public MessageBinnie() {
-        super();
     }
 
-    public MessageBinnie(int id, MessageBase base) {
-        super();
+    public MessageBinnie(final int id, final MessageBase base) {
         this.id = id;
         this.message = base;
     }
 
-    public void toBytes(ByteBuf buf) {
+    public void toBytes(final ByteBuf buf) {
         buf.writeByte(this.id);
-
         try {
             this.message.writeData(buf);
-        } catch (IOException var3) {
-            var3.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
-    public void fromBytes(ByteBuf buf) {
+    public void fromBytes(final ByteBuf buf) {
         this.id = buf.readByte();
         this.data = buf;
     }

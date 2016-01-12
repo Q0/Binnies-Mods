@@ -13,6 +13,6 @@ public interface IInteraction {
     }
 
     public interface RightClick {
-        void onRightClick(World var1, EntityPlayer var2, int var3, int var4, int var5);
+        void onRightClick(final World p0, final EntityPlayer p1, final int p2, final int p3, final int p4);
     }
 }

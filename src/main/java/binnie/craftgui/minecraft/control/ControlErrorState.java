@@ -10,12 +10,11 @@ import binnie.craftgui.minecraft.Window;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import java.util.List;
-
 public class ControlErrorState extends Control implements ITooltip {
     private ErrorState errorState;
-    private int type = 0;
+    private int type;
 
+    @Override
     public void onRenderBackground() {
         Object texture = CraftGUITexture.StateWarning;
         if (this.errorState == null) {
@@ -23,7 +22,6 @@ public class ControlErrorState extends Control implements ITooltip {
         } else if (this.type == 0) {
             texture = CraftGUITexture.StateError;
         }
-
         CraftGUI.Render.texture(texture, IPoint.ZERO);
         super.onRenderBackground();
     }
@@ -32,64 +30,62 @@ public class ControlErrorState extends Control implements ITooltip {
         return Window.get(this).getContainer().getErrorState();
     }
 
+    @Override
     public final void onUpdateClient() {
         this.errorState = this.getError();
         this.type = Window.get(this).getContainer().getErrorType();
-        ((List) ControlSlot.highlighting.get(EnumHighlighting.Error)).clear();
-        ((List) ControlSlot.highlighting.get(EnumHighlighting.Warning)).clear();
+        ControlSlot.highlighting.get(EnumHighlighting.Error).clear();
+        ControlSlot.highlighting.get(EnumHighlighting.Warning).clear();
         ControlLiquidTank.tankError.clear();
         ControlEnergyBar.isError = false;
-        if (this.isMouseOver() && this.errorState != null) {
-            ControlEnergyBar.isError = this.errorState.isPowerError();
-            if (this.errorState.isItemError()) {
-                for (int slot : this.errorState.getData()) {
-                    int id = -1;
-
-                    for (CustomSlot cslot : Window.get(this).getContainer().getCustomSlots()) {
-                        if (!(cslot.inventory instanceof InventoryPlayer) && cslot.getSlotIndex() == slot) {
-                            id = cslot.slotNumber;
-                        }
+        if (!this.isMouseOver() || this.errorState == null) {
+            return;
+        }
+        ControlEnergyBar.isError = this.errorState.isPowerError();
+        if (this.errorState.isItemError()) {
+            for (final int slot : this.errorState.getData()) {
+                int id = -1;
+                for (final CustomSlot cslot : Window.get(this).getContainer().getCustomSlots()) {
+                    if (!(cslot.inventory instanceof InventoryPlayer) && cslot.getSlotIndex() == slot) {
+                        id = cslot.slotNumber;
                     }
-
-                    if (id >= 0) {
-                        if (this.type == 0) {
-                            ((List) ControlSlot.highlighting.get(EnumHighlighting.Error)).add(Integer.valueOf(id));
-                        } else {
-                            ((List) ControlSlot.highlighting.get(EnumHighlighting.Warning)).add(Integer.valueOf(id));
-                        }
+                }
+                if (id >= 0) {
+                    if (this.type == 0) {
+                        ControlSlot.highlighting.get(EnumHighlighting.Error).add(id);
+                    } else {
+                        ControlSlot.highlighting.get(EnumHighlighting.Warning).add(id);
                     }
                 }
             }
-
-            if (this.errorState.isTankError()) {
-                for (int slot : this.errorState.getData()) {
-                    ControlLiquidTank.tankError.add(Integer.valueOf(slot));
-                }
+        }
+        if (this.errorState.isTankError()) {
+            for (final int slot : this.errorState.getData()) {
+                ControlLiquidTank.tankError.add(slot);
             }
-
         }
     }
 
-    public ControlErrorState(IWidget parent, float x, float y) {
-        super(parent, x, y, 16.0F, 16.0F);
+    public ControlErrorState(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 16.0f, 16.0f);
+        this.type = 0;
         this.addAttribute(Attribute.MouseOver);
     }
 
-    public void getTooltip(Tooltip tooltipOrig) {
-        MinecraftTooltip tooltip = (MinecraftTooltip) tooltipOrig;
+    @Override
+    public void getTooltip(final Tooltip tooltipOrig) {
+        final MinecraftTooltip tooltip = (MinecraftTooltip) tooltipOrig;
         if (this.errorState != null) {
             if (this.type == 0) {
                 tooltip.setType(MinecraftTooltip.Type.Error);
             } else {
                 tooltip.setType(MinecraftTooltip.Type.Warning);
             }
-
             tooltip.add(this.errorState.toString());
             if (this.errorState.getTooltip().length() > 0) {
                 tooltip.add(this.errorState.getTooltip());
             }
         }
-
     }
 
     public ErrorState getErrorState() {

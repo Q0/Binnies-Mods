@@ -17,22 +17,21 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 public abstract class AnalystPageProduce extends ControlAnalystPage {
-    public AnalystPageProduce(IWidget parent, IArea area) {
+    public AnalystPageProduce(final IWidget parent, final IArea area) {
         super(parent, area);
     }
 
-    protected Collection getAllProducts(ItemStack key) {
-        Collection<ItemStack> products = new UniqueItemStackSet();
+    protected Collection<? extends ItemStack> getAllProducts(final ItemStack key) {
+        final Collection<ItemStack> products = new UniqueItemStackSet();
         products.addAll(this.getCentrifuge(key));
         products.addAll(this.getSqueezer(key));
         products.add(FurnaceRecipes.smelting().getSmeltingResult(key));
@@ -40,143 +39,121 @@ public abstract class AnalystPageProduce extends ControlAnalystPage {
         return products;
     }
 
-    public Collection getCentrifuge(ItemStack stack) {
-        List<ItemStack> products = new ArrayList();
-
-        for (Entry<Object[], Object[]> recipe : RecipeManagers.centrifugeManager.getRecipes().entrySet()) {
+    public Collection<ItemStack> getCentrifuge(final ItemStack stack) {
+        final List<ItemStack> products = new ArrayList<ItemStack>();
+        for (final Map.Entry<Object[], Object[]> recipe : RecipeManagers.centrifugeManager.getRecipes().entrySet()) {
             boolean isRecipe = false;
-
-            for (Object obj : (Object[]) recipe.getKey()) {
+            for (final Object obj : recipe.getKey()) {
                 if (obj instanceof ItemStack && stack.isItemEqual((ItemStack) obj)) {
                     isRecipe = true;
                 }
             }
-
             if (isRecipe) {
-                for (Object obj : (Object[]) recipe.getValue()) {
+                for (final Object obj : recipe.getValue()) {
                     if (obj instanceof ItemStack) {
                         products.add((ItemStack) obj);
                     }
                 }
             }
         }
-
         return products;
     }
 
-    public Collection getSqueezer(ItemStack stack) {
-        List<ItemStack> products = new ArrayList();
-
-        for (Entry<Object[], Object[]> recipe : RecipeManagers.squeezerManager.getRecipes().entrySet()) {
+    public Collection<ItemStack> getSqueezer(final ItemStack stack) {
+        final List<ItemStack> products = new ArrayList<ItemStack>();
+        for (final Map.Entry<Object[], Object[]> recipe : RecipeManagers.squeezerManager.getRecipes().entrySet()) {
             boolean isRecipe = false;
-
-            for (Object obj : (Object[]) recipe.getKey()) {
+            for (final Object obj : recipe.getKey()) {
                 if (obj instanceof ItemStack && stack.isItemEqual((ItemStack) obj)) {
                     isRecipe = true;
                 }
             }
-
             if (isRecipe) {
-                for (Object obj : (Object[]) recipe.getValue()) {
+                for (final Object obj : recipe.getValue()) {
                     if (obj instanceof ItemStack) {
                         products.add((ItemStack) obj);
                     }
                 }
             }
         }
-
         return products;
     }
 
-    public Collection getCrafting(ItemStack stack) {
-        List<ItemStack> products = new ArrayList();
-
-        for (Object recipeO : CraftingManager.getInstance().getRecipeList()) {
+    public Collection<ItemStack> getCrafting(final ItemStack stack) {
+        final List<ItemStack> products = new ArrayList<ItemStack>();
+        for (final Object recipeO : CraftingManager.getInstance().getRecipeList()) {
             if (recipeO instanceof ShapelessRecipes) {
-                ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
+                final ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
                 boolean match = true;
-
-                for (Object rec : recipe.recipeItems) {
+                for (final Object rec : recipe.recipeItems) {
                     if (rec != null && (!(rec instanceof ItemStack) || !stack.isItemEqual((ItemStack) rec))) {
                         match = false;
                     }
                 }
-
                 if (match) {
                     products.add(recipe.getRecipeOutput());
                 }
             }
-
             if (recipeO instanceof ShapedRecipes) {
-                ShapedRecipes recipe = (ShapedRecipes) recipeO;
+                final ShapedRecipes recipe2 = (ShapedRecipes) recipeO;
                 boolean match = true;
-
-                for (Object rec : recipe.recipeItems) {
-                    if (rec != null && (!(rec instanceof ItemStack) || !stack.isItemEqual((ItemStack) rec))) {
+                for (final Object rec2 : recipe2.recipeItems) {
+                    if (rec2 != null && (!(rec2 instanceof ItemStack) || !stack.isItemEqual((ItemStack) rec2))) {
                         match = false;
                     }
                 }
-
                 if (match) {
-                    products.add(recipe.getRecipeOutput());
+                    products.add(recipe2.getRecipeOutput());
                 }
             }
-
             if (recipeO instanceof ShapelessOreRecipe) {
-                ShapelessOreRecipe recipe = (ShapelessOreRecipe) recipeO;
+                final ShapelessOreRecipe recipe3 = (ShapelessOreRecipe) recipeO;
                 boolean match = true;
-
-                for (Object rec : recipe.getInput()) {
+                for (final Object rec : recipe3.getInput()) {
                     if (rec != null && (!(rec instanceof ItemStack) || !stack.isItemEqual((ItemStack) rec))) {
                         match = false;
                     }
                 }
-
-                if (match) {
-                    products.add(recipe.getRecipeOutput());
+                if (!match) {
+                    continue;
                 }
+                products.add(recipe3.getRecipeOutput());
             }
         }
-
         return products;
     }
 
-    public Collection getAllFluids(ItemStack stack) {
-        List<FluidStack> products = new ArrayList();
+    public Collection<FluidStack> getAllFluids(final ItemStack stack) {
+        final List<FluidStack> products = new ArrayList<FluidStack>();
         products.addAll(this.getSqueezerFluid(stack));
         if (Press.getOutput(stack) != null) {
             products.add(Press.getOutput(stack));
         }
-
         return products;
     }
 
-    public Collection getSqueezerFluid(ItemStack stack) {
-        List<FluidStack> products = new ArrayList();
-
-        for (Entry<Object[], Object[]> recipe : RecipeManagers.squeezerManager.getRecipes().entrySet()) {
+    public Collection<FluidStack> getSqueezerFluid(final ItemStack stack) {
+        final List<FluidStack> products = new ArrayList<FluidStack>();
+        for (final Map.Entry<Object[], Object[]> recipe : RecipeManagers.squeezerManager.getRecipes().entrySet()) {
             boolean isRecipe = false;
-
-            for (Object obj : (Object[]) recipe.getKey()) {
+            for (final Object obj : recipe.getKey()) {
                 if (obj instanceof ItemStack && stack.isItemEqual((ItemStack) obj)) {
                     isRecipe = true;
                 }
             }
-
             if (isRecipe) {
-                for (Object obj : (Object[]) recipe.getValue()) {
+                for (final Object obj : recipe.getValue()) {
                     if (obj instanceof FluidStack) {
                         products.add((FluidStack) obj);
                     }
                 }
             }
         }
-
         return products;
     }
 
-    protected Collection getAllProducts(FluidStack stack) {
-        Collection<FluidStack> fluids = new UniqueFluidStackSet();
+    protected Collection<? extends FluidStack> getAllProducts(final FluidStack stack) {
+        final Collection<FluidStack> fluids = new UniqueFluidStackSet();
         fluids.add(Brewery.getOutput(stack));
         fluids.add(Distillery.getOutput(stack, 0));
         fluids.add(Distillery.getOutput(stack, 1));
@@ -184,105 +161,82 @@ public abstract class AnalystPageProduce extends ControlAnalystPage {
         return fluids;
     }
 
-    protected Collection getAllProductsAndFluids(Collection collection) {
-        Collection<ItemStack> products = new UniqueItemStackSet();
-
-        for (ItemStack stack : collection) {
+    protected Collection<ItemStack> getAllProductsAndFluids(final Collection<ItemStack> collection) {
+        final Collection<ItemStack> products = new UniqueItemStackSet();
+        for (final ItemStack stack : collection) {
             products.addAll(this.getAllProducts(stack));
         }
-
-        Collection<ItemStack> products2 = new UniqueItemStackSet();
-
-        for (ItemStack stack : products) {
-            products2.addAll(this.getAllProducts(stack));
+        final Collection<ItemStack> products2 = new UniqueItemStackSet();
+        for (final ItemStack stack2 : products) {
+            products2.addAll(this.getAllProducts(stack2));
         }
-
-        Collection<ItemStack> products3 = new UniqueItemStackSet();
-
-        for (ItemStack stack : products2) {
-            products3.addAll(this.getAllProducts(stack));
+        final Collection<ItemStack> products3 = new UniqueItemStackSet();
+        for (final ItemStack stack3 : products2) {
+            products3.addAll(this.getAllProducts(stack3));
         }
-
         products.addAll(products2);
         products.addAll(products3);
-        Collection<FluidStack> allFluids = new UniqueFluidStackSet();
-
-        for (ItemStack stack : collection) {
-            allFluids.addAll(this.getAllFluids(stack));
+        final Collection<FluidStack> allFluids = new UniqueFluidStackSet();
+        for (final ItemStack stack4 : collection) {
+            allFluids.addAll(this.getAllFluids(stack4));
         }
-
-        Collection<FluidStack> fluids2 = new UniqueFluidStackSet();
-
-        for (FluidStack stack : allFluids) {
-            fluids2.addAll(this.getAllProducts(stack));
+        final Collection<FluidStack> fluids2 = new UniqueFluidStackSet();
+        for (final FluidStack stack5 : allFluids) {
+            fluids2.addAll(this.getAllProducts(stack5));
         }
-
-        Collection<FluidStack> fluids3 = new UniqueFluidStackSet();
-
-        for (FluidStack stack : fluids2) {
-            fluids3.addAll(this.getAllProducts(stack));
+        final Collection<FluidStack> fluids3 = new UniqueFluidStackSet();
+        for (final FluidStack stack6 : fluids2) {
+            fluids3.addAll(this.getAllProducts(stack6));
         }
-
         allFluids.addAll(fluids2);
         allFluids.addAll(fluids3);
-
-        for (FluidStack fluid : allFluids) {
+        for (final FluidStack fluid : allFluids) {
             ItemStack container = null;
-
-            for (FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+            for (final FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 if (data.emptyContainer.isItemEqual(new ItemStack(Items.glass_bottle)) && data.fluid.isFluidEqual(fluid)) {
                     container = data.filledContainer;
                     break;
                 }
-
                 if (data.emptyContainer.isItemEqual(new ItemStack(Items.bucket)) && data.fluid.isFluidEqual(fluid)) {
                     container = data.filledContainer;
                     break;
                 }
-
                 if (data.fluid.isFluidEqual(fluid)) {
                     container = data.filledContainer;
                     break;
                 }
             }
-
             if (container != null) {
                 products.add(container);
             }
         }
-
         return products;
     }
 
-    protected int getRefined(String string, int y, Collection products) {
-        (new ControlTextCentered(this, (float) y, string)).setColour(this.getColour());
-        y = y + 10;
-        int maxBiomePerLine = (int) ((this.w() + 2.0F - 16.0F) / 18.0F);
-        float biomeListX = (this.w() - (float) (Math.min(maxBiomePerLine, products.size()) * 18 - 2)) / 2.0F;
+    protected int getRefined(final String string, int y, final Collection<ItemStack> products) {
+        new ControlTextCentered(this, y, string).setColour(this.getColour());
+        y += 10;
+        final int maxBiomePerLine = (int) ((this.w() + 2.0f - 16.0f) / 18.0f);
+        final float biomeListX = (this.w() - (Math.min(maxBiomePerLine, products.size()) * 18 - 2)) / 2.0f;
         int dx = 0;
         int dy = 0;
-
-        for (ItemStack soilStack : products) {
+        for (final ItemStack soilStack : products) {
             if (dx >= 18 * maxBiomePerLine) {
                 dx = 0;
                 dy += 18;
             }
-
-            FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(soilStack);
+            final FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(soilStack);
             soilStack.stackSize = 1;
-            ControlItemDisplay display = new ControlItemDisplay(this, biomeListX + (float) dx, (float) (y + dy), soilStack, fluid == null);
+            final ControlItemDisplay display = new ControlItemDisplay(this, biomeListX + dx, y + dy, soilStack, fluid == null);
             if (fluid != null) {
                 display.addTooltip(fluid.getLocalizedName());
             }
-
             dx += 18;
         }
-
         if (dx != 0) {
             dy += 18;
         }
-
-        y = y + dy;
+        y += dy;
         return y;
     }
 }

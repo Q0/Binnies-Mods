@@ -7,22 +7,26 @@ import java.util.Collection;
 import java.util.List;
 
 public class DesignerManager {
-    public static DesignerManager instance = new DesignerManager();
-    List systems = new ArrayList();
+    public static DesignerManager instance;
+    List<IDesignSystem> systems;
 
     public DesignerManager() {
-        super();
+        this.systems = new ArrayList<IDesignSystem>();
     }
 
-    public void registerDesignSystem(IDesignSystem system) {
+    public void registerDesignSystem(final IDesignSystem system) {
         this.systems.add(system);
     }
 
-    public Collection getDesignSystems() {
+    public Collection<IDesignSystem> getDesignSystems() {
         return this.systems;
     }
 
-    public void addDesignSystem(DesignSystem system) {
+    public void addDesignSystem(final DesignSystem system) {
         this.systems.add(system);
+    }
+
+    static {
+        DesignerManager.instance = new DesignerManager();
     }
 }

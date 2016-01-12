@@ -7,10 +7,10 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
 
 public class Nursery {
-    public static int slotCaterpillar = 0;
+    public static int slotCaterpillar;
 
-    public Nursery() {
-        super();
+    static {
+        Nursery.slotCaterpillar = 0;
     }
 
     public static class PackageNursery extends ExtraTreeMachine.PackageExtraTreeMachine {
@@ -18,16 +18,19 @@ public class Nursery {
             super("nursery", ExtraTreeTexture.Nursery.getTexture(), false);
         }
 
-        public void createMachine(Machine machine) {
-            ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
+        @Override
+        public void createMachine(final Machine machine) {
+            final ComponentInventorySlots inventory = new ComponentInventorySlots(machine);
             inventory.addSlot(Nursery.slotCaterpillar, "caterpillar");
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileEntityNursery(this);
         }
 
-        public void renderMachine(Machine machine, double x, double y, double z, float var8, RenderBlocks renderer) {
+        @Override
+        public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
         }
     }
 }

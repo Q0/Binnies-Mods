@@ -7,10 +7,6 @@ import forestry.api.arboriculture.ITreeGenome;
 import net.minecraft.world.World;
 
 public class ExtraTreeGrowthProvider implements IAlleleGrowth, IGrowthProvider {
-    public ExtraTreeGrowthProvider() {
-        super();
-    }
-
     public String getUID() {
         return "extratrees.fruit." + this.toString().toLowerCase();
     }
@@ -20,14 +16,14 @@ public class ExtraTreeGrowthProvider implements IAlleleGrowth, IGrowthProvider {
     }
 
     public IGrowthProvider getProvider() {
-        return this;
+        return (IGrowthProvider) this;
     }
 
-    public boolean canGrow(ITreeGenome genome, World world, int xPos, int yPos, int zPos, int expectedGirth, int expectedHeight) {
+    public boolean canGrow(final ITreeGenome genome, final World world, final int xPos, final int yPos, final int zPos, final int expectedGirth, final int expectedHeight) {
         return false;
     }
 
-    public EnumGrowthConditions getGrowthConditions(ITreeGenome genome, World world, int xPos, int yPos, int zPos) {
+    public EnumGrowthConditions getGrowthConditions(final ITreeGenome genome, final World world, final int xPos, final int yPos, final int zPos) {
         return null;
     }
 

@@ -17,212 +17,207 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 public class CocktailRenderer implements IItemRenderer {
-    public CocktailRenderer() {
-        super();
-    }
-
-    private void renderCocktail(RenderBlocks renderBlocks, ItemStack item, float p, float q, float r) {
-        RenderItem renderItem = new RenderItem();
+    private void renderCocktail(final RenderBlocks renderBlocks, final ItemStack item, final float p, final float q, final float r) {
+        final RenderItem renderItem = new RenderItem();
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
-        Glassware glass = ExtraTrees.drink.getGlassware(item);
-        FluidStack fluid = ExtraTrees.drink.getFluid(item);
-        IDrinkLiquid drink = fluid == null ? null : DrinkManager.getLiquid(fluid.getFluid());
-        this.setColor(16777215, 0.8F);
+        final Glassware glass = ExtraTrees.drink.getGlassware(item);
+        final FluidStack fluid = ExtraTrees.drink.getFluid(item);
+        final IDrinkLiquid drink = (fluid == null) ? null : DrinkManager.getLiquid(fluid.getFluid());
+        this.setColor(16777215, 0.8f);
         renderItem.renderIcon(0, 0, glass.glass, 16, 16);
         if (drink != null) {
-            this.setColor(drink.getColour(), 1.2F * drink.getTransparency() + 0.3F);
-            IIcon icon = glass.contents;
-            float amount = (float) fluid.amount / (float) glass.getVolume();
-            float level = glass.getContentHeight() * (1.0F - amount);
-            float gapAtTop = 1.0F - (glass.getContentBottom() + glass.getContentHeight());
-            float x = 0.0F;
-            float y = 16.0F * (gapAtTop + level);
-            float w = 16.0F;
-            float h = 16.0F - y;
-            float minV = icon.getInterpolatedV((double) y);
-            float maxV = icon.getInterpolatedV(16.0D);
-            Tessellator tessellator = Tessellator.instance;
+            this.setColor(drink.getColour(), 1.2f * drink.getTransparency() + 0.3f);
+            final IIcon icon = glass.contents;
+            final float amount = fluid.amount / glass.getVolume();
+            final float level = glass.getContentHeight() * (1.0f - amount);
+            final float gapAtTop = 1.0f - (glass.getContentBottom() + glass.getContentHeight());
+            final float x = 0.0f;
+            final float y = 16.0f * (gapAtTop + level);
+            final float w = 16.0f;
+            final float h = 16.0f - y;
+            final float minV = icon.getInterpolatedV((double) y);
+            final float maxV = icon.getInterpolatedV(16.0);
+            final Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV((double) (x + 0.0F), (double) (y + h), (double) renderItem.zLevel, (double) icon.getMinU(), (double) maxV);
+            tessellator.addVertexWithUV((double) (x + 0.0f), (double) (y + h), (double) renderItem.zLevel, (double) icon.getMinU(), (double) maxV);
             tessellator.addVertexWithUV((double) (x + w), (double) (y + h), (double) renderItem.zLevel, (double) icon.getMaxU(), (double) maxV);
-            tessellator.addVertexWithUV((double) (x + w), (double) (y + 0.0F), (double) renderItem.zLevel, (double) icon.getMaxU(), (double) minV);
-            tessellator.addVertexWithUV((double) (x + 0.0F), (double) (y + 0.0F), (double) renderItem.zLevel, (double) icon.getMinU(), (double) minV);
+            tessellator.addVertexWithUV((double) (x + w), (double) (y + 0.0f), (double) renderItem.zLevel, (double) icon.getMaxU(), (double) minV);
+            tessellator.addVertexWithUV((double) (x + 0.0f), (double) (y + 0.0f), (double) renderItem.zLevel, (double) icon.getMinU(), (double) minV);
             tessellator.draw();
         }
-
         GL11.glDisable(3042);
     }
 
-    private void setColor(int i1, float alpha) {
-        float f = (float) (i1 >> 16 & 255) / 255.0F;
-        float f1 = (float) (i1 >> 8 & 255) / 255.0F;
-        float f2 = (float) (i1 & 255) / 255.0F;
-        GL11.glColor4f(f, f1, f2, alpha > 1.0F ? 1.0F : alpha);
+    private void setColor(final int i1, final float alpha) {
+        final float f = (i1 >> 16 & 0xFF) / 255.0f;
+        final float f2 = (i1 >> 8 & 0xFF) / 255.0f;
+        final float f3 = (i1 & 0xFF) / 255.0f;
+        GL11.glColor4f(f, f2, f3, (alpha > 1.0f) ? 1.0f : alpha);
     }
 
-    private void renderFace(Tessellator tessellator, ForgeDirection dir) {
+    private void renderFace(final Tessellator tessellator, final ForgeDirection dir) {
         switch (dir) {
-            case DOWN:
-                tessellator.addVertex(0.0D, 0.0D, 0.0D);
-                tessellator.addVertex(0.0D, 0.0D, 1.0D);
-                tessellator.addVertex(1.0D, 0.0D, 1.0D);
-                tessellator.addVertex(1.0D, 0.0D, 0.0D);
-            default:
+            case DOWN: {
+                tessellator.addVertex(0.0, 0.0, 0.0);
+                tessellator.addVertex(0.0, 0.0, 1.0);
+                tessellator.addVertex(1.0, 0.0, 1.0);
+                tessellator.addVertex(1.0, 0.0, 0.0);
+                break;
+            }
         }
     }
 
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
         switch (type) {
-            case ENTITY:
+            case ENTITY: {
                 return true;
-            case EQUIPPED:
+            }
+            case EQUIPPED: {
                 return true;
-            case INVENTORY:
+            }
+            case INVENTORY: {
                 return true;
-            case EQUIPPED_FIRST_PERSON:
+            }
+            case EQUIPPED_FIRST_PERSON: {
                 return true;
-            default:
+            }
+            default: {
                 return false;
+            }
         }
     }
 
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item, final IItemRenderer.ItemRendererHelper helper) {
+        return helper == IItemRenderer.ItemRendererHelper.ENTITY_ROTATION || helper == IItemRenderer.ItemRendererHelper.ENTITY_BOBBING;
     }
 
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
         switch (type) {
             case ENTITY:
             case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON:
-                if (type == ItemRenderType.ENTITY) {
-                    GL11.glTranslatef(-0.5F, -0.25F, -0.0F);
+            case EQUIPPED_FIRST_PERSON: {
+                if (type == IItemRenderer.ItemRenderType.ENTITY) {
+                    GL11.glTranslatef(-0.5f, -0.25f, -0.0f);
                 }
-
-                TextureManager texturemanager = BinnieCore.proxy.getMinecraftInstance().getTextureManager();
-                Glassware glass = ExtraTrees.drink.getGlassware(item);
-                FluidStack fluid = ExtraTrees.drink.getFluid(item);
+                final TextureManager texturemanager = BinnieCore.proxy.getMinecraftInstance().getTextureManager();
+                final Glassware glass = ExtraTrees.drink.getGlassware(item);
+                final FluidStack fluid = ExtraTrees.drink.getFluid(item);
                 IIcon iicon = glass.glass;
-                float f = iicon.getMinU();
-                float f1 = iicon.getMaxU();
-                float f2 = iicon.getMinV();
-                float f3 = iicon.getMaxV();
+                final float f = iicon.getMinU();
+                final float f2 = iicon.getMaxU();
+                final float f3 = iicon.getMinV();
+                final float f4 = iicon.getMaxV();
                 texturemanager.bindTexture(texturemanager.getResourceLocation(item.getItemSpriteNumber()));
-                TextureUtil.func_152777_a(false, false, 1.0F);
-                this.setColor(16777215, 0.8F);
-                IDrinkLiquid drink = fluid == null ? null : DrinkManager.getLiquid(fluid.getFluid());
-                this.setColor(16777215, 0.8F);
-                ItemRenderer.renderItemIn2D(Tessellator.instance, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
+                TextureUtil.func_152777_a(false, false, 1.0f);
+                this.setColor(16777215, 0.8f);
+                final IDrinkLiquid drink = (fluid == null) ? null : DrinkManager.getLiquid(fluid.getFluid());
+                this.setColor(16777215, 0.8f);
+                ItemRenderer.renderItemIn2D(Tessellator.instance, f2, f3, f, f4, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625f);
                 if (drink != null) {
-                    this.setColor(drink.getColour(), 1.2F * drink.getTransparency() + 0.3F);
+                    this.setColor(drink.getColour(), 1.2f * drink.getTransparency() + 0.3f);
                     iicon = glass.contents;
-                    IIcon icon = glass.contents;
-                    float amount = (float) fluid.amount / (float) glass.getVolume();
-                    float level = glass.getContentHeight() * (1.0F - amount);
-                    float gapAtTop = 1.0F - (glass.getContentBottom() + glass.getContentHeight());
-                    float x = 0.0F;
-                    float y = 1.0F * (gapAtTop + level);
-                    float w = 1.0F;
-                    float h = 1.0F - y;
-                    float minV = icon.getInterpolatedV((double) (y * 16.0F));
-                    float maxV = icon.getInterpolatedV(16.0D);
-                    float minU = icon.getMinU();
-                    float maxU = icon.getMaxU();
-                    Tessellator tessellator = Tessellator.instance;
-                    tessellator.setNormal(0.0F, 0.0F, -1.0F);
+                    final IIcon icon = glass.contents;
+                    final float amount = fluid.amount / glass.getVolume();
+                    final float level = glass.getContentHeight() * (1.0f - amount);
+                    final float gapAtTop = 1.0f - (glass.getContentBottom() + glass.getContentHeight());
+                    final float x = 0.0f;
+                    final float y = 1.0f * (gapAtTop + level);
+                    final float w = 1.0f;
+                    final float h = 1.0f - y;
+                    final float minV = icon.getInterpolatedV((double) (y * 16.0f));
+                    final float maxV = icon.getInterpolatedV(16.0);
+                    final float minU = icon.getMinU();
+                    final float maxU = icon.getMaxU();
+                    final Tessellator tessellator = Tessellator.instance;
+                    tessellator.setNormal(0.0f, 0.0f, -1.0f);
                     tessellator.startDrawingQuads();
-                    tessellator.addVertexWithUV(0.0D, 1.0D - (double) y, -0.03125D, (double) maxU, (double) minV);
-                    tessellator.addVertexWithUV(1.0D, 1.0D - (double) y, -0.03125D, (double) minU, (double) minV);
-                    tessellator.addVertexWithUV(1.0D, 0.0D, -0.03125D, (double) minU, (double) maxV);
-                    tessellator.addVertexWithUV(0.0D, 0.0D, -0.03125D, (double) maxU, (double) maxV);
+                    tessellator.addVertexWithUV(0.0, 1.0 - y, -0.03125, (double) maxU, (double) minV);
+                    tessellator.addVertexWithUV(1.0, 1.0 - y, -0.03125, (double) minU, (double) minV);
+                    tessellator.addVertexWithUV(1.0, 0.0, -0.03125, (double) minU, (double) maxV);
+                    tessellator.addVertexWithUV(0.0, 0.0, -0.03125, (double) maxU, (double) maxV);
                     tessellator.draw();
-                    tessellator.setNormal(0.0F, 0.0F, 1.0F);
+                    tessellator.setNormal(0.0f, 0.0f, 1.0f);
                     tessellator.startDrawingQuads();
-                    tessellator.addVertexWithUV(0.0D, 1.0D - (double) y, -0.03125D, (double) maxU, (double) minV);
-                    tessellator.addVertexWithUV(0.0D, 0.0D, -0.03125D, (double) maxU, (double) maxV);
-                    tessellator.addVertexWithUV(1.0D, 0.0D, -0.03125D, (double) minU, (double) maxV);
-                    tessellator.addVertexWithUV(1.0D, 1.0D - (double) y, -0.03125D, (double) minU, (double) minV);
+                    tessellator.addVertexWithUV(0.0, 1.0 - y, -0.03125, (double) maxU, (double) minV);
+                    tessellator.addVertexWithUV(0.0, 0.0, -0.03125, (double) maxU, (double) maxV);
+                    tessellator.addVertexWithUV(1.0, 0.0, -0.03125, (double) minU, (double) maxV);
+                    tessellator.addVertexWithUV(1.0, 1.0 - y, -0.03125, (double) minU, (double) minV);
                     tessellator.draw();
+                    break;
                 }
                 break;
-            case INVENTORY:
-                this.renderCocktail((RenderBlocks) data[0], item, -0.5F, -0.5F, -0.5F);
+            }
+            case INVENTORY: {
+                this.renderCocktail((RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+                break;
+            }
         }
-
     }
 
-    public void renderItemIn2DPercentage(Tessellator tesselator, float maxU, float minV, float minU, float maxV, int width, int height, float depth, float percent) {
-        maxV = minV + (maxV - minV) * 1.0F;
+    public void renderItemIn2DPercentage(final Tessellator tesselator, final float maxU, final float minV, final float minU, float maxV, final int width, final int height, final float depth, final float percent) {
+        maxV = minV + (maxV - minV) * 1.0f;
         tesselator.startDrawingQuads();
-        tesselator.setNormal(0.0F, 0.0F, 1.0F);
-        tesselator.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) maxU, (double) maxV);
-        tesselator.addVertexWithUV(1.0D, 0.0D, 0.0D, (double) minU, (double) maxV);
-        tesselator.addVertexWithUV(1.0D, 1.0D, 0.0D, (double) minU, (double) minV);
-        tesselator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double) maxU, (double) minV);
+        tesselator.setNormal(0.0f, 0.0f, 1.0f);
+        tesselator.addVertexWithUV(0.0, 0.0, 0.0, (double) maxU, (double) maxV);
+        tesselator.addVertexWithUV(1.0, 0.0, 0.0, (double) minU, (double) maxV);
+        tesselator.addVertexWithUV(1.0, 1.0, 0.0, (double) minU, (double) minV);
+        tesselator.addVertexWithUV(0.0, 1.0, 0.0, (double) maxU, (double) minV);
         tesselator.draw();
         tesselator.startDrawingQuads();
-        tesselator.setNormal(0.0F, 0.0F, -1.0F);
-        tesselator.addVertexWithUV(0.0D, (double) percent, (double) (0.0F - depth), (double) maxU, (double) minV);
-        tesselator.addVertexWithUV(1.0D, (double) percent, (double) (0.0F - depth), (double) minU, (double) minV);
-        tesselator.addVertexWithUV(1.0D, 0.0D, (double) (0.0F - depth), (double) minU, (double) maxV);
-        tesselator.addVertexWithUV(0.0D, 0.0D, (double) (0.0F - depth), (double) maxU, (double) maxV);
+        tesselator.setNormal(0.0f, 0.0f, -1.0f);
+        tesselator.addVertexWithUV(0.0, (double) percent, (double) (0.0f - depth), (double) maxU, (double) minV);
+        tesselator.addVertexWithUV(1.0, (double) percent, (double) (0.0f - depth), (double) minU, (double) minV);
+        tesselator.addVertexWithUV(1.0, 0.0, (double) (0.0f - depth), (double) minU, (double) maxV);
+        tesselator.addVertexWithUV(0.0, 0.0, (double) (0.0f - depth), (double) maxU, (double) maxV);
         tesselator.draw();
-        float f5 = 0.5F * (maxU - minU) / (float) width;
-        float f6 = 0.5F * (maxV - minV) / (float) height;
+        final float f5 = 0.5f * (maxU - minU) / width;
+        final float f6 = 0.5f * (maxV - minV) / height;
         tesselator.startDrawingQuads();
-        tesselator.setNormal(-1.0F, 0.0F, 0.0F);
-
+        tesselator.setNormal(-1.0f, 0.0f, 0.0f);
         for (int k = 0; k < width; ++k) {
-            float f7 = (float) k / (float) width;
-            float f8 = maxU + (minU - maxU) * f7 - f5;
-            tesselator.addVertexWithUV((double) f7, 0.0D, (double) (0.0F - depth), (double) f8, (double) maxV);
-            tesselator.addVertexWithUV((double) f7, 0.0D, 0.0D, (double) f8, (double) maxV);
-            tesselator.addVertexWithUV((double) f7, 1.0D, 0.0D, (double) f8, (double) minV);
-            tesselator.addVertexWithUV((double) f7, 1.0D, (double) (0.0F - depth), (double) f8, (double) minV);
+            final float f7 = k / width;
+            final float f8 = maxU + (minU - maxU) * f7 - f5;
+            tesselator.addVertexWithUV((double) f7, 0.0, (double) (0.0f - depth), (double) f8, (double) maxV);
+            tesselator.addVertexWithUV((double) f7, 0.0, 0.0, (double) f8, (double) maxV);
+            tesselator.addVertexWithUV((double) f7, 1.0, 0.0, (double) f8, (double) minV);
+            tesselator.addVertexWithUV((double) f7, 1.0, (double) (0.0f - depth), (double) f8, (double) minV);
         }
-
         tesselator.draw();
         tesselator.startDrawingQuads();
-        tesselator.setNormal(1.0F, 0.0F, 0.0F);
-
-        for (int var17 = 0; var17 < width; ++var17) {
-            float f7 = (float) var17 / (float) width;
-            float f8 = maxU + (minU - maxU) * f7 - f5;
-            float f9 = f7 + 1.0F / (float) width;
-            tesselator.addVertexWithUV((double) f9, 1.0D, (double) (0.0F - depth), (double) f8, (double) minV);
-            tesselator.addVertexWithUV((double) f9, 1.0D, 0.0D, (double) f8, (double) minV);
-            tesselator.addVertexWithUV((double) f9, 0.0D, 0.0D, (double) f8, (double) maxV);
-            tesselator.addVertexWithUV((double) f9, 0.0D, (double) (0.0F - depth), (double) f8, (double) maxV);
+        tesselator.setNormal(1.0f, 0.0f, 0.0f);
+        for (int k = 0; k < width; ++k) {
+            final float f7 = k / width;
+            final float f8 = maxU + (minU - maxU) * f7 - f5;
+            final float f9 = f7 + 1.0f / width;
+            tesselator.addVertexWithUV((double) f9, 1.0, (double) (0.0f - depth), (double) f8, (double) minV);
+            tesselator.addVertexWithUV((double) f9, 1.0, 0.0, (double) f8, (double) minV);
+            tesselator.addVertexWithUV((double) f9, 0.0, 0.0, (double) f8, (double) maxV);
+            tesselator.addVertexWithUV((double) f9, 0.0, (double) (0.0f - depth), (double) f8, (double) maxV);
         }
-
         tesselator.draw();
         tesselator.startDrawingQuads();
-        tesselator.setNormal(0.0F, 1.0F, 0.0F);
-
-        for (int var18 = 0; var18 < height; ++var18) {
-            float f7 = (float) var18 / (float) height;
-            float f8 = maxV + (minV - maxV) * f7 - f6;
-            float f9 = f7 + 1.0F / (float) height;
-            tesselator.addVertexWithUV(0.0D, (double) f9, 0.0D, (double) maxU, (double) f8);
-            tesselator.addVertexWithUV(1.0D, (double) f9, 0.0D, (double) minU, (double) f8);
-            tesselator.addVertexWithUV(1.0D, (double) f9, (double) (0.0F - depth), (double) minU, (double) f8);
-            tesselator.addVertexWithUV(0.0D, (double) f9, (double) (0.0F - depth), (double) maxU, (double) f8);
+        tesselator.setNormal(0.0f, 1.0f, 0.0f);
+        for (int k = 0; k < height; ++k) {
+            final float f7 = k / height;
+            final float f8 = maxV + (minV - maxV) * f7 - f6;
+            final float f9 = f7 + 1.0f / height;
+            tesselator.addVertexWithUV(0.0, (double) f9, 0.0, (double) maxU, (double) f8);
+            tesselator.addVertexWithUV(1.0, (double) f9, 0.0, (double) minU, (double) f8);
+            tesselator.addVertexWithUV(1.0, (double) f9, (double) (0.0f - depth), (double) minU, (double) f8);
+            tesselator.addVertexWithUV(0.0, (double) f9, (double) (0.0f - depth), (double) maxU, (double) f8);
         }
-
         tesselator.draw();
         tesselator.startDrawingQuads();
-        tesselator.setNormal(0.0F, -1.0F, 0.0F);
-
-        for (int var19 = 0; var19 < height; ++var19) {
-            float f7 = (float) var19 / (float) height;
-            float f8 = maxV + (minV - maxV) * f7 - f6;
-            tesselator.addVertexWithUV(1.0D, (double) f7, 0.0D, (double) minU, (double) f8);
-            tesselator.addVertexWithUV(0.0D, (double) f7, 0.0D, (double) maxU, (double) f8);
-            tesselator.addVertexWithUV(0.0D, (double) f7, (double) (0.0F - depth), (double) maxU, (double) f8);
-            tesselator.addVertexWithUV(1.0D, (double) f7, (double) (0.0F - depth), (double) minU, (double) f8);
+        tesselator.setNormal(0.0f, -1.0f, 0.0f);
+        for (int k = 0; k < height; ++k) {
+            final float f7 = k / height;
+            final float f8 = maxV + (minV - maxV) * f7 - f6;
+            tesselator.addVertexWithUV(1.0, (double) f7, 0.0, (double) minU, (double) f8);
+            tesselator.addVertexWithUV(0.0, (double) f7, 0.0, (double) maxU, (double) f8);
+            tesselator.addVertexWithUV(0.0, (double) f7, (double) (0.0f - depth), (double) maxU, (double) f8);
+            tesselator.addVertexWithUV(1.0, (double) f7, (double) (0.0f - depth), (double) minU, (double) f8);
         }
-
         tesselator.draw();
     }
 }

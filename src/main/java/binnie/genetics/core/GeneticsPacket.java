@@ -12,19 +12,16 @@ import net.minecraft.entity.player.EntityPlayer;
 public enum GeneticsPacket implements IPacketID {
     GeneTrackerSync;
 
-    private GeneticsPacket() {
-    }
-
-    public void onMessage(MessageBinnie message, MessageContext context) {
-        if (this == GeneTrackerSync && context.side == Side.CLIENT) {
-            MessageNBT packet = new MessageNBT(message);
-            EntityPlayer player = BinnieCore.proxy.getPlayer();
+    @Override
+    public void onMessage(final MessageBinnie message, final MessageContext context) {
+        if (this == GeneticsPacket.GeneTrackerSync && context.side == Side.CLIENT) {
+            final MessageNBT packet = new MessageNBT(message);
+            final EntityPlayer player = BinnieCore.proxy.getPlayer();
             GeneTracker tracker = null;
             tracker = GeneTracker.getTracker(BinnieCore.proxy.getWorld(), player.getGameProfile());
             if (tracker != null) {
                 tracker.readFromNBT(packet.getTagCompound());
             }
         }
-
     }
 }

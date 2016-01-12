@@ -5,9 +5,6 @@ public enum EnumSoilType {
     LOAM,
     FLOWERBED;
 
-    private EnumSoilType() {
-    }
-
     public String getID() {
         return this.name().toLowerCase();
     }

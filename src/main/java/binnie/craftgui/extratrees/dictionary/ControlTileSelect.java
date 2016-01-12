@@ -25,126 +25,136 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ControlTileSelect extends Control implements IControlValue, IControlScrollable {
-    IDesign value = EnumDesign.Blank;
-    float shownHeight = 92.0F;
+public class ControlTileSelect extends Control implements IControlValue<IDesign>, IControlScrollable {
+    IDesign value;
+    float shownHeight;
 
-    protected ControlTileSelect(IWidget parent, float x, float y) {
-        super(parent, x, y, 102.0F, (float) (20 * (CarpentryManager.carpentryInterface.getSortedDesigns().size() / 4) + 22));
+    protected ControlTileSelect(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 102.0f, 20 * (CarpentryManager.carpentryInterface.getSortedDesigns().size() / 4) + 22);
+        this.value = EnumDesign.Blank;
+        this.shownHeight = 92.0f;
         this.refresh("");
     }
 
+    @Override
     public float getPercentageIndex() {
-        return 0.0F;
+        return 0.0f;
     }
 
+    @Override
     public float getPercentageShown() {
-        return 0.0F;
+        return 0.0f;
     }
 
+    @Override
     public IDesign getValue() {
         return this.value;
     }
 
-    public void movePercentage(float percentage) {
+    @Override
+    public void movePercentage(final float percentage) {
     }
 
+    @Override
     public void onUpdateClient() {
         super.onUpdateClient();
-        TileEntityMachine tile = (TileEntityMachine) Window.get(this).getInventory();
-        if (tile != null) {
-            Designer.ComponentWoodworkerRecipe recipe = (Designer.ComponentWoodworkerRecipe) tile.getMachine().getComponent(Designer.ComponentWoodworkerRecipe.class);
-            this.setValue(recipe.getDesign());
+        final TileEntityMachine tile = (TileEntityMachine) Window.get(this).getInventory();
+        if (tile == null) {
+            return;
         }
+        final Designer.ComponentWoodworkerRecipe recipe = tile.getMachine().getComponent(Designer.ComponentWoodworkerRecipe.class);
+        this.setValue(recipe.getDesign());
     }
 
-    public void refresh(String filterText) {
+    public void refresh(final String filterText) {
         this.deleteAllChildren();
         int cx = 2;
         int cy = 2;
-        Map<IDesignCategory, List<IDesign>> designs = new HashMap();
-
-        for (IDesignCategory category : CarpentryManager.carpentryInterface.getAllDesignCategories()) {
-            designs.put(category, new ArrayList());
-
-            for (IDesign tile : category.getDesigns()) {
+        final Map<IDesignCategory, List<IDesign>> designs = new HashMap<IDesignCategory, List<IDesign>>();
+        for (final IDesignCategory category : CarpentryManager.carpentryInterface.getAllDesignCategories()) {
+            designs.put(category, new ArrayList<IDesign>());
+            for (final IDesign tile : category.getDesigns()) {
                 if (filterText == "" || tile.getName().toLowerCase().contains(filterText)) {
-                    ((List) designs.get(category)).add(tile);
+                    designs.get(category).add(tile);
                 }
             }
-
-            if (((List) designs.get(category)).isEmpty()) {
+            if (designs.get(category).isEmpty()) {
                 designs.remove(category);
             }
         }
-
-        for (IDesignCategory category : designs.keySet()) {
+        for (final IDesignCategory category : designs.keySet()) {
             cx = 2;
-            new ControlText(this, new IPoint((float) cx, (float) (cy + 3)), category.getName());
-            cy = cy + 16;
-
-            for (IDesign tile : (List) designs.get(category)) {
+            new ControlText(this, new IPoint(cx, cy + 3), category.getName());
+            cy += 16;
+            for (final IDesign tile : designs.get(category)) {
                 if (cx > 90) {
                     cx = 2;
                     cy += 20;
                 }
-
-                new ControlTileSelect.ControlTile(this, (float) cx, (float) cy, tile);
+                new ControlTile(this, cx, cy, tile);
                 cx += 20;
             }
-
-            cy = cy + 20;
+            cy += 20;
         }
-
-        this.setSize(new IPoint(this.getSize().x(), (float) cy));
+        final int height = cy;
+        this.setSize(new IPoint(this.getSize().x(), height));
     }
 
-    public void setPercentageIndex(float index) {
+    @Override
+    public void setPercentageIndex(final float index) {
     }
 
-    public void setValue(IDesign value) {
+    @Override
+    public void setValue(final IDesign value) {
         this.value = value;
     }
 
+    @Override
     public float getMovementRange() {
-        return 0.0F;
+        return 0.0f;
     }
 
-    public static class ControlTile extends Control implements IControlValue, ITooltip {
+    public static class ControlTile extends Control implements IControlValue<IDesign>, ITooltip {
         IDesign value;
 
-        protected ControlTile(IWidget parent, float x, float y, IDesign value) {
-            super(parent, x, y, 18.0F, 18.0F);
+        protected ControlTile(final IWidget parent, final float x, final float y, final IDesign value) {
+            super(parent, x, y, 18.0f, 18.0f);
             this.setValue(value);
             this.addAttribute(Attribute.MouseOver);
             this.addSelfEventHandler(new EventMouse.Down.Handler() {
-                public void onEvent(EventMouse.Down event) {
-                    TileEntityMachine tile = (TileEntityMachine) Window.get(ControlTile.this.getWidget()).getInventory();
-                    if (tile != null) {
-                        Designer.ComponentWoodworkerRecipe recipe = (Designer.ComponentWoodworkerRecipe) tile.getMachine().getComponent(Designer.ComponentWoodworkerRecipe.class);
-                        NBTTagCompound nbt = new NBTTagCompound();
-                        nbt.setShort("d", (short) CarpentryManager.carpentryInterface.getDesignIndex(ControlTile.this.getValue()));
-                        Window.get(ControlTile.this.getWidget()).sendClientAction("design", nbt);
+                @Override
+                public void onEvent(final EventMouse.Down event) {
+                    final TileEntityMachine tile = (TileEntityMachine) Window.get(ControlTile.this.getWidget()).getInventory();
+                    if (tile == null) {
+                        return;
                     }
+                    final Designer.ComponentWoodworkerRecipe recipe = tile.getMachine().getComponent(Designer.ComponentWoodworkerRecipe.class);
+                    final NBTTagCompound nbt = new NBTTagCompound();
+                    nbt.setShort("d", (short) CarpentryManager.carpentryInterface.getDesignIndex(ControlTile.this.getValue()));
+                    Window.get(ControlTile.this.getWidget()).sendClientAction("design", nbt);
                 }
             });
         }
 
-        public void getTooltip(Tooltip tooltip) {
-            tooltip.add(Binnie.Language.localise(BinnieCore.instance, "gui.designer.pattern", new Object[]{this.getValue().getName()}));
+        @Override
+        public void getTooltip(final Tooltip tooltip) {
+            tooltip.add(Binnie.Language.localise(BinnieCore.instance, "gui.designer.pattern", this.getValue().getName()));
         }
 
+        @Override
         public IDesign getValue() {
             return this.value;
         }
 
+        @Override
         public void onRenderBackground() {
-            CraftGUI.Render.texture((Object) CraftGUITexture.Slot, (IPoint) IPoint.ZERO);
+            CraftGUI.Render.texture(CraftGUITexture.Slot, IPoint.ZERO);
         }
 
+        @Override
         public void onRenderForeground() {
-            ItemStack image = ((WindowWoodworker) this.getSuperParent()).getDesignerType().getDisplayStack(this.getValue());
-            CraftGUI.Render.item(new IPoint(1.0F, 1.0F), image);
+            final ItemStack image = ((WindowWoodworker) this.getSuperParent()).getDesignerType().getDisplayStack(this.getValue());
+            CraftGUI.Render.item(new IPoint(1.0f, 1.0f), image);
             if (((IControlValue) this.getParent()).getValue() != this.getValue()) {
                 if (Window.get(this).getMousedOverWidget() == this) {
                     CraftGUI.Render.gradientRect(this.getArea().inset(1), 1157627903, 1157627903);
@@ -152,10 +162,10 @@ public class ControlTileSelect extends Control implements IControlValue, IContro
                     CraftGUI.Render.gradientRect(this.getArea().inset(1), -1433892728, -1433892728);
                 }
             }
-
         }
 
-        public void setValue(IDesign value) {
+        @Override
+        public void setValue(final IDesign value) {
             this.value = value;
         }
     }

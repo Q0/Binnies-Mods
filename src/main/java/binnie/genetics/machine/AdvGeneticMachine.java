@@ -1,33 +1,37 @@
 package binnie.genetics.machine;
 
 import binnie.core.machines.IMachineType;
+import binnie.core.machines.MachinePackage;
 import binnie.core.resource.IBinnieTexture;
 import binnie.genetics.Genetics;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public enum AdvGeneticMachine implements IMachineType {
-    Splicer(Splicer.PackageSplicer.class);
+    Splicer((Class<? extends MachinePackage>) Splicer.PackageSplicer.class);
 
-    Class clss;
+    Class<? extends MachinePackage> clss;
 
-    private AdvGeneticMachine(Class clss) {
+    private AdvGeneticMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
-    public Class getPackageClass() {
+    @Override
+    public Class<? extends MachinePackage> getPackageClass() {
         return this.clss;
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }
 
-    public ItemStack get(int i) {
-        return new ItemStack(Genetics.packageAdvGenetic.getBlock(), i, this.ordinal());
+    public ItemStack get(final int i) {
+        return new ItemStack((Block) Genetics.packageAdvGenetic.getBlock(), i, this.ordinal());
     }
 
     public abstract static class PackageAdvGeneticBase extends GeneticMachine.PackageGeneticBase {
-        protected PackageAdvGeneticBase(String uid, IBinnieTexture renderTexture, int flashColour, boolean powered) {
+        protected PackageAdvGeneticBase(final String uid, final IBinnieTexture renderTexture, final int flashColour, final boolean powered) {
             super(uid, renderTexture, flashColour, powered);
         }
     }

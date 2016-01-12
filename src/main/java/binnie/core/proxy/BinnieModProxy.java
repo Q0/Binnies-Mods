@@ -5,6 +5,7 @@ import binnie.core.AbstractMod;
 import binnie.core.BinnieCore;
 import binnie.core.gui.IBinnieGUID;
 import binnie.core.network.packet.MessageBase;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,48 +14,54 @@ import net.minecraft.util.IIcon;
 public class BinnieModProxy implements IBinnieModProxy {
     private AbstractMod mod;
 
-    public BinnieModProxy(AbstractMod mod) {
-        super();
+    public BinnieModProxy(final AbstractMod mod) {
         this.mod = mod;
     }
 
-    public void openGui(IBinnieGUID ID, EntityPlayer player, int x, int y, int z) {
+    @Override
+    public void openGui(final IBinnieGUID ID, final EntityPlayer player, final int x, final int y, final int z) {
         BinnieCore.proxy.openGui(this.mod, ID.ordinal(), player, x, y, z);
     }
 
-    public void sendToAll(MessageBase packet) {
-        this.mod.getNetworkWrapper().sendToAll(packet.GetMessage());
+    @Override
+    public void sendToAll(final MessageBase packet) {
+        this.mod.getNetworkWrapper().sendToAll((IMessage) packet.GetMessage());
     }
 
-    public void sendToPlayer(MessageBase packet, EntityPlayer entityplayer) {
+    @Override
+    public void sendToPlayer(final MessageBase packet, final EntityPlayer entityplayer) {
         if (entityplayer instanceof EntityPlayerMP) {
-            this.mod.getNetworkWrapper().sendTo(packet.GetMessage(), (EntityPlayerMP) entityplayer);
+            this.mod.getNetworkWrapper().sendTo((IMessage) packet.GetMessage(), (EntityPlayerMP) entityplayer);
         }
-
     }
 
-    public void sendToServer(MessageBase packet) {
-        this.mod.getNetworkWrapper().sendToServer(packet.GetMessage());
+    @Override
+    public void sendToServer(final MessageBase packet) {
+        this.mod.getNetworkWrapper().sendToServer((IMessage) packet.GetMessage());
     }
 
-    public IIcon getIcon(IIconRegister register, String string) {
+    @Override
+    public IIcon getIcon(final IIconRegister register, final String string) {
         return BinnieCore.proxy.getIcon(register, this.mod.getModID(), string);
     }
 
+    @Override
     public void preInit() {
     }
 
+    @Override
     public void init() {
     }
 
+    @Override
     public void postInit() {
     }
 
-    public String localise(String string) {
+    public String localise(final String string) {
         return Binnie.Language.localise(this.mod, string);
     }
 
-    public String localiseOrBlank(String string) {
+    public String localiseOrBlank(final String string) {
         return Binnie.Language.localiseOrBlank(this.mod, string);
     }
 }

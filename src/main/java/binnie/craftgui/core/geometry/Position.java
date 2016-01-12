@@ -9,7 +9,7 @@ public enum Position {
     int x;
     int y;
 
-    private Position(int x, int y) {
+    private Position(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
@@ -24,16 +24,21 @@ public enum Position {
 
     public Position opposite() {
         switch (this) {
-            case Bottom:
-                return Top;
-            case Left:
-                return Right;
-            case Right:
-                return Left;
-            case Top:
-                return Bottom;
-            default:
+            case Bottom: {
+                return Position.Top;
+            }
+            case Left: {
+                return Position.Right;
+            }
+            case Right: {
+                return Position.Left;
+            }
+            case Top: {
+                return Position.Bottom;
+            }
+            default: {
                 return null;
+            }
         }
     }
 }

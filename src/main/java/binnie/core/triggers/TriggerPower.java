@@ -2,42 +2,38 @@ package binnie.core.triggers;
 
 import binnie.core.machines.Machine;
 import binnie.core.machines.power.IPoweredMachine;
+import buildcraft.api.statements.ITriggerExternal;
 
 public class TriggerPower {
-    public TriggerPower() {
-        super();
+    public static TriggerData powerNone(final Object tile) {
+        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerPowerNone, getPercentage(tile) < 0.05000000074505806);
     }
 
-    public static TriggerData powerNone(Object tile) {
-        return new TriggerData(BinnieTrigger.triggerPowerNone, Boolean.valueOf(getPercentage(tile) < 0.05000000074505806D));
+    public static TriggerData powerLow(final Object tile) {
+        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerPowerLow, getPercentage(tile) < 0.3499999940395355);
     }
 
-    public static TriggerData powerLow(Object tile) {
-        return new TriggerData(BinnieTrigger.triggerPowerLow, Boolean.valueOf(getPercentage(tile) < 0.3499999940395355D));
+    public static TriggerData powerMedium(final Object tile) {
+        final double p = getPercentage(tile);
+        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerPowerMedium, p >= 0.3499999940395355 && p <= 0.6499999761581421);
     }
 
-    public static TriggerData powerMedium(Object tile) {
-        double p = getPercentage(tile);
-        return new TriggerData(BinnieTrigger.triggerPowerMedium, Boolean.valueOf(p >= 0.3499999940395355D && p <= 0.6499999761581421D));
+    public static TriggerData powerHigh(final Object tile) {
+        final double p = getPercentage(tile);
+        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerPowerHigh, getPercentage(tile) > 0.6499999761581421);
     }
 
-    public static TriggerData powerHigh(Object tile) {
-        double p = getPercentage(tile);
-        return new TriggerData(BinnieTrigger.triggerPowerHigh, Boolean.valueOf(getPercentage(tile) > 0.6499999761581421D));
+    public static TriggerData powerFull(final Object tile) {
+        final double p = getPercentage(tile);
+        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerPowerFull, getPercentage(tile) > 0.949999988079071);
     }
 
-    public static TriggerData powerFull(Object tile) {
-        double p = getPercentage(tile);
-        return new TriggerData(BinnieTrigger.triggerPowerFull, Boolean.valueOf(getPercentage(tile) > 0.949999988079071D));
-    }
-
-    private static double getPercentage(Object tile) {
-        IPoweredMachine process = (IPoweredMachine) Machine.getInterface(IPoweredMachine.class, tile);
+    private static double getPercentage(final Object tile) {
+        final IPoweredMachine process = Machine.getInterface(IPoweredMachine.class, tile);
         if (process != null) {
-            double percentage = (double) (process.getInterface().getEnergy() / process.getInterface().getCapacity());
+            final double percentage = process.getInterface().getEnergy() / process.getInterface().getCapacity();
             return percentage;
-        } else {
-            return 0.0D;
         }
+        return 0.0;
     }
 }

@@ -1,13 +1,13 @@
 package binnie.core.machines.inventory;
 
 public interface IInventorySlots {
-    InventorySlot addSlot(int var1, String var2);
+    InventorySlot addSlot(final int p0, final String p1);
 
-    InventorySlot[] addSlotArray(int[] var1, String var2);
+    InventorySlot[] addSlotArray(final int[] p0, final String p1);
 
-    InventorySlot getSlot(int var1);
+    InventorySlot getSlot(final int p0);
 
-    InventorySlot[] getSlots(int[] var1);
+    InventorySlot[] getSlots(final int[] p0);
 
     InventorySlot[] getAllSlots();
 }

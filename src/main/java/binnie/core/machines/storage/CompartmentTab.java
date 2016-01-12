@@ -4,31 +4,34 @@ import binnie.craftgui.minecraft.EnumColor;
 import forestry.api.core.INBTTagable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
 class CompartmentTab implements INBTTagable {
-    private String name = "";
-    private ItemStack icon = new ItemStack(Items.paper);
-    private EnumColor color = EnumColor.White;
+    private String name;
+    private ItemStack icon;
+    private EnumColor color;
     private int id;
 
-    public CompartmentTab(int id) {
-        super();
+    public CompartmentTab(final int id) {
+        this.name = "";
+        this.icon = new ItemStack(Items.paper);
+        this.color = EnumColor.White;
         this.id = id;
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         this.name = nbt.getString("name");
         this.icon = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("icon"));
         this.color = EnumColor.values()[nbt.getByte("color")];
         this.id = nbt.getByte("id");
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void writeToNBT(final NBTTagCompound nbt) {
         nbt.setString("name", this.name);
-        NBTTagCompound n = new NBTTagCompound();
+        final NBTTagCompound n = new NBTTagCompound();
         this.icon.writeToNBT(n);
-        nbt.setTag("icon", n);
+        nbt.setTag("icon", (NBTBase) n);
         nbt.setByte("color", (byte) this.color.ordinal());
         nbt.setByte("id", (byte) this.id);
     }
@@ -49,15 +52,15 @@ class CompartmentTab implements INBTTagable {
         return this.id;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? "" : name;
+    public void setName(final String name) {
+        this.name = ((name == null) ? "" : name);
     }
 
-    public void setIcon(ItemStack icon) {
+    public void setIcon(final ItemStack icon) {
         this.icon = icon;
     }
 
-    public void setColor(EnumColor color) {
+    public void setColor(final EnumColor color) {
         this.color = color;
     }
 }

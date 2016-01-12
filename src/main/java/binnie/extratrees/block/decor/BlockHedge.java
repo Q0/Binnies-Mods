@@ -29,80 +29,68 @@ public class BlockHedge extends Block implements IBlockFence {
         this.setBlockName("hedge");
     }
 
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity p_149743_7_) {
-        boolean connectNegZ = this.canConnectFenceTo(world, x, y, z - 1);
-        boolean connectPosZ = this.canConnectFenceTo(world, x, y, z + 1);
-        boolean connectNegX = this.canConnectFenceTo(world, x - 1, y, z);
-        boolean connectPosX = this.canConnectFenceTo(world, x + 1, y, z);
-        float f = 0.25F;
-        float f1 = 0.75F;
-        float f2 = 0.25F;
-        float f3 = 0.75F;
+    public void addCollisionBoxesToList(final World world, final int x, final int y, final int z, final AxisAlignedBB aabb, final List list, final Entity p_149743_7_) {
+        final boolean connectNegZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z - 1);
+        final boolean connectPosZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z + 1);
+        final boolean connectNegX = this.canConnectFenceTo((IBlockAccess) world, x - 1, y, z);
+        final boolean connectPosX = this.canConnectFenceTo((IBlockAccess) world, x + 1, y, z);
+        float f = 0.25f;
+        float f2 = 0.75f;
+        float f3 = 0.25f;
+        float f4 = 0.75f;
         if (connectNegZ) {
-            f2 = 0.0F;
+            f3 = 0.0f;
         }
-
         if (connectPosZ) {
-            f3 = 1.0F;
+            f4 = 1.0f;
         }
-
         if (connectNegZ || connectPosZ) {
-            this.setBlockBounds(f, 0.0F, f2, f1, 1.5F, f3);
+            this.setBlockBounds(f, 0.0f, f3, f2, 1.5f, f4);
             super.addCollisionBoxesToList(world, x, y, z, aabb, list, p_149743_7_);
         }
-
-        f2 = 0.25F;
-        f3 = 0.75F;
+        f3 = 0.25f;
+        f4 = 0.75f;
         if (connectNegX) {
-            f = 0.0F;
+            f = 0.0f;
         }
-
         if (connectPosX) {
-            f1 = 1.0F;
+            f2 = 1.0f;
         }
-
-        if (connectNegX || connectPosX || !connectNegZ && !connectPosZ) {
-            this.setBlockBounds(f, 0.0F, f2, f1, 1.5F, f3);
+        if (connectNegX || connectPosX || (!connectNegZ && !connectPosZ)) {
+            this.setBlockBounds(f, 0.0f, f3, f2, 1.5f, f4);
             super.addCollisionBoxesToList(world, x, y, z, aabb, list, p_149743_7_);
         }
-
         if (connectNegZ) {
-            f2 = 0.0F;
+            f3 = 0.0f;
         }
-
         if (connectPosZ) {
-            f3 = 1.0F;
+            f4 = 1.0f;
         }
-
-        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+        this.setBlockBounds(f, 0.0f, f3, f2, 1.0f, f4);
     }
 
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        boolean connectNegZ = this.canConnectFenceTo(world, x, y, z - 1);
-        boolean connectPosZ = this.canConnectFenceTo(world, x, y, z + 1);
-        boolean connectNegX = this.canConnectFenceTo(world, x - 1, y, z);
-        boolean connectPosX = this.canConnectFenceTo(world, x + 1, y, z);
-        float f = 0.25F;
-        float f1 = 0.75F;
-        float f2 = 0.25F;
-        float f3 = 0.75F;
+    public void setBlockBoundsBasedOnState(final IBlockAccess world, final int x, final int y, final int z) {
+        final boolean connectNegZ = this.canConnectFenceTo(world, x, y, z - 1);
+        final boolean connectPosZ = this.canConnectFenceTo(world, x, y, z + 1);
+        final boolean connectNegX = this.canConnectFenceTo(world, x - 1, y, z);
+        final boolean connectPosX = this.canConnectFenceTo(world, x + 1, y, z);
+        float f = 0.25f;
+        float f2 = 0.75f;
+        float f3 = 0.25f;
+        float f4 = 0.75f;
         if (connectNegZ) {
-            f2 = 0.0F;
+            f3 = 0.0f;
         }
-
         if (connectPosZ) {
-            f3 = 1.0F;
+            f4 = 1.0f;
         }
-
         if (connectNegX) {
-            f = 0.0F;
+            f = 0.0f;
         }
-
         if (connectPosX) {
-            f1 = 1.0F;
+            f2 = 1.0f;
         }
-
-        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+        this.setBlockBounds(f, 0.0f, f3, f2, 1.0f, f4);
     }
 
     public boolean isOpaqueCube() {
@@ -113,7 +101,7 @@ public class BlockHedge extends Block implements IBlockFence {
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_) {
+    public boolean getBlocksMovement(final IBlockAccess p_149655_1_, final int p_149655_2_, final int p_149655_3_, final int p_149655_4_) {
         return false;
     }
 
@@ -121,61 +109,59 @@ public class BlockHedge extends Block implements IBlockFence {
         return ModuleBlocks.hedgeRenderID;
     }
 
-    public boolean canConnectFenceTo(IBlockAccess p_149826_1_, int p_149826_2_, int p_149826_3_, int p_149826_4_) {
-        Block block = p_149826_1_.getBlock(p_149826_2_, p_149826_3_, p_149826_4_);
-        return block != this && block != Blocks.fence_gate && !func_149825_a(block) && !block.isLeaves(p_149826_1_, p_149826_2_, p_149826_3_, p_149826_4_) ? (block.getMaterial().isOpaque() && block.renderAsNormalBlock() ? block.getMaterial() != Material.gourd : false) : true;
+    public boolean canConnectFenceTo(final IBlockAccess p_149826_1_, final int p_149826_2_, final int p_149826_3_, final int p_149826_4_) {
+        final Block block = p_149826_1_.getBlock(p_149826_2_, p_149826_3_, p_149826_4_);
+        return block == this || block == Blocks.fence_gate || func_149825_a(block) || block.isLeaves(p_149826_1_, p_149826_2_, p_149826_3_, p_149826_4_) || (block.getMaterial().isOpaque() && block.renderAsNormalBlock() && block.getMaterial() != Material.gourd);
     }
 
-    public static boolean func_149825_a(Block p_149825_0_) {
+    public static boolean func_149825_a(final Block p_149825_0_) {
         return BlockFence.canConnect(p_149825_0_);
     }
 
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(final IBlockAccess p_149646_1_, final int p_149646_2_, final int p_149646_3_, final int p_149646_4_, final int p_149646_5_) {
         return true;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
+    public void registerBlockIcons(final IIconRegister p_149651_1_) {
     }
 
-    private ExtraTreeSpecies.LeafType getType(int meta) {
+    private ExtraTreeSpecies.LeafType getType(final int meta) {
         return ExtraTreeSpecies.LeafType.values()[meta % 8];
     }
 
-    private boolean isFull(int meta) {
+    private boolean isFull(final int meta) {
         return meta / 8 > 0;
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int meta) {
-        ExtraTreeSpecies.LeafType type = this.getType(meta);
+    public IIcon getIcon(final int p_149691_1_, final int meta) {
+        final ExtraTreeSpecies.LeafType type = this.getType(meta);
         return ForestryAPI.textureManager.getIcon(this.isFull(meta) ? type.plainUID : type.fancyUID);
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
         for (int i = 0; i < 6; ++i) {
             for (int f = 0; f < 2; ++f) {
                 list.add(new ItemStack(item, 1, i + f * 8));
             }
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    public int colorMultiplier(final IBlockAccess world, final int x, final int y, final int z) {
         return getColor(world.getBlockMetadata(x, y, z));
     }
 
-    public static int getColor(int meta) {
-        ExtraTreeSpecies.LeafType type = ExtraTreeSpecies.LeafType.values()[meta % 6];
+    public static int getColor(final int meta) {
+        final ExtraTreeSpecies.LeafType type = ExtraTreeSpecies.LeafType.values()[meta % 6];
         if (type == ExtraTreeSpecies.LeafType.Conifer) {
             return ColorizerFoliage.getFoliageColorPine();
-        } else {
-            double d0 = 0.5D;
-            double d1 = 1.0D;
-            return ColorizerFoliage.getFoliageColor(d0, d1);
         }
+        final double d0 = 0.5;
+        final double d2 = 1.0;
+        return ColorizerFoliage.getFoliageColor(d0, d2);
     }
 }

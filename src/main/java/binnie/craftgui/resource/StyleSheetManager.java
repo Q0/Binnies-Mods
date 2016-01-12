@@ -3,26 +3,23 @@ package binnie.craftgui.resource;
 import binnie.craftgui.core.CraftGUI;
 
 public class StyleSheetManager {
-    static IStyleSheet defaultSS = new StyleSheetManager.DefaultStyleSheet();
+    static IStyleSheet defaultSS;
 
-    public StyleSheetManager() {
-        super();
-    }
-
-    public static Texture getTexture(Object key) {
-        return defaultSS.getTexture(key);
+    public static Texture getTexture(final Object key) {
+        return StyleSheetManager.defaultSS.getTexture(key);
     }
 
     public static IStyleSheet getDefault() {
-        return defaultSS;
+        return StyleSheetManager.defaultSS;
+    }
+
+    static {
+        StyleSheetManager.defaultSS = new DefaultStyleSheet();
     }
 
     private static class DefaultStyleSheet implements IStyleSheet {
-        private DefaultStyleSheet() {
-            super();
-        }
-
-        public Texture getTexture(Object key) {
+        @Override
+        public Texture getTexture(final Object key) {
             return CraftGUI.ResourceManager.getTexture(key.toString());
         }
     }

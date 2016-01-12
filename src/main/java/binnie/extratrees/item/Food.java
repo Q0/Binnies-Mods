@@ -79,14 +79,14 @@ public enum Food implements IItemMisc {
 
     IIcon icon;
     int hunger;
-    private List ores;
+    private List<String> ores;
 
     private Food() {
         this(0);
     }
 
-    private Food(int hunger) {
-        this.ores = new ArrayList();
+    private Food(final int hunger) {
+        this.ores = new ArrayList<String>();
         this.hunger = hunger;
     }
 
@@ -98,91 +98,97 @@ public enum Food implements IItemMisc {
         return this.hunger;
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }
 
-    public String getName(ItemStack stack) {
+    @Override
+    public String getName(final ItemStack stack) {
         return ExtraTrees.proxy.localise("item.food." + this.name().toLowerCase());
     }
 
-    public ItemStack get(int i) {
+    @Override
+    public ItemStack get(final int i) {
         return new ItemStack(ExtraTrees.itemFood, i, this.ordinal());
     }
 
-    public IIcon getIcon(ItemStack stack) {
+    @Override
+    public IIcon getIcon(final ItemStack stack) {
         return this.icon;
     }
 
-    public void registerIcons(IIconRegister register) {
+    @Override
+    public void registerIcons(final IIconRegister register) {
         this.icon = ExtraTrees.proxy.getIcon(register, "food/" + this.toString());
     }
 
-    public void addInformation(List par3List) {
+    @Override
+    public void addInformation(final List par3List) {
     }
 
-    public void addJuice(Juice juice, int time, int amount, int mulch) {
+    public void addJuice(final Juice juice, final int time, final int amount, final int mulch) {
         RecipeManagers.squeezerManager.addRecipe(time, new ItemStack[]{this.get(1)}, Binnie.Liquid.getLiquidStack("juice", amount), Mods.Forestry.stack("mulch"), mulch);
     }
 
-    public void addJuice(int time, int amount, int mulch) {
+    public void addJuice(final int time, final int amount, final int mulch) {
         RecipeManagers.squeezerManager.addRecipe(time, new ItemStack[]{this.get(1)}, Binnie.Liquid.getLiquidStack("juice", amount), Mods.Forestry.stack("mulch"), mulch);
     }
 
-    public void addOil(int time, int amount, int mulch) {
+    public void addOil(final int time, final int amount, final int mulch) {
         RecipeManagers.squeezerManager.addRecipe(time, new ItemStack[]{this.get(1)}, Binnie.Liquid.getLiquidStack("seedoil", amount), Mods.Forestry.stack("mulch"), mulch);
     }
 
     public static void registerOreDictionary() {
-        Crabapple.ore("Apple").ore("Crabapple");
-        Orange.ore("Orange");
-        Kumquat.ore("Kumquat");
-        Lime.ore("Lime");
-        WildCherry.ore("Cherry").ore("WildCherry");
-        SourCherry.ore("Cherry").ore("SourCherry");
-        BlackCherry.ore("Cherry").ore("BlackCherry");
-        Blackthorn.ore("Blackthorn");
-        CherryPlum.ore("Plum").ore("CherryPlum");
-        Almond.ore("Almond");
-        Apricot.ore("Apricot");
-        Grapefruit.ore("Grapefruit");
-        Peach.ore("Peach");
-        Satsuma.ore("Satsuma").ore("Orange");
-        BuddhaHand.ore("BuddhaHand").ore("Citron");
-        Citron.ore("Citron");
-        FingerLime.ore("Lime").ore("FingerLime");
-        KeyLime.ore("KeyLime").ore("Lime");
-        Manderin.ore("Orange").ore("Manderin");
-        Nectarine.ore("Peach").ore("Nectarine");
-        Pomelo.ore("Pomelo");
-        Tangerine.ore("Tangerine").ore("Orange");
-        Pear.ore("Pear");
-        SandPear.ore("SandPear");
-        Hazelnut.ore("Hazelnut");
-        Butternut.ore("Butternut").ore("Walnut");
-        Beechnut.ore("Beechnut");
-        Pecan.ore("Pecan");
-        Banana.ore("Banana");
-        RedBanana.ore("RedBanana").ore("Banana");
-        Plantain.ore("Plantain");
-        BrazilNut.ore("BrazilNut");
-        Fig.ore("Fig");
-        Acorn.ore("Acorn");
-        Elderberry.ore("Elderberry");
-        Olive.ore("Olive");
-        GingkoNut.ore("GingkoNut");
-        Coffee.ore("Coffee");
-        OsangeOrange.ore("OsangeOrange");
-        Clove.ore("Clove");
+        Food.Crabapple.ore("Apple").ore("Crabapple");
+        Food.Orange.ore("Orange");
+        Food.Kumquat.ore("Kumquat");
+        Food.Lime.ore("Lime");
+        Food.WildCherry.ore("Cherry").ore("WildCherry");
+        Food.SourCherry.ore("Cherry").ore("SourCherry");
+        Food.BlackCherry.ore("Cherry").ore("BlackCherry");
+        Food.Blackthorn.ore("Blackthorn");
+        Food.CherryPlum.ore("Plum").ore("CherryPlum");
+        Food.Almond.ore("Almond");
+        Food.Apricot.ore("Apricot");
+        Food.Grapefruit.ore("Grapefruit");
+        Food.Peach.ore("Peach");
+        Food.Satsuma.ore("Satsuma").ore("Orange");
+        Food.BuddhaHand.ore("BuddhaHand").ore("Citron");
+        Food.Citron.ore("Citron");
+        Food.FingerLime.ore("Lime").ore("FingerLime");
+        Food.KeyLime.ore("KeyLime").ore("Lime");
+        Food.Manderin.ore("Orange").ore("Manderin");
+        Food.Nectarine.ore("Peach").ore("Nectarine");
+        Food.Pomelo.ore("Pomelo");
+        Food.Tangerine.ore("Tangerine").ore("Orange");
+        Food.Pear.ore("Pear");
+        Food.SandPear.ore("SandPear");
+        Food.Hazelnut.ore("Hazelnut");
+        Food.Butternut.ore("Butternut").ore("Walnut");
+        Food.Beechnut.ore("Beechnut");
+        Food.Pecan.ore("Pecan");
+        Food.Banana.ore("Banana");
+        Food.RedBanana.ore("RedBanana").ore("Banana");
+        Food.Plantain.ore("Plantain");
+        Food.BrazilNut.ore("BrazilNut");
+        Food.Fig.ore("Fig");
+        Food.Acorn.ore("Acorn");
+        Food.Elderberry.ore("Elderberry");
+        Food.Olive.ore("Olive");
+        Food.GingkoNut.ore("GingkoNut");
+        Food.Coffee.ore("Coffee");
+        Food.OsangeOrange.ore("OsangeOrange");
+        Food.Clove.ore("Clove");
     }
 
-    private Food ore(String string) {
+    private Food ore(final String string) {
         OreDictionary.registerOre("crop" + string, this.get(1));
         this.ores.add("crop" + string);
         return this;
     }
 
-    public Collection getOres() {
+    public Collection<String> getOres() {
         return this.ores;
     }
 }

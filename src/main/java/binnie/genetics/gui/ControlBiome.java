@@ -10,71 +10,62 @@ import forestry.core.render.TextureManager;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class ControlBiome extends Control implements ITooltip {
-    BiomeGenBase biome = null;
-    String iconCategory = "plains";
+    BiomeGenBase biome;
+    String iconCategory;
 
-    public ControlBiome(IWidget parent, float x, float y, float w, float h, BiomeGenBase biome) {
+    public ControlBiome(final IWidget parent, final float x, final float y, final float w, final float h, final BiomeGenBase biome) {
         super(parent, x, y, w, h);
+        this.biome = null;
+        this.iconCategory = "plains";
         this.biome = biome;
     }
 
+    @Override
     public void onRenderBackground() {
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.MOUNTAIN)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.MOUNTAIN)) {
             this.iconCategory = "hills";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.HILLS)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.HILLS)) {
             this.iconCategory = "hills";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.SANDY)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.SANDY)) {
             this.iconCategory = "desert";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.SNOWY)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.SNOWY)) {
             this.iconCategory = "snow";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.FOREST)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.FOREST)) {
             this.iconCategory = "forest";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.SWAMP)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.SWAMP)) {
             this.iconCategory = "swamp";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.JUNGLE)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.JUNGLE)) {
             this.iconCategory = "jungle";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.COLD) && BiomeDictionary.isBiomeOfType(this.biome, Type.FOREST)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.COLD) && BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.FOREST)) {
             this.iconCategory = "taiga";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.MUSHROOM)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.MUSHROOM)) {
             this.iconCategory = "mushroom";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.OCEAN)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.OCEAN)) {
             this.iconCategory = "ocean";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.NETHER)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.NETHER)) {
             this.iconCategory = "nether";
         }
-
-        if (BiomeDictionary.isBiomeOfType(this.biome, Type.END)) {
+        if (BiomeDictionary.isBiomeOfType(this.biome, BiomeDictionary.Type.END)) {
             this.iconCategory = "end";
         }
-
-        IIcon icon = TextureManager.getInstance().getDefault("habitats/" + this.iconCategory);
+        final IIcon icon = TextureManager.getInstance().getDefault("habitats/" + this.iconCategory);
         CraftGUI.Render.iconItem(IPoint.ZERO, icon);
     }
 
-    public void getTooltip(Tooltip tooltip) {
+    @Override
+    public void getTooltip(final Tooltip tooltip) {
         tooltip.add(this.biome.biomeName.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2"));
     }
 }

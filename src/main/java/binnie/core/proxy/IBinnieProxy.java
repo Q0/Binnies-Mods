@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -20,33 +21,33 @@ public interface IBinnieProxy extends IProxyCore {
 
     File getDirectory();
 
-    void bindTexture(BinnieResource var1);
+    void bindTexture(final BinnieResource p0);
 
-    void bindTexture(ResourceLocation var1);
+    void bindTexture(final ResourceLocation p0);
 
     int getUniqueRenderID();
 
-    void registerCustomItemRenderer(Item var1, IItemRenderer var2);
+    void registerCustomItemRenderer(final Item p0, final IItemRenderer p1);
 
-    void openGui(AbstractMod var1, int var2, EntityPlayer var3, int var4, int var5, int var6);
+    void openGui(final AbstractMod p0, final int p1, final EntityPlayer p2, final int p3, final int p4, final int p5);
 
-    boolean isSimulating(World var1);
+    boolean isSimulating(final World p0);
 
     World getWorld();
 
     Minecraft getMinecraftInstance();
 
-    boolean needsTagCompoundSynched(Item var1);
+    boolean needsTagCompoundSynched(final Item p0);
 
-    Object createObject(String var1);
+    Object createObject(final String p0);
 
-    void registerTileEntity(Class var1, String var2, Object var3);
+    void registerTileEntity(final Class<? extends TileEntity> p0, final String p1, final Object p2);
 
-    void createPipe(Item var1);
+    void createPipe(final Item p0);
 
     boolean isDebug();
 
-    void registerBlockRenderer(Object var1);
+    void registerBlockRenderer(final Object p0);
 
-    IIcon getIcon(IIconRegister var1, String var2, String var3);
+    IIcon getIcon(final IIconRegister p0, final String p1, final String p2);
 }

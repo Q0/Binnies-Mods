@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -22,109 +23,133 @@ import net.minecraftforge.client.IItemRenderer;
 import java.io.File;
 
 public class BinnieProxy extends BinnieModProxy implements IBinnieProxy {
-    private short uniqueTextureUID = 1200;
+    private short uniqueTextureUID;
 
     public BinnieProxy() {
         super(BinnieCore.instance);
+        this.uniqueTextureUID = 1200;
     }
 
+    @Override
     public void preInit() {
     }
 
+    @Override
     public void init() {
     }
 
+    @Override
     public void postInit() {
     }
 
-    public void bindTexture(BinnieResource texture) {
+    @Override
+    public void bindTexture(final BinnieResource texture) {
     }
 
-    public boolean checkTexture(BinnieResource location) {
+    public boolean checkTexture(final BinnieResource location) {
         return false;
     }
 
+    @Override
     public int getUniqueRenderID() {
         return RenderingRegistry.getNextAvailableRenderId();
     }
 
-    public void openGui(AbstractMod mod, int id, EntityPlayer player, int x, int y, int z) {
-        player.openGui(mod, id, player.worldObj, x, y, z);
+    @Override
+    public void openGui(final AbstractMod mod, final int id, final EntityPlayer player, final int x, final int y, final int z) {
+        player.openGui((Object) mod, id, player.worldObj, x, y, z);
     }
 
-    public boolean isSimulating(World world) {
+    @Override
+    public boolean isSimulating(final World world) {
         return true;
     }
 
-    public void registerCustomItemRenderer(Item item, IItemRenderer itemRenderer) {
+    @Override
+    public void registerCustomItemRenderer(final Item item, final IItemRenderer itemRenderer) {
     }
 
-    public boolean needsTagCompoundSynched(Item item) {
+    @Override
+    public boolean needsTagCompoundSynched(final Item item) {
         return item.getShareTag();
     }
 
+    @Override
     public World getWorld() {
         return null;
     }
 
-    public void throwException(String message, Throwable e) {
+    public void throwException(final String message, final Throwable e) {
         FMLCommonHandler.instance().raiseException(e, message, true);
     }
 
+    @Override
     public Minecraft getMinecraftInstance() {
         return null;
     }
 
+    @Override
     public boolean isClient() {
         return false;
     }
 
+    @Override
     public boolean isServer() {
         return true;
     }
 
+    @Override
     public File getDirectory() {
         return new File("./");
     }
 
-    public void registerTileEntity(Class tile, String id, Object renderer) {
-        GameRegistry.registerTileEntity(tile, id);
+    @Override
+    public void registerTileEntity(final Class<? extends TileEntity> tile, final String id, final Object renderer) {
+        GameRegistry.registerTileEntity((Class) tile, id);
     }
 
-    public void createPipe(Item pipe) {
+    @Override
+    public void createPipe(final Item pipe) {
     }
 
+    @Override
     public boolean isDebug() {
         return System.getenv().containsKey("BINNIE_DEBUG");
     }
 
-    public void registerBlockRenderer(Object renderer) {
+    @Override
+    public void registerBlockRenderer(final Object renderer) {
     }
 
-    public Object createObject(String renderer) {
+    @Override
+    public Object createObject(final String renderer) {
         return null;
     }
 
-    public void sendNetworkEntityPacket(INetworkedEntity entity) {
-        MessageUpdate packet = new MessageUpdate(BinnieCorePacketID.NetworkEntityUpdate.ordinal(), entity);
+    public void sendNetworkEntityPacket(final INetworkedEntity entity) {
+        final MessageUpdate packet = new MessageUpdate(BinnieCorePacketID.NetworkEntityUpdate.ordinal(), entity);
         this.sendToAll(packet);
     }
 
-    public IIcon getIcon(IIconRegister register, String mod, String name) {
+    @Override
+    public IIcon getIcon(final IIconRegister register, final String mod, final String name) {
         return null;
     }
 
-    public void handleTextureRefresh(IIconRegister register, int type) {
+    public void handleTextureRefresh(final IIconRegister register, final int type) {
     }
 
-    public void handlePostTextureRefresh(IIconRegister register, int type) {
+    public void handlePostTextureRefresh(final IIconRegister register, final int type) {
     }
 
     public short getUniqueTextureUID() {
-        return this.uniqueTextureUID++;
+        final short uniqueTextureUID = this.uniqueTextureUID;
+        this.uniqueTextureUID = (short) (uniqueTextureUID + 1);
+        return uniqueTextureUID;
     }
 
-    public void bindTexture(ResourceLocation location) {
+    @Override
+    public void bindTexture(final ResourceLocation location) {
     }
 
     public boolean isShiftDown() {

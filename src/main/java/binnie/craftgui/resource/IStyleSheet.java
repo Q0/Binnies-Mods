@@ -1,5 +1,5 @@
 package binnie.craftgui.resource;
 
 public interface IStyleSheet {
-    Texture getTexture(Object var1);
+    Texture getTexture(final Object p0);
 }

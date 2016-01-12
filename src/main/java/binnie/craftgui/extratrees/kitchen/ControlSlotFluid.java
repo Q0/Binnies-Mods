@@ -12,44 +12,47 @@ public class ControlSlotFluid extends Control implements ITooltip {
     ControlFluidDisplay itemDisplay;
     FluidStack fluidStack;
 
-    public ControlSlotFluid(IWidget parent, int x, int y, FluidStack fluid) {
+    public ControlSlotFluid(final IWidget parent, final int x, final int y, final FluidStack fluid) {
         this(parent, x, y, 18, fluid);
     }
 
-    public ControlSlotFluid(IWidget parent, int x, int y, int size, FluidStack fluid) {
-        super(parent, (float) x, (float) y, (float) size, (float) size);
+    public ControlSlotFluid(final IWidget parent, final int x, final int y, final int size, final FluidStack fluid) {
+        super(parent, x, y, size, size);
         this.addAttribute(Attribute.MouseOver);
-        this.itemDisplay = new ControlFluidDisplay(this, 1.0F, 1.0F, (float) (size - 2));
+        this.itemDisplay = new ControlFluidDisplay(this, 1.0f, 1.0f, size - 2);
         this.fluidStack = fluid;
         this.addSelfEventHandler(new EventWidget.ChangeSize.Handler() {
-            public void onEvent(EventWidget.ChangeSize event) {
+            @Override
+            public void onEvent(final EventWidget.ChangeSize event) {
                 if (ControlSlotFluid.this.itemDisplay != null) {
-                    ControlSlotFluid.this.itemDisplay.setSize(ControlSlotFluid.this.getSize().sub(new IPoint(2.0F, 2.0F)));
+                    ControlSlotFluid.this.itemDisplay.setSize(ControlSlotFluid.this.getSize().sub(new IPoint(2.0f, 2.0f)));
                 }
-
             }
         });
     }
 
+    @Override
     public void onRenderBackground() {
-        int size = (int) this.getSize().x();
-        CraftGUI.Render.texture((Object) CraftGUITexture.Slot, (IArea) this.getArea());
+        final int size = (int) this.getSize().x();
+        CraftGUI.Render.texture(CraftGUITexture.Slot, this.getArea());
         if (this.getSuperParent().getMousedOverWidget() == this) {
-            CraftGUI.Render.gradientRect(new IArea(new IPoint(1.0F, 1.0F), this.getArea().size().sub(new IPoint(2.0F, 2.0F))), -2130706433, -2130706433);
+            CraftGUI.Render.gradientRect(new IArea(new IPoint(1.0f, 1.0f), this.getArea().size().sub(new IPoint(2.0f, 2.0f))), -2130706433, -2130706433);
         }
-
     }
 
+    @Override
     public void onUpdateClient() {
         super.onUpdateClient();
         this.itemDisplay.setItemStack(this.getFluidStack());
     }
 
-    public void getTooltip(Tooltip tooltip) {
-        FluidStack item = this.getFluidStack();
-        if (item != null) {
-            tooltip.add(item.getFluid().getLocalizedName());
+    @Override
+    public void getTooltip(final Tooltip tooltip) {
+        final FluidStack item = this.getFluidStack();
+        if (item == null) {
+            return;
         }
+        tooltip.add(item.getFluid().getLocalizedName());
     }
 
     public FluidStack getFluidStack() {

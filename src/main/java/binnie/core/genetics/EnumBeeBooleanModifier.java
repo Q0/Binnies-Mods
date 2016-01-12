@@ -5,7 +5,4 @@ public enum EnumBeeBooleanModifier {
     SelfLighted,
     SunlightStimulated,
     Hellish;
-
-    private EnumBeeBooleanModifier() {
-    }
 }

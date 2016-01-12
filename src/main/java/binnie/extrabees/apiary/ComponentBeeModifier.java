@@ -10,28 +10,28 @@ import forestry.api.genetics.IIndividual;
 import net.minecraft.item.ItemStack;
 
 public class ComponentBeeModifier extends MachineComponent implements IBeeModifier, IBeeListener {
-    public ComponentBeeModifier(Machine machine) {
+    public ComponentBeeModifier(final Machine machine) {
         super(machine);
     }
 
-    public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-        return 1.0F;
+    public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-        return 1.0F;
+    public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
     public boolean isSealed() {
@@ -50,27 +50,27 @@ public class ComponentBeeModifier extends MachineComponent implements IBeeModifi
         return false;
     }
 
-    public void onQueenChange(ItemStack queen) {
+    public void onQueenChange(final ItemStack queen) {
     }
 
-    public void wearOutEquipment(int amount) {
+    public void wearOutEquipment(final int amount) {
     }
 
-    public void onQueenDeath(IBee queen) {
+    public void onQueenDeath(final IBee queen) {
     }
 
-    public void onPostQueenDeath(IBee queen) {
+    public void onPostQueenDeath(final IBee queen) {
     }
 
-    public boolean onPollenRetrieved(IBee queen, IIndividual pollen, boolean isHandled) {
+    public boolean onPollenRetrieved(final IBee queen, final IIndividual pollen, final boolean isHandled) {
         return false;
     }
 
-    public boolean onEggLaid(IBee queen) {
+    public boolean onEggLaid(final IBee queen) {
         return false;
     }
 
-    public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 }

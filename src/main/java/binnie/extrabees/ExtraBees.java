@@ -16,8 +16,6 @@ import binnie.extrabees.products.ModuleProducts;
 import binnie.extrabees.proxy.ExtraBeesProxy;
 import binnie.extrabees.worldgen.ModuleGeneration;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -26,19 +24,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
-@Mod(
-        modid = "ExtraBees",
-        name = "Extra Bees",
-        useMetadata = true,
-        dependencies = "after:BinnieCore"
-)
+@Mod(modid = "ExtraBees", name = "Extra Bees", useMetadata = true, dependencies = "after:BinnieCore")
 public class ExtraBees extends AbstractMod {
-    @Instance("ExtraBees")
+    @Mod.Instance("ExtraBees")
     public static ExtraBees instance;
-    @SidedProxy(
-            clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient",
-            serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer"
-    )
+    @SidedProxy(clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient", serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer")
     public static ExtraBeesProxy proxy;
     public static Block hive;
     public static Material materialBeehive;
@@ -54,8 +44,8 @@ public class ExtraBees extends AbstractMod {
     public static Item dictionary;
     public static Item itemMisc;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
+    @Mod.EventHandler
+    public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleCore());
         this.addModule(new ModuleProducts());
         this.addModule(new ModuleGenetics());
@@ -65,45 +55,51 @@ public class ExtraBees extends AbstractMod {
         this.preInit();
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
+    @Mod.EventHandler
+    public void init(final FMLInitializationEvent evt) {
         this.init();
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
+    @Mod.EventHandler
+    public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
     }
 
     public ExtraBees() {
-        super();
-        instance = this;
+        ExtraBees.instance = this;
     }
 
+    @Override
     public IBinnieGUID[] getGUIDs() {
         return ExtraBeeGUID.values();
     }
 
-    public Class[] getConfigs() {
-        return new Class[]{ConfigurationMain.class, ConfigurationMachines.class};
+    @Override
+    public Class<?>[] getConfigs() {
+        return (Class<?>[]) new Class[]{ConfigurationMain.class, ConfigurationMachines.class};
     }
 
+    @Override
     public IProxyCore getProxy() {
-        return proxy;
+        return ExtraBees.proxy;
     }
 
+    @Override
     public String getChannel() {
         return "EB";
     }
 
+    @Override
     public String getModID() {
         return "extrabees";
     }
 
-    protected Class getPacketHandler() {
-        return ExtraBees.PacketHandler.class;
+    @Override
+    protected Class<? extends BinniePacketHandler> getPacketHandler() {
+        return PacketHandler.class;
     }
 
+    @Override
     public boolean isActive() {
         return BinnieCore.isExtraBeesActive();
     }

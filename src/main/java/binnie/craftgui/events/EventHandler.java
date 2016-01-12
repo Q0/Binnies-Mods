@@ -2,49 +2,52 @@ package binnie.craftgui.events;
 
 import binnie.craftgui.core.IWidget;
 
-public abstract class EventHandler {
-    Class eventClass;
-    EventHandler.Origin origin = EventHandler.Origin.Any;
-    IWidget relative = null;
+public abstract class EventHandler<E extends Event> {
+    Class<E> eventClass;
+    Origin origin;
+    IWidget relative;
 
-    public EventHandler(Class eventClass) {
-        super();
+    public EventHandler(final Class<E> eventClass) {
+        this.origin = Origin.Any;
+        this.relative = null;
         this.eventClass = eventClass;
     }
 
-    public EventHandler setOrigin(EventHandler.Origin origin, IWidget relative) {
+    public EventHandler setOrigin(final Origin origin, final IWidget relative) {
         this.origin = origin;
         this.relative = relative;
         return this;
     }
 
-    public abstract void onEvent(Event var1);
+    public abstract void onEvent(final E p0);
 
-    public final boolean handles(Event e) {
+    public final boolean handles(final Event e) {
         return this.eventClass.isInstance(e) && this.origin.isOrigin(e.getOrigin(), this.relative);
     }
 
-    public static enum Origin {
+    public enum Origin {
         Any,
         Self,
         Parent,
         DirectChild;
 
-        private Origin() {
-        }
-
-        public boolean isOrigin(IWidget origin, IWidget test) {
+        public boolean isOrigin(final IWidget origin, final IWidget test) {
             switch (this) {
-                case Any:
+                case Any: {
                     return true;
-                case DirectChild:
+                }
+                case DirectChild: {
                     return test.getWidgets().contains(origin);
-                case Parent:
+                }
+                case Parent: {
                     return test.getParent() == origin;
-                case Self:
+                }
+                case Self: {
                     return test == origin;
-                default:
+                }
+                default: {
                     return false;
+                }
             }
         }
     }

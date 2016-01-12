@@ -10,9 +10,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.arboriculture.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAlleleSpecies;
+import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.IFruitFamily;
 import forestry.arboriculture.FruitProviderNone;
-import forestry.arboriculture.FruitProviderRipening;
 import forestry.arboriculture.genetics.AlleleTreeSpecies;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     Blackthorn(10, 7180062, 14561129, FruitSprite.Small),
@@ -93,193 +93,201 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     GoldenRaspberry(8, 12496955, 15970363, FruitSprite.Tiny);
 
     IFruitFamily family;
-    boolean isRipening = false;
+    boolean isRipening;
     int diffR;
     int diffG;
-    int diffB = 0;
-    FruitPod pod = null;
-    int ripeningPeriod = 0;
+    int diffB;
+    FruitPod pod;
+    int ripeningPeriod;
     int colourUnripe;
     int colour;
     FruitSprite index;
-    HashMap products = new HashMap();
+    HashMap<ItemStack, Float> products;
 
     public static void init() {
-        IFruitFamily familyPrune = AlleleManager.alleleRegistry.getFruitFamily("forestry.prunes");
-        IFruitFamily familyPome = AlleleManager.alleleRegistry.getFruitFamily("forestry.pomes");
-        IFruitFamily familyJungle = AlleleManager.alleleRegistry.getFruitFamily("forestry.jungle");
-        IFruitFamily familyNuts = AlleleManager.alleleRegistry.getFruitFamily("forestry.nuts");
-        IFruitFamily familyBerry = ExtraTreeFruitFamily.Berry;
-        IFruitFamily familyCitrus = ExtraTreeFruitFamily.Citrus;
+        final IFruitFamily familyPrune = AlleleManager.alleleRegistry.getFruitFamily("forestry.prunes");
+        final IFruitFamily familyPome = AlleleManager.alleleRegistry.getFruitFamily("forestry.pomes");
+        final IFruitFamily familyJungle = AlleleManager.alleleRegistry.getFruitFamily("forestry.jungle");
+        final IFruitFamily familyNuts = AlleleManager.alleleRegistry.getFruitFamily("forestry.nuts");
+        final IFruitFamily familyBerry = (IFruitFamily) ExtraTreeFruitFamily.Berry;
+        final IFruitFamily familyCitrus = (IFruitFamily) ExtraTreeFruitFamily.Citrus;
         AlleleManager.alleleRegistry.registerFruitFamily(familyBerry);
         AlleleManager.alleleRegistry.registerFruitFamily(familyCitrus);
-        Apple.addProduct(new ItemStack(Items.apple), 1.0F);
-        Apple.setFamily(familyPome);
-        Crabapple.addProduct(Food.Crabapple.get(1), 1.0F);
-        Crabapple.setFamily(familyPome);
-        Orange.addProduct(Food.Orange.get(1), 1.0F);
-        Orange.setFamily(familyCitrus);
-        Manderin.addProduct(Food.Manderin.get(1), 1.0F);
-        Manderin.setFamily(familyCitrus);
-        Tangerine.addProduct(Food.Tangerine.get(1), 1.0F);
-        Tangerine.setFamily(familyCitrus);
-        Satsuma.addProduct(Food.Satsuma.get(1), 1.0F);
-        Satsuma.setFamily(familyCitrus);
-        KeyLime.addProduct(Food.KeyLime.get(1), 1.0F);
-        KeyLime.setFamily(familyCitrus);
-        Lime.addProduct(Food.Lime.get(1), 1.0F);
-        Lime.setFamily(familyCitrus);
-        FingerLime.addProduct(Food.FingerLime.get(1), 1.0F);
-        FingerLime.setFamily(familyCitrus);
-        Pomelo.addProduct(Food.Pomelo.get(1), 1.0F);
-        Pomelo.setFamily(familyCitrus);
-        Grapefruit.addProduct(Food.Grapefruit.get(1), 1.0F);
-        Grapefruit.setFamily(familyCitrus);
-        Kumquat.addProduct(Food.Kumquat.get(1), 1.0F);
-        Kumquat.setFamily(familyCitrus);
-        Citron.addProduct(Food.Citron.get(1), 1.0F);
-        Citron.setFamily(familyCitrus);
-        BuddhaHand.addProduct(Food.BuddhaHand.get(1), 1.0F);
-        BuddhaHand.setFamily(familyCitrus);
-        Blackthorn.addProduct(Food.Blackthorn.get(1), 1.0F);
-        Blackthorn.setFamily(familyPrune);
-        CherryPlum.addProduct(Food.CherryPlum.get(1), 1.0F);
-        CherryPlum.setFamily(familyPrune);
-        Peach.addProduct(Food.Peach.get(1), 1.0F);
-        Peach.setFamily(familyPrune);
-        Nectarine.addProduct(Food.Nectarine.get(1), 1.0F);
-        Nectarine.setFamily(familyPrune);
-        Apricot.addProduct(Food.Apricot.get(1), 1.0F);
-        Apricot.setFamily(familyPrune);
-        Almond.addProduct(Food.Almond.get(1), 1.0F);
-        Almond.setFamily(familyPrune);
-        WildCherry.addProduct(Food.WildCherry.get(1), 1.0F);
-        WildCherry.setFamily(familyPrune);
-        SourCherry.addProduct(Food.SourCherry.get(1), 1.0F);
-        SourCherry.setFamily(familyPrune);
-        BlackCherry.addProduct(Food.BlackCherry.get(1), 1.0F);
-        BlackCherry.setFamily(familyPrune);
-        Hazelnut.addProduct(Food.Hazelnut.get(1), 1.0F);
-        Hazelnut.setFamily(familyNuts);
-        Butternut.addProduct(Food.Butternut.get(1), 1.0F);
-        Butternut.setFamily(familyNuts);
-        Beechnut.addProduct(Food.Beechnut.get(1), 1.0F);
-        Beechnut.setFamily(familyNuts);
-        Pecan.addProduct(Food.Pecan.get(1), 1.0F);
-        Pecan.setFamily(familyNuts);
-        Banana.addProduct(Food.Banana.get(2), 1.0F);
-        Banana.setFamily(familyJungle);
-        RedBanana.addProduct(Food.RedBanana.get(2), 1.0F);
-        RedBanana.setFamily(familyJungle);
-        Plantain.addProduct(Food.Plantain.get(2), 1.0F);
-        Plantain.setFamily(familyJungle);
-        BrazilNut.addProduct(Food.BrazilNut.get(4), 1.0F);
-        BrazilNut.setFamily(familyNuts);
-        Fig.addProduct(Food.Fig.get(1), 1.0F);
-        Fig.setFamily(familyPrune);
-        Acorn.addProduct(Food.Acorn.get(1), 1.0F);
-        Acorn.setFamily(familyNuts);
-        Elderberry.addProduct(Food.Elderberry.get(1), 1.0F);
-        Elderberry.setFamily(familyPrune);
-        Olive.addProduct(Food.Olive.get(1), 1.0F);
-        Olive.setFamily(familyPrune);
-        GingkoNut.addProduct(Food.GingkoNut.get(1), 1.0F);
-        GingkoNut.setFamily(familyNuts);
-        Coffee.addProduct(Food.Coffee.get(1), 1.0F);
-        Coffee.setFamily(familyJungle);
-        Pear.addProduct(Food.Pear.get(1), 1.0F);
-        Pear.setFamily(familyPome);
-        OsangeOsange.addProduct(Food.OsangeOrange.get(1), 1.0F);
-        OsangeOsange.setFamily(familyPome);
-        Clove.addProduct(Food.Clove.get(1), 1.0F);
-        Clove.setFamily(familyNuts);
-        Blackcurrant.addProduct(Food.Blackcurrant.get(2), 1.0F);
-        Blackcurrant.setFamily(familyBerry);
-        Redcurrant.addProduct(Food.Redcurrant.get(2), 1.0F);
-        Redcurrant.setFamily(familyBerry);
-        Blackberry.addProduct(Food.Blackberry.get(2), 1.0F);
-        Blackberry.setFamily(familyBerry);
-        Raspberry.addProduct(Food.Raspberry.get(2), 1.0F);
-        Raspberry.setFamily(familyBerry);
-        Blueberry.addProduct(Food.Blueberry.get(2), 1.0F);
-        Blueberry.setFamily(familyBerry);
-        Cranberry.addProduct(Food.Cranberry.get(2), 1.0F);
-        Cranberry.setFamily(familyBerry);
-        Juniper.addProduct(Food.Juniper.get(2), 1.0F);
-        Juniper.setFamily(familyBerry);
-        Gooseberry.addProduct(Food.Gooseberry.get(2), 1.0F);
-        Gooseberry.setFamily(familyBerry);
-        GoldenRaspberry.addProduct(Food.GoldenRaspberry.get(2), 1.0F);
-        GoldenRaspberry.setFamily(familyBerry);
-        Coconut.addProduct(Food.Coconut.get(1), 1.0F);
-        Coconut.setFamily(familyJungle);
-        Cashew.addProduct(Food.Cashew.get(1), 1.0F);
-        Cashew.setFamily(familyJungle);
-        Avacado.addProduct(Food.Avacado.get(1), 1.0F);
-        Avacado.setFamily(familyJungle);
-        Nutmeg.addProduct(Food.Nutmeg.get(1), 1.0F);
-        Nutmeg.setFamily(familyJungle);
-        Allspice.addProduct(Food.Allspice.get(1), 1.0F);
-        Allspice.setFamily(familyJungle);
-        Chilli.addProduct(Food.Chilli.get(1), 1.0F);
-        Chilli.setFamily(familyJungle);
-        StarAnise.addProduct(Food.StarAnise.get(1), 1.0F);
-        StarAnise.setFamily(familyJungle);
-        Mango.addProduct(Food.Mango.get(1), 1.0F);
-        Mango.setFamily(familyPome);
-        Starfruit.addProduct(Food.Starfruit.get(1), 1.0F);
-        Starfruit.setFamily(familyJungle);
-        Candlenut.addProduct(Food.Candlenut.get(1), 1.0F);
-        Candlenut.setFamily(familyJungle);
+        ExtraTreeFruitGene.Apple.addProduct(new ItemStack(Items.apple), 1.0f);
+        ExtraTreeFruitGene.Apple.setFamily(familyPome);
+        ExtraTreeFruitGene.Crabapple.addProduct(Food.Crabapple.get(1), 1.0f);
+        ExtraTreeFruitGene.Crabapple.setFamily(familyPome);
+        ExtraTreeFruitGene.Orange.addProduct(Food.Orange.get(1), 1.0f);
+        ExtraTreeFruitGene.Orange.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Manderin.addProduct(Food.Manderin.get(1), 1.0f);
+        ExtraTreeFruitGene.Manderin.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Tangerine.addProduct(Food.Tangerine.get(1), 1.0f);
+        ExtraTreeFruitGene.Tangerine.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Satsuma.addProduct(Food.Satsuma.get(1), 1.0f);
+        ExtraTreeFruitGene.Satsuma.setFamily(familyCitrus);
+        ExtraTreeFruitGene.KeyLime.addProduct(Food.KeyLime.get(1), 1.0f);
+        ExtraTreeFruitGene.KeyLime.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Lime.addProduct(Food.Lime.get(1), 1.0f);
+        ExtraTreeFruitGene.Lime.setFamily(familyCitrus);
+        ExtraTreeFruitGene.FingerLime.addProduct(Food.FingerLime.get(1), 1.0f);
+        ExtraTreeFruitGene.FingerLime.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Pomelo.addProduct(Food.Pomelo.get(1), 1.0f);
+        ExtraTreeFruitGene.Pomelo.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Grapefruit.addProduct(Food.Grapefruit.get(1), 1.0f);
+        ExtraTreeFruitGene.Grapefruit.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Kumquat.addProduct(Food.Kumquat.get(1), 1.0f);
+        ExtraTreeFruitGene.Kumquat.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Citron.addProduct(Food.Citron.get(1), 1.0f);
+        ExtraTreeFruitGene.Citron.setFamily(familyCitrus);
+        ExtraTreeFruitGene.BuddhaHand.addProduct(Food.BuddhaHand.get(1), 1.0f);
+        ExtraTreeFruitGene.BuddhaHand.setFamily(familyCitrus);
+        ExtraTreeFruitGene.Blackthorn.addProduct(Food.Blackthorn.get(1), 1.0f);
+        ExtraTreeFruitGene.Blackthorn.setFamily(familyPrune);
+        ExtraTreeFruitGene.CherryPlum.addProduct(Food.CherryPlum.get(1), 1.0f);
+        ExtraTreeFruitGene.CherryPlum.setFamily(familyPrune);
+        ExtraTreeFruitGene.Peach.addProduct(Food.Peach.get(1), 1.0f);
+        ExtraTreeFruitGene.Peach.setFamily(familyPrune);
+        ExtraTreeFruitGene.Nectarine.addProduct(Food.Nectarine.get(1), 1.0f);
+        ExtraTreeFruitGene.Nectarine.setFamily(familyPrune);
+        ExtraTreeFruitGene.Apricot.addProduct(Food.Apricot.get(1), 1.0f);
+        ExtraTreeFruitGene.Apricot.setFamily(familyPrune);
+        ExtraTreeFruitGene.Almond.addProduct(Food.Almond.get(1), 1.0f);
+        ExtraTreeFruitGene.Almond.setFamily(familyPrune);
+        ExtraTreeFruitGene.WildCherry.addProduct(Food.WildCherry.get(1), 1.0f);
+        ExtraTreeFruitGene.WildCherry.setFamily(familyPrune);
+        ExtraTreeFruitGene.SourCherry.addProduct(Food.SourCherry.get(1), 1.0f);
+        ExtraTreeFruitGene.SourCherry.setFamily(familyPrune);
+        ExtraTreeFruitGene.BlackCherry.addProduct(Food.BlackCherry.get(1), 1.0f);
+        ExtraTreeFruitGene.BlackCherry.setFamily(familyPrune);
+        ExtraTreeFruitGene.Hazelnut.addProduct(Food.Hazelnut.get(1), 1.0f);
+        ExtraTreeFruitGene.Hazelnut.setFamily(familyNuts);
+        ExtraTreeFruitGene.Butternut.addProduct(Food.Butternut.get(1), 1.0f);
+        ExtraTreeFruitGene.Butternut.setFamily(familyNuts);
+        ExtraTreeFruitGene.Beechnut.addProduct(Food.Beechnut.get(1), 1.0f);
+        ExtraTreeFruitGene.Beechnut.setFamily(familyNuts);
+        ExtraTreeFruitGene.Pecan.addProduct(Food.Pecan.get(1), 1.0f);
+        ExtraTreeFruitGene.Pecan.setFamily(familyNuts);
+        ExtraTreeFruitGene.Banana.addProduct(Food.Banana.get(2), 1.0f);
+        ExtraTreeFruitGene.Banana.setFamily(familyJungle);
+        ExtraTreeFruitGene.RedBanana.addProduct(Food.RedBanana.get(2), 1.0f);
+        ExtraTreeFruitGene.RedBanana.setFamily(familyJungle);
+        ExtraTreeFruitGene.Plantain.addProduct(Food.Plantain.get(2), 1.0f);
+        ExtraTreeFruitGene.Plantain.setFamily(familyJungle);
+        ExtraTreeFruitGene.BrazilNut.addProduct(Food.BrazilNut.get(4), 1.0f);
+        ExtraTreeFruitGene.BrazilNut.setFamily(familyNuts);
+        ExtraTreeFruitGene.Fig.addProduct(Food.Fig.get(1), 1.0f);
+        ExtraTreeFruitGene.Fig.setFamily(familyPrune);
+        ExtraTreeFruitGene.Acorn.addProduct(Food.Acorn.get(1), 1.0f);
+        ExtraTreeFruitGene.Acorn.setFamily(familyNuts);
+        ExtraTreeFruitGene.Elderberry.addProduct(Food.Elderberry.get(1), 1.0f);
+        ExtraTreeFruitGene.Elderberry.setFamily(familyPrune);
+        ExtraTreeFruitGene.Olive.addProduct(Food.Olive.get(1), 1.0f);
+        ExtraTreeFruitGene.Olive.setFamily(familyPrune);
+        ExtraTreeFruitGene.GingkoNut.addProduct(Food.GingkoNut.get(1), 1.0f);
+        ExtraTreeFruitGene.GingkoNut.setFamily(familyNuts);
+        ExtraTreeFruitGene.Coffee.addProduct(Food.Coffee.get(1), 1.0f);
+        ExtraTreeFruitGene.Coffee.setFamily(familyJungle);
+        ExtraTreeFruitGene.Pear.addProduct(Food.Pear.get(1), 1.0f);
+        ExtraTreeFruitGene.Pear.setFamily(familyPome);
+        ExtraTreeFruitGene.OsangeOsange.addProduct(Food.OsangeOrange.get(1), 1.0f);
+        ExtraTreeFruitGene.OsangeOsange.setFamily(familyPome);
+        ExtraTreeFruitGene.Clove.addProduct(Food.Clove.get(1), 1.0f);
+        ExtraTreeFruitGene.Clove.setFamily(familyNuts);
+        ExtraTreeFruitGene.Blackcurrant.addProduct(Food.Blackcurrant.get(2), 1.0f);
+        ExtraTreeFruitGene.Blackcurrant.setFamily(familyBerry);
+        ExtraTreeFruitGene.Redcurrant.addProduct(Food.Redcurrant.get(2), 1.0f);
+        ExtraTreeFruitGene.Redcurrant.setFamily(familyBerry);
+        ExtraTreeFruitGene.Blackberry.addProduct(Food.Blackberry.get(2), 1.0f);
+        ExtraTreeFruitGene.Blackberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.Raspberry.addProduct(Food.Raspberry.get(2), 1.0f);
+        ExtraTreeFruitGene.Raspberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.Blueberry.addProduct(Food.Blueberry.get(2), 1.0f);
+        ExtraTreeFruitGene.Blueberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.Cranberry.addProduct(Food.Cranberry.get(2), 1.0f);
+        ExtraTreeFruitGene.Cranberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.Juniper.addProduct(Food.Juniper.get(2), 1.0f);
+        ExtraTreeFruitGene.Juniper.setFamily(familyBerry);
+        ExtraTreeFruitGene.Gooseberry.addProduct(Food.Gooseberry.get(2), 1.0f);
+        ExtraTreeFruitGene.Gooseberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.GoldenRaspberry.addProduct(Food.GoldenRaspberry.get(2), 1.0f);
+        ExtraTreeFruitGene.GoldenRaspberry.setFamily(familyBerry);
+        ExtraTreeFruitGene.Coconut.addProduct(Food.Coconut.get(1), 1.0f);
+        ExtraTreeFruitGene.Coconut.setFamily(familyJungle);
+        ExtraTreeFruitGene.Cashew.addProduct(Food.Cashew.get(1), 1.0f);
+        ExtraTreeFruitGene.Cashew.setFamily(familyJungle);
+        ExtraTreeFruitGene.Avacado.addProduct(Food.Avacado.get(1), 1.0f);
+        ExtraTreeFruitGene.Avacado.setFamily(familyJungle);
+        ExtraTreeFruitGene.Nutmeg.addProduct(Food.Nutmeg.get(1), 1.0f);
+        ExtraTreeFruitGene.Nutmeg.setFamily(familyJungle);
+        ExtraTreeFruitGene.Allspice.addProduct(Food.Allspice.get(1), 1.0f);
+        ExtraTreeFruitGene.Allspice.setFamily(familyJungle);
+        ExtraTreeFruitGene.Chilli.addProduct(Food.Chilli.get(1), 1.0f);
+        ExtraTreeFruitGene.Chilli.setFamily(familyJungle);
+        ExtraTreeFruitGene.StarAnise.addProduct(Food.StarAnise.get(1), 1.0f);
+        ExtraTreeFruitGene.StarAnise.setFamily(familyJungle);
+        ExtraTreeFruitGene.Mango.addProduct(Food.Mango.get(1), 1.0f);
+        ExtraTreeFruitGene.Mango.setFamily(familyPome);
+        ExtraTreeFruitGene.Starfruit.addProduct(Food.Starfruit.get(1), 1.0f);
+        ExtraTreeFruitGene.Starfruit.setFamily(familyJungle);
+        ExtraTreeFruitGene.Candlenut.addProduct(Food.Candlenut.get(1), 1.0f);
+        ExtraTreeFruitGene.Candlenut.setFamily(familyJungle);
         if (ConfigurationMain.alterLemon) {
             try {
-                IAlleleFruit lemon = (IAlleleFruit) AlleleManager.alleleRegistry.getAllele("forestry.fruitLemon");
-                FruitProviderNone prov = (FruitProviderRipening) lemon.getProvider();
-                Field f = FruitProviderNone.class.getDeclaredField("family");
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
+                final IAlleleFruit lemon = (IAlleleFruit) AlleleManager.alleleRegistry.getAllele("forestry.fruitLemon");
+                final FruitProviderNone prov = (FruitProviderNone) lemon.getProvider();
+                final Field f = FruitProviderNone.class.getDeclaredField("family");
+                final Field modifiersField = Field.class.getDeclaredField("modifiers");
                 f.setAccessible(true);
                 modifiersField.setAccessible(true);
-                modifiersField.setInt(f, f.getModifiers() & -17);
+                modifiersField.setInt(f, f.getModifiers() & 0xFFFFFFEF);
                 f.set(prov, familyCitrus);
-            } catch (Exception var10) {
-                var10.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-
-        for (IAlleleSpecies tree : Binnie.Genetics.treeBreedingSystem.getAllSpecies()) {
+        for (final IAlleleSpecies tree : Binnie.Genetics.treeBreedingSystem.getAllSpecies()) {
             if (tree instanceof AlleleTreeSpecies && ((IAlleleTreeSpecies) tree).getSuitableFruit().contains(familyPrune)) {
                 ((AlleleTreeSpecies) tree).addFruitFamily(familyCitrus);
             }
         }
-
     }
 
-    private void setFamily(IFruitFamily family) {
+    private void setFamily(final IFruitFamily family) {
         this.family = family;
     }
 
-    private ExtraTreeFruitGene(int time, int unripe, int colour, FruitSprite index) {
+    private ExtraTreeFruitGene(final int time, final int unripe, final int colour, final FruitSprite index) {
+        this.isRipening = false;
+        this.diffB = 0;
+        this.pod = null;
+        this.ripeningPeriod = 0;
+        this.products = new HashMap<ItemStack, Float>();
         this.colour = colour;
         this.index = index;
         this.setRipening(time, unripe);
     }
 
-    private ExtraTreeFruitGene(String name, FruitPod pod) {
+    private ExtraTreeFruitGene(final String name, final FruitPod pod) {
+        this.isRipening = false;
+        this.diffB = 0;
+        this.pod = null;
+        this.ripeningPeriod = 0;
+        this.products = new HashMap<ItemStack, Float>();
         this.pod = pod;
         this.ripeningPeriod = 2;
     }
 
-    public void setRipening(int time, int unripe) {
+    public void setRipening(final int time, final int unripe) {
         this.ripeningPeriod = time;
         this.colourUnripe = unripe;
         this.isRipening = true;
-        this.diffR = (this.colour >> 16 & 255) - (unripe >> 16 & 255);
-        this.diffG = (this.colour >> 8 & 255) - (unripe >> 8 & 255);
-        this.diffB = (this.colour & 255) - (unripe & 255);
+        this.diffR = (this.colour >> 16 & 0xFF) - (unripe >> 16 & 0xFF);
+        this.diffG = (this.colour >> 8 & 0xFF) - (unripe >> 8 & 0xFF);
+        this.diffB = (this.colour & 0xFF) - (unripe & 0xFF);
     }
 
-    public void addProduct(ItemStack product, float chance) {
-        this.products.put(product, Float.valueOf(chance));
+    public void addProduct(final ItemStack product, final float chance) {
+        this.products.put(product, chance);
     }
 
     public String getUID() {
@@ -291,11 +299,11 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     }
 
     public IFruitProvider getProvider() {
-        return this;
+        return (IFruitProvider) this;
     }
 
     public ItemStack[] getProducts() {
-        return (ItemStack[]) this.products.keySet().toArray(new ItemStack[0]);
+        return this.products.keySet().toArray(new ItemStack[0]);
     }
 
     public ItemStack[] getSpecialty() {
@@ -310,19 +318,18 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         return this.family;
     }
 
-    public int getColour(ITreeGenome genome, IBlockAccess world, int x, int y, int z, int ripeningTime) {
+    public int getColour(final ITreeGenome genome, final IBlockAccess world, final int x, final int y, final int z, final int ripeningTime) {
         if (!this.isRipening) {
             return this.colour;
-        } else {
-            float stage = this.getRipeningStage(ripeningTime);
-            int r = (this.colourUnripe >> 16 & 255) + (int) ((float) this.diffR * stage);
-            int g = (this.colourUnripe >> 8 & 255) + (int) ((float) this.diffG * stage);
-            int b = (this.colourUnripe & 255) + (int) ((float) this.diffB * stage);
-            return (r & 255) << 16 | (g & 255) << 8 | b & 255;
         }
+        final float stage = this.getRipeningStage(ripeningTime);
+        final int r = (this.colourUnripe >> 16 & 0xFF) + (int) (this.diffR * stage);
+        final int g = (this.colourUnripe >> 8 & 0xFF) + (int) (this.diffG * stage);
+        final int b = (this.colourUnripe & 0xFF) + (int) (this.diffB * stage);
+        return (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
     }
 
-    public boolean markAsFruitLeaf(ITreeGenome genome, World world, int x, int y, int z) {
+    public boolean markAsFruitLeaf(final ITreeGenome genome, final World world, final int x, final int y, final int z) {
         return this.pod == null;
     }
 
@@ -330,88 +337,87 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         return this.ripeningPeriod;
     }
 
-    public ItemStack[] getFruits(ITreeGenome genome, World world, int x, int y, int z, int ripeningTime) {
-        if (this.pod == null) {
-            ArrayList<ItemStack> product = new ArrayList();
-            float stage = this.getRipeningStage(ripeningTime);
-            if (stage < 0.5F) {
-                return new ItemStack[0];
-            } else {
-                float modeYieldMod = 1.0F;
-
-                for (Entry<ItemStack, Float> entry : this.products.entrySet()) {
-                    if (world.rand.nextFloat() <= genome.getYield() * modeYieldMod * ((Float) entry.getValue()).floatValue() * 5.0F * stage) {
-                        product.add(((ItemStack) entry.getKey()).copy());
+    public ItemStack[] getFruits(final ITreeGenome genome, final World world, final int x, final int y, final int z, final int ripeningTime) {
+        if (this.pod != null) {
+            if (ripeningTime >= 2) {
+                final List<ItemStack> product = new ArrayList<ItemStack>();
+                for (final Map.Entry<ItemStack, Float> entry : this.products.entrySet()) {
+                    final ItemStack single = entry.getKey().copy();
+                    single.stackSize = 1;
+                    for (int i = 0; i < entry.getKey().stackSize; ++i) {
+                        if (world.rand.nextFloat() <= entry.getValue()) {
+                            product.add(single.copy());
+                        }
                     }
                 }
-
-                return (ItemStack[]) product.toArray(new ItemStack[0]);
+                return product.toArray(new ItemStack[0]);
             }
-        } else if (ripeningTime < 2) {
             return new ItemStack[0];
         } else {
-            List<ItemStack> product = new ArrayList();
-
-            for (Entry<ItemStack, Float> entry : this.products.entrySet()) {
-                ItemStack single = ((ItemStack) entry.getKey()).copy();
-                single.stackSize = 1;
-
-                for (int i = 0; i < ((ItemStack) entry.getKey()).stackSize; ++i) {
-                    if (world.rand.nextFloat() <= ((Float) entry.getValue()).floatValue()) {
-                        product.add(single.copy());
-                    }
+            final ArrayList<ItemStack> product2 = new ArrayList<ItemStack>();
+            final float stage = this.getRipeningStage(ripeningTime);
+            if (stage < 0.5f) {
+                return new ItemStack[0];
+            }
+            final float modeYieldMod = 1.0f;
+            for (final Map.Entry<ItemStack, Float> entry2 : this.products.entrySet()) {
+                if (world.rand.nextFloat() <= genome.getYield() * modeYieldMod * entry2.getValue() * 5.0f * stage) {
+                    product2.add(entry2.getKey().copy());
                 }
             }
-
-            return (ItemStack[]) product.toArray(new ItemStack[0]);
+            return product2.toArray(new ItemStack[0]);
         }
     }
 
-    private float getRipeningStage(int ripeningTime) {
-        return ripeningTime >= this.ripeningPeriod ? 1.0F : (float) ripeningTime / (float) this.ripeningPeriod;
+    private float getRipeningStage(final int ripeningTime) {
+        if (ripeningTime >= this.ripeningPeriod) {
+            return 1.0f;
+        }
+        return ripeningTime / this.ripeningPeriod;
     }
 
     public boolean requiresFruitBlocks() {
         return this.pod != null;
     }
 
-    public boolean trySpawnFruitBlock(ITreeGenome genome, World world, int x, int y, int z) {
-        return this.pod == null ? false : (world.rand.nextFloat() > genome.getSappiness() ? false : Binnie.Genetics.getTreeRoot().setFruitBlock(world, (IAlleleFruit) genome.getActiveAllele(EnumTreeChromosome.FRUITS), genome.getSappiness(), this.pod.getTextures(), x, y, z));
+    public boolean trySpawnFruitBlock(final ITreeGenome genome, final World world, final int x, final int y, final int z) {
+        return this.pod != null && world.rand.nextFloat() <= genome.getSappiness() && Binnie.Genetics.getTreeRoot().setFruitBlock(world, (IAlleleFruit) genome.getActiveAllele((IChromosomeType) EnumTreeChromosome.FRUITS), genome.getSappiness(), this.pod.getTextures(), x, y, z);
     }
 
-    public boolean setFruitBlock(World world, IAlleleFruit allele, float sappiness, int x, int y, int z) {
+    public boolean setFruitBlock(final World world, final IAlleleFruit allele, final float sappiness, final int x, final int y, final int z) {
         return true;
     }
 
-    public static int getDirectionalMetadata(World world, int x, int y, int z) {
+    public static int getDirectionalMetadata(final World world, final int x, final int y, final int z) {
         for (int i = 0; i < 4; ++i) {
             if (isValidPot(world, x, y, z, i)) {
                 return i;
             }
         }
-
         return -1;
     }
 
-    public static boolean isValidPot(World world, int x, int y, int z, int notchDirection) {
-        x = x + Direction.offsetX[notchDirection];
-        z = z + Direction.offsetZ[notchDirection];
-        Block block = world.getBlock(x, y, z);
-        return block != Blocks.log && block != Blocks.log2 ? (block != null ? block.isWood(world, x, y, z) : false) : BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
+    public static boolean isValidPot(final World world, int x, final int y, int z, final int notchDirection) {
+        x += Direction.offsetX[notchDirection];
+        z += Direction.offsetZ[notchDirection];
+        final Block block = world.getBlock(x, y, z);
+        if (block == Blocks.log || block == Blocks.log2) {
+            return BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
+        }
+        return block != null && block.isWood((IBlockAccess) world, x, y, z);
     }
 
-    public short getIconIndex(ITreeGenome genome, IBlockAccess world, int x, int y, int z, int ripeningTime, boolean fancy) {
+    public short getIconIndex(final ITreeGenome genome, final IBlockAccess world, final int x, final int y, final int z, final int ripeningTime, final boolean fancy) {
         return this.index.getIndex();
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         if (this.ordinal() == 0) {
-            for (FruitSprite sprite : FruitSprite.values()) {
+            for (final FruitSprite sprite : FruitSprite.values()) {
                 sprite.registerIcons(register);
             }
         }
-
     }
 
     public String getName() {
@@ -419,17 +425,15 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     }
 
     public String getNameOfFruit() {
-        if (this == Apple) {
+        if (this == ExtraTreeFruitGene.Apple) {
             return "Apple";
-        } else {
-            for (ItemStack stack : this.products.keySet()) {
-                if (stack.getItem() == ExtraTrees.itemFood) {
-                    return Food.values()[stack.getItemDamage()].toString();
-                }
-            }
-
-            return "NoFruit";
         }
+        for (final ItemStack stack : this.products.keySet()) {
+            if (stack.getItem() == ExtraTrees.itemFood) {
+                return Food.values()[stack.getItemDamage()].toString();
+            }
+        }
+        return "NoFruit";
     }
 
     public String getUnlocalizedName() {

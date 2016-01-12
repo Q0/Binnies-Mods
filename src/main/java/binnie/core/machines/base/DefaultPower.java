@@ -3,67 +3,57 @@ package binnie.core.machines.base;
 import binnie.core.machines.power.IPoweredMachine;
 import binnie.core.machines.power.PowerInfo;
 import binnie.core.machines.power.PowerInterface;
-import cpw.mods.fml.common.Optional.Method;
+import cpw.mods.fml.common.Optional;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 class DefaultPower implements IPoweredMachine {
-    DefaultPower() {
-        super();
-    }
-
+    @Override
     public PowerInfo getPowerInfo() {
-        return new PowerInfo(this, 0.0F);
+        return new PowerInfo(this, 0.0f);
     }
 
-    @Method(
-            modid = "IC2"
-    )
+    @Optional.Method(modid = "IC2")
     public double getDemandedEnergy() {
-        return 0.0D;
+        return 0.0;
     }
 
-    @Method(
-            modid = "IC2"
-    )
+    @Optional.Method(modid = "IC2")
     public int getSinkTier() {
         return 0;
     }
 
-    @Method(
-            modid = "IC2"
-    )
-    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        return 0.0D;
+    @Optional.Method(modid = "IC2")
+    public double injectEnergy(final ForgeDirection directionFrom, final double amount, final double voltage) {
+        return 0.0;
     }
 
-    @Method(
-            modid = "IC2"
-    )
-    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
+    @Optional.Method(modid = "IC2")
+    public boolean acceptsEnergyFrom(final TileEntity emitter, final ForgeDirection direction) {
         return false;
     }
 
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    public int receiveEnergy(final ForgeDirection from, final int maxReceive, final boolean simulate) {
         return 0;
     }
 
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    public int extractEnergy(final ForgeDirection from, final int maxExtract, final boolean simulate) {
         return 0;
     }
 
-    public int getEnergyStored(ForgeDirection from) {
+    public int getEnergyStored(final ForgeDirection from) {
         return 0;
     }
 
-    public int getMaxEnergyStored(ForgeDirection from) {
+    public int getMaxEnergyStored(final ForgeDirection from) {
         return 0;
     }
 
-    public boolean canConnectEnergy(ForgeDirection from) {
+    public boolean canConnectEnergy(final ForgeDirection from) {
         return false;
     }
 
+    @Override
     public PowerInterface getInterface() {
         return null;
     }

@@ -9,62 +9,64 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 public class MultipassItemRenderer implements IItemRenderer {
-    public MultipassItemRenderer() {
-        super();
-    }
-
-    private void render(RenderBlocks renderer, ItemStack item, float f, float g, float h) {
+    private void render(final RenderBlocks renderer, final ItemStack item, final float f, final float g, final float h) {
         GL11.glTranslatef(f, g, h);
-        Block block = ((ItemBlock) item.getItem()).field_150939_a;
+        final Block block = ((ItemBlock) item.getItem()).field_150939_a;
         GL11.glEnable(3008);
         if (block.getRenderBlockPass() != 0) {
-            GL11.glAlphaFunc(516, 0.1F);
+            GL11.glAlphaFunc(516, 0.1f);
             GL11.glEnable(3042);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         } else {
-            GL11.glAlphaFunc(516, 0.5F);
+            GL11.glAlphaFunc(516, 0.5f);
             GL11.glDisable(3042);
         }
-
         MultipassBlockRenderer.instance.renderInventoryBlock(block, TileEntityMetadata.getItemDamage(item), 0, renderer);
         if (block.getRenderBlockPass() == 0) {
-            GL11.glAlphaFunc(516, 0.1F);
+            GL11.glAlphaFunc(516, 0.1f);
         }
-
         GL11.glTranslatef(-f, -g, -h);
     }
 
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
         switch (type) {
-            case ENTITY:
+            case ENTITY: {
                 return true;
-            case EQUIPPED:
+            }
+            case EQUIPPED: {
                 return true;
-            case INVENTORY:
+            }
+            case INVENTORY: {
                 return true;
-            case EQUIPPED_FIRST_PERSON:
+            }
+            case EQUIPPED_FIRST_PERSON: {
                 return true;
-            default:
+            }
+            default: {
                 return false;
+            }
         }
     }
 
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item, final IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
 
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
         switch (type) {
-            case ENTITY:
-                this.render((RenderBlocks) data[0], item, 0.0F, 0.0F, 0.0F);
+            case ENTITY: {
+                this.render((RenderBlocks) data[0], item, 0.0f, 0.0f, 0.0f);
                 break;
+            }
             case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON:
-                this.render((RenderBlocks) data[0], item, 0.5F, 0.5F, 0.5F);
+            case EQUIPPED_FIRST_PERSON: {
+                this.render((RenderBlocks) data[0], item, 0.5f, 0.5f, 0.5f);
                 break;
-            case INVENTORY:
-                this.render((RenderBlocks) data[0], item, 0.0F, 0.0F, 0.0F);
+            }
+            case INVENTORY: {
+                this.render((RenderBlocks) data[0], item, 0.0f, 0.0f, 0.0f);
+                break;
+            }
         }
-
     }
 }

@@ -15,8 +15,7 @@ public class FlowerMutation implements IFlowerMutation {
     IAllele[] template;
     int chance;
 
-    FlowerMutation(IAllele allele0, IAllele allele1, IAllele[] template, int chance) {
-        super();
+    FlowerMutation(final IAllele allele0, final IAllele allele1, final IAllele[] template, final int chance) {
         this.allele0 = allele0;
         this.allele1 = allele1;
         this.template = template;
@@ -36,14 +35,14 @@ public class FlowerMutation implements IFlowerMutation {
     }
 
     public float getBaseChance() {
-        return (float) this.chance;
+        return this.chance;
     }
 
-    public boolean isPartner(IAllele allele) {
+    public boolean isPartner(final IAllele allele) {
         return allele.getUID().equals(this.allele0.getUID()) || allele.getUID().equals(this.allele1.getUID());
     }
 
-    public IAllele getPartner(IAllele allele) {
+    public IAllele getPartner(final IAllele allele) {
         return allele.getUID().equals(this.allele0.getUID()) ? this.allele1 : this.allele0;
     }
 
@@ -51,15 +50,25 @@ public class FlowerMutation implements IFlowerMutation {
         return false;
     }
 
-    public float getChance(IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1) {
-        return allele0 != null && allele1 != null ? (this.allele0.getUID().equals(allele0.getUID()) && this.allele1.getUID().equals(allele1.getUID()) ? this.getBaseChance() : (this.allele1.getUID().equals(allele0.getUID()) && this.allele0.getUID().equals(allele1.getUID()) ? this.getBaseChance() : 0.0F)) : 0.0F;
+    @Override
+    public float getChance(final IAllele allele0, final IAllele allele1, final IGenome genome0, final IGenome genome1) {
+        if (allele0 == null || allele1 == null) {
+            return 0.0f;
+        }
+        if (this.allele0.getUID().equals(allele0.getUID()) && this.allele1.getUID().equals(allele1.getUID())) {
+            return this.getBaseChance();
+        }
+        if (this.allele1.getUID().equals(allele0.getUID()) && this.allele0.getUID().equals(allele1.getUID())) {
+            return this.getBaseChance();
+        }
+        return 0.0f;
     }
 
     public ISpeciesRoot getRoot() {
-        return BotanyCore.getFlowerRoot();
+        return (ISpeciesRoot) BotanyCore.getFlowerRoot();
     }
 
-    public Collection getSpecialConditions() {
-        return new ArrayList();
+    public Collection<String> getSpecialConditions() {
+        return new ArrayList<String>();
     }
 }

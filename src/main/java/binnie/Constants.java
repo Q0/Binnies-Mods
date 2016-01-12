@@ -7,8 +7,4 @@ public final class Constants {
     public static final String LiquidCreosote = "Creosote Oil";
     public static final String LiquidEthanol = "bioethanol";
     public static final String LiquidHoney = "for.honey";
-
-    public Constants() {
-        super();
-    }
 }

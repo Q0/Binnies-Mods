@@ -10,14 +10,15 @@ public class ControlProgress extends ControlProgressBase {
     private Texture progressBar;
     private Position direction;
 
-    public ControlProgress(IWidget parent, int x, int y, Texture progressBlank, Texture progressBar, Position dir) {
-        super(parent, (float) x, (float) y, progressBlank == null ? 0.0F : progressBlank.w(), progressBlank == null ? 0.0F : progressBlank.h());
+    public ControlProgress(final IWidget parent, final int x, final int y, final Texture progressBlank, final Texture progressBar, final Position dir) {
+        super(parent, x, y, (progressBlank == null) ? 0.0f : progressBlank.w(), (progressBlank == null) ? 0.0f : progressBlank.h());
         this.progressBlank = progressBlank;
         this.progressBar = progressBar;
-        this.progress = 0.0F;
+        this.progress = 0.0f;
         this.direction = dir;
     }
 
+    @Override
     public void onRenderBackground() {
         CraftGUI.Render.texture(this.progressBlank, this.getArea());
         CraftGUI.Render.texturePercentage(this.progressBar, this.getArea(), this.direction, this.progress);

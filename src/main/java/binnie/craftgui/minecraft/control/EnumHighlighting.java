@@ -9,21 +9,23 @@ public enum EnumHighlighting {
     Help,
     ShiftClick;
 
-    private EnumHighlighting() {
-    }
-
     int getColour() {
         switch (this) {
-            case Error:
+            case Error: {
                 return MinecraftTooltip.getOutline(MinecraftTooltip.Type.Error);
-            case Help:
+            }
+            case Help: {
                 return MinecraftTooltip.getOutline(Tooltip.Type.Help);
-            case ShiftClick:
+            }
+            case ShiftClick: {
                 return 16776960;
-            case Warning:
+            }
+            case Warning: {
                 return MinecraftTooltip.getOutline(MinecraftTooltip.Type.Warning);
-            default:
+            }
+            default: {
                 return 0;
+            }
         }
     }
 }

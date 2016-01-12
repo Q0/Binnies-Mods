@@ -16,19 +16,23 @@ public class WindowAlvearyHatchery extends Window {
     Machine machine;
     ControlPlayerInventory playerInventory;
 
-    public WindowAlvearyHatchery(EntityPlayer player, IInventory inventory, Side side) {
-        super(176.0F, 144.0F, player, inventory, side);
+    public WindowAlvearyHatchery(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(176.0f, 144.0f, player, inventory, side);
         this.machine = ((TileEntityMachine) inventory).getMachine();
     }
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
-        return player != null && inventory != null ? new WindowAlvearyHatchery(player, inventory, side) : null;
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        if (player == null || inventory == null) {
+            return null;
+        }
+        return new WindowAlvearyHatchery(player, inventory, side);
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Hatchery");
         this.playerInventory = new ControlPlayerInventory(this);
-        ControlSlotArray slot = new ControlSlotArray(this, 43, 30, 5, 1);
+        final ControlSlotArray slot = new ControlSlotArray(this, 43, 30, 5, 1);
         slot.create(AlvearyHatchery.slotLarvae);
     }
 

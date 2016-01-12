@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class BlockExtraBeeHive extends Block {
@@ -23,81 +22,68 @@ public class BlockExtraBeeHive extends Block {
 
     public BlockExtraBeeHive() {
         super(ExtraBees.materialBeehive);
-        this.setLightLevel(0.2F);
-        this.setHardness(1.0F);
+        this.setLightLevel(0.2f);
+        this.setHardness(1.0f);
         this.setTickRandomly(true);
         this.setBlockName("hive");
         this.setCreativeTab(Tabs.tabApiculture);
     }
 
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
+    public String getUnlocalizedName(final ItemStack par1ItemStack) {
         return "extrabees.block.hive." + par1ItemStack.getItemDamage();
     }
 
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
+    public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (int i = 0; i < 4; ++i) {
-            itemList.add(new ItemStack(this, 1, i));
+            itemList.add(new ItemStack((Block) this, 1, i));
         }
-
     }
 
-    public IIcon getIcon(int side, int metadata) {
-        return metadata >= EnumHiveType.values().length ? null : (side < 2 ? this.icons[metadata][1] : this.icons[metadata][0]);
+    public IIcon getIcon(final int side, final int metadata) {
+        if (metadata >= EnumHiveType.values().length) {
+            return null;
+        }
+        if (side < 2) {
+            return this.icons[metadata][1];
+        }
+        return this.icons[metadata][0];
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
+    public void registerBlockIcons(final IIconRegister register) {
         this.icons = new IIcon[EnumHiveType.values().length][2];
-
-        for (EnumHiveType hive : EnumHiveType.values()) {
+        for (final EnumHiveType hive : EnumHiveType.values()) {
             this.icons[hive.ordinal()][0] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".0");
             this.icons[hive.ordinal()][1] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".1");
         }
-
     }
 
-    public ArrayList getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> ret = new ArrayList();
-        List<IHiveDrop> dropList = EnumHiveType.values()[metadata].drops;
+    public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int metadata, final int fortune) {
+        final ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        final List<IHiveDrop> dropList = EnumHiveType.values()[metadata].drops;
         Collections.shuffle(dropList);
         int tries = 0;
-        boolean hasPrincess = false;
-
-        label43:
-        while (tries <= 10 && !hasPrincess) {
+        for (boolean hasPrincess = false; tries <= 10 && !hasPrincess; hasPrincess = true) {
             ++tries;
-            Iterator i$ = dropList.iterator();
-
-            IHiveDrop drop;
-            while (true) {
-                if (!i$.hasNext()) {
-                    continue label43;
-                }
-
-                drop = (IHiveDrop) i$.next();
+            for (final IHiveDrop drop : dropList) {
                 if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
+                    ret.add(drop.getPrincess(world, x, y, z, fortune));
                     break;
                 }
             }
-
-            ret.add(drop.getPrincess(world, x, y, z, fortune));
-            hasPrincess = true;
         }
-
-        for (IHiveDrop drop : dropList) {
+        for (final IHiveDrop drop : dropList) {
             if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
                 ret.addAll(drop.getDrones(world, x, y, z, fortune));
                 break;
             }
         }
-
-        for (IHiveDrop drop : dropList) {
+        for (final IHiveDrop drop : dropList) {
             if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
                 ret.addAll(drop.getAdditional(world, x, y, z, fortune));
                 break;
             }
         }
-
         return ret;
     }
 }

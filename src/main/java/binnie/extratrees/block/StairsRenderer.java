@@ -9,69 +9,60 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public class StairsRenderer implements ISimpleBlockRenderingHandler {
-    public StairsRenderer() {
-        super();
-    }
-
-    public void renderInventoryBlock(Block par1Block, int metadata, int modelID, RenderBlocks renderer) {
-        Tessellator var4 = Tessellator.instance;
-
-        for (int var14 = 0; var14 < 2; ++var14) {
-            if (var14 == 0) {
-                renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
+    public void renderInventoryBlock(final Block par1Block, final int metadata, final int modelID, final RenderBlocks renderer) {
+        final Tessellator var4 = Tessellator.instance;
+        for (int var5 = 0; var5 < 2; ++var5) {
+            if (var5 == 0) {
+                renderer.setRenderBounds(0.0, 0.0, 0.0, 1.0, 1.0, 0.5);
             }
-
-            if (var14 == 1) {
-                renderer.setRenderBounds(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
+            if (var5 == 1) {
+                renderer.setRenderBounds(0.0, 0.0, 0.5, 1.0, 0.5, 1.0);
             }
-
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
             var4.startDrawingQuads();
-            var4.setNormal(0.0F, -1.0F, 0.0F);
-            renderer.renderFaceYNeg(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(0, metadata));
+            var4.setNormal(0.0f, -1.0f, 0.0f);
+            renderer.renderFaceYNeg(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(0, metadata));
             var4.draw();
             var4.startDrawingQuads();
-            var4.setNormal(0.0F, 1.0F, 0.0F);
-            renderer.renderFaceYPos(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(1, metadata));
+            var4.setNormal(0.0f, 1.0f, 0.0f);
+            renderer.renderFaceYPos(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(1, metadata));
             var4.draw();
             var4.startDrawingQuads();
-            var4.setNormal(0.0F, 0.0F, -1.0F);
-            renderer.renderFaceXPos(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(2, metadata));
+            var4.setNormal(0.0f, 0.0f, -1.0f);
+            renderer.renderFaceXPos(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(2, metadata));
             var4.draw();
             var4.startDrawingQuads();
-            var4.setNormal(0.0F, 0.0F, 1.0F);
-            renderer.renderFaceXNeg(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(3, metadata));
+            var4.setNormal(0.0f, 0.0f, 1.0f);
+            renderer.renderFaceXNeg(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(3, metadata));
             var4.draw();
             var4.startDrawingQuads();
-            var4.setNormal(-1.0F, 0.0F, 0.0F);
-            renderer.renderFaceZNeg(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(4, metadata));
+            var4.setNormal(-1.0f, 0.0f, 0.0f);
+            renderer.renderFaceZNeg(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(4, metadata));
             var4.draw();
             var4.startDrawingQuads();
-            var4.setNormal(1.0F, 0.0F, 0.0F);
-            renderer.renderFaceZPos(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getIcon(5, metadata));
+            var4.setNormal(1.0f, 0.0f, 0.0f);
+            renderer.renderFaceZPos(par1Block, 0.0, 0.0, 0.0, par1Block.getIcon(5, metadata));
             var4.draw();
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         }
-
     }
 
-    public boolean renderWorldBlock(IBlockAccess world, int par2, int par3, int par4, Block block, int modelId, RenderBlocks renderer) {
-        BlockETStairs blockStairs = (BlockETStairs) block;
+    public boolean renderWorldBlock(final IBlockAccess world, final int par2, final int par3, final int par4, final Block block, final int modelId, final RenderBlocks renderer) {
+        final BlockETStairs blockStairs = (BlockETStairs) block;
         blockStairs.func_150147_e(renderer.blockAccess, par2, par3, par4);
-        renderer.setRenderBoundsFromBlock(blockStairs);
-        renderer.renderStandardBlock(blockStairs, par2, par3, par4);
-        boolean var5 = blockStairs.func_150145_f(renderer.blockAccess, par2, par3, par4);
-        renderer.setRenderBoundsFromBlock(blockStairs);
-        renderer.renderStandardBlock(blockStairs, par2, par3, par4);
+        renderer.setRenderBoundsFromBlock((Block) blockStairs);
+        renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
+        final boolean var5 = blockStairs.func_150145_f(renderer.blockAccess, par2, par3, par4);
+        renderer.setRenderBoundsFromBlock((Block) blockStairs);
+        renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
         if (var5 && blockStairs.func_150144_g(renderer.blockAccess, par2, par3, par4)) {
-            renderer.setRenderBoundsFromBlock(blockStairs);
-            renderer.renderStandardBlock(blockStairs, par2, par3, par4);
+            renderer.setRenderBoundsFromBlock((Block) blockStairs);
+            renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
         }
-
         return true;
     }
 
-    public boolean shouldRender3DInInventory(int i) {
+    public boolean shouldRender3DInInventory(final int i) {
         return true;
     }
 

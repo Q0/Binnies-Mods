@@ -9,7 +9,7 @@ public interface ICocktailIngredient {
 
     int getTransparency();
 
-    String getTooltip(int var1);
+    String getTooltip(final int p0);
 
     float getABV();
 }

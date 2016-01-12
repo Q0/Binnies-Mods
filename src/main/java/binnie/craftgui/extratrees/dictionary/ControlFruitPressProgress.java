@@ -18,47 +18,55 @@ import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
 public class ControlFruitPressProgress extends ControlProgressBase {
-    static Texture PressTexture = new StandardTexture(6, 0, 24, 52, ExtraTreeTexture.Gui);
-    static Texture PressSlot = new StandardTexture(9, 52, 34, 17, ExtraTreeTexture.Gui);
+    static Texture PressTexture;
+    static Texture PressSlot;
 
+    @Override
     public void onRenderBackground() {
-        CraftGUI.Render.texture(PressSlot, new IPoint(3.0F, 52.0F));
-        ItemStack input = Window.get(this).getContainer().getSlotFromInventory(Window.get(this).getInventory(), Press.slotCurrent).getStack();
-        if (input != null && Press.getOutput(input) != null) {
-            Fluid fluid = Press.getOutput(input).getFluid();
-            int hex = fluid.getColor(Press.getOutput(input));
-            int r = (hex & 16711680) >> 16;
-            int g = (hex & '\uff00') >> 8;
-            int b = hex & 255;
-            IIcon icon = fluid.getIcon();
-            GL11.glColor4f((float) r / 255.0F, (float) g / 255.0F, (float) b / 255.0F, 1.0F);
-            GL11.glEnable(3042);
-            GL11.glBlendFunc(770, 771);
-            CraftGUI.Render.iconBlock(new IPoint(4.0F, 52.0F), fluid.getIcon());
-            GL11.glDisable(3042);
-            icon = input.getIconIndex();
-            CraftGUI.Render.iconItem(new IPoint(4.0F, 52.0F), icon);
+        CraftGUI.Render.texture(ControlFruitPressProgress.PressSlot, new IPoint(3.0f, 52.0f));
+        final ItemStack input = Window.get(this).getContainer().getSlotFromInventory(Window.get(this).getInventory(), Press.slotCurrent).getStack();
+        if (input == null || Press.getOutput(input) == null) {
+            return;
         }
+        final Fluid fluid = Press.getOutput(input).getFluid();
+        final int hex = fluid.getColor(Press.getOutput(input));
+        final int r = (hex & 0xFF0000) >> 16;
+        final int g = (hex & 0xFF00) >> 8;
+        final int b = hex & 0xFF;
+        IIcon icon = fluid.getIcon();
+        GL11.glColor4f(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
+        GL11.glEnable(3042);
+        GL11.glBlendFunc(770, 771);
+        CraftGUI.Render.iconBlock(new IPoint(4.0f, 52.0f), fluid.getIcon());
+        GL11.glDisable(3042);
+        icon = input.getIconIndex();
+        CraftGUI.Render.iconItem(new IPoint(4.0f, 52.0f), icon);
     }
 
+    @Override
     public void onRenderForeground() {
-        CraftGUI.Render.texture(PressTexture, new IPoint(0.0F, 16.0F * this.progress));
+        CraftGUI.Render.texture(ControlFruitPressProgress.PressTexture, new IPoint(0.0f, 16.0f * this.progress));
     }
 
-    protected ControlFruitPressProgress(IWidget parent, float x, float y) {
-        super(parent, x, y, 37.0F, 69.0F);
+    protected ControlFruitPressProgress(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 37.0f, 69.0f);
         this.addAttribute(Attribute.MouseOver);
         this.addSelfEventHandler(new EventMouse.Down.Handler() {
-            public void onEvent(EventMouse.Down event) {
+            @Override
+            public void onEvent(final EventMouse.Down event) {
                 if (event.getButton() == 0) {
-                    NBTTagCompound action = new NBTTagCompound();
+                    final NBTTagCompound action = new NBTTagCompound();
                     Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("fruitpress-click", action);
                 } else if (event.getButton() == 1) {
-                    NBTTagCompound action = new NBTTagCompound();
+                    final NBTTagCompound action = new NBTTagCompound();
                     Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("clear-fruit", action);
                 }
-
             }
         });
+    }
+
+    static {
+        ControlFruitPressProgress.PressTexture = new StandardTexture(6, 0, 24, 52, ExtraTreeTexture.Gui);
+        ControlFruitPressProgress.PressSlot = new StandardTexture(9, 52, 34, 17, ExtraTreeTexture.Gui);
     }
 }

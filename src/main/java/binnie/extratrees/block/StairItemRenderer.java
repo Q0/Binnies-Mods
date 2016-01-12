@@ -10,82 +10,81 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 public class StairItemRenderer implements IItemRenderer {
-    public StairItemRenderer() {
-        super();
-    }
-
-    private void renderStairBlock(RenderBlocks renderBlocks, ItemStack item, float f, float g, float h) {
-        Tessellator tessellator = Tessellator.instance;
-        Block block = ((ItemBlock) item.getItem()).field_150939_a;
-        IIcon textureIndex = PlankType.ExtraTreePlanks.values()[item.getItemDamage()].getIcon();
-
+    private void renderStairBlock(final RenderBlocks renderBlocks, final ItemStack item, final float f, final float g, final float h) {
+        final Tessellator tessellator = Tessellator.instance;
+        final Block block = ((ItemBlock) item.getItem()).field_150939_a;
+        final IIcon textureIndex = PlankType.ExtraTreePlanks.values()[item.getItemDamage()].getIcon();
         for (int i = 0; i < 2; ++i) {
             if (i == 0) {
-                renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
+                renderBlocks.setRenderBounds(0.0, 0.0, 0.0, 1.0, 1.0, 0.5);
             }
-
             if (i == 1) {
-                renderBlocks.setRenderBounds(0.0D, 0.0D, 0.5D, 1.0D, 0.5D, 1.0D);
+                renderBlocks.setRenderBounds(0.0, 0.0, 0.5, 1.0, 0.5, 1.0);
             }
-
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
             tessellator.startDrawingQuads();
-            tessellator.setNormal(0.0F, -1.0F, 0.0F);
-            renderBlocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(0.0f, -1.0f, 0.0f);
+            renderBlocks.renderFaceYNeg(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
             tessellator.startDrawingQuads();
-            tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            renderBlocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(0.0f, 1.0f, 0.0f);
+            renderBlocks.renderFaceYPos(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
             tessellator.startDrawingQuads();
-            tessellator.setNormal(0.0F, 0.0F, -1.0F);
-            renderBlocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(0.0f, 0.0f, -1.0f);
+            renderBlocks.renderFaceXNeg(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
             tessellator.startDrawingQuads();
-            tessellator.setNormal(0.0F, 0.0F, 1.0F);
-            renderBlocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(0.0f, 0.0f, 1.0f);
+            renderBlocks.renderFaceXPos(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
             tessellator.startDrawingQuads();
-            tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-            renderBlocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(-1.0f, 0.0f, 0.0f);
+            renderBlocks.renderFaceZNeg(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
             tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            renderBlocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textureIndex);
+            tessellator.setNormal(1.0f, 0.0f, 0.0f);
+            renderBlocks.renderFaceZPos(block, 0.0, 0.0, 0.0, textureIndex);
             tessellator.draw();
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         }
-
     }
 
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
         switch (type) {
-            case ENTITY:
+            case ENTITY: {
                 return true;
-            case EQUIPPED:
+            }
+            case EQUIPPED: {
                 return true;
-            case INVENTORY:
+            }
+            case INVENTORY: {
                 return true;
-            default:
+            }
+            default: {
                 return false;
+            }
         }
     }
 
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item, final IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
 
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
         switch (type) {
-            case ENTITY:
-                this.renderStairBlock((RenderBlocks) data[0], item, -0.5F, -0.5F, -0.5F);
+            case ENTITY: {
+                this.renderStairBlock((RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
                 break;
-            case EQUIPPED:
-                this.renderStairBlock((RenderBlocks) data[0], item, 0.0F, 0.0F, 0.0F);
+            }
+            case EQUIPPED: {
+                this.renderStairBlock((RenderBlocks) data[0], item, 0.0f, 0.0f, 0.0f);
                 break;
-            case INVENTORY:
-                this.renderStairBlock((RenderBlocks) data[0], item, -0.5F, -0.5F, -0.5F);
+            }
+            case INVENTORY: {
+                this.renderStairBlock((RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
+                break;
+            }
         }
-
     }
 }

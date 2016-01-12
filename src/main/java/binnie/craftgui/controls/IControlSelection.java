@@ -1,9 +1,9 @@
 package binnie.craftgui.controls;
 
-public interface IControlSelection {
-    Object getSelectedValue();
+public interface IControlSelection<T> {
+    T getSelectedValue();
 
-    void setSelectedValue(Object var1);
+    void setSelectedValue(final T p0);
 
-    boolean isSelected(IControlSelectionOption var1);
+    boolean isSelected(final IControlSelectionOption<T> p0);
 }

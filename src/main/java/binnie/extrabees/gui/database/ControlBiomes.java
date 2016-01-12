@@ -15,43 +15,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControlBiomes extends Control implements ITooltip {
-    List tolerated = new ArrayList();
+    List<Integer> tolerated;
 
-    public ControlBiomes(IWidget parent, int x, int y, int width, int height) {
-        super(parent, (float) x, (float) y, (float) (width * 16), (float) (height * 16));
+    public ControlBiomes(final IWidget parent, final int x, final int y, final int width, final int height) {
+        super(parent, x, y, width * 16, height * 16);
+        this.tolerated = new ArrayList<Integer>();
         this.addAttribute(Attribute.MouseOver);
     }
 
-    public void getTooltip(Tooltip list) {
-        if (!this.tolerated.isEmpty()) {
-            int x = (int) (this.getRelativeMousePosition().x() / 16.0F);
-            int y = (int) (this.getRelativeMousePosition().y() / 16.0F);
-            int i = x + y * 8;
-            if (i < this.tolerated.size()) {
-                list.add(BiomeGenBase.getBiome(((Integer) this.tolerated.get(i)).intValue()).biomeName);
-            }
-
+    @Override
+    public void getTooltip(final Tooltip list) {
+        if (this.tolerated.isEmpty()) {
+            return;
+        }
+        final int x = (int) (this.getRelativeMousePosition().x() / 16.0f);
+        final int y = (int) (this.getRelativeMousePosition().y() / 16.0f);
+        final int i = x + y * 8;
+        if (i < this.tolerated.size()) {
+            list.add(BiomeGenBase.getBiome((int) this.tolerated.get(i)).biomeName);
         }
     }
 
+    @Override
     public void onRenderForeground() {
         for (int i = 0; i < this.tolerated.size(); ++i) {
-            int x = i % 8 * 16;
-            int y = i / 8 * 16;
+            final int x = i % 8 * 16;
+            final int y = i / 8 * 16;
             if (BiomeGenBase.getBiome(i) != null) {
                 CraftGUI.Render.colour(BiomeGenBase.getBiome(i).color);
             }
-
-            CraftGUI.Render.texture((Object) CraftGUITexture.Button, (IArea) (new IArea((float) x, (float) y, 16.0F, 16.0F)));
+            CraftGUI.Render.texture(CraftGUITexture.Button, new IArea(x, y, 16.0f, 16.0f));
         }
-
     }
 
-    public void setSpecies(IAlleleBeeSpecies species) {
+    public void setSpecies(final IAlleleBeeSpecies species) {
         this.tolerated.clear();
-        if (species != null) {
-            IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(species.getUID()));
-            IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
+        if (species == null) {
+            return;
         }
+        final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(species.getUID()));
+        final IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
     }
 }

@@ -40,9 +40,9 @@ public enum ExtraBeesBranch implements IClassification {
     QUANTUM("Quantapis"),
     BOTANIA("Botaniapis");
 
-    private String uid = "";
-    private String scientific = "";
-    private Set speciesSet = new LinkedHashSet();
+    private String uid;
+    private String scientific;
+    private Set<IAlleleBeeSpecies> speciesSet;
     IClassification parent;
 
     public String getUID() {
@@ -61,237 +61,233 @@ public enum ExtraBeesBranch implements IClassification {
         return ExtraBees.proxy.localiseOrBlank("branch." + this.toString().toLowerCase() + ".desc");
     }
 
-    private ExtraBeesBranch(String scientific) {
+    private ExtraBeesBranch(final String scientific) {
+        this.uid = "";
+        this.scientific = "";
+        this.speciesSet = new LinkedHashSet<IAlleleBeeSpecies>();
         this.scientific = scientific;
         this.uid = this.toString().toLowerCase();
     }
 
     public void register() {
         if (!this.speciesSet.isEmpty()) {
-            AlleleManager.alleleRegistry.registerClassification(this);
-            IClassification parent = AlleleManager.alleleRegistry.getClassification("family.apidae");
+            AlleleManager.alleleRegistry.registerClassification((IClassification) this);
+            final IClassification parent = AlleleManager.alleleRegistry.getClassification("family.apidae");
             if (parent != null) {
-                parent.addMemberGroup(this);
+                parent.addMemberGroup((IClassification) this);
                 this.setParent(parent);
             }
         }
-
     }
 
     public static void doInit() {
-        IClassification frozenBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.frozen");
+        final IClassification frozenBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.frozen");
         if (frozenBranch != null) {
-            frozenBranch.addMemberSpecies(ExtraBeesSpecies.ARTIC);
+            frozenBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ARTIC);
             ExtraBeesSpecies.ARTIC.setBranch(frozenBranch);
-            frozenBranch.addMemberSpecies(ExtraBeesSpecies.FREEZING);
+            frozenBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.FREEZING);
             ExtraBeesSpecies.FREEZING.setBranch(frozenBranch);
         }
-
-        IClassification agrarianBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.agrarian");
+        final IClassification agrarianBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.agrarian");
         if (agrarianBranch != null) {
-            agrarianBranch.addMemberSpecies(ExtraBeesSpecies.FARM);
+            agrarianBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.FARM);
             ExtraBeesSpecies.FARM.setBranch(agrarianBranch);
             ExtraBeesSpecies.GROWING.setBranch(agrarianBranch);
             ExtraBeesSpecies.THRIVING.setBranch(agrarianBranch);
             ExtraBeesSpecies.BLOOMING.setBranch(agrarianBranch);
         }
-
-        IClassification boggyBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.boggy");
+        final IClassification boggyBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.boggy");
         if (boggyBranch != null) {
-            boggyBranch.addMemberSpecies(ExtraBeesSpecies.SWAMP);
-            boggyBranch.addMemberSpecies(ExtraBeesSpecies.BOGGY);
-            boggyBranch.addMemberSpecies(ExtraBeesSpecies.FUNGAL);
+            boggyBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SWAMP);
+            boggyBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BOGGY);
+            boggyBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.FUNGAL);
             ExtraBeesSpecies.SWAMP.setBranch(boggyBranch);
             ExtraBeesSpecies.BOGGY.setBranch(boggyBranch);
             ExtraBeesSpecies.FUNGAL.setBranch(boggyBranch);
         }
-
-        IClassification festiveBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.festive");
+        final IClassification festiveBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.festive");
         if (festiveBranch != null) {
-            festiveBranch.addMemberSpecies(ExtraBeesSpecies.CELEBRATORY);
+            festiveBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CELEBRATORY);
             ExtraBeesSpecies.CELEBRATORY.setBranch(festiveBranch);
         }
-
-        IClassification austereBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.austere");
+        final IClassification austereBranch = AlleleManager.alleleRegistry.getClassification("genus.bees.austere");
         if (austereBranch != null) {
-            austereBranch.addMemberSpecies(ExtraBeesSpecies.HAZARDOUS);
+            austereBranch.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.HAZARDOUS);
             ExtraBeesSpecies.HAZARDOUS.setBranch(austereBranch);
         }
-
-        FARMING.addMemberSpecies(ExtraBeesSpecies.ALCOHOL);
-        FARMING.addMemberSpecies(ExtraBeesSpecies.MILK);
-        FARMING.addMemberSpecies(ExtraBeesSpecies.COFFEE);
-        FARMING.addMemberSpecies(ExtraBeesSpecies.CITRUS);
-        FARMING.addMemberSpecies(ExtraBeesSpecies.MINT);
-        FARMING.register();
-        BARREN.addMemberSpecies(ExtraBeesSpecies.ARID);
-        BARREN.addMemberSpecies(ExtraBeesSpecies.BARREN);
-        BARREN.addMemberSpecies(ExtraBeesSpecies.DESOLATE);
-        BARREN.addMemberSpecies(ExtraBeesSpecies.DECOMPOSING);
-        BARREN.addMemberSpecies(ExtraBeesSpecies.GNAWING);
-        BARREN.register();
-        HOSTILE.addMemberSpecies(ExtraBeesSpecies.ROTTEN);
-        HOSTILE.addMemberSpecies(ExtraBeesSpecies.BONE);
-        HOSTILE.addMemberSpecies(ExtraBeesSpecies.CREEPER);
-        HOSTILE.register();
-        ROCKY.addMemberSpecies(ExtraBeesSpecies.ROCK);
-        ROCKY.addMemberSpecies(ExtraBeesSpecies.STONE);
-        ROCKY.addMemberSpecies(ExtraBeesSpecies.GRANITE);
-        ROCKY.addMemberSpecies(ExtraBeesSpecies.MINERAL);
-        ROCKY.register();
-        METALLIC.addMemberSpecies(ExtraBeesSpecies.IRON);
-        METALLIC.addMemberSpecies(ExtraBeesSpecies.COPPER);
-        METALLIC.addMemberSpecies(ExtraBeesSpecies.TIN);
-        METALLIC.addMemberSpecies(ExtraBeesSpecies.LEAD);
-        METALLIC.register();
-        METALLIC2.addMemberSpecies(ExtraBeesSpecies.NICKEL);
-        METALLIC2.addMemberSpecies(ExtraBeesSpecies.ZINC);
-        METALLIC2.addMemberSpecies(ExtraBeesSpecies.TUNGSTATE);
-        METALLIC2.addMemberSpecies(ExtraBeesSpecies.TITANIUM);
-        METALLIC2.register();
-        ALLOY.addMemberSpecies(ExtraBeesSpecies.BRONZE);
-        ALLOY.addMemberSpecies(ExtraBeesSpecies.BRASS);
-        ALLOY.addMemberSpecies(ExtraBeesSpecies.STEEL);
-        ALLOY.addMemberSpecies(ExtraBeesSpecies.INVAR);
-        ALLOY.register();
-        PRECIOUS.addMemberSpecies(ExtraBeesSpecies.SILVER);
-        PRECIOUS.addMemberSpecies(ExtraBeesSpecies.GOLD);
-        PRECIOUS.addMemberSpecies(ExtraBeesSpecies.ELECTRUM);
-        PRECIOUS.addMemberSpecies(ExtraBeesSpecies.PLATINUM);
-        PRECIOUS.register();
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.LAPIS);
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.SODALITE);
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.PYRITE);
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.BAUXITE);
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.CINNABAR);
-        MINERAL.addMemberSpecies(ExtraBeesSpecies.SPHALERITE);
-        MINERAL.register();
-        GEMSTONE.addMemberSpecies(ExtraBeesSpecies.EMERALD);
-        GEMSTONE.addMemberSpecies(ExtraBeesSpecies.RUBY);
-        GEMSTONE.addMemberSpecies(ExtraBeesSpecies.SAPPHIRE);
-        GEMSTONE.addMemberSpecies(ExtraBeesSpecies.OLIVINE);
-        GEMSTONE.addMemberSpecies(ExtraBeesSpecies.DIAMOND);
-        GEMSTONE.register();
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.UNSTABLE);
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.NUCLEAR);
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.RADIOACTIVE);
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.YELLORIUM);
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.CYANITE);
-        NUCLEAR.addMemberSpecies(ExtraBeesSpecies.BLUTONIUM);
-        NUCLEAR.register();
-        HISTORIC.addMemberSpecies(ExtraBeesSpecies.ANCIENT);
-        HISTORIC.addMemberSpecies(ExtraBeesSpecies.PRIMEVAL);
-        HISTORIC.addMemberSpecies(ExtraBeesSpecies.PREHISTORIC);
-        HISTORIC.addMemberSpecies(ExtraBeesSpecies.RELIC);
-        HISTORIC.register();
-        FOSSILIZED.addMemberSpecies(ExtraBeesSpecies.COAL);
-        FOSSILIZED.addMemberSpecies(ExtraBeesSpecies.RESIN);
-        FOSSILIZED.addMemberSpecies(ExtraBeesSpecies.OIL);
-        FOSSILIZED.addMemberSpecies(ExtraBeesSpecies.PEAT);
-        FOSSILIZED.register();
-        REFINED.addMemberSpecies(ExtraBeesSpecies.DISTILLED);
-        REFINED.addMemberSpecies(ExtraBeesSpecies.FUEL);
-        REFINED.addMemberSpecies(ExtraBeesSpecies.CREOSOTE);
-        REFINED.addMemberSpecies(ExtraBeesSpecies.LATEX);
-        REFINED.register();
-        AQUATIC.addMemberSpecies(ExtraBeesSpecies.WATER);
-        AQUATIC.addMemberSpecies(ExtraBeesSpecies.RIVER);
-        AQUATIC.addMemberSpecies(ExtraBeesSpecies.OCEAN);
-        AQUATIC.addMemberSpecies(ExtraBeesSpecies.INK);
-        AQUATIC.register();
-        SACCHARINE.addMemberSpecies(ExtraBeesSpecies.SWEET);
-        SACCHARINE.addMemberSpecies(ExtraBeesSpecies.SUGAR);
-        SACCHARINE.addMemberSpecies(ExtraBeesSpecies.FRUIT);
-        SACCHARINE.addMemberSpecies(ExtraBeesSpecies.RIPENING);
-        SACCHARINE.register();
-        CLASSICAL.addMemberSpecies(ExtraBeesSpecies.MARBLE);
-        CLASSICAL.addMemberSpecies(ExtraBeesSpecies.ROMAN);
-        CLASSICAL.addMemberSpecies(ExtraBeesSpecies.GREEK);
-        CLASSICAL.addMemberSpecies(ExtraBeesSpecies.CLASSICAL);
-        CLASSICAL.register();
-        VOLCANIC.addMemberSpecies(ExtraBeesSpecies.BASALT);
-        VOLCANIC.addMemberSpecies(ExtraBeesSpecies.TEMPERED);
-        VOLCANIC.addMemberSpecies(ExtraBeesSpecies.ANGRY);
-        VOLCANIC.addMemberSpecies(ExtraBeesSpecies.VOLCANIC);
-        VOLCANIC.addMemberSpecies(ExtraBeesSpecies.GLOWSTONE);
-        VOLCANIC.register();
-        VISCOUS.addMemberSpecies(ExtraBeesSpecies.VISCOUS);
-        VISCOUS.addMemberSpecies(ExtraBeesSpecies.GLUTINOUS);
-        VISCOUS.addMemberSpecies(ExtraBeesSpecies.STICKY);
-        VISCOUS.register();
-        VIRULENT.addMemberSpecies(ExtraBeesSpecies.MALICIOUS);
-        VIRULENT.addMemberSpecies(ExtraBeesSpecies.INFECTIOUS);
-        VIRULENT.addMemberSpecies(ExtraBeesSpecies.VIRULENT);
-        VIRULENT.register();
-        CAUSTIC.addMemberSpecies(ExtraBeesSpecies.CORROSIVE);
-        CAUSTIC.addMemberSpecies(ExtraBeesSpecies.CAUSTIC);
-        CAUSTIC.addMemberSpecies(ExtraBeesSpecies.ACIDIC);
-        CAUSTIC.register();
-        ENERGETIC.addMemberSpecies(ExtraBeesSpecies.EXCITED);
-        ENERGETIC.addMemberSpecies(ExtraBeesSpecies.ENERGETIC);
-        ENERGETIC.addMemberSpecies(ExtraBeesSpecies.ECSTATIC);
-        ENERGETIC.register();
-        SHADOW.addMemberSpecies(ExtraBeesSpecies.SHADOW);
-        SHADOW.addMemberSpecies(ExtraBeesSpecies.DARKENED);
-        SHADOW.addMemberSpecies(ExtraBeesSpecies.ABYSS);
-        SHADOW.register();
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.RED);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.YELLOW);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.BLUE);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.GREEN);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.BLACK);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.WHITE);
-        PRIMARY.addMemberSpecies(ExtraBeesSpecies.BROWN);
-        PRIMARY.register();
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.ORANGE);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.CYAN);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.PURPLE);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.GRAY);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.LIGHTBLUE);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.PINK);
-        SECONDARY.addMemberSpecies(ExtraBeesSpecies.LIMEGREEN);
-        SECONDARY.register();
-        TERTIARY.addMemberSpecies(ExtraBeesSpecies.MAGENTA);
-        TERTIARY.addMemberSpecies(ExtraBeesSpecies.LIGHTGRAY);
-        TERTIARY.register();
-        FTB.addMemberSpecies(ExtraBeesSpecies.JADED);
-        FTB.register();
-        QUANTUM.addMemberSpecies(ExtraBeesSpecies.UNUSUAL);
-        QUANTUM.addMemberSpecies(ExtraBeesSpecies.SPATIAL);
-        QUANTUM.addMemberSpecies(ExtraBeesSpecies.QUANTUM);
-        QUANTUM.register();
-        BOTANIA.addMemberSpecies(ExtraBeesSpecies.MYSTICAL);
-        BOTANIA.register();
+        ExtraBeesBranch.FARMING.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ALCOHOL);
+        ExtraBeesBranch.FARMING.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MILK);
+        ExtraBeesBranch.FARMING.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.COFFEE);
+        ExtraBeesBranch.FARMING.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CITRUS);
+        ExtraBeesBranch.FARMING.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MINT);
+        ExtraBeesBranch.FARMING.register();
+        ExtraBeesBranch.BARREN.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ARID);
+        ExtraBeesBranch.BARREN.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BARREN);
+        ExtraBeesBranch.BARREN.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.DESOLATE);
+        ExtraBeesBranch.BARREN.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.DECOMPOSING);
+        ExtraBeesBranch.BARREN.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GNAWING);
+        ExtraBeesBranch.BARREN.register();
+        ExtraBeesBranch.HOSTILE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ROTTEN);
+        ExtraBeesBranch.HOSTILE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BONE);
+        ExtraBeesBranch.HOSTILE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CREEPER);
+        ExtraBeesBranch.HOSTILE.register();
+        ExtraBeesBranch.ROCKY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ROCK);
+        ExtraBeesBranch.ROCKY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.STONE);
+        ExtraBeesBranch.ROCKY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GRANITE);
+        ExtraBeesBranch.ROCKY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MINERAL);
+        ExtraBeesBranch.ROCKY.register();
+        ExtraBeesBranch.METALLIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.IRON);
+        ExtraBeesBranch.METALLIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.COPPER);
+        ExtraBeesBranch.METALLIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.TIN);
+        ExtraBeesBranch.METALLIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LEAD);
+        ExtraBeesBranch.METALLIC.register();
+        ExtraBeesBranch.METALLIC2.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.NICKEL);
+        ExtraBeesBranch.METALLIC2.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ZINC);
+        ExtraBeesBranch.METALLIC2.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.TUNGSTATE);
+        ExtraBeesBranch.METALLIC2.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.TITANIUM);
+        ExtraBeesBranch.METALLIC2.register();
+        ExtraBeesBranch.ALLOY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BRONZE);
+        ExtraBeesBranch.ALLOY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BRASS);
+        ExtraBeesBranch.ALLOY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.STEEL);
+        ExtraBeesBranch.ALLOY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.INVAR);
+        ExtraBeesBranch.ALLOY.register();
+        ExtraBeesBranch.PRECIOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SILVER);
+        ExtraBeesBranch.PRECIOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GOLD);
+        ExtraBeesBranch.PRECIOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ELECTRUM);
+        ExtraBeesBranch.PRECIOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PLATINUM);
+        ExtraBeesBranch.PRECIOUS.register();
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LAPIS);
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SODALITE);
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PYRITE);
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BAUXITE);
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CINNABAR);
+        ExtraBeesBranch.MINERAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SPHALERITE);
+        ExtraBeesBranch.MINERAL.register();
+        ExtraBeesBranch.GEMSTONE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.EMERALD);
+        ExtraBeesBranch.GEMSTONE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RUBY);
+        ExtraBeesBranch.GEMSTONE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SAPPHIRE);
+        ExtraBeesBranch.GEMSTONE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.OLIVINE);
+        ExtraBeesBranch.GEMSTONE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.DIAMOND);
+        ExtraBeesBranch.GEMSTONE.register();
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.UNSTABLE);
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.NUCLEAR);
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RADIOACTIVE);
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.YELLORIUM);
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CYANITE);
+        ExtraBeesBranch.NUCLEAR.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BLUTONIUM);
+        ExtraBeesBranch.NUCLEAR.register();
+        ExtraBeesBranch.HISTORIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ANCIENT);
+        ExtraBeesBranch.HISTORIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PRIMEVAL);
+        ExtraBeesBranch.HISTORIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PREHISTORIC);
+        ExtraBeesBranch.HISTORIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RELIC);
+        ExtraBeesBranch.HISTORIC.register();
+        ExtraBeesBranch.FOSSILIZED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.COAL);
+        ExtraBeesBranch.FOSSILIZED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RESIN);
+        ExtraBeesBranch.FOSSILIZED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.OIL);
+        ExtraBeesBranch.FOSSILIZED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PEAT);
+        ExtraBeesBranch.FOSSILIZED.register();
+        ExtraBeesBranch.REFINED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.DISTILLED);
+        ExtraBeesBranch.REFINED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.FUEL);
+        ExtraBeesBranch.REFINED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CREOSOTE);
+        ExtraBeesBranch.REFINED.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LATEX);
+        ExtraBeesBranch.REFINED.register();
+        ExtraBeesBranch.AQUATIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.WATER);
+        ExtraBeesBranch.AQUATIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RIVER);
+        ExtraBeesBranch.AQUATIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.OCEAN);
+        ExtraBeesBranch.AQUATIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.INK);
+        ExtraBeesBranch.AQUATIC.register();
+        ExtraBeesBranch.SACCHARINE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SWEET);
+        ExtraBeesBranch.SACCHARINE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SUGAR);
+        ExtraBeesBranch.SACCHARINE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.FRUIT);
+        ExtraBeesBranch.SACCHARINE.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RIPENING);
+        ExtraBeesBranch.SACCHARINE.register();
+        ExtraBeesBranch.CLASSICAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MARBLE);
+        ExtraBeesBranch.CLASSICAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ROMAN);
+        ExtraBeesBranch.CLASSICAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GREEK);
+        ExtraBeesBranch.CLASSICAL.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CLASSICAL);
+        ExtraBeesBranch.CLASSICAL.register();
+        ExtraBeesBranch.VOLCANIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BASALT);
+        ExtraBeesBranch.VOLCANIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.TEMPERED);
+        ExtraBeesBranch.VOLCANIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ANGRY);
+        ExtraBeesBranch.VOLCANIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.VOLCANIC);
+        ExtraBeesBranch.VOLCANIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GLOWSTONE);
+        ExtraBeesBranch.VOLCANIC.register();
+        ExtraBeesBranch.VISCOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.VISCOUS);
+        ExtraBeesBranch.VISCOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GLUTINOUS);
+        ExtraBeesBranch.VISCOUS.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.STICKY);
+        ExtraBeesBranch.VISCOUS.register();
+        ExtraBeesBranch.VIRULENT.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MALICIOUS);
+        ExtraBeesBranch.VIRULENT.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.INFECTIOUS);
+        ExtraBeesBranch.VIRULENT.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.VIRULENT);
+        ExtraBeesBranch.VIRULENT.register();
+        ExtraBeesBranch.CAUSTIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CORROSIVE);
+        ExtraBeesBranch.CAUSTIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CAUSTIC);
+        ExtraBeesBranch.CAUSTIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ACIDIC);
+        ExtraBeesBranch.CAUSTIC.register();
+        ExtraBeesBranch.ENERGETIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.EXCITED);
+        ExtraBeesBranch.ENERGETIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ENERGETIC);
+        ExtraBeesBranch.ENERGETIC.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ECSTATIC);
+        ExtraBeesBranch.ENERGETIC.register();
+        ExtraBeesBranch.SHADOW.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SHADOW);
+        ExtraBeesBranch.SHADOW.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.DARKENED);
+        ExtraBeesBranch.SHADOW.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ABYSS);
+        ExtraBeesBranch.SHADOW.register();
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.RED);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.YELLOW);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BLUE);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GREEN);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BLACK);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.WHITE);
+        ExtraBeesBranch.PRIMARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.BROWN);
+        ExtraBeesBranch.PRIMARY.register();
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.ORANGE);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.CYAN);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PURPLE);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.GRAY);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LIGHTBLUE);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.PINK);
+        ExtraBeesBranch.SECONDARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LIMEGREEN);
+        ExtraBeesBranch.SECONDARY.register();
+        ExtraBeesBranch.TERTIARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MAGENTA);
+        ExtraBeesBranch.TERTIARY.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.LIGHTGRAY);
+        ExtraBeesBranch.TERTIARY.register();
+        ExtraBeesBranch.FTB.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.JADED);
+        ExtraBeesBranch.FTB.register();
+        ExtraBeesBranch.QUANTUM.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.UNUSUAL);
+        ExtraBeesBranch.QUANTUM.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.SPATIAL);
+        ExtraBeesBranch.QUANTUM.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.QUANTUM);
+        ExtraBeesBranch.QUANTUM.register();
+        ExtraBeesBranch.BOTANIA.addMemberSpecies((IAlleleSpecies) ExtraBeesSpecies.MYSTICAL);
+        ExtraBeesBranch.BOTANIA.register();
     }
 
-    public EnumClassLevel getLevel() {
-        return EnumClassLevel.GENUS;
+    public IClassification.EnumClassLevel getLevel() {
+        return IClassification.EnumClassLevel.GENUS;
     }
 
     public IClassification[] getMemberGroups() {
         return null;
     }
 
-    public void addMemberGroup(IClassification group) {
+    public void addMemberGroup(final IClassification group) {
     }
 
     public IAlleleSpecies[] getMemberSpecies() {
-        return (IAlleleSpecies[]) this.speciesSet.toArray(new IAlleleSpecies[0]);
+        return this.speciesSet.toArray(new IAlleleSpecies[0]);
     }
 
-    public void addMemberSpecies(IAlleleSpecies species) {
+    public void addMemberSpecies(final IAlleleSpecies species) {
         this.speciesSet.add((IAlleleBeeSpecies) species);
         if (species instanceof ExtraBeesSpecies) {
-            ((ExtraBeesSpecies) species).setBranch(this);
+            ((ExtraBeesSpecies) species).setBranch((IClassification) this);
         }
-
     }
 
     public IClassification getParent() {
         return this.parent;
     }
 
-    public void setParent(IClassification parent) {
+    public void setParent(final IClassification parent) {
         this.parent = parent;
     }
 }

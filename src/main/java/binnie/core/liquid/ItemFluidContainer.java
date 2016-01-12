@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -23,22 +24,22 @@ import java.util.Map;
 
 public class ItemFluidContainer extends ItemFood {
     private FluidContainer container;
-    public static int LiquidExtraBee = 64;
-    public static int LiquidExtraTree = 128;
-    public static int LiquidJuice = 256;
-    public static int LiquidAlcohol = 384;
-    public static int LiquidSpirit = 512;
-    public static int LiquidLiqueuer = 640;
-    public static int LiquidGenetics = 768;
-    private static Map idToFluid = new HashMap();
-    private static Map fluidToID = new HashMap();
+    public static int LiquidExtraBee;
+    public static int LiquidExtraTree;
+    public static int LiquidJuice;
+    public static int LiquidAlcohol;
+    public static int LiquidSpirit;
+    public static int LiquidLiqueuer;
+    public static int LiquidGenetics;
+    private static Map<Integer, String> idToFluid;
+    private static Map<String, Integer> fluidToID;
 
-    public static void registerFluid(IFluidType fluid, int id) {
-        idToFluid.put(Integer.valueOf(id), fluid.getIdentifier().toLowerCase());
-        fluidToID.put(fluid.getIdentifier().toLowerCase(), Integer.valueOf(id));
+    public static void registerFluid(final IFluidType fluid, final int id) {
+        ItemFluidContainer.idToFluid.put(id, fluid.getIdentifier().toLowerCase());
+        ItemFluidContainer.fluidToID.put(fluid.getIdentifier().toLowerCase(), id);
     }
 
-    public ItemFluidContainer(FluidContainer container) {
+    public ItemFluidContainer(final FluidContainer container) {
         super(0, false);
         this.container = container;
         container.item = this;
@@ -48,99 +49,123 @@ public class ItemFluidContainer extends ItemFood {
         this.setCreativeTab(CreativeTabs.tabMaterials);
     }
 
-    private FluidStack getLiquid(ItemStack stack) {
-        String liquid = (String) idToFluid.get(Integer.valueOf(stack.getItemDamage()));
-        return liquid == null ? null : Binnie.Liquid.getLiquidStack(liquid, 1000);
+    private FluidStack getLiquid(final ItemStack stack) {
+        final String liquid = ItemFluidContainer.idToFluid.get(stack.getItemDamage());
+        return (liquid == null) ? null : Binnie.Liquid.getLiquidStack(liquid, 1000);
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(final IIconRegister register) {
         this.container.updateIcons(register);
     }
 
-    public String getItemStackDisplayName(ItemStack itemstack) {
+    public String getItemStackDisplayName(final ItemStack itemstack) {
         if (itemstack == null) {
             return "???";
-        } else {
-            FluidStack fluid = this.getLiquid(itemstack);
-            return fluid == null ? "Missing Fluid" : fluid.getFluid().getLocalizedName(fluid) + " " + this.container.getName();
         }
+        final FluidStack fluid = this.getLiquid(itemstack);
+        if (fluid == null) {
+            return "Missing Fluid";
+        }
+        return fluid.getFluid().getLocalizedName(fluid) + " " + this.container.getName();
     }
 
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
-        for (IFluidType liquid : Binnie.Liquid.fluids.values()) {
-            if (liquid.canPlaceIn(this.container) && liquid.showInCreative(this.container)) {
-                itemList.add(this.getContainer(liquid));
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
+        for (final IFluidType liquid : Binnie.Liquid.fluids.values()) {
+            if (!liquid.canPlaceIn(this.container)) {
+                continue;
             }
+            if (!liquid.showInCreative(this.container)) {
+                continue;
+            }
+            itemList.add(this.getContainer(liquid));
         }
-
     }
 
-    public ItemStack getContainer(IFluidType liquid) {
-        int id = ((Integer) fluidToID.get(liquid.getIdentifier().toLowerCase())).intValue();
-        ItemStack itemstack = new ItemStack(this, 1, id);
+    public ItemStack getContainer(final IFluidType liquid) {
+        final int id = ItemFluidContainer.fluidToID.get(liquid.getIdentifier().toLowerCase());
+        final ItemStack itemstack = new ItemStack((Item) this, 1, id);
         return itemstack;
     }
 
-    public IIcon getIcon(ItemStack itemstack, int j) {
-        return j > 0 ? this.container.getBottleIcon() : this.container.getContentsIcon();
+    public IIcon getIcon(final ItemStack itemstack, final int j) {
+        if (j > 0) {
+            return this.container.getBottleIcon();
+        }
+        return this.container.getContentsIcon();
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack item, int pass) {
-        FluidStack fluid = this.getLiquid(item);
-        return fluid == null ? 16777215 : (pass == 0 && fluid.getFluid() instanceof BinnieFluid ? ((BinnieFluid) fluid.getFluid()).fluidType.getContainerColour() : super.getColorFromItemStack(item, pass));
+    public int getColorFromItemStack(final ItemStack item, final int pass) {
+        final FluidStack fluid = this.getLiquid(item);
+        if (fluid == null) {
+            return 16777215;
+        }
+        if (pass == 0 && fluid.getFluid() instanceof BinnieFluid) {
+            return ((BinnieFluid) fluid.getFluid()).fluidType.getContainerColour();
+        }
+        return super.getColorFromItemStack(item, pass);
     }
 
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
 
-    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
-        player.getFoodStats().func_151686_a(this, stack);
-        world.playSoundAtEntity(player, "random.burp", 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+    public ItemStack onEaten(final ItemStack stack, final World world, final EntityPlayer player) {
+        player.getFoodStats().func_151686_a((ItemFood) this, stack);
+        world.playSoundAtEntity((Entity) player, "random.burp", 0.5f, world.rand.nextFloat() * 0.1f + 0.9f);
         this.onFoodEaten(stack, world, player);
         return this.container.getEmpty();
     }
 
-    protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
+    protected void onFoodEaten(final ItemStack stack, final World world, final EntityPlayer player) {
         if (!world.isRemote) {
-            FluidStack fluid = this.getLiquid(stack);
-            IDrinkLiquid liquid = DrinkManager.getLiquid(fluid);
+            final FluidStack fluid = this.getLiquid(stack);
+            final IDrinkLiquid liquid = DrinkManager.getLiquid(fluid);
             if (liquid != null) {
-                AlcoholEffect.makeDrunk(player, liquid.getABV() * (float) fluid.amount);
+                AlcoholEffect.makeDrunk(player, liquid.getABV() * fluid.amount);
             }
         }
-
     }
 
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(final ItemStack stack) {
         return 32;
     }
 
-    public EnumAction getItemUseAction(ItemStack stack) {
+    public EnumAction getItemUseAction(final ItemStack stack) {
         return this.isDrinkable(stack) ? EnumAction.drink : EnumAction.none;
     }
 
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player) {
         if (this.isDrinkable(stack)) {
             player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
         }
-
         return stack;
     }
 
-    public int func_150905_g(ItemStack p_150905_1_) {
+    public int func_150905_g(final ItemStack p_150905_1_) {
         return 0;
     }
 
-    public float func_150906_h(ItemStack p_150906_1_) {
-        return 0.0F;
+    public float func_150906_h(final ItemStack p_150906_1_) {
+        return 0.0f;
     }
 
-    private boolean isDrinkable(ItemStack stack) {
-        FluidStack fluid = this.getLiquid(stack);
-        IDrinkLiquid liquid = DrinkManager.getLiquid(fluid);
-        return liquid == null ? false : liquid.isConsumable();
+    private boolean isDrinkable(final ItemStack stack) {
+        final FluidStack fluid = this.getLiquid(stack);
+        final IDrinkLiquid liquid = DrinkManager.getLiquid(fluid);
+        return liquid != null && liquid.isConsumable();
+    }
+
+    static {
+        ItemFluidContainer.LiquidExtraBee = 64;
+        ItemFluidContainer.LiquidExtraTree = 128;
+        ItemFluidContainer.LiquidJuice = 256;
+        ItemFluidContainer.LiquidAlcohol = 384;
+        ItemFluidContainer.LiquidSpirit = 512;
+        ItemFluidContainer.LiquidLiqueuer = 640;
+        ItemFluidContainer.LiquidGenetics = 768;
+        ItemFluidContainer.idToFluid = new HashMap<Integer, String>();
+        ItemFluidContainer.fluidToID = new HashMap<String, Integer>();
     }
 }

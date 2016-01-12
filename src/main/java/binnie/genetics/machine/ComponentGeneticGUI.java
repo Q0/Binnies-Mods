@@ -11,12 +11,13 @@ import net.minecraft.world.World;
 public class ComponentGeneticGUI extends MachineComponent implements IInteraction.RightClick {
     GeneticsGUI id;
 
-    public ComponentGeneticGUI(Machine machine, GeneticsGUI id) {
+    public ComponentGeneticGUI(final Machine machine, final GeneticsGUI id) {
         super(machine);
         this.id = id;
     }
 
-    public void onRightClick(World world, EntityPlayer player, int x, int y, int z) {
+    @Override
+    public void onRightClick(final World world, final EntityPlayer player, final int x, final int y, final int z) {
         Genetics.proxy.openGui(this.id, player, x, y, z);
     }
 }

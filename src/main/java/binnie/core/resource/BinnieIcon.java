@@ -9,12 +9,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class BinnieIcon extends BinnieResource {
-    private int textureSheet = 0;
-    private IIcon icon = null;
+    private int textureSheet;
+    private IIcon icon;
 
-    public BinnieIcon(AbstractMod mod, ResourceType type, String path) {
+    public BinnieIcon(final AbstractMod mod, final ResourceType type, final String path) {
         super(mod, type, path);
-        this.textureSheet = type == ResourceType.Block ? 0 : 1;
+        this.textureSheet = 0;
+        this.icon = null;
+        this.textureSheet = ((type != ResourceType.Block) ? 1 : 0);
         Binnie.Resource.registerIcon(this);
     }
 
@@ -23,13 +25,13 @@ public class BinnieIcon extends BinnieResource {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IIconRegister register) {
+    public IIcon getIcon(final IIconRegister register) {
         this.registerIcon(register);
         return this.icon;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcon(IIconRegister register) {
+    public void registerIcon(final IIconRegister register) {
         this.icon = BinnieCore.proxy.getIcon(register, this.mod, this.path);
     }
 

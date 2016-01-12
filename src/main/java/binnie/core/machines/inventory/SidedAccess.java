@@ -5,28 +5,31 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.*;
 
 class SidedAccess {
-    private Map accesses = new HashMap();
-    private AccessDirection base = AccessDirection.Both;
-    private boolean insertLocked = false;
-    private boolean extractLocked = false;
+    private Map<ForgeDirection, AccessDirection> accesses;
+    private AccessDirection base;
+    private boolean insertLocked;
+    private boolean extractLocked;
 
     public SidedAccess() {
-        super();
+        this.accesses = new HashMap<ForgeDirection, AccessDirection>();
+        this.base = AccessDirection.Both;
+        this.insertLocked = false;
+        this.extractLocked = false;
     }
 
-    public AccessDirection getAccess(ForgeDirection side) {
-        return this.accesses.containsKey(side) ? (AccessDirection) this.accesses.get(side) : this.base;
+    public AccessDirection getAccess(final ForgeDirection side) {
+        return this.accesses.containsKey(side) ? this.accesses.get(side) : this.base;
     }
 
-    public boolean canInsert(ForgeDirection side) {
+    public boolean canInsert(final ForgeDirection side) {
         return this.getAccess(side).canInsert();
     }
 
-    public boolean canExtract(ForgeDirection side) {
+    public boolean canExtract(final ForgeDirection side) {
         return this.getAccess(side).canExtract();
     }
 
-    public boolean canAccess(ForgeDirection side) {
+    public boolean canAccess(final ForgeDirection side) {
         return this.getAccess(side).canAccess();
     }
 
@@ -46,55 +49,47 @@ class SidedAccess {
         this.extractLocked = true;
     }
 
-    public Collection getInsertionSides() {
-        List<ForgeDirection> dirs = new ArrayList();
-
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    public Collection<ForgeDirection> getInsertionSides() {
+        final List<ForgeDirection> dirs = new ArrayList<ForgeDirection>();
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (this.getAccess(dir).canInsert()) {
                 dirs.add(dir);
             }
         }
-
         return dirs;
     }
 
-    public Collection getExtractionSides() {
-        List<ForgeDirection> dirs = new ArrayList();
-
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    public Collection<ForgeDirection> getExtractionSides() {
+        final List<ForgeDirection> dirs = new ArrayList<ForgeDirection>();
+        for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (this.getAccess(dir).canExtract()) {
                 dirs.add(dir);
             }
         }
-
         return dirs;
     }
 
-    public void setInsert(ForgeDirection side, boolean b) {
+    public void setInsert(final ForgeDirection side, final boolean b) {
         if (this.getAccess(side).canInsert() != b) {
             this.accesses.put(side, this.getAccess(side).changeInsert(b));
         }
-
     }
 
-    public void setExtract(ForgeDirection side, boolean b) {
+    public void setExtract(final ForgeDirection side, final boolean b) {
         if (this.getAccess(side).canExtract() != b) {
             this.accesses.put(side, this.getAccess(side).changeExtract(b));
         }
-
     }
 
-    public void setInsert(boolean b) {
+    public void setInsert(final boolean b) {
         if (this.base.canInsert() != b) {
             this.base = this.base.changeInsert(b);
         }
-
     }
 
-    public void setExtract(boolean b) {
+    public void setExtract(final boolean b) {
         if (this.base.canExtract() != b) {
             this.base = this.base.changeExtract(b);
         }
-
     }
 }

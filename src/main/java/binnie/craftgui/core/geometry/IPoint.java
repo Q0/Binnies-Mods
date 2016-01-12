@@ -1,39 +1,41 @@
 package binnie.craftgui.core.geometry;
 
 public class IPoint {
-    public static final IPoint ZERO = new IPoint(0.0F, 0.0F);
-    float x = 0.0F;
-    float y = 0.0F;
+    public static final IPoint ZERO;
+    float x;
+    float y;
 
-    public IPoint(float x, float y) {
-        super();
+    public IPoint(final float x, final float y) {
+        this.x = 0.0f;
+        this.y = 0.0f;
         this.x = x;
         this.y = y;
     }
 
-    public IPoint(IPoint o) {
-        super();
+    public IPoint(final IPoint o) {
+        this.x = 0.0f;
+        this.y = 0.0f;
         this.x = o.x();
         this.y = o.y();
     }
 
-    public static IPoint add(IPoint a, IPoint b) {
+    public static IPoint add(final IPoint a, final IPoint b) {
         return new IPoint(a.x() + b.x(), a.y() + b.y());
     }
 
-    public static IPoint sub(IPoint a, IPoint b) {
+    public static IPoint sub(final IPoint a, final IPoint b) {
         return new IPoint(a.x() - b.x(), a.y() - b.y());
     }
 
-    public IPoint sub(IPoint a) {
+    public IPoint sub(final IPoint a) {
         return sub(this, a);
     }
 
-    public IPoint add(IPoint other) {
+    public IPoint add(final IPoint other) {
         return add(this, other);
     }
 
-    public IPoint add(float dx, float dy) {
+    public IPoint add(final float dx, final float dy) {
         return add(this, new IPoint(dx, dy));
     }
 
@@ -49,22 +51,24 @@ public class IPoint {
         return this.y;
     }
 
-    public void xy(float x, float y) {
+    public void xy(final float x, final float y) {
         this.x(x);
         this.y(y);
     }
 
-    public float x(float x) {
-        this.x = x;
-        return x;
+    public float x(final float x) {
+        return this.x = x;
     }
 
-    public float y(float y) {
-        this.y = y;
-        return y;
+    public float y(final float y) {
+        return this.y = y;
     }
 
-    public boolean equals(IPoint other) {
+    public boolean equals(final IPoint other) {
         return this.x() == other.x() && this.y() == other.y();
+    }
+
+    static {
+        ZERO = new IPoint(0.0f, 0.0f);
     }
 }

@@ -7,11 +7,11 @@ import binnie.craftgui.events.EventToggleButtonClicked;
 public class ControlToggleButton extends ControlButton {
     boolean toggled;
 
-    public void onMouseClick(EventMouse.Down event) {
+    public void onMouseClick(final EventMouse.Down event) {
         this.callEvent(new EventToggleButtonClicked(this, this.toggled));
     }
 
-    public ControlToggleButton(IWidget parent, int x, int y, int width, int height) {
-        super(parent, (float) x, (float) y, (float) width, (float) height);
+    public ControlToggleButton(final IWidget parent, final int x, final int y, final int width, final int height) {
+        super(parent, x, y, width, height);
     }
 }

@@ -7,31 +7,30 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ModuleStorage implements IInitializable {
-    public ModuleStorage() {
-        super();
-    }
-
+    @Override
     public void preInit() {
-        BinnieCore.packageCompartment = new MachineGroup(BinnieCore.instance, "storage", "storage", Compartment.values());
-        BinnieCore.packageCompartment.setCreativeTab(CreativeTabs.tabBlock);
+        (BinnieCore.packageCompartment = new MachineGroup(BinnieCore.instance, "storage", "storage", Compartment.values())).setCreativeTab(CreativeTabs.tabBlock);
     }
 
+    @Override
     public void init() {
     }
 
+    @Override
     public void postInit() {
-        String ironGear = OreDictionary.getOres("gearIron").isEmpty() ? "ingotIron" : "gearIron";
-        String goldGear = OreDictionary.getOres("gearGold").isEmpty() ? "ingotGold" : "gearGold";
-        String diamondGear = "gemDiamond";
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.Compartment.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Items.book, Character.valueOf('c'), Blocks.chest, Character.valueOf('p'), Blocks.stone_button}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.CompartmentCopper.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Compartment.Compartment.get(1), Character.valueOf('c'), "gearCopper", Character.valueOf('p'), Blocks.stone_button}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.CompartmentBronze.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Compartment.CompartmentCopper.get(1), Character.valueOf('c'), "gearBronze", Character.valueOf('p'), Items.gold_nugget}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.CompartmentIron.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Compartment.CompartmentCopper.get(1), Character.valueOf('c'), ironGear, Character.valueOf('p'), Items.gold_nugget}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.CompartmentGold.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Compartment.CompartmentIron.get(1), Character.valueOf('c'), goldGear, Character.valueOf('p'), Items.emerald}));
-        GameRegistry.addRecipe(new ShapedOreRecipe(Compartment.CompartmentDiamond.get(1), new Object[]{"pcp", "cbc", "pcp", Character.valueOf('b'), Compartment.CompartmentGold.get(1), Character.valueOf('c'), diamondGear, Character.valueOf('p'), Items.emerald}));
+        final String ironGear = OreDictionary.getOres("gearIron").isEmpty() ? "ingotIron" : "gearIron";
+        final String goldGear = OreDictionary.getOres("gearGold").isEmpty() ? "ingotGold" : "gearGold";
+        final String diamondGear = "gemDiamond";
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.Compartment.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Items.book, 'c', Blocks.chest, 'p', Blocks.stone_button}));
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.CompartmentCopper.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Compartment.Compartment.get(1), 'c', "gearCopper", 'p', Blocks.stone_button}));
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.CompartmentBronze.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Compartment.CompartmentCopper.get(1), 'c', "gearBronze", 'p', Items.gold_nugget}));
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.CompartmentIron.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Compartment.CompartmentCopper.get(1), 'c', ironGear, 'p', Items.gold_nugget}));
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.CompartmentGold.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Compartment.CompartmentIron.get(1), 'c', goldGear, 'p', Items.emerald}));
+        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(Compartment.CompartmentDiamond.get(1), new Object[]{"pcp", "cbc", "pcp", 'b', Compartment.CompartmentGold.get(1), 'c', diamondGear, 'p', Items.emerald}));
     }
 }

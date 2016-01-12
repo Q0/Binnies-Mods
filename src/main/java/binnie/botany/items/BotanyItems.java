@@ -3,6 +3,7 @@ package binnie.botany.items;
 import binnie.botany.Botany;
 import binnie.core.item.IItemMisc;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -22,30 +23,36 @@ public enum BotanyItems implements IItemMisc {
     String name;
     String iconPath;
 
-    private BotanyItems(String name, String iconPath) {
+    private BotanyItems(final String name, final String iconPath) {
         this.name = name;
         this.iconPath = iconPath;
     }
 
-    public IIcon getIcon(ItemStack stack) {
+    @Override
+    public IIcon getIcon(final ItemStack stack) {
         return this.icon;
     }
 
-    public void registerIcons(IIconRegister register) {
+    @Override
+    public void registerIcons(final IIconRegister register) {
         this.icon = Botany.proxy.getIcon(register, this.iconPath);
     }
 
-    public void addInformation(List par3List) {
+    @Override
+    public void addInformation(final List par3List) {
     }
 
-    public String getName(ItemStack stack) {
+    @Override
+    public String getName(final ItemStack stack) {
         return this.name;
     }
 
-    public ItemStack get(int size) {
-        return new ItemStack(Botany.misc, size, this.ordinal());
+    @Override
+    public ItemStack get(final int size) {
+        return new ItemStack((Item) Botany.misc, size, this.ordinal());
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }

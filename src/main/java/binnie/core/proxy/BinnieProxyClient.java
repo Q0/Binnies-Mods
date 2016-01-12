@@ -10,12 +10,15 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -28,116 +31,122 @@ import java.io.File;
 import java.io.IOException;
 
 public final class BinnieProxyClient extends BinnieProxy implements IBinnieProxy {
-    public BinnieProxyClient() {
-        super();
-    }
-
-    public void bindTexture(BinnieResource texture) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    @Override
+    public void bindTexture(final BinnieResource texture) {
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.bindTexture(texture.getResourceLocation());
     }
 
-    public void bindTexture(ResourceLocation location) {
+    @Override
+    public void bindTexture(final ResourceLocation location) {
         this.getMinecraftInstance().getTextureManager().bindTexture(location);
     }
 
-    public boolean checkTexture(BinnieResource location) {
-        SimpleTexture texture = new SimpleTexture(location.getResourceLocation());
-
+    @Override
+    public boolean checkTexture(final BinnieResource location) {
+        final SimpleTexture texture = new SimpleTexture(location.getResourceLocation());
         try {
-            texture.loadTexture(this.getMinecraftInstance().getResourceManager());
-            return true;
-        } catch (IOException var4) {
+            ((ITextureObject) texture).loadTexture(this.getMinecraftInstance().getResourceManager());
+        } catch (IOException e) {
             return false;
         }
+        return true;
     }
 
-    public boolean isSimulating(World world) {
+    @Override
+    public boolean isSimulating(final World world) {
         return !world.isRemote;
     }
 
-    public void registerCustomItemRenderer(Item item, IItemRenderer itemRenderer) {
+    @Override
+    public void registerCustomItemRenderer(final Item item, final IItemRenderer itemRenderer) {
         MinecraftForgeClient.registerItemRenderer(item, itemRenderer);
     }
 
+    @Override
     public World getWorld() {
-        return this.getMinecraftInstance().theWorld;
+        return (World) this.getMinecraftInstance().theWorld;
     }
 
+    @Override
     public Minecraft getMinecraftInstance() {
         return FMLClientHandler.instance().getClient();
     }
 
+    @Override
     public boolean isClient() {
         return true;
     }
 
+    @Override
     public boolean isServer() {
         return false;
     }
 
+    @Override
     public File getDirectory() {
         return new File(".");
     }
 
-    public void registerTileEntity(Class tile, String id, Object renderer) {
+    @Override
+    public void registerTileEntity(final Class<? extends TileEntity> tile, final String id, final Object renderer) {
         if (renderer != null && renderer instanceof TileEntitySpecialRenderer) {
-            ClientRegistry.registerTileEntity(tile, id, (TileEntitySpecialRenderer) renderer);
+            ClientRegistry.registerTileEntity((Class) tile, id, (TileEntitySpecialRenderer) renderer);
         } else {
-            GameRegistry.registerTileEntity(tile, id);
+            GameRegistry.registerTileEntity((Class) tile, id);
         }
-
     }
 
-    public void registerBlockRenderer(Object renderer) {
+    @Override
+    public void registerBlockRenderer(final Object renderer) {
         if (renderer != null && renderer instanceof ISimpleBlockRenderingHandler) {
             RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) renderer);
         }
-
     }
 
-    public void createPipe(Item pipe) {
+    @Override
+    public void createPipe(final Item pipe) {
     }
 
-    public Object createObject(String renderer) {
+    @Override
+    public Object createObject(final String renderer) {
         Object object = null;
-
         try {
-            Class<?> rendererClass = Class.forName(renderer);
+            final Class<?> rendererClass = Class.forName(renderer);
             if (rendererClass != null) {
                 object = rendererClass.newInstance();
             }
-        } catch (Exception var4) {
-            ;
+        } catch (Exception ex) {
         }
-
         return object;
     }
 
-    public IIcon getIcon(IIconRegister register, String mod, String name) {
+    @Override
+    public IIcon getIcon(final IIconRegister register, final String mod, final String name) {
         return register.registerIcon(mod + ":" + name);
     }
 
+    @Override
     public boolean isShiftDown() {
         return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
     }
 
+    @Override
     public EntityPlayer getPlayer() {
-        return Minecraft.getMinecraft().thePlayer;
+        return (EntityPlayer) Minecraft.getMinecraft().thePlayer;
     }
 
-    public void handlePreTextureRefresh(IIconRegister register, int type) {
+    public void handlePreTextureRefresh(final IIconRegister register, final int type) {
         if (type == 0) {
             Binnie.Liquid.reloadIcons(register);
         }
-
     }
 
+    @Override
     public void preInit() {
-        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+        final IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
         if (manager instanceof IReloadableResourceManager) {
-            ((IReloadableResourceManager) manager).registerReloadListener(new CraftGUIResourceManager());
+            ((IReloadableResourceManager) manager).registerReloadListener((IResourceManagerReloadListener) new CraftGUIResourceManager());
         }
-
     }
 }

@@ -21,101 +21,94 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockPlant extends BlockBush {
-    public ArrayList getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList();
+    public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int metadata, final int fortune) {
+        return new ArrayList<ItemStack>();
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        for (BlockPlant.Type t : BlockPlant.Type.values()) {
+    public void registerBlockIcons(final IIconRegister p_149651_1_) {
+        for (final Type t : Type.values()) {
             t.icon = Botany.proxy.getIcon(p_149651_1_, t.name().toLowerCase());
         }
-
     }
 
     public BlockPlant() {
-        super();
         this.setBlockName("plant");
         this.setCreativeTab(CreativeTabBotany.instance);
         this.setTickRandomly(true);
     }
 
-    protected boolean canPlaceBlockOn(Block p_149854_1_) {
+    protected boolean canPlaceBlockOn(final Block p_149854_1_) {
         return super.canPlaceBlockOn(p_149854_1_) || Gardening.isSoil(p_149854_1_);
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return BlockPlant.Type.values()[meta % BlockPlant.Type.values().length].icon;
+    public IIcon getIcon(final int side, final int meta) {
+        return Type.values()[meta % Type.values().length].icon;
     }
 
-    public int damageDropped(int p_149692_1_) {
+    public int damageDropped(final int p_149692_1_) {
         return p_149692_1_;
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {
-        for (BlockPlant.Type type : BlockPlant.Type.values()) {
+    public void getSubBlocks(final Item p_149666_1_, final CreativeTabs p_149666_2_, final List p_149666_3_) {
+        for (final Type type : Type.values()) {
             p_149666_3_.add(type.get());
         }
-
     }
 
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        BlockPlant.Type type = BlockPlant.Type.get(world.getBlockMetadata(x, y, z));
+    public void updateTick(final World world, final int x, final int y, final int z, final Random random) {
+        final Type type = Type.get(world.getBlockMetadata(x, y, z));
         if (random.nextInt(4) == 0) {
-            if (type == BlockPlant.Type.Weeds) {
-                world.setBlockMetadataWithNotify(x, y, z, BlockPlant.Type.WeedsLong.ordinal(), 2);
-            } else if (type == BlockPlant.Type.WeedsLong) {
-                world.setBlockMetadataWithNotify(x, y, z, BlockPlant.Type.WeedsVeryLong.ordinal(), 2);
-            } else if (type == BlockPlant.Type.DeadFlower) {
-                world.setBlockMetadataWithNotify(x, y, z, BlockPlant.Type.DecayingFlower.ordinal(), 2);
-            } else if (type == BlockPlant.Type.DecayingFlower) {
+            if (type == Type.Weeds) {
+                world.setBlockMetadataWithNotify(x, y, z, Type.WeedsLong.ordinal(), 2);
+            } else if (type == Type.WeedsLong) {
+                world.setBlockMetadataWithNotify(x, y, z, Type.WeedsVeryLong.ordinal(), 2);
+            } else if (type == Type.DeadFlower) {
+                world.setBlockMetadataWithNotify(x, y, z, Type.DecayingFlower.ordinal(), 2);
+            } else if (type == Type.DecayingFlower) {
                 world.setBlockToAir(x, y, z);
                 return;
             }
         }
-
         if (random.nextInt(6) == 0) {
-            if (type == BlockPlant.Type.Weeds) {
+            if (type == Type.Weeds) {
                 world.setBlockToAir(x, y, z);
-            } else if (type == BlockPlant.Type.WeedsLong) {
-                world.setBlockMetadataWithNotify(x, y, z, BlockPlant.Type.Weeds.ordinal(), 2);
-            } else if (type == BlockPlant.Type.WeedsVeryLong) {
-                world.setBlockMetadataWithNotify(x, y, z, BlockPlant.Type.WeedsLong.ordinal(), 2);
+            } else if (type == Type.WeedsLong) {
+                world.setBlockMetadataWithNotify(x, y, z, Type.Weeds.ordinal(), 2);
+            } else if (type == Type.WeedsVeryLong) {
+                world.setBlockMetadataWithNotify(x, y, z, Type.WeedsLong.ordinal(), 2);
             }
         }
-
-        Block below = world.getBlock(x, y - 1, z);
+        final Block below = world.getBlock(x, y - 1, z);
         if (Gardening.isSoil(below)) {
-            IBlockSoil soil = (IBlockSoil) below;
+            final IBlockSoil soil = (IBlockSoil) below;
             if (random.nextInt(3) == 0) {
-                if (type != BlockPlant.Type.Weeds && type != BlockPlant.Type.WeedsLong && type != BlockPlant.Type.WeedsVeryLong) {
-                    if (type == BlockPlant.Type.DecayingFlower && !soil.fertilise(world, x, y - 1, z, EnumSoilType.LOAM)) {
-                        soil.fertilise(world, x, y - 1, z, EnumSoilType.FLOWERBED);
+                if (type == Type.Weeds || type == Type.WeedsLong || type == Type.WeedsVeryLong) {
+                    if (!soil.degrade(world, x, y - 1, z, EnumSoilType.LOAM)) {
+                        soil.degrade(world, x, y - 1, z, EnumSoilType.SOIL);
                     }
-                } else if (!soil.degrade(world, x, y - 1, z, EnumSoilType.LOAM)) {
-                    soil.degrade(world, x, y - 1, z, EnumSoilType.SOIL);
+                } else if (type == Type.DecayingFlower && !soil.fertilise(world, x, y - 1, z, EnumSoilType.LOAM)) {
+                    soil.fertilise(world, x, y - 1, z, EnumSoilType.FLOWERBED);
                 }
             }
         }
-
     }
 
-    public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
+    public boolean isReplaceable(final IBlockAccess world, final int x, final int y, final int z) {
         return true;
     }
 
-    public static boolean isWeed(IBlockAccess world, int x, int y, int z) {
+    public static boolean isWeed(final IBlockAccess world, final int x, final int y, final int z) {
         if (!(world.getBlock(x, y, z) instanceof BlockPlant)) {
             return false;
-        } else {
-            BlockPlant.Type type = BlockPlant.Type.get(world.getBlockMetadata(x, y, z));
-            return type == BlockPlant.Type.Weeds || type == BlockPlant.Type.WeedsLong || type == BlockPlant.Type.WeedsVeryLong;
         }
+        final Type type = Type.get(world.getBlockMetadata(x, y, z));
+        return type == Type.Weeds || type == Type.WeedsLong || type == Type.WeedsVeryLong;
     }
 
-    public static enum Type {
+    public enum Type {
         Weeds("Weeds"),
         WeedsLong("Long Weeds"),
         WeedsVeryLong("Very Long Weeds"),
@@ -125,15 +118,15 @@ public class BlockPlant extends BlockBush {
         public IIcon icon;
         String name;
 
-        private Type(String name) {
+        private Type(final String name) {
             this.name = name;
         }
 
         public ItemStack get() {
-            return new ItemStack(Botany.plant, 1, this.ordinal());
+            return new ItemStack((Block) Botany.plant, 1, this.ordinal());
         }
 
-        public static BlockPlant.Type get(int id) {
+        public static Type get(final int id) {
             return values()[id % values().length];
         }
 

@@ -9,29 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NBTShapedRecipes implements IRecipe {
-    static List recipes = new ArrayList();
+    static List<NBTShapedRecipe> recipes;
 
-    public NBTShapedRecipes() {
-        super();
-    }
-
-    public boolean matches(InventoryCrafting inventory, World world) {
-        for (NBTShapedRecipe recipe : recipes) {
+    public boolean matches(final InventoryCrafting inventory, final World world) {
+        for (final NBTShapedRecipe recipe : NBTShapedRecipes.recipes) {
             if (recipe.matches(inventory, world)) {
                 return true;
             }
         }
-
         return false;
     }
 
-    public ItemStack getCraftingResult(InventoryCrafting inventory) {
-        for (NBTShapedRecipe recipe : recipes) {
-            if (recipe.matches(inventory, (World) null)) {
+    public ItemStack getCraftingResult(final InventoryCrafting inventory) {
+        for (final NBTShapedRecipe recipe : NBTShapedRecipes.recipes) {
+            if (recipe.matches(inventory, null)) {
                 return recipe.getCraftingResult(inventory);
             }
         }
-
         return null;
     }
 
@@ -43,7 +37,11 @@ public class NBTShapedRecipes implements IRecipe {
         return null;
     }
 
-    public static void addRecipe(NBTShapedRecipe nbtShapedRecipe) {
-        recipes.add(nbtShapedRecipe);
+    public static void addRecipe(final NBTShapedRecipe nbtShapedRecipe) {
+        NBTShapedRecipes.recipes.add(nbtShapedRecipe);
+    }
+
+    static {
+        NBTShapedRecipes.recipes = new ArrayList<NBTShapedRecipe>();
     }
 }

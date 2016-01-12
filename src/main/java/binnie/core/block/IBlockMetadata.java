@@ -8,13 +8,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 public interface IBlockMetadata extends ITileEntityProvider {
-    int getPlacedMeta(ItemStack var1, World var2, int var3, int var4, int var5, ForgeDirection var6);
+    int getPlacedMeta(final ItemStack p0, final World p1, final int p2, final int p3, final int p4, final ForgeDirection p5);
 
-    int getDroppedMeta(int var1, int var2);
+    int getDroppedMeta(final int p0, final int p1);
 
-    String getBlockName(ItemStack var1);
+    String getBlockName(final ItemStack p0);
 
-    void getBlockTooltip(ItemStack var1, List var2);
+    void getBlockTooltip(final ItemStack p0, final List p1);
 
-    void dropAsStack(World var1, int var2, int var3, int var4, ItemStack var5);
+    void dropAsStack(final World p0, final int p1, final int p2, final int p3, final ItemStack p4);
 }

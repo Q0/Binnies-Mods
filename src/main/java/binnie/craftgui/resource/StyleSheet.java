@@ -4,13 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StyleSheet implements IStyleSheet {
-    protected Map textures = new HashMap();
+    protected Map<Object, Texture> textures;
 
     public StyleSheet() {
-        super();
+        this.textures = new HashMap<Object, Texture>();
     }
 
-    public Texture getTexture(Object key) {
-        return !this.textures.containsKey(key) ? StyleSheetManager.getTexture(key) : (Texture) this.textures.get(key);
+    @Override
+    public Texture getTexture(final Object key) {
+        if (!this.textures.containsKey(key)) {
+            return StyleSheetManager.getTexture(key);
+        }
+        return this.textures.get(key);
     }
 }

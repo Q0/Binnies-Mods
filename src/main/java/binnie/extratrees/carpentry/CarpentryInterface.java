@@ -4,99 +4,107 @@ import binnie.extratrees.api.*;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 public class CarpentryInterface implements ICarpentryInterface {
-    static Map woodMap = new LinkedHashMap();
-    static Map designMap = new LinkedHashMap();
-    static Map designCategories = new HashMap();
+    static Map<Integer, IDesignMaterial> woodMap;
+    static Map<Integer, IDesign> designMap;
+    static Map<String, IDesignCategory> designCategories;
 
-    public CarpentryInterface() {
-        super();
+    @Override
+    public boolean registerCarpentryWood(final int index, final IDesignMaterial wood) {
+        return wood != null && CarpentryInterface.woodMap.put(index, wood) == null;
     }
 
-    public boolean registerCarpentryWood(int index, IDesignMaterial wood) {
-        return wood != null ? woodMap.put(Integer.valueOf(index), wood) == null : false;
-    }
-
-    public int getCarpentryWoodIndex(IDesignMaterial wood) {
-        for (Integer integer : woodMap.keySet()) {
-            if (((IDesignMaterial) woodMap.get(integer)).equals(wood)) {
-                return integer.intValue();
+    @Override
+    public int getCarpentryWoodIndex(final IDesignMaterial wood) {
+        for (final Integer integer : CarpentryInterface.woodMap.keySet()) {
+            if (CarpentryInterface.woodMap.get(integer).equals(wood)) {
+                return integer;
             }
         }
-
         return -1;
     }
 
-    public IDesignMaterial getWoodMaterial(int index) {
-        return (IDesignMaterial) woodMap.get(Integer.valueOf(index));
+    @Override
+    public IDesignMaterial getWoodMaterial(final int index) {
+        return CarpentryInterface.woodMap.get(index);
     }
 
-    public boolean registerDesign(int index, IDesign wood) {
-        return wood != null ? designMap.put(Integer.valueOf(index), wood) == null : false;
+    @Override
+    public boolean registerDesign(final int index, final IDesign wood) {
+        return wood != null && CarpentryInterface.designMap.put(index, wood) == null;
     }
 
-    public int getDesignIndex(IDesign wood) {
-        for (Integer integer : designMap.keySet()) {
-            if (((IDesign) designMap.get(integer)).equals(wood)) {
-                return integer.intValue();
+    @Override
+    public int getDesignIndex(final IDesign wood) {
+        for (final Integer integer : CarpentryInterface.designMap.keySet()) {
+            if (CarpentryInterface.designMap.get(integer).equals(wood)) {
+                return integer;
             }
         }
-
         return -1;
     }
 
-    public IDesign getDesign(int index) {
-        return (IDesign) designMap.get(Integer.valueOf(index));
+    @Override
+    public IDesign getDesign(final int index) {
+        return CarpentryInterface.designMap.get(index);
     }
 
-    public ILayout getLayout(IPattern pattern, boolean inverted) {
+    @Override
+    public ILayout getLayout(final IPattern pattern, final boolean inverted) {
         return Layout.get(pattern, inverted);
     }
 
-    public boolean registerDesignCategory(IDesignCategory category) {
-        return category != null && category.getId() != null ? designCategories.put(category.getId(), category) == null : false;
+    @Override
+    public boolean registerDesignCategory(final IDesignCategory category) {
+        return category != null && category.getId() != null && CarpentryInterface.designCategories.put(category.getId(), category) == null;
     }
 
-    public IDesignCategory getDesignCategory(String id) {
-        return (IDesignCategory) designCategories.get(id);
+    @Override
+    public IDesignCategory getDesignCategory(final String id) {
+        return CarpentryInterface.designCategories.get(id);
     }
 
-    public Collection getAllDesignCategories() {
-        List<IDesignCategory> categories = new ArrayList();
-
-        for (IDesignCategory category : designCategories.values()) {
+    @Override
+    public Collection<IDesignCategory> getAllDesignCategories() {
+        final List<IDesignCategory> categories = new ArrayList<IDesignCategory>();
+        for (final IDesignCategory category : CarpentryInterface.designCategories.values()) {
             if (category.getDesigns().size() > 0) {
                 categories.add(category);
             }
         }
-
         return categories;
     }
 
-    public List getSortedDesigns() {
-        List<IDesign> designs = new ArrayList();
-
-        for (IDesignCategory category : this.getAllDesignCategories()) {
+    @Override
+    public List<IDesign> getSortedDesigns() {
+        final List<IDesign> designs = new ArrayList<IDesign>();
+        for (final IDesignCategory category : this.getAllDesignCategories()) {
             designs.addAll(category.getDesigns());
         }
-
         return designs;
     }
 
-    public IDesignMaterial getWoodMaterial(ItemStack stack) {
+    @Override
+    public IDesignMaterial getWoodMaterial(final ItemStack stack) {
         if (stack == null) {
             return null;
-        } else {
-            for (Entry<Integer, IDesignMaterial> entry : woodMap.entrySet()) {
-                ItemStack key = ((IDesignMaterial) entry.getValue()).getStack();
-                if (key != null && key.isItemEqual(stack)) {
-                    return (IDesignMaterial) entry.getValue();
-                }
-            }
-
-            return null;
         }
+        for (final Map.Entry<Integer, IDesignMaterial> entry : CarpentryInterface.woodMap.entrySet()) {
+            final ItemStack key = entry.getValue().getStack();
+            if (key == null) {
+                continue;
+            }
+            if (key.isItemEqual(stack)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    static {
+        CarpentryInterface.woodMap = new LinkedHashMap<Integer, IDesignMaterial>();
+        CarpentryInterface.designMap = new LinkedHashMap<Integer, IDesign>();
+        CarpentryInterface.designCategories = new HashMap<String, IDesignCategory>();
     }
 }

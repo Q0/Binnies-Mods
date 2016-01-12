@@ -5,68 +5,69 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WindowInventory implements IInventory {
     private Window window;
-    private Map inventory = new HashMap();
-    private Map validators = new HashMap();
-    private List disabledAutoDispenses = new ArrayList();
+    private Map<Integer, ItemStack> inventory;
+    private Map<Integer, SlotValidator> validators;
+    private List<Integer> disabledAutoDispenses;
 
-    public WindowInventory(Window window) {
-        super();
+    public WindowInventory(final Window window) {
+        this.inventory = new HashMap<Integer, ItemStack>();
+        this.validators = new HashMap<Integer, SlotValidator>();
+        this.disabledAutoDispenses = new ArrayList<Integer>();
         this.window = window;
     }
 
     public int getSizeInventory() {
         if (this.inventory.size() == 0) {
             return 0;
-        } else {
-            int max = 0;
-            Iterator i$ = this.inventory.keySet().iterator();
-
-            while (i$.hasNext()) {
-                int i = ((Integer) i$.next()).intValue();
-                if (i > max) {
-                    max = i;
-                }
-            }
-
-            return max + 1;
         }
-    }
-
-    public ItemStack getStackInSlot(int var1) {
-        return this.inventory.containsKey(Integer.valueOf(var1)) ? (ItemStack) this.inventory.get(Integer.valueOf(var1)) : null;
-    }
-
-    public ItemStack decrStackSize(int index, int amount) {
-        if (this.inventory.containsKey(Integer.valueOf(index))) {
-            ItemStack item = (ItemStack) this.inventory.get(Integer.valueOf(index));
-            ItemStack output = item.copy();
-            int available = item.stackSize;
-            if (amount > available) {
-                amount = available;
+        int max = 0;
+        for (final int i : this.inventory.keySet()) {
+            if (i > max) {
+                max = i;
             }
-
-            item.stackSize -= amount;
-            output.stackSize = amount;
-            if (item.stackSize == 0) {
-                this.setInventorySlotContents(index, (ItemStack) null);
-            }
-
-            return output;
-        } else {
-            return null;
         }
+        return max + 1;
     }
 
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public ItemStack getStackInSlot(final int var1) {
+        if (this.inventory.containsKey(var1)) {
+            return this.inventory.get(var1);
+        }
         return null;
     }
 
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        this.inventory.put(Integer.valueOf(var1), var2);
+    public ItemStack decrStackSize(final int index, int amount) {
+        if (this.inventory.containsKey(index)) {
+            final ItemStack item = this.inventory.get(index);
+            final ItemStack output = item.copy();
+            final int available = item.stackSize;
+            if (amount > available) {
+                amount = available;
+            }
+            final ItemStack itemStack = item;
+            itemStack.stackSize -= amount;
+            output.stackSize = amount;
+            if (item.stackSize == 0) {
+                this.setInventorySlotContents(index, null);
+            }
+            return output;
+        }
+        return null;
+    }
+
+    public ItemStack getStackInSlotOnClosing(final int var1) {
+        return null;
+    }
+
+    public void setInventorySlotContents(final int var1, final ItemStack var2) {
+        this.inventory.put(var1, var2);
         this.markDirty();
     }
 
@@ -82,7 +83,7 @@ public class WindowInventory implements IInventory {
         this.window.onWindowInventoryChanged();
     }
 
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUseableByPlayer(final EntityPlayer var1) {
         return true;
     }
 
@@ -96,27 +97,27 @@ public class WindowInventory implements IInventory {
         return false;
     }
 
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return this.validators.containsKey(Integer.valueOf(i)) ? ((SlotValidator) this.validators.get(Integer.valueOf(i))).isValid(itemstack) : true;
+    public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
+        return !this.validators.containsKey(i) || this.validators.get(i).isValid(itemstack);
     }
 
-    public void createSlot(int slot) {
-        this.inventory.put(Integer.valueOf(slot), (Object) null);
+    public void createSlot(final int slot) {
+        this.inventory.put(slot, null);
     }
 
-    public void setValidator(int slot, SlotValidator validator) {
-        this.validators.put(Integer.valueOf(slot), validator);
+    public void setValidator(final int slot, final SlotValidator validator) {
+        this.validators.put(slot, validator);
     }
 
-    public void disableAutoDispense(int i) {
-        this.disabledAutoDispenses.add(Integer.valueOf(i));
+    public void disableAutoDispense(final int i) {
+        this.disabledAutoDispenses.add(i);
     }
 
-    public boolean dispenseOnClose(int i) {
-        return !this.disabledAutoDispenses.contains(Integer.valueOf(i));
+    public boolean dispenseOnClose(final int i) {
+        return !this.disabledAutoDispenses.contains(i);
     }
 
-    public SlotValidator getValidator(int i) {
-        return (SlotValidator) this.validators.get(Integer.valueOf(i));
+    public SlotValidator getValidator(final int i) {
+        return this.validators.get(i);
     }
 }

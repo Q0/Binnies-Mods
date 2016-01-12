@@ -5,54 +5,50 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 class DefaultInventory implements IInventoryMachine {
-    DefaultInventory() {
-        super();
-    }
-
     public int getSizeInventory() {
         return 0;
     }
 
-    public ItemStack getStackInSlot(int i) {
+    public ItemStack getStackInSlot(final int i) {
         return null;
     }
 
-    public ItemStack decrStackSize(int i, int j) {
+    public ItemStack decrStackSize(final int i, final int j) {
         return null;
     }
 
-    public ItemStack getStackInSlotOnClosing(int i) {
+    public ItemStack getStackInSlotOnClosing(final int i) {
         return null;
     }
 
-    public void setInventorySlotContents(int i, ItemStack itemstack) {
+    public void setInventorySlotContents(final int i, final ItemStack itemstack) {
     }
 
     public int getInventoryStackLimit() {
         return 64;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+    public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
         return false;
     }
 
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+    public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
         return false;
     }
 
-    public int[] getAccessibleSlotsFromSide(int var1) {
+    public int[] getAccessibleSlotsFromSide(final int var1) {
         return new int[0];
     }
 
-    public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+    public boolean canInsertItem(final int i, final ItemStack itemstack, final int j) {
         return false;
     }
 
-    public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+    public boolean canExtractItem(final int i, final ItemStack itemstack, final int j) {
         return false;
     }
 
-    public boolean isReadOnly(int slot) {
+    public boolean isReadOnly(final int slot) {
         return false;
     }
 

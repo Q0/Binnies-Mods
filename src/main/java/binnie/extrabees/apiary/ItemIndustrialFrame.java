@@ -17,42 +17,42 @@ public class ItemIndustrialFrame extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        for (IndustrialFrame frame : IndustrialFrame.values()) {
-            ItemStack stack = new ItemStack(this);
-            NBTTagCompound nbt = new NBTTagCompound();
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+        for (final IndustrialFrame frame : IndustrialFrame.values()) {
+            final ItemStack stack = new ItemStack((Item) this);
+            final NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("frame", frame.ordinal());
             stack.setTagCompound(nbt);
             par3List.add(stack);
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        IndustrialFrame frame = getFrame(par1ItemStack);
+        final IndustrialFrame frame = getFrame(par1ItemStack);
         if (frame == null) {
             par3List.add("Invalid Contents");
         } else {
             par3List.add(frame.getName());
         }
-
     }
 
-    public String getItemStackDisplayName(ItemStack par1ItemStack) {
+    public String getItemStackDisplayName(final ItemStack par1ItemStack) {
         return "Industrial Frame";
     }
 
     public ItemIndustrialFrame() {
-        super();
         this.setCreativeTab(CreativeTabs.tabMisc);
         this.setMaxDamage(400);
         this.setMaxStackSize(1);
         this.setUnlocalizedName("industrialFrame");
     }
 
-    public static IndustrialFrame getFrame(ItemStack stack) {
-        return stack != null && stack.hasTagCompound() && stack.getTagCompound().hasKey("frame") ? IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")] : null;
+    public static IndustrialFrame getFrame(final ItemStack stack) {
+        if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("frame")) {
+            return null;
+        }
+        return IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")];
     }
 }

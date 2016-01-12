@@ -8,90 +8,81 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ItemETDoor extends ItemMetadata {
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
-        for (DoorType type : DoorType.values()) {
+    public void registerIcons(final IIconRegister register) {
+        for (final DoorType type : DoorType.values()) {
             type.iconItem = ExtraTrees.proxy.getIcon(register, "door." + type.id);
         }
-
     }
 
-    public ItemETDoor(Block block) {
+    public ItemETDoor(final Block block) {
         super(block);
         this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+    public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World, final int par4, int par5, final int par6, final int par7, final float par8, final float par9, final float par10) {
         if (par7 != 1) {
             return false;
-        } else {
-            ++par5;
-            Block block = ExtraTrees.blockDoor;
-            if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack)) {
-                if (!block.canPlaceBlockAt(par3World, par4, par5, par6)) {
-                    return false;
-                } else {
-                    int i1 = MathHelper.floor_double((double) ((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
-                    placeDoorBlock(par3World, par4, par5, par6, i1, block, par1ItemStack, par2EntityPlayer);
-                    --par1ItemStack.stackSize;
-                    return true;
-                }
-            } else {
-                return false;
-            }
         }
+        ++par5;
+        final Block block = ExtraTrees.blockDoor;
+        if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) || !par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack)) {
+            return false;
+        }
+        if (!block.canPlaceBlockAt(par3World, par4, par5, par6)) {
+            return false;
+        }
+        final int i1 = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180.0f) * 4.0f / 360.0f - 0.5) & 0x3;
+        placeDoorBlock(par3World, par4, par5, par6, i1, block, par1ItemStack, par2EntityPlayer);
+        --par1ItemStack.stackSize;
+        return true;
     }
 
-    public static void placeDoorBlock(World par0World, int par1, int par2, int par3, int par4, Block par5Block, ItemStack item, EntityPlayer player) {
+    public static void placeDoorBlock(final World par0World, final int par1, final int par2, final int par3, final int par4, final Block par5Block, final ItemStack item, final EntityPlayer player) {
         byte b0 = 0;
-        byte b1 = 0;
+        byte b2 = 0;
         if (par4 == 0) {
-            b1 = 1;
+            b2 = 1;
         }
-
         if (par4 == 1) {
             b0 = -1;
         }
-
         if (par4 == 2) {
-            b1 = -1;
+            b2 = -1;
         }
-
         if (par4 == 3) {
             b0 = 1;
         }
-
-        int i1 = (par0World.isBlockNormalCubeDefault(par1 - b0, par2, par3 - b1, false) ? 1 : 0) + (par0World.isBlockNormalCubeDefault(par1 - b0, par2 + 1, par3 - b1, false) ? 1 : 0);
-        int j1 = (par0World.isBlockNormalCubeDefault(par1 + b0, par2, par3 + b1, false) ? 1 : 0) + (par0World.isBlockNormalCubeDefault(par1 + b0, par2 + 1, par3 + b1, false) ? 1 : 0);
-        boolean flag = par0World.getBlock(par1 - b0, par2, par3 - b1) == par5Block || par0World.getBlock(par1 - b0, par2 + 1, par3 - b1) == par5Block;
-        boolean flag1 = par0World.getBlock(par1 + b0, par2, par3 + b1) == par5Block || par0World.getBlock(par1 + b0, par2 + 1, par3 + b1) == par5Block;
-        boolean flag2 = false;
-        if (flag && !flag1) {
-            flag2 = true;
+        final int i1 = (par0World.isBlockNormalCubeDefault(par1 - b0, par2, par3 - b2, false) + par0World.isBlockNormalCubeDefault(par1 - b0, par2 + 1, par3 - b2, false)) ? 1 : 0;
+        final int j1 = (par0World.isBlockNormalCubeDefault(par1 + b0, par2, par3 + b2, false) + par0World.isBlockNormalCubeDefault(par1 + b0, par2 + 1, par3 + b2, false)) ? 1 : 0;
+        final boolean flag = par0World.getBlock(par1 - b0, par2, par3 - b2) == par5Block || par0World.getBlock(par1 - b0, par2 + 1, par3 - b2) == par5Block;
+        final boolean flag2 = par0World.getBlock(par1 + b0, par2, par3 + b2) == par5Block || par0World.getBlock(par1 + b0, par2 + 1, par3 + b2) == par5Block;
+        boolean flag3 = false;
+        if (flag && !flag2) {
+            flag3 = true;
         } else if (j1 > i1) {
-            flag2 = true;
+            flag3 = true;
         }
-
         par0World.setBlock(par1, par2, par3, par5Block, par4, 2);
-        par0World.setBlock(par1, par2 + 1, par3, par5Block, 8 | (flag2 ? 1 : 0), 2);
+        par0World.setBlock(par1, par2 + 1, par3, par5Block, 0x8 | (flag3 ? 1 : 0), 2);
         if (par0World.getBlock(par1, par2, par3) == par5Block) {
-            TileEntityMetadata tile = TileEntityMetadata.getTile(par0World, par1, par2, par3);
+            final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) par0World, par1, par2, par3);
             if (tile != null) {
                 tile.setTileMetadata(TileEntityMetadata.getItemDamage(item), false);
             }
-
-            par5Block.onBlockPlacedBy(par0World, par1, par2, par3, player, item);
+            par5Block.onBlockPlacedBy(par0World, par1, par2, par3, (EntityLivingBase) player, item);
             par5Block.onPostBlockPlaced(par0World, par1, par2, par3, par4);
         }
-
         par0World.notifyBlocksOfNeighborChange(par1, par2, par3, par5Block);
         par0World.notifyBlocksOfNeighborChange(par1, par2 + 1, par3, par5Block);
     }
@@ -102,13 +93,14 @@ public class ItemETDoor extends ItemMetadata {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
-        DoorType type = BlockETDoor.getDoorType(par1);
+    @Override
+    public IIcon getIconFromDamage(final int par1) {
+        final DoorType type = BlockETDoor.getDoorType(par1);
         return type.iconItem;
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-        return WoodManager.getPlankType(par1ItemStack == null ? 0 : par1ItemStack.getItemDamage() & 255).getColour();
+    public int getColorFromItemStack(final ItemStack par1ItemStack, final int par2) {
+        return WoodManager.getPlankType((par1ItemStack == null) ? 0 : (par1ItemStack.getItemDamage() & 0xFF)).getColour();
     }
 }

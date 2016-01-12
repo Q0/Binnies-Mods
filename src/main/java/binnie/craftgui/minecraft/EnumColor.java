@@ -3,8 +3,8 @@ package binnie.craftgui.minecraft;
 public enum EnumColor {
     Black("Black", 0, '0'),
     DarkBlue("Dark Blue", 170, '1'),
-    DarkGreen("Dark Green", 'ꨀ', '2'),
-    DarkAqua("Dark Aqua", 'ꪪ', '3'),
+    DarkGreen("Dark Green", 43520, '2'),
+    DarkAqua("Dark Aqua", 43690, '3'),
     DarkRed("Dark Red", 11141120, '4'),
     Purple("Purple", 11141290, '5'),
     Gold("Gold", 16755200, '6'),
@@ -22,7 +22,7 @@ public enum EnumColor {
     String name;
     char code;
 
-    private EnumColor(String name, int colour, char code) {
+    private EnumColor(final String name, final int colour, final char code) {
         this.name = name;
         this.colour = colour;
         this.code = code;
@@ -36,6 +36,7 @@ public enum EnumColor {
         return "§" + this.code;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }

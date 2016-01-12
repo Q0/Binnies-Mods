@@ -5,5 +5,5 @@ import com.mojang.authlib.GameProfile;
 interface IOwnable {
     GameProfile getOwner();
 
-    void setOwner(GameProfile var1);
+    void setOwner(final GameProfile p0);
 }

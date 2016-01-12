@@ -4,27 +4,32 @@ import forestry.api.core.INBTTagable;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ProcessInfo implements INBTTagable {
-    private float currentProgress = 0.0F;
-    private int processEnergy = 0;
-    private int processTime = 0;
-    private float energyPerTick = 0.0F;
+    private float currentProgress;
+    private int processEnergy;
+    private int processTime;
+    private float energyPerTick;
 
-    public ProcessInfo(IProcess process) {
-        super();
+    public ProcessInfo(final IProcess process) {
+        this.currentProgress = 0.0f;
+        this.processEnergy = 0;
+        this.processTime = 0;
+        this.energyPerTick = 0.0f;
         this.energyPerTick = process.getEnergyPerTick();
         if (process instanceof IProcessTimed) {
-            IProcessTimed time = (IProcessTimed) process;
+            final IProcessTimed time = (IProcessTimed) process;
             this.currentProgress = time.getProgress();
             this.processEnergy = time.getProcessEnergy();
             this.processTime = time.getProcessLength();
         } else {
-            this.currentProgress = process.isInProgress() ? 100.0F : 0.0F;
+            this.currentProgress = (process.isInProgress() ? 100.0f : 0.0f);
         }
-
     }
 
     public ProcessInfo() {
-        super();
+        this.currentProgress = 0.0f;
+        this.processEnergy = 0;
+        this.processTime = 0;
+        this.energyPerTick = 0.0f;
     }
 
     public float getCurrentProgress() {
@@ -43,14 +48,14 @@ public class ProcessInfo implements INBTTagable {
         return this.energyPerTick;
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
         this.energyPerTick = nbttagcompound.getFloat("ept");
         this.processEnergy = nbttagcompound.getInteger("e");
         this.processTime = nbttagcompound.getInteger("t");
         this.currentProgress = nbttagcompound.getFloat("p");
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         nbttagcompound.setFloat("ept", this.energyPerTick);
         nbttagcompound.setFloat("p", this.currentProgress);
         nbttagcompound.setInteger("e", this.processEnergy);

@@ -4,6 +4,7 @@ import binnie.botany.Botany;
 import binnie.botany.CreativeTabBotany;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,46 +16,44 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 public class ItemInsulatedTube extends Item {
-    IIcon[] icons = new IIcon[3];
+    IIcon[] icons;
 
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
-        for (ItemInsulatedTube.Material mat : ItemInsulatedTube.Material.values()) {
-            for (ItemInsulatedTube.Insulate ins : ItemInsulatedTube.Insulate.values()) {
-                p_150895_3_.add(new ItemStack(this, 1, mat.ordinal() + ins.ordinal() * 128));
+    public void getSubItems(final Item p_150895_1_, final CreativeTabs p_150895_2_, final List p_150895_3_) {
+        for (final Material mat : Material.values()) {
+            for (final Insulate ins : Insulate.values()) {
+                p_150895_3_.add(new ItemStack((Item) this, 1, mat.ordinal() + ins.ordinal() * 128));
             }
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister p_94581_1_) {
+    public void registerIcons(final IIconRegister p_94581_1_) {
         for (int i = 0; i < 3; ++i) {
             this.icons[i] = Botany.proxy.getIcon(p_94581_1_, "insulatedTube." + i);
         }
-
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int pass) {
-        return pass == 0 ? 16777215 : (pass == 1 ? ItemInsulatedTube.Material.get(stack.getItemDamage()).getColor() : ItemInsulatedTube.Insulate.get(stack.getItemDamage()).getColor());
+    public int getColorFromItemStack(final ItemStack stack, final int pass) {
+        return (pass == 0) ? 16777215 : ((pass == 1) ? Material.get(stack.getItemDamage()).getColor() : Insulate.get(stack.getItemDamage()).getColor());
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+    public void addInformation(final ItemStack p_77624_1_, final EntityPlayer p_77624_2_, final List p_77624_3_, final boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
-        p_77624_3_.add(ItemInsulatedTube.Insulate.get(p_77624_1_.getItemDamage()).getName());
+        p_77624_3_.add(Insulate.get(p_77624_1_.getItemDamage()).getName());
     }
 
-    public String getItemStackDisplayName(ItemStack p_77653_1_) {
-        return ItemInsulatedTube.Material.get(p_77653_1_.getItemDamage()).getName() + " Insulated Tube";
+    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
+        return Material.get(p_77653_1_.getItemDamage()).getName() + " Insulated Tube";
     }
 
-    public int getRenderPasses(int metadata) {
+    public int getRenderPasses(final int metadata) {
         return 3;
     }
 
-    public IIcon getIcon(ItemStack stack, int pass) {
+    public IIcon getIcon(final ItemStack stack, final int pass) {
         return this.icons[pass % 3];
     }
 
@@ -63,20 +62,47 @@ public class ItemInsulatedTube extends Item {
     }
 
     public ItemInsulatedTube() {
-        super();
+        this.icons = new IIcon[3];
         this.setUnlocalizedName("insulatedTube");
         this.setCreativeTab(CreativeTabBotany.instance);
     }
 
-    public static String getInsulate(ItemStack stack) {
-        return ItemInsulatedTube.Insulate.get(stack.getItemDamage()).getName();
+    public static String getInsulate(final ItemStack stack) {
+        return Insulate.get(stack.getItemDamage()).getName();
     }
 
-    public static ItemStack getInsulateStack(ItemStack stack) {
-        return ItemInsulatedTube.Insulate.get(stack.getItemDamage()).getStack();
+    public static ItemStack getInsulateStack(final ItemStack stack) {
+        return Insulate.get(stack.getItemDamage()).getStack();
     }
 
-    static enum Insulate {
+    enum Material {
+        Copper(14923662, "Copper"),
+        Tin(14806772, "Tin"),
+        Bronze(14533238, "Bronze"),
+        Iron(14211288, "Iron");
+
+        int color;
+        String name;
+
+        public int getColor() {
+            return this.color;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        private Material(final int color, final String name) {
+            this.color = color;
+            this.name = name;
+        }
+
+        public static Material get(final int i) {
+            return values()[i % values().length];
+        }
+    }
+
+    enum Insulate {
         Clay(10595020, "Clay"),
         Cobble(8092539, "Cobblestone"),
         Sand(15723189, "Sand"),
@@ -95,59 +121,39 @@ public class ItemInsulatedTube extends Item {
             return this.name;
         }
 
-        private Insulate(int color, String name) {
+        private Insulate(final int color, final String name) {
             this.color = color;
             this.name = name;
         }
 
-        public static ItemInsulatedTube.Insulate get(int i) {
+        public static Insulate get(final int i) {
             return values()[i / 128 % values().length];
         }
 
         public ItemStack getStack() {
             switch (this) {
-                case Clay:
+                case Clay: {
                     return new ItemStack(Blocks.clay);
-                case Cobble:
+                }
+                case Cobble: {
                     return new ItemStack(Blocks.cobblestone);
-                case HardenedClay:
+                }
+                case HardenedClay: {
                     return new ItemStack(Blocks.hardened_clay);
-                case Sand:
-                    return new ItemStack(Blocks.sand);
-                case Sandstone:
+                }
+                case Sand: {
+                    return new ItemStack((Block) Blocks.sand);
+                }
+                case Sandstone: {
                     return new ItemStack(Blocks.sandstone);
-                case Stone:
+                }
+                case Stone: {
                     return new ItemStack(Blocks.stone);
-                default:
+                }
+                default: {
                     return null;
+                }
             }
-        }
-    }
-
-    static enum Material {
-        Copper(14923662, "Copper"),
-        Tin(14806772, "Tin"),
-        Bronze(14533238, "Bronze"),
-        Iron(14211288, "Iron");
-
-        int color;
-        String name;
-
-        public int getColor() {
-            return this.color;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        private Material(int color, String name) {
-            this.color = color;
-            this.name = name;
-        }
-
-        public static ItemInsulatedTube.Material get(int i) {
-            return values()[i % values().length];
         }
     }
 }

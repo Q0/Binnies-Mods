@@ -5,7 +5,7 @@ public interface IColourMix {
 
     IFlowerColour getColour2();
 
-    boolean isMutation(IFlowerColour var1, IFlowerColour var2);
+    boolean isMutation(final IFlowerColour p0, final IFlowerColour p1);
 
     int getChance();
 

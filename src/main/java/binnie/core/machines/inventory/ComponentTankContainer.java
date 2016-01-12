@@ -4,6 +4,7 @@ import binnie.core.machines.IMachine;
 import binnie.core.machines.MachineComponent;
 import binnie.core.machines.power.ITankMachine;
 import binnie.core.machines.power.TankInfo;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,162 +17,165 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class ComponentTankContainer extends MachineComponent implements ITankMachine {
-    private Map tanks = new LinkedHashMap();
+    private Map<Integer, TankSlot> tanks;
 
-    public ComponentTankContainer(IMachine machine) {
+    public ComponentTankContainer(final IMachine machine) {
         super(machine);
+        this.tanks = new LinkedHashMap<Integer, TankSlot>();
     }
 
-    public final TankSlot addTank(int index, String name, int capacity) {
-        TankSlot tank = new TankSlot(index, name, capacity);
-        this.tanks.put(Integer.valueOf(index), tank);
+    @Override
+    public final TankSlot addTank(final int index, final String name, final int capacity) {
+        final TankSlot tank = new TankSlot(index, name, capacity);
+        this.tanks.put(index, tank);
         return tank;
     }
 
-    public final int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int index = this.getTankIndexToFill(from, resource);
-        return this.tanks.containsKey(Integer.valueOf(index)) ? this.fill(index, resource, doFill) : 0;
-    }
-
-    public final FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        int index = this.getTankIndexToDrain(from, (FluidStack) null);
-        return this.tanks.containsKey(Integer.valueOf(index)) ? this.drain(index, maxDrain, doDrain) : null;
-    }
-
-    private final int fill(int tankIndex, FluidStack resource, boolean doFill) {
-        if (!this.tanks.containsKey(Integer.valueOf(tankIndex))) {
-            return 0;
-        } else if (!this.isLiquidValidForTank(resource, tankIndex)) {
-            return 0;
-        } else {
-            TankSlot tank = (TankSlot) this.tanks.get(Integer.valueOf(tankIndex));
-            int filled = tank.getTank().fill(resource, doFill);
-            if (filled > 0) {
-                this.markDirty();
-            }
-
-            return filled;
+    public final int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
+        final int index = this.getTankIndexToFill(from, resource);
+        if (this.tanks.containsKey(index)) {
+            return this.fill(index, resource, doFill);
         }
+        return 0;
     }
 
-    private final FluidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-        if (!this.tanks.containsKey(Integer.valueOf(tankIndex))) {
+    public final FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
+        final int index = this.getTankIndexToDrain(from, null);
+        if (this.tanks.containsKey(index)) {
+            return this.drain(index, maxDrain, doDrain);
+        }
+        return null;
+    }
+
+    private final int fill(final int tankIndex, final FluidStack resource, final boolean doFill) {
+        if (!this.tanks.containsKey(tankIndex)) {
+            return 0;
+        }
+        if (!this.isLiquidValidForTank(resource, tankIndex)) {
+            return 0;
+        }
+        final TankSlot tank = this.tanks.get(tankIndex);
+        final int filled = tank.getTank().fill(resource, doFill);
+        if (filled > 0) {
+            this.markDirty();
+        }
+        return filled;
+    }
+
+    private final FluidStack drain(final int tankIndex, final int maxDrain, final boolean doDrain) {
+        if (!this.tanks.containsKey(tankIndex)) {
             return null;
-        } else {
-            TankSlot tank = (TankSlot) this.tanks.get(Integer.valueOf(tankIndex));
-            FluidStack drained = tank.getTank().drain(maxDrain, doDrain);
-            if (drained != null) {
-                this.markDirty();
-            }
-
-            return drained;
         }
+        final TankSlot tank = this.tanks.get(tankIndex);
+        final FluidStack drained = tank.getTank().drain(maxDrain, doDrain);
+        if (drained != null) {
+            this.markDirty();
+        }
+        return drained;
     }
 
-    private int getTankIndexToFill(ForgeDirection from, FluidStack resource) {
-        for (TankSlot tank : this.tanks.values()) {
+    private int getTankIndexToFill(final ForgeDirection from, final FluidStack resource) {
+        for (final TankSlot tank : this.tanks.values()) {
             if (tank.isValid(resource) && tank.canInsert(from) && (tank.getContent() == null || tank.getContent().isFluidEqual(resource))) {
                 return tank.getIndex();
             }
         }
-
         return -1;
     }
 
-    private int getTankIndexToDrain(ForgeDirection from, FluidStack resource) {
-        for (TankSlot tank : this.tanks.values()) {
+    private int getTankIndexToDrain(final ForgeDirection from, final FluidStack resource) {
+        for (final TankSlot tank : this.tanks.values()) {
             if (tank.getContent() != null && tank.canExtract(from) && (resource == null || resource.isFluidEqual(tank.getContent()))) {
                 return tank.getIndex();
             }
         }
-
         return -1;
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         if (nbttagcompound.hasKey("liquidTanks")) {
-            NBTTagList tanksNBT = nbttagcompound.getTagList("liquidTanks", 10);
-
+            final NBTTagList tanksNBT = nbttagcompound.getTagList("liquidTanks", 10);
             for (int i = 0; i < tanksNBT.tagCount(); ++i) {
-                NBTTagCompound tankNBT = tanksNBT.getCompoundTagAt(i);
-                int index = tankNBT.getInteger("index");
-                if (this.tanks.containsKey(Integer.valueOf(index))) {
-                    ((TankSlot) this.tanks.get(Integer.valueOf(index))).readFromNBT(tankNBT);
+                final NBTTagCompound tankNBT = tanksNBT.getCompoundTagAt(i);
+                final int index = tankNBT.getInteger("index");
+                if (this.tanks.containsKey(index)) {
+                    this.tanks.get(index).readFromNBT(tankNBT);
                 }
             }
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    @Override
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        NBTTagList tanksNBT = new NBTTagList();
-
-        for (Entry<Integer, TankSlot> entry : this.tanks.entrySet()) {
-            NBTTagCompound tankNBT = new NBTTagCompound();
-            tankNBT.setInteger("index", ((Integer) entry.getKey()).intValue());
-            ((TankSlot) entry.getValue()).writeToNBT(tankNBT);
-            tanksNBT.appendTag(tankNBT);
+        final NBTTagList tanksNBT = new NBTTagList();
+        for (final Map.Entry<Integer, TankSlot> entry : this.tanks.entrySet()) {
+            final NBTTagCompound tankNBT = new NBTTagCompound();
+            tankNBT.setInteger("index", (int) entry.getKey());
+            entry.getValue().writeToNBT(tankNBT);
+            tanksNBT.appendTag((NBTBase) tankNBT);
         }
-
-        nbttagcompound.setTag("liquidTanks", tanksNBT);
+        nbttagcompound.setTag("liquidTanks", (NBTBase) tanksNBT);
     }
 
-    public boolean isTankReadOnly(int tank) {
-        return ((TankSlot) this.tanks.get(Integer.valueOf(tank))).isReadOnly();
+    public boolean isTankReadOnly(final int tank) {
+        return this.tanks.get(tank).isReadOnly();
     }
 
-    public boolean isLiquidValidForTank(FluidStack liquid, int tank) {
-        TankSlot slot = this.getTankSlot(tank);
-        return slot == null ? false : slot.isValid(liquid) && !slot.isReadOnly();
+    public boolean isLiquidValidForTank(final FluidStack liquid, final int tank) {
+        final TankSlot slot = this.getTankSlot(tank);
+        return slot != null && (slot.isValid(liquid) && !slot.isReadOnly());
     }
 
+    @Override
     public TankInfo[] getTankInfos() {
         return TankInfo.get(this);
     }
 
-    public IFluidTank getTank(int index) {
+    @Override
+    public IFluidTank getTank(final int index) {
         return this.getTanks()[index];
     }
 
+    @Override
     public IFluidTank[] getTanks() {
-        List<IFluidTank> ltanks = new ArrayList();
-
-        for (TankSlot tank : this.tanks.values()) {
+        final List<IFluidTank> ltanks = new ArrayList<IFluidTank>();
+        for (final TankSlot tank : this.tanks.values()) {
             ltanks.add(tank.getTank());
         }
-
-        return (IFluidTank[]) ltanks.toArray(new IFluidTank[0]);
+        return ltanks.toArray(new IFluidTank[0]);
     }
 
-    public TankSlot getTankSlot(int index) {
-        return (TankSlot) this.tanks.get(Integer.valueOf(index));
+    @Override
+    public TankSlot getTankSlot(final int index) {
+        return this.tanks.get(index);
     }
 
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        int index = this.getTankIndexToDrain(from, (FluidStack) null);
-        return this.tanks.containsKey(Integer.valueOf(index)) ? this.drain(index, resource.amount, doDrain) : null;
+    public FluidStack drain(final ForgeDirection from, final FluidStack resource, final boolean doDrain) {
+        final int index = this.getTankIndexToDrain(from, null);
+        if (this.tanks.containsKey(index)) {
+            return this.drain(index, resource.amount, doDrain);
+        }
+        return null;
     }
 
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(final ForgeDirection from, final Fluid fluid) {
         return this.fill(from, new FluidStack(fluid, 1), false) > 0;
     }
 
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(final ForgeDirection from, final Fluid fluid) {
         return this.drain(from, new FluidStack(fluid, 1), false) != null;
     }
 
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        FluidTankInfo[] info = new FluidTankInfo[this.getTanks().length];
-
+    public FluidTankInfo[] getTankInfo(final ForgeDirection from) {
+        final FluidTankInfo[] info = new FluidTankInfo[this.getTanks().length];
         for (int i = 0; i < info.length; ++i) {
             info[i] = new FluidTankInfo(this.getTanks()[i]);
         }
-
         return info;
     }
 
@@ -179,6 +183,5 @@ public class ComponentTankContainer extends MachineComponent implements ITankMac
         if (this.getMachine() != null) {
             this.getMachine().markDirty();
         }
-
     }
 }

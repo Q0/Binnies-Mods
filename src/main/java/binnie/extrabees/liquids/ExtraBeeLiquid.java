@@ -19,48 +19,58 @@ public enum ExtraBeeLiquid implements ILiquidType {
     IIcon icon;
     int colour;
 
-    private ExtraBeeLiquid(String ident, int colour) {
+    private ExtraBeeLiquid(final String ident, final int colour) {
         this.ident = ident;
         this.colour = colour;
     }
 
+    @Override
     public IIcon getIcon() {
         return this.icon;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcon(IIconRegister register) {
+    @Override
+    public void registerIcon(final IIconRegister register) {
         this.icon = ExtraBees.proxy.getIcon(register, "liquids/" + this.getIdentifier());
     }
 
+    @Override
     public String getName() {
         return ExtraBees.proxy.localise(this.toString().toLowerCase());
     }
 
+    @Override
     public String getIdentifier() {
         return this.ident;
     }
 
+    @Override
     public int getColour() {
         return 16777215;
     }
 
-    public FluidStack get(int amount) {
+    @Override
+    public FluidStack get(final int amount) {
         return Binnie.Liquid.getLiquidStack(this.ident, amount);
     }
 
+    @Override
     public int getTransparency() {
         return 255;
     }
 
-    public boolean canPlaceIn(FluidContainer container) {
+    @Override
+    public boolean canPlaceIn(final FluidContainer container) {
         return true;
     }
 
-    public boolean showInCreative(FluidContainer container) {
+    @Override
+    public boolean showInCreative(final FluidContainer container) {
         return container == FluidContainer.Bucket || container == FluidContainer.Can || container == FluidContainer.Capsule || container == FluidContainer.Refractory;
     }
 
+    @Override
     public int getContainerColour() {
         return this.colour;
     }

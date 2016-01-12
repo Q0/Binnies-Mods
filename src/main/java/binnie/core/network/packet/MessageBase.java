@@ -6,55 +6,50 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MessageBase {
     private int id;
 
-    public MessageBase(int id) {
-        super();
+    public MessageBase(final int id) {
         this.id = id;
     }
 
-    public MessageBase(MessageBinnie message) {
-        super();
-
+    public MessageBase(final MessageBinnie message) {
         try {
             this.readData(message.data);
-        } catch (IOException var3) {
-            var3.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
     public MessageBinnie GetMessage() {
         return new MessageBinnie(this.id, this);
     }
 
-    protected NBTTagCompound readNBTTagCompound(ByteBuf data) throws IOException {
-        short length = data.readShort();
+    protected NBTTagCompound readNBTTagCompound(final ByteBuf data) throws IOException {
+        final short length = data.readShort();
         if (length < 0) {
             return null;
-        } else {
-            byte[] compressed = new byte[length];
-            data.readBytes(compressed);
-            return CompressedStreamTools.readCompressed(new ByteArrayInputStream(compressed));
         }
+        final byte[] compressed = new byte[length];
+        data.readBytes(compressed);
+        return CompressedStreamTools.readCompressed((InputStream) new ByteArrayInputStream(compressed));
     }
 
-    protected void writeNBTTagCompound(NBTTagCompound nbttagcompound, ByteBuf data) throws IOException {
+    protected void writeNBTTagCompound(final NBTTagCompound nbttagcompound, final ByteBuf data) throws IOException {
         if (nbttagcompound == null) {
             data.writeShort(-1);
         } else {
-            byte[] compressed = CompressedStreamTools.compress(nbttagcompound);
-            data.writeShort((short) compressed.length);
+            final byte[] compressed = CompressedStreamTools.compress(nbttagcompound);
+            data.writeShort((int) (short) compressed.length);
             data.writeBytes(compressed);
         }
-
     }
 
-    public void writeData(ByteBuf data) throws IOException {
+    public void writeData(final ByteBuf data) throws IOException {
     }
 
-    public void readData(ByteBuf data) throws IOException {
+    public void readData(final ByteBuf data) throws IOException {
     }
 }

@@ -9,11 +9,12 @@ import net.minecraft.util.IIcon;
 public class ControlBlockIconDisplay extends Control {
     IIcon icon;
 
-    public ControlBlockIconDisplay(IWidget parent, float x, float y, IIcon icon) {
-        super(parent, x, y, 18.0F, 18.0F);
+    public ControlBlockIconDisplay(final IWidget parent, final float x, final float y, final IIcon icon) {
+        super(parent, x, y, 18.0f, 18.0f);
         this.icon = icon;
     }
 
+    @Override
     public void onRenderBackground() {
         CraftGUI.Render.iconBlock(IPoint.ZERO, this.icon);
     }

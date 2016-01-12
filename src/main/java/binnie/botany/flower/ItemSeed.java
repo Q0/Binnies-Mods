@@ -7,10 +7,12 @@ public class ItemSeed extends ItemBotany {
         super("seed");
     }
 
+    @Override
     public EnumFlowerStage getStage() {
         return EnumFlowerStage.SEED;
     }
 
+    @Override
     public String getTag() {
         return " Germling";
     }

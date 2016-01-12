@@ -1,126 +1,142 @@
 package binnie.craftgui.minecraft;
 
 import java.util.*;
-import java.util.Map.Entry;
 
-class ListMap implements List {
-    private LinkedHashMap map = new LinkedHashMap();
+class ListMap<T> implements List<T> {
+    private LinkedHashMap<Integer, T> map;
 
     ListMap() {
-        super();
+        this.map = new LinkedHashMap<Integer, T>();
     }
 
+    @Override
     public int size() {
         int i = -1;
-        Iterator i$ = this.map.keySet().iterator();
-
-        while (i$.hasNext()) {
-            int k = ((Integer) i$.next()).intValue();
+        for (final int k : this.map.keySet()) {
             if (k > i) {
                 i = k;
             }
         }
-
         return i + 1;
     }
 
+    @Override
     public boolean isEmpty() {
         return this.map.isEmpty();
     }
 
-    public boolean contains(Object o) {
+    @Override
+    public boolean contains(final Object o) {
         return this.map.containsValue(o);
     }
 
-    public Iterator iterator() {
+    @Override
+    public Iterator<T> iterator() {
         return this.map.values().iterator();
     }
 
+    @Override
     public Object[] toArray() {
         return this.map.values().toArray();
     }
 
-    public Object[] toArray(Object[] a) {
+    @Override
+    public <P> P[] toArray(final P[] a) {
         return this.map.values().toArray(a);
     }
 
-    public boolean add(Object e) {
+    @Override
+    public boolean add(final T e) {
         if (this.get(this.size()) == null) {
             this.add(this.size(), e);
             return true;
-        } else {
-            return false;
         }
-    }
-
-    public boolean remove(Object o) {
         return false;
     }
 
-    public boolean containsAll(Collection c) {
+    @Override
+    public boolean remove(final Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(final Collection<?> c) {
         return this.map.values().containsAll(c);
     }
 
-    public boolean addAll(Collection c) {
+    @Override
+    public boolean addAll(final Collection<? extends T> c) {
         return false;
     }
 
-    public boolean addAll(int index, Collection c) {
+    @Override
+    public boolean addAll(final int index, final Collection<? extends T> c) {
         return false;
     }
 
-    public boolean removeAll(Collection c) {
+    @Override
+    public boolean removeAll(final Collection<?> c) {
         return false;
     }
 
-    public boolean retainAll(Collection c) {
+    @Override
+    public boolean retainAll(final Collection<?> c) {
         return false;
     }
 
+    @Override
     public void clear() {
         this.map.clear();
     }
 
-    public Object get(int index) {
-        return this.map.get(Integer.valueOf(index));
+    @Override
+    public T get(final int index) {
+        return this.map.get(index);
     }
 
-    public Object set(int index, Object element) {
-        this.map.put(Integer.valueOf(index), element);
+    @Override
+    public T set(final int index, final T element) {
+        this.map.put(index, element);
         return element;
     }
 
-    public void add(int index, Object element) {
-        this.map.put(Integer.valueOf(index), element);
+    @Override
+    public void add(final int index, final T element) {
+        this.map.put(index, element);
     }
 
-    public Object remove(int index) {
+    @Override
+    public T remove(final int index) {
         return null;
     }
 
-    public int indexOf(Object o) {
-        for (Entry<Integer, T> entry : this.map.entrySet()) {
+    @Override
+    public int indexOf(final Object o) {
+        for (final Map.Entry<Integer, T> entry : this.map.entrySet()) {
             if (entry.getValue() == o) {
-                return ((Integer) entry.getKey()).intValue();
+                return entry.getKey();
             }
         }
-
         return 0;
     }
 
-    public int lastIndexOf(Object o) {
+    @Override
+    public int lastIndexOf(final Object o) {
         return this.indexOf(o);
     }
 
-    public ListIterator listIterator() {
+    @Override
+    public ListIterator<T> listIterator() {
         return null;
     }
 
-    public ListIterator listIterator(int index) {
+    @Override
+    public ListIterator<T> listIterator(final int index) {
         return null;
     }
 
-    public List subList(int fromIndex, int toIndex) {
+    @Override
+    public List<T> subList(final int fromIndex, final int toIndex) {
         return null;
     }
 }

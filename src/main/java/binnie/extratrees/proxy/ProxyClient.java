@@ -2,13 +2,11 @@ package binnie.extratrees.proxy;
 
 import binnie.extratrees.genetics.FruitSprite;
 import forestry.api.core.ForestryAPI;
+import forestry.api.core.IIconProvider;
 
 public class ProxyClient extends Proxy implements IExtraTreeProxy {
-    public ProxyClient() {
-        super();
-    }
-
+    @Override
     public void init() {
-        ForestryAPI.textureManager.registerIconProvider(FruitSprite.Average);
+        ForestryAPI.textureManager.registerIconProvider((IIconProvider) FruitSprite.Average);
     }
 }

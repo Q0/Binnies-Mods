@@ -11,9 +11,6 @@ public enum EnumBeeModifier {
     Flowering,
     GeneticDecay;
 
-    private EnumBeeModifier() {
-    }
-
     public String getName() {
         return Binnie.Language.localise(BinnieCore.instance, "beemodifier." + this.name().toLowerCase());
     }

@@ -28,83 +28,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockETDoor extends BlockDoor implements IBlockMetadata {
-    private IIcon getFlippedIcon(boolean upper, boolean flip, int tileMeta) {
-        DoorType type = getDoorType(tileMeta);
+    private IIcon getFlippedIcon(final boolean upper, final boolean flip, final int tileMeta) {
+        final DoorType type = getDoorType(tileMeta);
         return upper ? (flip ? type.iconDoorUpperFlip : type.iconDoorUpper) : (flip ? type.iconDoorLowerFlip : type.iconDoorLower);
     }
 
-    public static DoorType getDoorType(int tileMeta) {
-        int type = (tileMeta & 3840) >> 8;
-        return type >= 0 && type < DoorType.values().length ? DoorType.values()[type] : DoorType.Standard;
+    public static DoorType getDoorType(final int tileMeta) {
+        final int type = (tileMeta & 0xF00) >> 8;
+        if (type >= 0 && type < DoorType.values().length) {
+            return DoorType.values()[type];
+        }
+        return DoorType.Standard;
     }
 
     protected BlockETDoor() {
         super(Material.wood);
-        this.setHardness(3.0F).setStepSound(soundTypeWood);
+        this.setHardness(3.0f).setStepSound(BlockETDoor.soundTypeWood);
         this.setCreativeTab(Tabs.tabArboriculture);
         this.setBlockName("door");
     }
 
-    public IIcon getIcon(int side, int meta) {
+    public IIcon getIcon(final int side, final int meta) {
         return DoorType.Standard.iconDoorLower;
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+    public IIcon getIcon(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4, final int par5) {
         if (par5 != 1 && par5 != 0) {
-            int i1 = this.getFullMetadata(par1IBlockAccess, par2, par3, par4);
-            int j1 = i1 & 3;
-            boolean flag = (i1 & 4) != 0;
-            boolean flag1 = false;
-            boolean flag2 = (i1 & 8) != 0;
+            final int i1 = this.getFullMetadata(par1IBlockAccess, par2, par3, par4);
+            final int j1 = i1 & 0x3;
+            final boolean flag = (i1 & 0x4) != 0x0;
+            boolean flag2 = false;
+            final boolean flag3 = (i1 & 0x8) != 0x0;
             if (flag) {
                 if (j1 == 0 && par5 == 2) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 1 && par5 == 5) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 2 && par5 == 3) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 3 && par5 == 4) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 }
             } else {
                 if (j1 == 0 && par5 == 5) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 1 && par5 == 3) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 2 && par5 == 4) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 } else if (j1 == 3 && par5 == 2) {
-                    flag1 = !flag1;
+                    flag2 = !flag2;
                 }
-
-                if ((i1 & 16) != 0) {
-                    flag1 = !flag1;
+                if ((i1 & 0x10) != 0x0) {
+                    flag2 = !flag2;
                 }
             }
-
             int tileMeta = 0;
-            if (flag2) {
+            if (flag3) {
                 tileMeta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3 - 1, par4);
             } else {
                 tileMeta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3, par4);
             }
-
-            return this.getFlippedIcon(flag2, flag1, tileMeta);
-        } else {
-            return DoorType.Standard.iconDoorLower;
+            return this.getFlippedIcon(flag3, flag2, tileMeta);
         }
+        return DoorType.Standard.iconDoorLower;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        for (DoorType type : DoorType.values()) {
+    public void registerBlockIcons(final IIconRegister register) {
+        for (final DoorType type : DoorType.values()) {
             type.iconDoorLower = ExtraTrees.proxy.getIcon(register, "door." + type.id + ".lower");
             type.iconDoorUpper = ExtraTrees.proxy.getIcon(register, "door." + type.id + ".upper");
-            type.iconDoorLowerFlip = new IconFlipped(type.iconDoorLower, true, false);
-            type.iconDoorUpperFlip = new IconFlipped(type.iconDoorUpper, true, false);
+            type.iconDoorLowerFlip = (IIcon) new IconFlipped(type.iconDoorLower, true, false);
+            type.iconDoorUpperFlip = (IIcon) new IconFlipped(type.iconDoorUpper, true, false);
         }
-
     }
 
     public int getRenderType() {
@@ -112,51 +110,48 @@ public class BlockETDoor extends BlockDoor implements IBlockMetadata {
     }
 
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        int par5 = 2;
-        int i1 = this.getFullMetadata(par1IBlockAccess, par2, par3, par4);
-        int j1 = i1 & 3;
-        boolean flag = (i1 & 4) != 0;
-        boolean flag1 = false;
-        boolean flag2 = (i1 & 8) != 0;
+    public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4) {
+        final int par5 = 2;
+        final int i1 = this.getFullMetadata(par1IBlockAccess, par2, par3, par4);
+        final int j1 = i1 & 0x3;
+        final boolean flag = (i1 & 0x4) != 0x0;
+        boolean flag2 = false;
+        final boolean flag3 = (i1 & 0x8) != 0x0;
         if (flag) {
             if (j1 == 0 && par5 == 2) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 1 && par5 == 5) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 2 && par5 == 3) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 3 && par5 == 4) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             }
         } else {
             if (j1 == 0 && par5 == 5) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 1 && par5 == 3) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 2 && par5 == 4) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             } else if (j1 == 3 && par5 == 2) {
-                flag1 = !flag1;
+                flag2 = !flag2;
             }
-
-            if ((i1 & 16) != 0) {
-                flag1 = !flag1;
+            if ((i1 & 0x10) != 0x0) {
+                flag2 = !flag2;
             }
         }
-
-        if (flag2) {
-            int meta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3 - 1, par4);
-            return WoodManager.getPlankType(meta & 255).getColour();
-        } else {
-            int meta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3, par4);
-            return WoodManager.getPlankType(meta & 255).getColour();
+        if (flag3) {
+            final int meta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3 - 1, par4);
+            return WoodManager.getPlankType(meta & 0xFF).getColour();
         }
+        final int meta = TileEntityMetadata.getTileMetadata(par1IBlockAccess, par2, par3, par4);
+        return WoodManager.getPlankType(meta & 0xFF).getColour();
     }
 
-    public int getFullMetadata(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-        boolean flag = (l & 8) != 0;
+    public int getFullMetadata(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4) {
+        final int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        final boolean flag = (l & 0x8) != 0x0;
         int i1;
         int j1;
         if (flag) {
@@ -166,106 +161,103 @@ public class BlockETDoor extends BlockDoor implements IBlockMetadata {
             i1 = l;
             j1 = par1IBlockAccess.getBlockMetadata(par2, par3 + 1, par4);
         }
-
-        boolean flag1 = (j1 & 1) != 0;
-        return i1 & 7 | (flag ? 8 : 0) | (flag1 ? 16 : 0);
+        final boolean flag2 = (j1 & 0x1) != 0x0;
+        return (i1 & 0x7) | (flag ? 8 : 0) | (flag2 ? 16 : 0);
     }
 
     @SideOnly(Side.CLIENT)
-    public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
-        if (par6EntityPlayer.capabilities.isCreativeMode && (par5 & 8) != 0 && par1World.getBlock(par2, par3 - 1, par4) == this) {
+    public void onBlockHarvested(final World par1World, final int par2, final int par3, final int par4, final int par5, final EntityPlayer par6EntityPlayer) {
+        if (par6EntityPlayer.capabilities.isCreativeMode && (par5 & 0x8) != 0x0 && par1World.getBlock(par2, par3 - 1, par4) == this) {
             par1World.setBlockToAir(par2, par3 - 1, par4);
         }
-
     }
 
-    public ArrayList getDrops(World world, int x, int y, int z, int blockMeta, int fortune) {
+    public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int blockMeta, final int fortune) {
         return BlockMetadata.getBlockDropped(this, world, x, y, z, blockMeta);
     }
 
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    public boolean removedByPlayer(final World world, final EntityPlayer player, final int x, final int y, final int z) {
         return BlockMetadata.breakBlock(this, player, world, x, y, z);
     }
 
-    public TileEntity createNewTileEntity(World var1, int k) {
+    public TileEntity createNewTileEntity(final World var1, final int k) {
         return new TileEntityMetadata();
     }
 
-    public boolean hasTileEntity(int meta) {
+    public boolean hasTileEntity(final int meta) {
         return true;
     }
 
-    public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
+    public boolean onBlockEventReceived(final World par1World, final int par2, final int par3, final int par4, final int par5, final int par6) {
         super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-        TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-        return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+        final TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
+        return tileentity != null && tileentity.receiveClientEvent(par5, par6);
     }
 
-    public int getPlacedMeta(ItemStack stack, World world, int x, int y, int z, ForgeDirection clickedBlock) {
+    public int getPlacedMeta(final ItemStack stack, final World world, final int x, final int y, final int z, final ForgeDirection clickedBlock) {
         return TileEntityMetadata.getItemDamage(stack);
     }
 
-    public int getDroppedMeta(int blockMeta, int tileMeta) {
+    public int getDroppedMeta(final int blockMeta, final int tileMeta) {
         return tileMeta;
     }
 
-    public String getBlockName(ItemStack par1ItemStack) {
-        int meta = TileEntityMetadata.getItemDamage(par1ItemStack);
-        String typeName = getDoorType(meta).getName();
-        String woodName = WoodManager.getPlankType(meta & 255).getName();
-        return typeName.equals("") ? Binnie.Language.localise(ExtraTrees.instance, "block.door.name", new Object[]{woodName}) : Binnie.Language.localise(ExtraTrees.instance, "block.door.name.adv", new Object[]{woodName, typeName});
+    public String getBlockName(final ItemStack par1ItemStack) {
+        final int meta = TileEntityMetadata.getItemDamage(par1ItemStack);
+        final String typeName = getDoorType(meta).getName();
+        final String woodName = WoodManager.getPlankType(meta & 0xFF).getName();
+        if (typeName.equals("")) {
+            return Binnie.Language.localise(ExtraTrees.instance, "block.door.name", woodName);
+        }
+        return Binnie.Language.localise(ExtraTrees.instance, "block.door.name.adv", woodName, typeName);
     }
 
-    public void getBlockTooltip(ItemStack par1ItemStack, List par3List) {
+    public void getBlockTooltip(final ItemStack par1ItemStack, final List par3List) {
     }
 
-    public void dropAsStack(World world, int x, int y, int z, ItemStack drop) {
+    public void dropAsStack(final World world, final int x, final int y, final int z, final ItemStack drop) {
         this.dropBlockAsItem(world, x, y, z, drop);
     }
 
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List itemList) {
-        for (IPlankType type : PlankType.ExtraTreePlanks.values()) {
+    public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
+        for (final IPlankType type : PlankType.ExtraTreePlanks.values()) {
             itemList.add(WoodManager.getDoor(type, DoorType.Standard));
         }
-
-        for (IPlankType type : PlankType.ForestryPlanks.values()) {
+        for (final IPlankType type : PlankType.ForestryPlanks.values()) {
             itemList.add(WoodManager.getDoor(type, DoorType.Standard));
         }
-
-        for (IPlankType type : PlankType.ExtraBiomesPlank.values()) {
+        for (final IPlankType type : PlankType.ExtraBiomesPlank.values()) {
             if (type.getStack() != null) {
                 itemList.add(WoodManager.getDoor(type, DoorType.Standard));
             }
         }
-
-        for (IPlankType type : PlankType.VanillaPlanks.values()) {
+        for (final IPlankType type : PlankType.VanillaPlanks.values()) {
             itemList.add(WoodManager.getDoor(type, DoorType.Standard));
         }
-
     }
 
-    public boolean isWood(IBlockAccess world, int x, int y, int z) {
+    public boolean isWood(final IBlockAccess world, final int x, final int y, final int z) {
         return true;
     }
 
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFlammability(final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection face) {
         return 20;
     }
 
-    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public boolean isFlammable(final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection face) {
         return true;
     }
 
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFireSpreadSpeed(final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection face) {
         return 5;
     }
 
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
+    public void breakBlock(final World par1World, final int par2, final int par3, final int par4, final Block par5, final int par6) {
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
         par1World.removeTileEntity(par2, par3, par4);
     }
 
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y, final int z) {
         return BlockMetadata.getPickBlock(world, x, y, z);
     }
 }

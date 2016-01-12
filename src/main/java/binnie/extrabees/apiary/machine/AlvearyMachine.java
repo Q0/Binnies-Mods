@@ -12,28 +12,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum AlvearyMachine implements IMachineType {
-    Mutator(AlvearyMutator.PackageAlvearyMutator.class),
-    Frame(AlvearyFrame.PackageAlvearyFrame.class),
-    RainShield(AlvearyRainShield.PackageAlvearyRainShield.class),
-    Lighting(AlvearyLighting.PackageAlvearyLighting.class),
-    Stimulator(AlvearyStimulator.PackageAlvearyStimulator.class),
-    Hatchery(AlvearyHatchery.PackageAlvearyHatchery.class),
-    Transmission(AlvearyTransmission.PackageAlvearyTransmission.class);
+    Mutator((Class<? extends MachinePackage>) AlvearyMutator.PackageAlvearyMutator.class),
+    Frame((Class<? extends MachinePackage>) AlvearyFrame.PackageAlvearyFrame.class),
+    RainShield((Class<? extends MachinePackage>) AlvearyRainShield.PackageAlvearyRainShield.class),
+    Lighting((Class<? extends MachinePackage>) AlvearyLighting.PackageAlvearyLighting.class),
+    Stimulator((Class<? extends MachinePackage>) AlvearyStimulator.PackageAlvearyStimulator.class),
+    Hatchery((Class<? extends MachinePackage>) AlvearyHatchery.PackageAlvearyHatchery.class),
+    Transmission((Class<? extends MachinePackage>) AlvearyTransmission.PackageAlvearyTransmission.class);
 
-    Class clss;
+    Class<? extends MachinePackage> clss;
 
-    private AlvearyMachine(Class clss) {
+    private AlvearyMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
-    public Class getPackageClass() {
+    @Override
+    public Class<? extends MachinePackage> getPackageClass() {
         return this.clss;
     }
 
-    public ItemStack get(int size) {
+    public ItemStack get(final int size) {
         return new ItemStack(ModuleApiary.blockComponent, size, this.ordinal());
     }
 
+    @Override
     public boolean isActive() {
         return true;
     }
@@ -41,22 +43,26 @@ public enum AlvearyMachine implements IMachineType {
     public abstract static class AlvearyPackage extends MachinePackage {
         BinnieResource machineTexture;
 
-        public AlvearyPackage(String id, BinnieResource machineTexture, boolean powered) {
+        public AlvearyPackage(final String id, final BinnieResource machineTexture, final boolean powered) {
             super(id, powered);
             this.machineTexture = machineTexture;
         }
 
-        public void createMachine(Machine machine) {
+        @Override
+        public void createMachine(final Machine machine) {
         }
 
+        @Override
         public TileEntity createTileEntity() {
             return new TileExtraBeeAlveary(this);
         }
 
+        @Override
         public void register() {
         }
 
-        public void renderMachine(Machine machine, double x, double y, double z, float var8, RenderBlocks renderer) {
+        @Override
+        public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
             MachineRendererBlock.instance.renderMachine(this.machineTexture, x, y, z, var8);
         }
     }

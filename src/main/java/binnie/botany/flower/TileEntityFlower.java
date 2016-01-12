@@ -12,6 +12,7 @@ import binnie.botany.genetics.Flower;
 import binnie.botany.network.MessageFlowerUpdate;
 import binnie.core.BinnieCore;
 import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.core.IErrorState;
@@ -21,9 +22,11 @@ import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IButterflyNursery;
 import forestry.lepidopterology.entities.EntityButterfly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.Packet;
@@ -38,213 +41,207 @@ import java.util.Random;
 import java.util.Set;
 
 public class TileEntityFlower extends TileEntity implements IPollinatable, IButterflyNursery {
-    IFlower flower = null;
+    IFlower flower;
     GameProfile owner;
-    int section = 0;
-    TileEntityFlower.RenderInfo renderInfo = null;
+    int section;
+    RenderInfo renderInfo;
     IButterfly caterpillar;
-    int matureTime = 0;
+    int matureTime;
 
     public TileEntityFlower() {
-        super();
+        this.flower = null;
+        this.section = 0;
+        this.renderInfo = null;
+        this.matureTime = 0;
     }
 
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
         this.flower = new Flower(nbttagcompound);
         this.section = nbttagcompound.getByte("section");
         if (this.flower.getAge() == 0) {
             this.flower.setFlowered(false);
         }
-
         this.owner = NBTUtil.func_152459_a(nbttagcompound.getCompoundTag("owner"));
         if (nbttagcompound.hasKey("CATER") && BinnieCore.isLepidopteryActive()) {
             this.matureTime = nbttagcompound.getInteger("caterTime");
             this.caterpillar = Binnie.Genetics.getButterflyRoot().getMember(nbttagcompound.getCompoundTag("cater"));
         }
-
         super.readFromNBT(nbttagcompound);
     }
 
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         if (this.flower != null) {
             this.flower.writeToNBT(nbttagcompound);
         }
-
         if (this.owner != null) {
-            NBTTagCompound nbt = new NBTTagCompound();
+            final NBTTagCompound nbt = new NBTTagCompound();
             NBTUtil.func_152460_a(nbt, this.owner);
-            nbttagcompound.setTag("owner", nbt);
+            nbttagcompound.setTag("owner", (NBTBase) nbt);
         }
-
         if (this.caterpillar != null) {
             nbttagcompound.setInteger("caterTime", this.matureTime);
-            NBTTagCompound subcompound = new NBTTagCompound();
+            final NBTTagCompound subcompound = new NBTTagCompound();
             this.caterpillar.writeToNBT(subcompound);
-            nbttagcompound.setTag("cater", subcompound);
+            nbttagcompound.setTag("cater", (NBTBase) subcompound);
         }
-
         nbttagcompound.setByte("section", (byte) this.getSection());
         super.writeToNBT(nbttagcompound);
     }
 
-    public void create(ItemStack stack, GameProfile owner) {
+    public void create(final ItemStack stack, final GameProfile owner) {
         this.create(BotanyCore.getFlowerRoot().getMember(stack), owner);
     }
 
-    public void create(IFlower stack, GameProfile owner) {
+    public void create(final IFlower stack, final GameProfile owner) {
         this.flower = stack;
         if (this.flower.getAge() == 0) {
             this.flower.setFlowered(false);
         }
-
         this.updateRender(true);
         this.owner = owner;
     }
 
-    public EnumSet getPlantType() {
+    public EnumSet<EnumPlantType> getPlantType() {
         return EnumSet.of(EnumPlantType.Plains);
     }
 
     public IIndividual getPollen() {
-        return this.getFlower();
+        return (IIndividual) this.getFlower();
     }
 
-    public boolean canMateWith(IIndividual individual) {
-        return !this.isBreeding() ? false : (!(individual instanceof IFlower) ? false : (this.getFlower() == null ? false : (this.getFlower().getMate() != null ? false : (!this.getFlower().hasFlowered() ? false : !this.getFlower().isGeneticEqual(individual)))));
+    public boolean canMateWith(final IIndividual individual) {
+        return this.isBreeding() && individual instanceof IFlower && this.getFlower() != null && this.getFlower().getMate() == null && this.getFlower().hasFlowered() && !this.getFlower().isGeneticEqual(individual);
     }
 
-    public void mateWith(IIndividual individual) {
-        if (this.getFlower() != null && individual instanceof IFlower) {
-            IAlleleFlowerSpecies primary = (IAlleleFlowerSpecies) individual.getGenome().getPrimary();
-            IAlleleFlowerSpecies primary2 = this.getFlower().getGenome().getPrimary();
-            if (primary == primary2 || this.worldObj.rand.nextInt(4) == 0) {
-                this.getFlower().mate((IFlower) individual);
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            }
-
+    public void mateWith(final IIndividual individual) {
+        if (this.getFlower() == null || !(individual instanceof IFlower)) {
+            return;
+        }
+        final IAlleleFlowerSpecies primary = (IAlleleFlowerSpecies) individual.getGenome().getPrimary();
+        final IAlleleFlowerSpecies primary2 = this.getFlower().getGenome().getPrimary();
+        if (primary == primary2 || this.worldObj.rand.nextInt(4) == 0) {
+            this.getFlower().mate((IFlower) individual);
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
     public IFlower getFlower() {
-        if (this.getSection() > 0) {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord, this.yCoord - this.getSection(), this.zCoord);
-            return tile instanceof TileEntityFlower ? ((TileEntityFlower) tile).getFlower() : null;
-        } else {
+        if (this.getSection() <= 0) {
             return this.flower;
         }
+        final TileEntity tile = this.worldObj.getTileEntity(this.xCoord, this.yCoord - this.getSection(), this.zCoord);
+        if (tile instanceof TileEntityFlower) {
+            return ((TileEntityFlower) tile).getFlower();
+        }
+        return null;
     }
 
     public boolean isBreeding() {
-        Block roots = this.getWorldObj().getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
+        final Block roots = this.getWorldObj().getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
         return Gardening.isSoil(roots);
     }
 
-    public void randomUpdate(Random rand) {
+    public void randomUpdate(final Random rand) {
         if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) != Botany.flower) {
             this.invalidate();
-        } else if (this.getSection() <= 0) {
-            if (this.flower != null) {
-                if (this.flower.getGenome() == null) {
-                    this.invalidate();
-                } else if (this.isBreeding()) {
-                    float light = (float) this.worldObj.getBlockLightValue(this.xCoord, this.yCoord, this.zCoord);
-                    if (light < 6.0F) {
-                        for (int dx = -2; dx <= 2; ++dx) {
-                            for (int dy = -2; dy <= 2; ++dy) {
-                                light -= !this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord, this.zCoord) ? 0.5F : 0.0F;
-                            }
-                        }
+            return;
+        }
+        if (this.getSection() > 0) {
+            return;
+        }
+        if (this.flower == null) {
+            return;
+        }
+        if (this.flower.getGenome() == null) {
+            this.invalidate();
+            return;
+        }
+        if (!this.isBreeding()) {
+            return;
+        }
+        float light = this.worldObj.getBlockLightValue(this.xCoord, this.yCoord, this.zCoord);
+        if (light < 6.0f) {
+            for (int dx = -2; dx <= 2; ++dx) {
+                for (int dy = -2; dy <= 2; ++dy) {
+                    light -= (this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord, this.zCoord) ? 0.0f : 0.5f);
+                }
+            }
+        }
+        final boolean canTolerate = Gardening.canTolerate(this.getFlower(), this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        final EnumSoilType soil = Gardening.getSoilType(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        if (rand.nextFloat() < this.getFlower().getGenome().getAgeChance()) {
+            if (this.flower.getAge() < 1) {
+                if (canTolerate && light > 6.0f) {
+                    this.doFlowerAge();
+                }
+            } else {
+                this.doFlowerAge();
+            }
+        }
+        if (canTolerate && this.flower.getAge() > 1 && !this.flower.isWilted() && light > 6.0f) {
+            this.flower.setFlowered(true);
+        }
+        if (!canTolerate && this.flower.isWilted() && rand.nextInt(2 + Math.max(this.flower.getAge(), 2)) == 0) {
+            this.kill();
+            return;
+        }
+        if (light < 2.0f && this.flower.isWilted()) {
+            this.kill();
+            return;
+        }
+        if (!canTolerate || light < 1.0f) {
+            this.flower.setWilted(true);
+        } else {
+            this.flower.setWilted(false);
+        }
+        float CHANCE_DISPERSAL = 0.8f;
+        CHANCE_DISPERSAL += 0.2f * this.flower.getGenome().getFertility();
+        CHANCE_DISPERSAL *= 1.0f + soil.ordinal() * 0.5f;
+        float CHANCE_POLLINATE = 1.0f;
+        CHANCE_POLLINATE += 0.25f * this.flower.getGenome().getFertility();
+        CHANCE_POLLINATE *= 1.0f + soil.ordinal() * 0.5f;
+        final float CHANCE_SELFPOLLINATE = 0.2f * CHANCE_POLLINATE;
+        if (this.worldObj.rand.nextFloat() < CHANCE_DISPERSAL && this.flower.hasFlowered() && !this.flower.isWilted()) {
+            final IFlowerGenome mate = this.flower.getMate();
+            if (mate != null) {
+                boolean dispersed = false;
+                for (int a = 0; a < 5 && !dispersed; ++a) {
+                    int dx2;
+                    int dz;
+                    for (dx2 = 0, dz = 0; dx2 == 0 && dz == 0; dx2 = rand.nextInt(3) - 1, dz = rand.nextInt(3) - 1) {
                     }
-
-                    boolean canTolerate = Gardening.canTolerate(this.getFlower(), this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-                    EnumSoilType soil = Gardening.getSoilType(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-                    if (rand.nextFloat() < this.getFlower().getGenome().getAgeChance()) {
-                        if (this.flower.getAge() < 1) {
-                            if (canTolerate && light > 6.0F) {
-                                this.doFlowerAge();
-                            }
-                        } else {
-                            this.doFlowerAge();
+                    final Block b = this.getWorldObj().getBlock(this.xCoord + dx2, this.yCoord, this.zCoord + dz);
+                    final Block b2 = this.getWorldObj().getBlock(this.xCoord + dx2, this.yCoord - 1, this.zCoord + dz);
+                    if (b == Blocks.air && Gardening.isSoil(b2)) {
+                        final IFlower offspring = this.flower.getOffspring(this.getWorldObj());
+                        if (offspring != null) {
+                            Gardening.plant(this.getWorldObj(), this.xCoord + dx2, this.yCoord, this.zCoord + dz, offspring, this.getOwner());
+                            this.flower.removeMate();
+                            dispersed = true;
                         }
-                    }
-
-                    if (canTolerate && this.flower.getAge() > 1 && !this.flower.isWilted() && light > 6.0F) {
-                        this.flower.setFlowered(true);
-                    }
-
-                    if (!canTolerate && this.flower.isWilted() && rand.nextInt(2 + Math.max(this.flower.getAge(), 2)) == 0) {
-                        this.kill();
-                    } else if (light < 2.0F && this.flower.isWilted()) {
-                        this.kill();
-                    } else {
-                        if (canTolerate && light >= 1.0F) {
-                            this.flower.setWilted(false);
-                        } else {
-                            this.flower.setWilted(true);
-                        }
-
-                        float CHANCE_DISPERSAL = 0.8F;
-                        CHANCE_DISPERSAL = CHANCE_DISPERSAL + 0.2F * (float) this.flower.getGenome().getFertility();
-                        CHANCE_DISPERSAL = CHANCE_DISPERSAL * (1.0F + (float) soil.ordinal() * 0.5F);
-                        float CHANCE_POLLINATE = 1.0F;
-                        CHANCE_POLLINATE = CHANCE_POLLINATE + 0.25F * (float) this.flower.getGenome().getFertility();
-                        CHANCE_POLLINATE = CHANCE_POLLINATE * (1.0F + (float) soil.ordinal() * 0.5F);
-                        float CHANCE_SELFPOLLINATE = 0.2F * CHANCE_POLLINATE;
-                        if (this.worldObj.rand.nextFloat() < CHANCE_DISPERSAL && this.flower.hasFlowered() && !this.flower.isWilted()) {
-                            IFlowerGenome mate = this.flower.getMate();
-                            if (mate != null) {
-                                boolean dispersed = false;
-
-                                for (int a = 0; a < 5 && !dispersed; ++a) {
-                                    int dx = 0;
-
-                                    int dz;
-                                    for (dz = 0; dx == 0 && dz == 0; dz = rand.nextInt(3) - 1) {
-                                        dx = rand.nextInt(3) - 1;
-                                    }
-
-                                    Block b = this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord, this.zCoord + dz);
-                                    Block b2 = this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord - 1, this.zCoord + dz);
-                                    if (b == Blocks.air && Gardening.isSoil(b2)) {
-                                        IFlower offspring = this.flower.getOffspring(this.getWorldObj());
-                                        if (offspring != null) {
-                                            Gardening.plant(this.getWorldObj(), this.xCoord + dx, this.yCoord, this.zCoord + dz, offspring, this.getOwner());
-                                            this.flower.removeMate();
-                                            dispersed = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (this.worldObj.rand.nextFloat() < CHANCE_POLLINATE && this.flower.hasFlowered() && !this.flower.isWilted()) {
-                            for (int a = 0; a < 4; ++a) {
-                                int dx = 0;
-
-                                int dz;
-                                for (dz = 0; dx == 0 && dz == 0; dz = rand.nextInt(5) - 2) {
-                                    dx = rand.nextInt(5) - 2;
-                                }
-
-                                TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord + dx, this.yCoord, this.zCoord + dz);
-                                if (tile instanceof IPollinatable && ((IPollinatable) tile).canMateWith(this.getFlower())) {
-                                    ((IPollinatable) tile).mateWith(this.getFlower());
-                                }
-                            }
-                        }
-
-                        if (this.worldObj.rand.nextFloat() < CHANCE_SELFPOLLINATE && this.flower.hasFlowered() && this.flower.getMate() == null) {
-                            this.mateWith(this.getFlower());
-                        }
-
-                        this.spawnButterflies();
-                        this.matureCaterpillar();
-                        this.checkIfDead(false);
-                        this.updateRender(true);
                     }
                 }
             }
         }
+        if (this.worldObj.rand.nextFloat() < CHANCE_POLLINATE && this.flower.hasFlowered() && !this.flower.isWilted()) {
+            for (int a2 = 0; a2 < 4; ++a2) {
+                int dx3;
+                int dz2;
+                for (dx3 = 0, dz2 = 0; dx3 == 0 && dz2 == 0; dx3 = rand.nextInt(5) - 2, dz2 = rand.nextInt(5) - 2) {
+                }
+                final TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord + dx3, this.yCoord, this.zCoord + dz2);
+                if (tile instanceof IPollinatable && ((IPollinatable) tile).canMateWith((IIndividual) this.getFlower())) {
+                    ((IPollinatable) tile).mateWith((IIndividual) this.getFlower());
+                }
+            }
+        }
+        if (this.worldObj.rand.nextFloat() < CHANCE_SELFPOLLINATE && this.flower.hasFlowered() && this.flower.getMate() == null) {
+            this.mateWith((IIndividual) this.getFlower());
+        }
+        this.spawnButterflies();
+        this.matureCaterpillar();
+        this.checkIfDead(false);
+        this.updateRender(true);
     }
 
     private void doFlowerAge() {
@@ -252,80 +249,74 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (this.getFlower().getAge() == 1) {
             Gardening.onGrowFromSeed(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             if (this.getOwner() != null && this.getFlower() != null) {
-                BotanyCore.getFlowerRoot().getBreedingTracker(this.getWorldObj(), this.getOwner()).registerBirth(this.getFlower());
+                BotanyCore.getFlowerRoot().getBreedingTracker(this.getWorldObj(), this.getOwner()).registerBirth((IIndividual) this.getFlower());
             }
         }
-
     }
 
     public Packet getDescriptionPacket() {
         if (this.renderInfo == null && this.getFlower() != null && this.getFlower().getGenome() != null) {
-            this.renderInfo = new TileEntityFlower.RenderInfo(this.getFlower(), this);
+            this.renderInfo = new RenderInfo(this.getFlower(), this);
         }
-
-        return this.renderInfo != null ? Botany.instance.getNetworkWrapper().getPacketFrom((new MessageFlowerUpdate(this.xCoord, this.yCoord, this.zCoord, this.renderInfo)).GetMessage()) : null;
+        return (this.renderInfo != null) ? Botany.instance.getNetworkWrapper().getPacketFrom((IMessage) new MessageFlowerUpdate(this.xCoord, this.yCoord, this.zCoord, this.renderInfo).GetMessage()) : null;
     }
 
-    public void updateRender(boolean update) {
+    public void updateRender(final boolean update) {
         if (update && this.getFlower() != null && this.getFlower().getGenome() != null) {
-            TileEntityFlower.RenderInfo newInfo = new TileEntityFlower.RenderInfo(this.getFlower(), this);
+            final RenderInfo newInfo = new RenderInfo(this.getFlower(), this);
             if (this.renderInfo == null || !newInfo.equals(this.renderInfo)) {
                 this.setRender(newInfo);
             }
         }
-
-        TileEntity above = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+        final TileEntity above = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
         if (above instanceof TileEntityFlower) {
             ((TileEntityFlower) above).updateRender(true);
         }
-
     }
 
     public int getSection() {
         return this.section;
     }
 
-    public void setSection(int i) {
+    public void setSection(final int i) {
         this.section = i;
         if (BinnieCore.proxy.isSimulating(this.worldObj)) {
             this.updateRender(true);
         }
-
     }
 
     public ItemStack getItemStack() {
-        return this.flower == null ? null : Binnie.Genetics.getFlowerRoot().getMemberStack(this.getFlower(), this.flower.getAge() == 0 ? EnumFlowerStage.SEED.ordinal() : EnumFlowerStage.FLOWER.ordinal());
+        if (this.flower == null) {
+            return null;
+        }
+        return Binnie.Genetics.getFlowerRoot().getMemberStack((IIndividual) this.getFlower(), (this.flower.getAge() == 0) ? EnumFlowerStage.SEED.ordinal() : EnumFlowerStage.FLOWER.ordinal());
     }
 
     private TileEntityFlower getRoot() {
         if (this.getSection() == 0) {
             return null;
-        } else {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord, this.yCoord - this.getSection(), this.zCoord);
-            return tile instanceof TileEntityFlower ? (TileEntityFlower) tile : null;
         }
+        final TileEntity tile = this.worldObj.getTileEntity(this.xCoord, this.yCoord - this.getSection(), this.zCoord);
+        return (tile instanceof TileEntityFlower) ? ((TileEntityFlower) tile) : null;
     }
 
     public void onShear() {
         if (this.getRoot() != null) {
             this.getRoot().onShear();
         }
-
         if (this.getFlower() != null && this.getFlower().getAge() > 1) {
-            Random rand = new Random();
-            IFlower cutting = (IFlower) this.getFlower().copy();
+            final Random rand = new Random();
+            final IFlower cutting = (IFlower) this.getFlower().copy();
             cutting.setAge(0);
-            ItemStack cuttingStack = BotanyCore.getFlowerRoot().getMemberStack(cutting, EnumFlowerStage.SEED.ordinal());
-            float f = 0.7F;
-            double d = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            double d1 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            double d2 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-            EntityItem entityitem = new EntityItem(this.worldObj, (double) this.xCoord + d, (double) this.yCoord + d1, (double) this.zCoord + d2, cuttingStack);
+            final ItemStack cuttingStack = BotanyCore.getFlowerRoot().getMemberStack((IIndividual) cutting, EnumFlowerStage.SEED.ordinal());
+            final float f = 0.7f;
+            final double d = rand.nextFloat() * f + (1.0f - f) * 0.5;
+            final double d2 = rand.nextFloat() * f + (1.0f - f) * 0.5;
+            final double d3 = rand.nextFloat() * f + (1.0f - f) * 0.5;
+            final EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + d, this.yCoord + d2, this.zCoord + d3, cuttingStack);
             entityitem.delayBeforeCanPickup = 10;
-            this.worldObj.spawnEntityInWorld(entityitem);
-            int maxAge = this.getFlower().getMaxAge();
-
-            for (int i = 0; i < maxAge; ++i) {
+            this.worldObj.spawnEntityInWorld((Entity) entityitem);
+            for (int maxAge = this.getFlower().getMaxAge(), i = 0; i < maxAge; ++i) {
                 if (rand.nextBoolean()) {
                     this.getFlower().age();
                     if (this.checkIfDead(true)) {
@@ -334,115 +325,113 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
                 }
             }
         }
-
     }
 
-    public boolean checkIfDead(boolean wasCut) {
+    public boolean checkIfDead(final boolean wasCut) {
         if (this.getSection() != 0) {
             return this.getRoot().checkIfDead(wasCut);
-        } else {
-            EnumSoilType soil = Gardening.getSoilType(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            int maxAge = (int) ((float) this.flower.getMaxAge() * (1.0F + (float) soil.ordinal() * 0.25F));
-            if (this.flower.getAge() <= maxAge) {
-                return false;
-            } else {
-                if (!wasCut && this.flower.getMate() != null) {
-                    this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
-                    IFlower offspring = this.flower.getOffspring(this.getWorldObj());
-                    TileEntity above = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
-                    if (above instanceof TileEntityFlower) {
-                        this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 1, this.zCoord);
-                    }
-
-                    Gardening.plant(this.worldObj, this.xCoord, this.yCoord, this.zCoord, offspring, this.getOwner());
-                } else {
-                    this.kill();
-                }
-
-                return true;
-            }
         }
+        final EnumSoilType soil = Gardening.getSoilType(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        final int maxAge = (int) (this.flower.getMaxAge() * (1.0f + soil.ordinal() * 0.25f));
+        if (this.flower.getAge() > maxAge) {
+            if (!wasCut && this.flower.getMate() != null) {
+                this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+                final IFlower offspring = this.flower.getOffspring(this.getWorldObj());
+                final TileEntity above = this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+                if (above instanceof TileEntityFlower) {
+                    this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 1, this.zCoord);
+                }
+                Gardening.plant(this.worldObj, this.xCoord, this.yCoord, this.zCoord, offspring, this.getOwner());
+            } else {
+                this.kill();
+            }
+            return true;
+        }
+        return false;
     }
 
     public void kill() {
         if (this.flower.getAge() > 0) {
-            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Botany.plant, BlockPlant.Type.DeadFlower.ordinal(), 2);
+            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, (Block) Botany.plant, BlockPlant.Type.DeadFlower.ordinal(), 2);
         } else {
             this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
         }
-
         for (int i = 1; this.worldObj.getTileEntity(this.xCoord, this.yCoord + i, this.zCoord) instanceof TileEntityFlower; ++i) {
             this.worldObj.setBlockToAir(this.xCoord, this.yCoord + i, this.zCoord);
         }
-
     }
 
     public boolean onBonemeal() {
         if (this.getFlower() == null) {
             return false;
-        } else if (!this.isBreeding()) {
-            return false;
-        } else if (this.getFlower().isWilted()) {
-            return false;
-        } else {
-            this.doFlowerAge();
-            if (this.getFlower().getAge() > 1 && !this.getFlower().hasFlowered()) {
-                this.getFlower().setFlowered(true);
-            }
-
-            this.checkIfDead(false);
-            this.updateRender(true);
-            return true;
         }
+        if (!this.isBreeding()) {
+            return false;
+        }
+        if (this.getFlower().isWilted()) {
+            return false;
+        }
+        this.doFlowerAge();
+        if (this.getFlower().getAge() > 1 && !this.getFlower().hasFlowered()) {
+            this.getFlower().setFlowered(true);
+        }
+        this.checkIfDead(false);
+        this.updateRender(true);
+        return true;
     }
 
     public GameProfile getOwner() {
         return this.owner;
     }
 
-    public void setOwner(GameProfile ownerName) {
+    public void setOwner(final GameProfile ownerName) {
         this.owner = ownerName;
     }
 
     public void spawnButterflies() {
-        if (BinnieCore.isLepidopteryActive()) {
-            int x = this.xCoord;
-            int y = this.yCoord;
-            int z = this.zCoord;
-            World world = this.worldObj;
-            if (this.getCaterpillar() == null) {
-                if (world.rand.nextFloat() < this.getFlower().getGenome().getSappiness()) {
-                    if (this.worldObj.rand.nextFloat() < 0.2F) {
-                        IButterfly spawn = (IButterfly) Binnie.Genetics.getButterflyRoot().getIndividualTemplates().get(this.worldObj.rand.nextInt(Binnie.Genetics.getButterflyRoot().getIndividualTemplates().size()));
-                        if (this.worldObj.rand.nextFloat() < spawn.getGenome().getPrimary().getRarity() * 0.5F) {
-                            if (this.worldObj.countEntities(EntityButterfly.class) <= 100) {
-                                if (spawn.canSpawn(this.worldObj, (double) x, (double) y, (double) z)) {
-                                    if (world.isAirBlock(x, y + 1, z)) {
-                                        this.attemptButterflySpawn(world, spawn, (double) x, (double) (y + 1), (double) z);
-                                    } else if (world.isAirBlock(x - 1, y, z)) {
-                                        this.attemptButterflySpawn(world, spawn, (double) (x - 1), (double) y, (double) z);
-                                    } else if (world.isAirBlock(x + 1, y, z)) {
-                                        this.attemptButterflySpawn(world, spawn, (double) (x + 1), (double) y, (double) z);
-                                    } else if (world.isAirBlock(x, y, z - 1)) {
-                                        this.attemptButterflySpawn(world, spawn, (double) x, (double) y, (double) (z - 1));
-                                    } else if (world.isAirBlock(x, y, z + 1)) {
-                                        this.attemptButterflySpawn(world, spawn, (double) x, (double) y, (double) (z + 1));
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (!BinnieCore.isLepidopteryActive()) {
+            return;
+        }
+        final int x = this.xCoord;
+        final int y = this.yCoord;
+        final int z = this.zCoord;
+        final World world = this.worldObj;
+        if (this.getCaterpillar() != null) {
+            return;
+        }
+        if (world.rand.nextFloat() >= this.getFlower().getGenome().getSappiness()) {
+            return;
+        }
+        if (this.worldObj.rand.nextFloat() >= 0.2f) {
+            return;
+        }
+        final IButterfly spawn = Binnie.Genetics.getButterflyRoot().getIndividualTemplates().get(this.worldObj.rand.nextInt(Binnie.Genetics.getButterflyRoot().getIndividualTemplates().size()));
+        if (this.worldObj.rand.nextFloat() >= spawn.getGenome().getPrimary().getRarity() * 0.5f) {
+            return;
+        }
+        if (this.worldObj.countEntities((Class) EntityButterfly.class) > 100) {
+            return;
+        }
+        if (!spawn.canSpawn(this.worldObj, (double) x, (double) y, (double) z)) {
+            return;
+        }
+        if (world.isAirBlock(x, y + 1, z)) {
+            this.attemptButterflySpawn(world, spawn, x, y + 1, z);
+        } else if (world.isAirBlock(x - 1, y, z)) {
+            this.attemptButterflySpawn(world, spawn, x - 1, y, z);
+        } else if (world.isAirBlock(x + 1, y, z)) {
+            this.attemptButterflySpawn(world, spawn, x + 1, y, z);
+        } else if (world.isAirBlock(x, y, z - 1)) {
+            this.attemptButterflySpawn(world, spawn, x, y, z - 1);
+        } else if (world.isAirBlock(x, y, z + 1)) {
+            this.attemptButterflySpawn(world, spawn, x, y, z + 1);
         }
     }
 
-    private void attemptButterflySpawn(World world, IButterfly butterfly, double x, double y, double z) {
+    private void attemptButterflySpawn(final World world, final IButterfly butterfly, final double x, final double y, final double z) {
         if (BinnieCore.isLepidopteryActive()) {
-            Binnie.Genetics.getButterflyRoot().spawnButterflyInWorld(world, butterfly.copy(), x, y + 0.10000000149011612D, z);
+            Binnie.Genetics.getButterflyRoot().spawnButterflyInWorld(world, butterfly.copy(), x, y + 0.10000000149011612, z);
         }
-
     }
 
     public GameProfile getOwnerName() {
@@ -477,14 +466,14 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         return EnumHumidity.getFromValue(this.worldObj.getBiomeGenForCoords(this.xCoord, this.zCoord).rainfall);
     }
 
-    public void setErrorState(int state) {
+    public void setErrorState(final int state) {
     }
 
     public int getErrorOrdinal() {
         return 0;
     }
 
-    public boolean addProduct(ItemStack product, boolean all) {
+    public boolean addProduct(final ItemStack product, final boolean all) {
         return false;
     }
 
@@ -493,95 +482,94 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
     }
 
     public IIndividual getNanny() {
-        return this.getFlower();
+        return (IIndividual) this.getFlower();
     }
 
-    public void setCaterpillar(IButterfly butterfly) {
+    public void setCaterpillar(final IButterfly butterfly) {
         this.caterpillar = butterfly;
         this.matureTime = 0;
     }
 
-    public boolean canNurse(IButterfly butterfly) {
+    public boolean canNurse(final IButterfly butterfly) {
         return this.getFlower() != null && !this.getFlower().isWilted() && this.getFlower().getAge() > 1;
     }
 
     private void matureCaterpillar() {
-        if (this.getCaterpillar() != null) {
-            ++this.matureTime;
-            if ((float) this.matureTime >= (float) this.caterpillar.getGenome().getLifespan() / (float) (this.caterpillar.getGenome().getFertility() * 2) && this.caterpillar.canTakeFlight(this.worldObj, (double) this.xCoord, (double) this.yCoord, (double) this.zCoord)) {
-                if (this.worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
-                    this.attemptButterflySpawn(this.worldObj, this.caterpillar, (double) this.xCoord, (double) (this.yCoord + 1), (double) this.zCoord);
-                } else if (this.worldObj.isAirBlock(this.xCoord - 1, this.yCoord, this.zCoord)) {
-                    this.attemptButterflySpawn(this.worldObj, this.caterpillar, (double) (this.xCoord - 1), (double) this.yCoord, (double) this.zCoord);
-                } else if (this.worldObj.isAirBlock(this.xCoord + 1, this.yCoord, this.zCoord)) {
-                    this.attemptButterflySpawn(this.worldObj, this.caterpillar, (double) (this.xCoord + 1), (double) this.yCoord, (double) this.zCoord);
-                } else if (this.worldObj.isAirBlock(this.xCoord, this.yCoord, this.zCoord - 1)) {
-                    this.attemptButterflySpawn(this.worldObj, this.caterpillar, (double) this.xCoord, (double) this.yCoord, (double) (this.zCoord - 1));
-                } else if (this.worldObj.isAirBlock(this.xCoord, this.yCoord, this.zCoord + 1)) {
-                    this.attemptButterflySpawn(this.worldObj, this.caterpillar, (double) this.xCoord, (double) this.yCoord, (double) (this.zCoord + 1));
-                }
-
-                this.setCaterpillar((IButterfly) null);
+        if (this.getCaterpillar() == null) {
+            return;
+        }
+        ++this.matureTime;
+        if (this.matureTime >= this.caterpillar.getGenome().getLifespan() / (this.caterpillar.getGenome().getFertility() * 2) && this.caterpillar.canTakeFlight(this.worldObj, (double) this.xCoord, (double) this.yCoord, (double) this.zCoord)) {
+            if (this.worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
+                this.attemptButterflySpawn(this.worldObj, this.caterpillar, this.xCoord, this.yCoord + 1, this.zCoord);
+            } else if (this.worldObj.isAirBlock(this.xCoord - 1, this.yCoord, this.zCoord)) {
+                this.attemptButterflySpawn(this.worldObj, this.caterpillar, this.xCoord - 1, this.yCoord, this.zCoord);
+            } else if (this.worldObj.isAirBlock(this.xCoord + 1, this.yCoord, this.zCoord)) {
+                this.attemptButterflySpawn(this.worldObj, this.caterpillar, this.xCoord + 1, this.yCoord, this.zCoord);
+            } else if (this.worldObj.isAirBlock(this.xCoord, this.yCoord, this.zCoord - 1)) {
+                this.attemptButterflySpawn(this.worldObj, this.caterpillar, this.xCoord, this.yCoord, this.zCoord - 1);
+            } else if (this.worldObj.isAirBlock(this.xCoord, this.yCoord, this.zCoord + 1)) {
+                this.attemptButterflySpawn(this.worldObj, this.caterpillar, this.xCoord, this.yCoord, this.zCoord + 1);
             }
-
+            this.setCaterpillar(null);
         }
     }
 
-    public void setRender(TileEntityFlower.RenderInfo render) {
+    public void setRender(final RenderInfo render) {
         this.renderInfo = render;
         this.section = this.renderInfo.section;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     public int getAge() {
-        return this.renderInfo == null ? 1 : this.renderInfo.age;
+        return (this.renderInfo == null) ? 1 : this.renderInfo.age;
     }
 
     public int getRenderSection() {
-        return this.renderInfo == null ? 1 : this.renderInfo.section;
+        return (this.renderInfo == null) ? 1 : this.renderInfo.section;
     }
 
     public boolean isWilted() {
-        return this.renderInfo == null ? false : this.renderInfo.wilted;
+        return this.renderInfo != null && this.renderInfo.wilted;
     }
 
     public boolean isFlowered() {
-        return this.renderInfo == null ? true : this.renderInfo.flowered;
+        return this.renderInfo == null || this.renderInfo.flowered;
     }
 
     public int getPrimaryColour() {
-        return this.renderInfo == null ? EnumFlowerColor.Red.getColor(false) : this.renderInfo.primary.getColor(this.isWilted());
+        return (this.renderInfo == null) ? EnumFlowerColor.Red.getColor(false) : this.renderInfo.primary.getColor(this.isWilted());
     }
 
     public int getSecondaryColour() {
-        return this.renderInfo == null ? EnumFlowerColor.Red.getColor(false) : this.renderInfo.secondary.getColor(this.isWilted());
+        return (this.renderInfo == null) ? EnumFlowerColor.Red.getColor(false) : this.renderInfo.secondary.getColor(this.isWilted());
     }
 
     public int getStemColour() {
-        return this.renderInfo == null ? EnumFlowerColor.Green.getColor(false) : this.renderInfo.stem.getColor(this.isWilted());
+        return (this.renderInfo == null) ? EnumFlowerColor.Green.getColor(false) : this.renderInfo.stem.getColor(this.isWilted());
     }
 
     public IFlowerType getType() {
-        return (IFlowerType) (this.renderInfo == null ? EnumFlowerType.Poppy : this.renderInfo.type);
+        return (this.renderInfo == null) ? EnumFlowerType.Poppy : this.renderInfo.type;
     }
 
     public BiomeGenBase getBiome() {
         return this.getWorld().getBiomeGenForCoords(this.xCoord, this.zCoord);
     }
 
-    public void setErrorState(IErrorState state) {
+    public void setErrorState(final IErrorState state) {
     }
 
     public IErrorState getErrorState() {
         return null;
     }
 
-    public boolean setErrorCondition(boolean condition, IErrorState errorState) {
+    public boolean setErrorCondition(final boolean condition, final IErrorState errorState) {
         return false;
     }
 
-    public Set getErrorStates() {
-        return new HashSet();
+    public Set<IErrorState> getErrorStates() {
+        return new HashSet<IErrorState>();
     }
 
     public static class RenderInfo {
@@ -594,21 +582,19 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         public boolean flowered;
         public byte section;
 
-        public boolean equals(Object obj) {
-            if (!(obj instanceof TileEntityFlower.RenderInfo)) {
-                return super.equals(obj);
-            } else {
-                TileEntityFlower.RenderInfo o = (TileEntityFlower.RenderInfo) obj;
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj instanceof RenderInfo) {
+                final RenderInfo o = (RenderInfo) obj;
                 return o.age == this.age && o.wilted == this.wilted && o.flowered == this.flowered && o.primary == this.primary && o.secondary == this.secondary && o.stem == this.stem && o.type == this.type;
             }
+            return super.equals(obj);
         }
 
         public RenderInfo() {
-            super();
         }
 
-        public RenderInfo(IFlower flower, TileEntityFlower tile) {
-            super();
+        public RenderInfo(final IFlower flower, final TileEntityFlower tile) {
             this.section = (byte) tile.getSection();
             this.primary = flower.getGenome().getPrimaryColor();
             this.secondary = flower.getGenome().getSecondaryColor();

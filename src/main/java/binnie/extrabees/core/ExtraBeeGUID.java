@@ -22,35 +22,37 @@ public enum ExtraBeeGUID implements IBinnieGUID {
     PunnettSquare,
     AlvearyHatchery;
 
-    private ExtraBeeGUID() {
-    }
-
-    public Window getWindow(EntityPlayer player, World world, int x, int y, int z, Side side) {
+    @Override
+    public Window getWindow(final EntityPlayer player, final World world, final int x, final int y, final int z, final Side side) {
         Window window = null;
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         IInventory object = null;
         if (tileEntity instanceof IInventory) {
             object = (IInventory) tileEntity;
         }
-
         switch (this) {
             case Database:
-            case DatabaseNEI:
-                window = WindowApiaristDatabase.create(player, side, this != Database);
+            case DatabaseNEI: {
+                window = WindowApiaristDatabase.create(player, side, this != ExtraBeeGUID.Database);
                 break;
-            case AlvearyMutator:
+            }
+            case AlvearyMutator: {
                 window = WindowAlvearyMutator.create(player, object, side);
                 break;
-            case AlvearyFrame:
+            }
+            case AlvearyFrame: {
                 window = WindowAlvearyFrame.create(player, object, side);
                 break;
-            case AlvearyStimulator:
+            }
+            case AlvearyStimulator: {
                 window = WindowAlvearyStimulator.create(player, object, side);
                 break;
-            case AlvearyHatchery:
+            }
+            case AlvearyHatchery: {
                 window = WindowAlvearyHatchery.create(player, object, side);
+                break;
+            }
         }
-
         return window;
     }
 }

@@ -6,7 +6,4 @@ public enum Attribute implements IWidgetAttribute {
     NeedsDeletion,
     AlwaysOnTop,
     BlockTooltip;
-
-    private Attribute() {
-    }
 }

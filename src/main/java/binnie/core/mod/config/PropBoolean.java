@@ -7,23 +7,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
-@ConfigProperty.Type(
-        propertyClass = PropBoolean.PropertyBoolean.class
-)
+@ConfigProperty.Type(propertyClass = PropertyBoolean.class)
 public @interface PropBoolean {
-    public static class PropertyBoolean extends PropertyBase {
-        public PropertyBoolean(Field field, BinnieConfiguration file, ConfigProperty configProperty, PropBoolean annotedProperty) throws IllegalArgumentException, IllegalAccessException {
+    public static class PropertyBoolean extends PropertyBase<Boolean, PropBoolean> {
+        public PropertyBoolean(final Field field, final BinnieConfiguration file, final ConfigProperty configProperty, final PropBoolean annotedProperty) throws IllegalArgumentException, IllegalAccessException {
             super(field, file, configProperty, annotedProperty);
         }
 
+        @Override
         protected Property getProperty() {
-            return this.file.get(this.getCategory(), this.getKey(), ((Boolean) this.defaultValue).booleanValue());
+            return this.file.get(this.getCategory(), this.getKey(), (boolean) this.defaultValue);
         }
 
+        @Override
         protected Boolean getConfigValue() {
-            return Boolean.valueOf(this.property.getBoolean(((Boolean) this.defaultValue).booleanValue()));
+            return this.property.getBoolean((boolean) this.defaultValue);
         }
 
+        @Override
         protected void addComments() {
             this.addComment("Default value is " + this.defaultValue + ".");
         }

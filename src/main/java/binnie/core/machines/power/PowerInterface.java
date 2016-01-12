@@ -7,8 +7,7 @@ public class PowerInterface implements INBTTagable {
     private int capacity;
     private int energy;
 
-    public PowerInterface(int capacity) {
-        super();
+    public PowerInterface(final int capacity) {
         this.capacity = capacity * 100;
         this.energy = 0;
     }
@@ -21,21 +20,19 @@ public class PowerInterface implements INBTTagable {
         return this.energy;
     }
 
-    public int addEnergy(int amount, boolean shouldDo) {
-        int added = Math.min(this.getEnergySpace(), amount);
+    public int addEnergy(final int amount, final boolean shouldDo) {
+        final int added = Math.min(this.getEnergySpace(), amount);
         if (shouldDo) {
             this.energy += added;
         }
-
         return added;
     }
 
-    public int useEnergy(int amount, boolean simulate) {
-        int added = Math.min(this.getEnergy(), amount);
+    public int useEnergy(final int amount, final boolean simulate) {
+        final int added = Math.min(this.getEnergy(), amount);
         if (simulate) {
             this.energy -= added;
         }
-
         return added;
     }
 
@@ -43,37 +40,36 @@ public class PowerInterface implements INBTTagable {
         return this.getCapacity() - this.getEnergy();
     }
 
-    public double addEnergy(PowerSystem unit, double amount, boolean simulate) {
+    public double addEnergy(final PowerSystem unit, final double amount, final boolean simulate) {
         return unit.convertTo(this.addEnergy(unit.convertFrom(amount), simulate));
     }
 
-    public double useEnergy(PowerSystem unit, double amount, boolean simulate) {
+    public double useEnergy(final PowerSystem unit, final double amount, final boolean simulate) {
         return unit.convertTo(this.useEnergy(unit.convertFrom(amount), simulate));
     }
 
-    public double getEnergy(PowerSystem unit) {
+    public double getEnergy(final PowerSystem unit) {
         return unit.convertTo(this.getEnergy());
     }
 
-    public double getCapacity(PowerSystem unit) {
+    public double getCapacity(final PowerSystem unit) {
         return unit.convertTo(this.getCapacity());
     }
 
-    public double getEnergySpace(PowerSystem unit) {
+    public double getEnergySpace(final PowerSystem unit) {
         return unit.convertTo(this.getEnergySpace());
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(final NBTTagCompound nbt) {
         this.energy = nbt.getInteger("Energy");
         if (this.energy > this.capacity) {
             this.energy = this.capacity;
         } else if (this.energy < 0) {
             this.energy = 0;
         }
-
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void writeToNBT(final NBTTagCompound nbt) {
         nbt.setInteger("Energy", this.getEnergy());
     }
 }

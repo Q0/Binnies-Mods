@@ -5,8 +5,7 @@ class BinnieItemData {
     private BinnieConfiguration configFile;
     private String configKey;
 
-    public BinnieItemData(int item, BinnieConfiguration configFile, String configKey) {
-        super();
+    public BinnieItemData(final int item, final BinnieConfiguration configFile, final String configKey) {
         this.item = item;
         this.configFile = configFile;
         this.configKey = configKey;

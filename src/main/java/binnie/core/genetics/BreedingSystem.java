@@ -1,41 +1,22 @@
 package binnie.core.genetics;
 
-import forestry.api.genetics.IGenome;
-import java.util.TreeSet;
-import forestry.api.genetics.IIndividual;
-import net.minecraft.item.ItemStack;
-import binnie.core.AbstractMod;
-import forestry.api.genetics.IAlleleBoolean;
+import binnie.Binnie;
+import binnie.core.BinnieCore;
+import binnie.core.resource.BinnieIcon;
+import binnie.extrabees.genetics.ExtraBeeMutation;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import forestry.api.core.ForestryEvent;
+import forestry.api.genetics.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import forestry.api.genetics.IBreedingTracker;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.world.World;
-import java.util.Set;
-import java.util.Iterator;
-import binnie.extrabees.genetics.ExtraBeeMutation;
-import java.util.LinkedHashSet;
-import forestry.api.genetics.IAllele;
-import forestry.api.genetics.AlleleManager;
-import java.util.Collection;
-import forestry.api.genetics.ISpeciesRoot;
-import binnie.core.BinnieCore;
-import forestry.api.genetics.IChromosomeType;
 import net.minecraftforge.common.MinecraftForge;
-import binnie.Binnie;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Map;
-import forestry.api.genetics.IMutation;
-import forestry.api.genetics.IAlleleSpecies;
-import forestry.api.genetics.IClassification;
-import java.util.List;
-import binnie.core.resource.BinnieIcon;
 
-public abstract class BreedingSystem implements IItemStackRepresentitive
-{
+import java.util.*;
+
+public abstract class BreedingSystem implements IItemStackRepresentitive {
     protected BinnieIcon iconUndiscovered;
     protected BinnieIcon iconDiscovered;
     private List<IClassification> allBranches;
@@ -68,7 +49,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
         this.allResultantMutations = new HashMap<IAlleleSpecies, List<IMutation>>();
         this.allFurtherMutations = new HashMap<IAlleleSpecies, List<IMutation>>();
         Binnie.Genetics.registerBreedingSystem(this);
-        MinecraftForge.EVENT_BUS.register((Object)this);
+        MinecraftForge.EVENT_BUS.register((Object) this);
     }
 
     public String getChromosomeName(final IChromosomeType chromo) {
@@ -83,23 +64,17 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
         int i = 0;
         if (discoveredPercentage == 1.0f) {
             i = 6;
-        }
-        else if (discoveredPercentage < 0.1f) {
+        } else if (discoveredPercentage < 0.1f) {
             i = 0;
-        }
-        else if (discoveredPercentage < 0.3f) {
+        } else if (discoveredPercentage < 0.3f) {
             i = 1;
-        }
-        else if (discoveredPercentage < 0.5f) {
+        } else if (discoveredPercentage < 0.5f) {
             i = 2;
-        }
-        else if (discoveredPercentage < 0.7f) {
+        } else if (discoveredPercentage < 0.7f) {
             i = 3;
-        }
-        else if (discoveredPercentage < 0.9f) {
+        } else if (discoveredPercentage < 0.9f) {
             i = 4;
-        }
-        else if (discoveredPercentage < 1.0f) {
+        } else if (discoveredPercentage < 1.0f) {
             i = 5;
         }
         return BinnieCore.proxy.localise(this.getSpeciesRoot().getUID() + ".epitome." + i);
@@ -129,15 +104,15 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
         this.allSpecies = new ArrayList<IAlleleSpecies>();
         for (final IAllele species : allAlleles) {
             if (this.getSpeciesRoot().getTemplate(species.getUID()) != null) {
-                this.resultantMutations.put((IAlleleSpecies)species, new ArrayList<IMutation>());
-                this.furtherMutations.put((IAlleleSpecies)species, new ArrayList<IMutation>());
-                this.allResultantMutations.put((IAlleleSpecies)species, new ArrayList<IMutation>());
-                this.allFurtherMutations.put((IAlleleSpecies)species, new ArrayList<IMutation>());
-                this.allSpecies.add((IAlleleSpecies)species);
+                this.resultantMutations.put((IAlleleSpecies) species, new ArrayList<IMutation>());
+                this.furtherMutations.put((IAlleleSpecies) species, new ArrayList<IMutation>());
+                this.allResultantMutations.put((IAlleleSpecies) species, new ArrayList<IMutation>());
+                this.allFurtherMutations.put((IAlleleSpecies) species, new ArrayList<IMutation>());
+                this.allSpecies.add((IAlleleSpecies) species);
                 if (this.isBlacklisted(species) || species.getUID().contains("speciesBotAlfheim")) {
                     continue;
                 }
-                this.allActiveSpecies.add((IAlleleSpecies)species);
+                this.allActiveSpecies.add((IAlleleSpecies) species);
             }
         }
         this.allMutations = new ArrayList<IMutation>();
@@ -161,16 +136,16 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
             final Set<IMutation> mutations = new LinkedHashSet<IMutation>();
             mutations.addAll(this.getSpeciesRoot().getMutations(false));
             if (this == Binnie.Genetics.beeBreedingSystem) {
-                mutations.addAll((Collection<? extends IMutation>)ExtraBeeMutation.mutations);
+                mutations.addAll((Collection<? extends IMutation>) ExtraBeeMutation.mutations);
             }
             for (final IMutation mutation : mutations) {
                 this.allMutations.add(mutation);
                 final Set<IAlleleSpecies> participatingSpecies = new LinkedHashSet<IAlleleSpecies>();
                 if (mutation.getAllele0() instanceof IAlleleSpecies) {
-                    participatingSpecies.add((IAlleleSpecies)mutation.getAllele0());
+                    participatingSpecies.add((IAlleleSpecies) mutation.getAllele0());
                 }
                 if (mutation.getAllele1() instanceof IAlleleSpecies) {
-                    participatingSpecies.add((IAlleleSpecies)mutation.getAllele1());
+                    participatingSpecies.add((IAlleleSpecies) mutation.getAllele1());
                 }
                 for (final IAlleleSpecies species3 : participatingSpecies) {
                     this.allFurtherMutations.get(species3).add(mutation);
@@ -365,8 +340,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
                     continue;
                 }
                 ++this.discoveredSpeciesCount;
-            }
-            else {
+            } else {
                 ++this.totalSecretCount;
                 if (!this.isSpeciesDiscovered(species, tracker)) {
                     continue;
@@ -386,8 +360,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
                     continue;
                 }
                 ++this.discoveredBranchCount;
-            }
-            else {
+            } else {
                 ++this.totalSecretBranchCount;
                 if (!discoveredBranches.contains(branch)) {
                     continue;
@@ -429,7 +402,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive
 
     public String getAlleleName(final IChromosomeType chromosome, final IAllele allele) {
         if (allele instanceof IAlleleBoolean) {
-            return ((IAlleleBoolean)allele).getValue() ? Binnie.Language.localise(BinnieCore.instance, "allele.true") : Binnie.Language.localise(BinnieCore.instance, "allele.false");
+            return ((IAlleleBoolean) allele).getValue() ? Binnie.Language.localise(BinnieCore.instance, "allele.true") : Binnie.Language.localise(BinnieCore.instance, "allele.false");
         }
         if (allele.getName() == "for.gui.maximum") {
             return Binnie.Language.localise(BinnieCore.instance, "allele.fertility.maximum");

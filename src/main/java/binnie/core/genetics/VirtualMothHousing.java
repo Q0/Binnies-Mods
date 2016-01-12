@@ -6,7 +6,7 @@ import forestry.api.lepidopterology.IButterflyNursery;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class VirtualMothHousing extends VirtualHousing implements IButterflyNursery {
-    public VirtualMothHousing(EntityPlayer player) {
+    public VirtualMothHousing(final EntityPlayer player) {
         super(player);
     }
 
@@ -18,10 +18,10 @@ public class VirtualMothHousing extends VirtualHousing implements IButterflyNurs
         return null;
     }
 
-    public void setCaterpillar(IButterfly butterfly) {
+    public void setCaterpillar(final IButterfly butterfly) {
     }
 
-    public boolean canNurse(IButterfly butterfly) {
+    public boolean canNurse(final IButterfly butterfly) {
         return false;
     }
 }

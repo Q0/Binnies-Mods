@@ -8,7 +8,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public enum EnumHoneyComb implements IItemEnum {
     BARREN(7564356, 12762791),
@@ -31,10 +30,6 @@ public enum EnumHoneyComb implements IItemEnum {
     COPPER(3552564, 13722376),
     TIN(3552564, 12431805),
     SILVER(3552564, 14408667),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     BRONZE,
     URANIUM(2031360, 4303667),
     CLAY(7034426, 11583702),
@@ -48,126 +43,62 @@ public enum EnumHoneyComb implements IItemEnum {
     BLAZE(16738816, 16763904),
     COFFEE(5519389, 11763531),
     GLACIAL(5146503, 13366002),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     MINT,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     CITRUS,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     PEAT,
     SHADOW(0, 3545141),
     LEAD(3552564, 10125468),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     BRASS,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     ELECTRUM,
     ZINC(3552564, 15592447),
     TITANIUM(3552564, 11578083),
     TUNGSTEN(3552564, 1249812),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     STEEL,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     IRIDIUM,
     PLATINUM(3552564, 10125468),
     LAPIS(3552564, 4009179),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     SODALITE,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     PYRITE,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     BAUXITE,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     CINNABAR,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     SPHALERITE,
     EMERALD(3552564, 1900291),
     RUBY(3552564, 14024704),
     SAPPHIRE(3552564, 673791),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     OLIVINE,
     DIAMOND(3552564, 8371706),
     RED(13388876, 16711680),
     YELLOW(15066419, 16768256),
     BLUE(10072818, 8959),
-    GREEN(6717235, '餀'),
+    GREEN(6717235, 39168),
     BLACK(1644825, 5723991),
     WHITE(14079702, 16777215),
     BROWN(8349260, 6042895),
     ORANGE(15905331, 16751872),
-    CYAN(5020082, '￥'),
+    CYAN(5020082, 65509),
     PURPLE(11691749, 11403519),
     GRAY(5000268, 12237498),
-    LIGHTBLUE(10072818, '鷿'),
+    LIGHTBLUE(10072818, 40447),
     PINK(15905484, 16744671),
-    LIMEGREEN(8375321, '（'),
+    LIMEGREEN(8375321, 65288),
     MAGENTA(15040472, 16711884),
     LIGHTGRAY(10066329, 13224393),
     NICKEL(3552564, 16768764),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     INVAR,
     GLOWSTONE(10919006, 14730249),
     SALTPETER(10919006, 14730249),
-    /**
-     * @deprecated
-     */
-    @Deprecated
     PULP,
-    /**
-     * @deprecated
-     */
-    @Deprecated
     MULCH,
     COMPOST(4338440, 7036475),
     SAWDUST(12561009, 15913854),
     CERTUS(13029631, 3755363),
     ENDERPEARL(3446662, 206368),
     YELLORIUM(2564173, 14019840),
-    CYANITE(2564173, '蛭'),
+    CYANITE(2564173, 34541),
     BLUTONIUM(2564173, 1769702);
 
     int[] colour;
-    public Map products;
+    public Map<ItemStack, Integer> products;
     boolean active;
     public boolean deprecated;
 
@@ -177,73 +108,75 @@ public enum EnumHoneyComb implements IItemEnum {
         this.deprecated = true;
     }
 
-    private EnumHoneyComb(int colour, int colour2) {
+    private EnumHoneyComb(final int colour, final int colour2) {
         this.colour = new int[0];
-        this.products = new LinkedHashMap();
+        this.products = new LinkedHashMap<ItemStack, Integer>();
         this.active = true;
         this.deprecated = false;
         this.colour = new int[]{colour, colour2};
     }
 
     public void addRecipe() {
-        int[] chancesI = new int[this.products.size()];
-        ItemStack[] productsI = new ItemStack[this.products.size()];
+        final int[] chancesI = new int[this.products.size()];
+        final ItemStack[] productsI = new ItemStack[this.products.size()];
         int i = 0;
-
-        for (Entry<ItemStack, Integer> entry : this.products.entrySet()) {
-            chancesI[i] = ((Integer) entry.getValue()).intValue();
-            productsI[i] = (ItemStack) entry.getKey();
+        for (final Map.Entry<ItemStack, Integer> entry : this.products.entrySet()) {
+            chancesI[i] = entry.getValue();
+            productsI[i] = entry.getKey();
             ++i;
         }
-
         RecipeManagers.centrifugeManager.addRecipe(20, this.get(1), productsI, chancesI);
     }
 
+    @Override
     public boolean isActive() {
         return this.active;
     }
 
-    public static EnumHoneyComb get(ItemStack itemStack) {
-        int i = itemStack.getItemDamage();
-        return i >= 0 && i < values().length ? values()[i] : values()[0];
+    public static EnumHoneyComb get(final ItemStack itemStack) {
+        final int i = itemStack.getItemDamage();
+        if (i >= 0 && i < values().length) {
+            return values()[i];
+        }
+        return values()[0];
     }
 
-    public ItemStack get(int size) {
+    @Override
+    public ItemStack get(final int size) {
         return new ItemStack(ExtraBees.comb, size, this.ordinal());
     }
 
-    public String getName(ItemStack stack) {
+    @Override
+    public String getName(final ItemStack stack) {
         return ExtraBees.proxy.localise("item.comb." + this.name().toLowerCase());
     }
 
-    public boolean addProduct(ItemStack item, int chance) {
+    public boolean addProduct(final ItemStack item, final int chance) {
         if (item == null) {
             return false;
-        } else {
-            this.products.put(item.copy(), Integer.valueOf(chance));
-            return true;
         }
+        this.products.put(item.copy(), chance);
+        return true;
     }
 
-    public void tryAddProduct(ItemStack item, int chance) {
+    public void tryAddProduct(final ItemStack item, final int chance) {
         this.active = this.addProduct(item, chance);
     }
 
-    public void tryAddProduct(String oreDict, int chance) {
+    public void tryAddProduct(final String oreDict, final int chance) {
         if (!OreDictionary.getOres(oreDict).isEmpty()) {
-            this.tryAddProduct((ItemStack) OreDictionary.getOres(oreDict).get(0), chance);
+            this.tryAddProduct(OreDictionary.getOres(oreDict).get(0), chance);
         } else {
             this.active = false;
         }
-
     }
 
-    public void tryAddProduct(IItemEnum type, int chance) {
+    public void tryAddProduct(final IItemEnum type, final int chance) {
         this.tryAddProduct(type.get(1), chance);
-        this.active = this.active && type.isActive();
+        this.active = (this.active && type.isActive());
     }
 
-    public void copyProducts(EnumHoneyComb comb) {
+    public void copyProducts(final EnumHoneyComb comb) {
         this.products.putAll(comb.products);
     }
 }

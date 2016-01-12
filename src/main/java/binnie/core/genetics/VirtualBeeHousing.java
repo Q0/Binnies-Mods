@@ -9,24 +9,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
-    public VirtualBeeHousing(EntityPlayer player) {
+    public VirtualBeeHousing(final EntityPlayer player) {
         super(player);
     }
 
-    public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-        return 1.0F;
+    public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-        return 1.0F;
+    public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
+        return 1.0f;
     }
 
-    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
     public ItemStack getQueen() {
@@ -37,24 +37,25 @@ public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
         return null;
     }
 
-    public void setQueen(ItemStack itemstack) {
+    public void setQueen(final ItemStack itemstack) {
     }
 
-    public void setDrone(ItemStack itemstack) {
+    public void setDrone(final ItemStack itemstack) {
     }
 
     public boolean canBreed() {
         return true;
     }
 
-    public boolean addProduct(ItemStack product, boolean all) {
+    @Override
+    public boolean addProduct(final ItemStack product, final boolean all) {
         return false;
     }
 
-    public void wearOutEquipment(int amount) {
+    public void wearOutEquipment(final int amount) {
     }
 
-    public void onQueenChange(ItemStack queen) {
+    public void onQueenChange(final ItemStack queen) {
     }
 
     public boolean isSealed() {
@@ -73,25 +74,25 @@ public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
         return this.getBiomeId() == BiomeGenBase.hell.biomeID;
     }
 
-    public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 
-    public void onQueenDeath(IBee queen) {
+    public void onQueenDeath(final IBee queen) {
     }
 
-    public void onPostQueenDeath(IBee queen) {
+    public void onPostQueenDeath(final IBee queen) {
     }
 
-    public boolean onPollenRetrieved(IBee queen, IIndividual pollen, boolean isHandled) {
+    public boolean onPollenRetrieved(final IBee queen, final IIndividual pollen, final boolean isHandled) {
         return false;
     }
 
-    public boolean onEggLaid(IBee queen) {
+    public boolean onEggLaid(final IBee queen) {
         return false;
     }
 
-    public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
-        return 1.0F;
+    public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
+        return 1.0f;
     }
 }

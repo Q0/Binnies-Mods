@@ -19,11 +19,12 @@ public enum BinnieCoreTexture implements IBinnieTexture {
     String texture;
     ResourceType type;
 
-    private BinnieCoreTexture(ResourceType base, String texture) {
+    private BinnieCoreTexture(final ResourceType base, final String texture) {
         this.texture = texture;
         this.type = base;
     }
 
+    @Override
     public BinnieResource getTexture() {
         return Binnie.Resource.getPNG(BinnieCore.instance, this.type, this.texture);
     }

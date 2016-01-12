@@ -12,15 +12,20 @@ public enum CraftGUITextureSheet implements IBinnieTexture {
 
     String name;
 
-    private CraftGUITextureSheet(String name) {
+    private CraftGUITextureSheet(final String name) {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }
 
+    @Override
     public BinnieResource getTexture() {
-        return BinnieCore.proxy.isServer() ? null : CraftGUI.ResourceManager.getTextureSheet(this.name).getTexture();
+        if (BinnieCore.proxy.isServer()) {
+            return null;
+        }
+        return CraftGUI.ResourceManager.getTextureSheet(this.name).getTexture();
     }
 }

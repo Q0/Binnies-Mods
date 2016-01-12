@@ -19,14 +19,15 @@ public class WindowPunnettSquare extends Window {
     ControlSlot bee1;
     ControlSlot bee2;
     ControlPunnett punnett;
-    ISpeciesRoot root = null;
+    ISpeciesRoot root;
 
-    public static Window create(EntityPlayer player, IInventory inventory, Side side) {
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
         return new WindowPunnettSquare(player, inventory, side);
     }
 
-    public WindowPunnettSquare(EntityPlayer player, IInventory inventory, Side side) {
-        super(245.0F, 205.0F, player, inventory, side);
+    public WindowPunnettSquare(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(245.0f, 205.0f, player, inventory, side);
+        this.root = null;
     }
 
     public AbstractMod getMod() {
@@ -37,14 +38,14 @@ public class WindowPunnettSquare extends Window {
         return "Punnett";
     }
 
+    @Override
     public void initialiseClient() {
         this.setTitle("Punnett Square");
-        CraftGUI.Render.stylesheet(new WindowPunnettSquare.StyleSheetPunnett());
+        CraftGUI.Render.stylesheet(new StyleSheetPunnett());
     }
 
     static class StyleSheetPunnett extends StyleSheet {
         public StyleSheetPunnett() {
-            super();
             this.textures.put(CraftGUITexture.Window, new PaddedTexture(0, 0, 160, 160, 0, ExtraBeeTexture.GUIPunnett, 32, 32, 32, 32));
             this.textures.put(CraftGUITexture.Slot, new StandardTexture(160, 0, 18, 18, 0, ExtraBeeTexture.GUIPunnett));
             this.textures.put(ExtraBeeGUITexture.Chromosome, new StandardTexture(160, 36, 16, 16, 0, ExtraBeeTexture.GUIPunnett));

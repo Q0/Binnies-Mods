@@ -10,7 +10,7 @@ import java.util.List;
 public interface IWidget {
     IWidget getParent();
 
-    void deleteChild(IWidget var1);
+    void deleteChild(final IWidget p0);
 
     void deleteAllChildren();
 
@@ -22,13 +22,13 @@ public interface IWidget {
 
     IPoint pos();
 
-    void setPosition(IPoint var1);
+    void setPosition(final IPoint p0);
 
     IPoint getSize();
 
     IPoint size();
 
-    void setSize(IPoint var1);
+    void setSize(final IPoint p0);
 
     IPoint getOriginalPosition();
 
@@ -42,13 +42,13 @@ public interface IWidget {
 
     IArea area();
 
-    void setOffset(IPoint var1);
+    void setOffset(final IPoint p0);
 
     IPoint getMousePosition();
 
     IPoint getRelativeMousePosition();
 
-    void setColour(int var1);
+    void setColour(final int p0);
 
     int getColour();
 
@@ -76,21 +76,21 @@ public interface IWidget {
 
     boolean isDragged();
 
-    boolean isChildVisible(IWidget var1);
+    boolean isChildVisible(final IWidget p0);
 
-    boolean isChildEnabled(IWidget var1);
+    boolean isChildEnabled(final IWidget p0);
 
     boolean canMouseOver();
 
     boolean canFocus();
 
-    IWidget addWidget(IWidget var1);
+    IWidget addWidget(final IWidget p0);
 
-    List getWidgets();
+    List<IWidget> getWidgets();
 
-    void callEvent(Event var1);
+    void callEvent(final Event p0);
 
-    void recieveEvent(Event var1);
+    void recieveEvent(final Event p0);
 
     void onUpdateClient();
 
@@ -98,33 +98,33 @@ public interface IWidget {
 
     void onDelete();
 
-    Object getWidget(Class var1);
+    <T> T getWidget(final Class<T> p0);
 
     IArea getCroppedZone();
 
-    void setCroppedZone(IWidget var1, IArea var2);
+    void setCroppedZone(final IWidget p0, final IArea p1);
 
     boolean isCroppedWidet();
 
     IWidget getCropWidget();
 
-    boolean isMouseOverWidget(IPoint var1);
+    boolean isMouseOverWidget(final IPoint p0);
 
     int getLevel();
 
-    boolean isDescendant(IWidget var1);
+    boolean isDescendant(final IWidget p0);
 
-    List getAttributes();
+    List<IWidgetAttribute> getAttributes();
 
-    boolean hasAttribute(IWidgetAttribute var1);
+    boolean hasAttribute(final IWidgetAttribute p0);
 
-    boolean addAttribute(IWidgetAttribute var1);
+    boolean addAttribute(final IWidgetAttribute p0);
 
-    void addEventHandler(EventHandler var1);
+    <E extends Event> void addEventHandler(final EventHandler<E> p0);
 
-    void addSelfEventHandler(EventHandler var1);
+    <E extends Event> void addSelfEventHandler(final EventHandler<E> p0);
 
-    boolean contains(IPoint var1);
+    boolean contains(final IPoint p0);
 
     float x();
 
@@ -134,5 +134,5 @@ public interface IWidget {
 
     float h();
 
-    void onRender(RenderStage var1);
+    void onRender(final RenderStage p0);
 }

@@ -8,27 +8,25 @@ import forestry.api.apiculture.IBeeListener;
 import forestry.api.apiculture.IBeeModifier;
 
 public class AlvearyRainShield {
-    public AlvearyRainShield() {
-        super();
-    }
-
-    public static class ComponentRainShield extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
-        public ComponentRainShield(Machine machine) {
-            super(machine);
-        }
-
-        public boolean isSealed() {
-            return true;
-        }
-    }
-
     public static class PackageAlvearyRainShield extends AlvearyMachine.AlvearyPackage implements IMachineInformation {
         public PackageAlvearyRainShield() {
             super("rainShield", ExtraBeeTexture.AlvearyRainShield.getTexture(), false);
         }
 
-        public void createMachine(Machine machine) {
-            new AlvearyRainShield.ComponentRainShield(machine);
+        @Override
+        public void createMachine(final Machine machine) {
+            new ComponentRainShield(machine);
+        }
+    }
+
+    public static class ComponentRainShield extends ComponentBeeModifier implements IBeeModifier, IBeeListener {
+        public ComponentRainShield(final Machine machine) {
+            super(machine);
+        }
+
+        @Override
+        public boolean isSealed() {
+            return true;
         }
     }
 }

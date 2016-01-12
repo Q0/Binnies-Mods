@@ -11,6 +11,7 @@ import binnie.genetics.item.ModuleItem;
 import forestry.api.apiculture.IBee;
 import forestry.api.arboriculture.EnumTreeChromosome;
 import forestry.api.arboriculture.ITree;
+import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.IIndividual;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.plugins.PluginApiculture;
@@ -19,159 +20,146 @@ import net.minecraftforge.common.EnumPlantType;
 import java.text.DecimalFormat;
 
 public class AnalystPageBiology extends ControlAnalystPage {
-    public AnalystPageBiology(IWidget parent, IArea area, IIndividual ind) {
+    public AnalystPageBiology(final IWidget parent, final IArea area, final IIndividual ind) {
         super(parent, area);
         this.setColour(26214);
         int y = 4;
-        (new ControlTextCentered(this, (float) y, "§nBiology")).setColour(this.getColour());
-        y = y + 12;
+        new ControlTextCentered(this, y, "§nBiology").setColour(this.getColour());
+        y += 12;
         if (ind instanceof IBee) {
-            IBee bee = (IBee) ind;
+            final IBee bee = (IBee) ind;
             if (bee.getGenome().getNocturnal()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconAllDay.getIcon())).addTooltip("Active all day and night");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconAllDay.getIcon()).addTooltip("Active all day and night");
             } else if (bee.getGenome().getPrimary().isNocturnal()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconNight.getIcon())).addTooltip("Active at night");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconNight.getIcon()).addTooltip("Active at night");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconDaytime.getIcon())).addTooltip("Active during the day");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconDaytime.getIcon()).addTooltip("Active during the day");
             }
-
             if (!bee.getGenome().getTolerantFlyer()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 24.0F, (float) y, ModuleItem.iconNoRain.getIcon())).addTooltip("Cannot work during rain");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 24.0f, y, ModuleItem.iconNoRain.getIcon()).addTooltip("Cannot work during rain");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 24.0F, (float) y, ModuleItem.iconRain.getIcon())).addTooltip("Can work during rain");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 24.0f, y, ModuleItem.iconRain.getIcon()).addTooltip("Can work during rain");
             }
-
             if (bee.getGenome().getCaveDwelling()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 48.0F, (float) y, ModuleItem.iconNoSky.getIcon())).addTooltip("Can work underground");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 48.0f, y, ModuleItem.iconNoSky.getIcon()).addTooltip("Can work underground");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 48.0F, (float) y, ModuleItem.iconSky.getIcon())).addTooltip("Cannot work underground");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 48.0f, y, ModuleItem.iconSky.getIcon()).addTooltip("Cannot work underground");
             }
-
-            y = y + 30;
+            y += 30;
         } else if (ind instanceof IButterfly) {
-            IButterfly moth = (IButterfly) ind;
+            final IButterfly moth = (IButterfly) ind;
             if (moth.getGenome().getNocturnal()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconAllDay.getIcon())).addTooltip("Active all day and night");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconAllDay.getIcon()).addTooltip("Active all day and night");
             } else if (moth.getGenome().getPrimary().isNocturnal()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconNight.getIcon())).addTooltip("Active at night");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconNight.getIcon()).addTooltip("Active at night");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F, (float) y, ModuleItem.iconDaytime.getIcon())).addTooltip("Active during the day");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f, y, ModuleItem.iconDaytime.getIcon()).addTooltip("Active during the day");
             }
-
             if (!moth.getGenome().getTolerantFlyer()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 24.0F, (float) y, ModuleItem.iconNoRain.getIcon())).addTooltip("Cannot work during rain");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 24.0f, y, ModuleItem.iconNoRain.getIcon()).addTooltip("Cannot work during rain");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 24.0F, (float) y, ModuleItem.iconRain.getIcon())).addTooltip("Can work during rain");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 24.0f, y, ModuleItem.iconRain.getIcon()).addTooltip("Can work during rain");
             }
-
             if (moth.getGenome().getFireResist()) {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 48.0F, (float) y, ModuleItem.iconNoFire.getIcon())).addTooltip("Nonflammable");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 48.0f, y, ModuleItem.iconNoFire.getIcon()).addTooltip("Nonflammable");
             } else {
-                (new ControlIconDisplay(this, (this.w() - 64.0F) / 2.0F + 48.0F, (float) y, ModuleItem.iconFire.getIcon())).addTooltip("Flammable");
+                new ControlIconDisplay(this, (this.w() - 64.0f) / 2.0f + 48.0f, y, ModuleItem.iconFire.getIcon()).addTooltip("Flammable");
             }
-
-            y = y + 30;
+            y += 30;
         } else if (ind instanceof ITree) {
-            (new ControlTextCentered(this, (float) y, "§oSappiness: " + Binnie.Genetics.treeBreedingSystem.getAlleleName(EnumTreeChromosome.SAPPINESS, ind.getGenome().getActiveAllele(EnumTreeChromosome.SAPPINESS)))).setColour(this.getColour());
-            y = y + 20;
+            new ControlTextCentered(this, y, "§oSappiness: " + Binnie.Genetics.treeBreedingSystem.getAlleleName((IChromosomeType) EnumTreeChromosome.SAPPINESS, ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.SAPPINESS))).setColour(this.getColour());
+            y += 20;
         } else {
-            y = y + 10;
+            y += 10;
         }
-
         if (ind instanceof IBee) {
-            IBee bee = (IBee) ind;
-            int fertility = bee.getGenome().getFertility();
-            (new ControlTextCentered(this, (float) y, "§l" + fertility + "§r drone" + (fertility > 1 ? "s" : "") + " per hive")).setColour(this.getColour());
-            y = y + 22;
-            int lifespan = bee.getGenome().getLifespan() * PluginApiculture.ticksPerBeeWorkCycle;
-            (new ControlTextCentered(this, (float) y, "Average Lifespan")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§l" + this.getMCDayString((float) lifespan * (bee.getGenome().getNocturnal() ? 1.0F : 2.0F)))).setColour(this.getColour());
-            y = y + 22;
+            final IBee bee = (IBee) ind;
+            final int fertility = bee.getGenome().getFertility();
+            new ControlTextCentered(this, y, "§l" + fertility + "§r drone" + ((fertility > 1) ? "s" : "") + " per hive").setColour(this.getColour());
+            y += 22;
+            final int lifespan = bee.getGenome().getLifespan() * PluginApiculture.ticksPerBeeWorkCycle;
+            new ControlTextCentered(this, y, "Average Lifespan").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§l" + this.getMCDayString(lifespan * (bee.getGenome().getNocturnal() ? 1.0f : 2.0f))).setColour(this.getColour());
+            y += 22;
         }
-
         if (ind instanceof IButterfly) {
-            IButterfly bee = (IButterfly) ind;
-            int fertility = bee.getGenome().getFertility();
-            (new ControlTextCentered(this, (float) y, "Lays §l" + fertility + "§r caterpillar" + (fertility > 1 ? "s" : "") + " before dying")).setColour(this.getColour());
-            y = y + 32;
-            float caterpillarMatureTime = 1365.3999F * (float) Math.round((float) bee.getGenome().getLifespan() / (float) (bee.getGenome().getFertility() * 2));
-            (new ControlTextCentered(this, (float) y, "Caterpillar Gestation")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§l" + this.getMCDayString(caterpillarMatureTime))).setColour(this.getColour());
-            y = y + 22;
-            int speed = (int) (20.0F * bee.getGenome().getSpeed());
-            (new ControlTextCentered(this, (float) y, "Flight Speed")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§l" + speed + "§r blocks per second")).setColour(this.getColour());
-            y = y + 22;
+            final IButterfly bee2 = (IButterfly) ind;
+            final int fertility = bee2.getGenome().getFertility();
+            new ControlTextCentered(this, y, "Lays §l" + fertility + "§r caterpillar" + ((fertility > 1) ? "s" : "") + " before dying").setColour(this.getColour());
+            y += 32;
+            final float caterpillarMatureTime = 1365.3999f * Math.round(bee2.getGenome().getLifespan() / (bee2.getGenome().getFertility() * 2));
+            new ControlTextCentered(this, y, "Caterpillar Gestation").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§l" + this.getMCDayString(caterpillarMatureTime)).setColour(this.getColour());
+            y += 22;
+            final int speed = (int) (20.0f * bee2.getGenome().getSpeed());
+            new ControlTextCentered(this, y, "Flight Speed").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§l" + speed + "§r blocks per second").setColour(this.getColour());
+            y += 22;
         }
-
         if (ind instanceof ITree) {
-            ITree tree = (ITree) ind;
-            int fertility = (int) (1.0F / tree.getGenome().getFertility());
-            (new ControlTextCentered(this, (float) y, "1 Sapling per §l" + fertility + "§r leave" + (fertility > 1 ? "s" : ""))).setColour(this.getColour());
-            y = y + 22;
-            float butterflySpawn = 1365.3999F / (tree.getGenome().getSappiness() * tree.getGenome().getYield() * 0.5F);
-            (new ControlTextCentered(this, (float) y, "Butterfies spawn every\n" + this.getTimeString(butterflySpawn) + " per leaf")).setColour(this.getColour());
-            y = y + 34;
-            (new ControlTextCentered(this, (float) y, "Plant Types")).setColour(this.getColour());
-            y = y + 12;
-
-            for (EnumPlantType type : tree.getGenome().getPlantTypes()) {
-                (new ControlTextCentered(this, (float) y, "§o" + type.name())).setColour(this.getColour());
+            final ITree tree = (ITree) ind;
+            final int fertility = (int) (1.0f / tree.getGenome().getFertility());
+            new ControlTextCentered(this, y, "1 Sapling per §l" + fertility + "§r leave" + ((fertility > 1) ? "s" : "")).setColour(this.getColour());
+            y += 22;
+            final float butterflySpawn = 1365.3999f / (tree.getGenome().getSappiness() * tree.getGenome().getYield() * 0.5f);
+            new ControlTextCentered(this, y, "Butterfies spawn every\n" + this.getTimeString(butterflySpawn) + " per leaf").setColour(this.getColour());
+            y += 34;
+            new ControlTextCentered(this, y, "Plant Types").setColour(this.getColour());
+            y += 12;
+            for (final EnumPlantType type : tree.getGenome().getPlantTypes()) {
+                new ControlTextCentered(this, y, "§o" + type.name()).setColour(this.getColour());
                 y += 12;
             }
         }
-
         if (ind instanceof IFlower) {
-            IFlower flower = (IFlower) ind;
-            float butterflySpawn = 1365.3999F / (flower.getGenome().getSappiness() * 0.2F);
-            (new ControlTextCentered(this, (float) y, "Butterfies spawn every\n" + this.getTimeString(butterflySpawn))).setColour(this.getColour());
-            y = y + 30;
-            float CHANCE_DISPERSAL = 0.8F;
-            CHANCE_DISPERSAL = CHANCE_DISPERSAL + 0.2F * (float) flower.getGenome().getFertility();
-            float CHANCE_POLLINATE = 0.6F;
-            CHANCE_POLLINATE = CHANCE_POLLINATE + 0.25F * (float) flower.getGenome().getFertility();
-            float CHANCE_SELFPOLLINATE = 0.2F * CHANCE_POLLINATE;
-            if (CHANCE_DISPERSAL > 1.0F) {
-                CHANCE_DISPERSAL = 1.0F;
+            final IFlower flower = (IFlower) ind;
+            final float butterflySpawn2 = 1365.3999f / (flower.getGenome().getSappiness() * 0.2f);
+            new ControlTextCentered(this, y, "Butterfies spawn every\n" + this.getTimeString(butterflySpawn2)).setColour(this.getColour());
+            y += 30;
+            float CHANCE_DISPERSAL = 0.8f;
+            CHANCE_DISPERSAL += 0.2f * flower.getGenome().getFertility();
+            float CHANCE_POLLINATE = 0.6f;
+            CHANCE_POLLINATE += 0.25f * flower.getGenome().getFertility();
+            final float CHANCE_SELFPOLLINATE = 0.2f * CHANCE_POLLINATE;
+            if (CHANCE_DISPERSAL > 1.0f) {
+                CHANCE_DISPERSAL = 1.0f;
             }
-
-            if (CHANCE_POLLINATE > 1.0F) {
-                CHANCE_POLLINATE = 1.0F;
+            if (CHANCE_POLLINATE > 1.0f) {
+                CHANCE_POLLINATE = 1.0f;
             }
-
-            float dispersalTime = 1365.3999F / CHANCE_DISPERSAL;
-            float pollinateTime = 1365.3999F / CHANCE_POLLINATE;
-            float lifespan = (float) flower.getMaxAge() * 20.0F * 68.27F / flower.getGenome().getAgeChance();
-            float floweringLifespan = (float) (flower.getMaxAge() - 1) * 20.0F * 68.27F / flower.getGenome().getAgeChance();
-            floweringLifespan = floweringLifespan - 1365.3999F;
-            (new ControlTextCentered(this, (float) y, "Average Lifespan")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§l" + this.getMCDayString(lifespan))).setColour(this.getColour());
-            y = y + 22;
-            (new ControlTextCentered(this, (float) y, "Seed Dispersal")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§o" + (int) (floweringLifespan / dispersalTime) + " per lifetime")).setColour(this.getColour());
-            y = y + 22;
-            (new ControlTextCentered(this, (float) y, "Pollination")).setColour(this.getColour());
-            y = y + 12;
-            (new ControlTextCentered(this, (float) y, "§o" + (int) (floweringLifespan / pollinateTime) + " per lifetime")).setColour(this.getColour());
-            y = y + 22;
+            final float dispersalTime = 1365.3999f / CHANCE_DISPERSAL;
+            final float pollinateTime = 1365.3999f / CHANCE_POLLINATE;
+            final float lifespan2 = flower.getMaxAge() * 20.0f * 68.27f / flower.getGenome().getAgeChance();
+            float floweringLifespan = (flower.getMaxAge() - 1) * 20.0f * 68.27f / flower.getGenome().getAgeChance();
+            floweringLifespan -= 1365.3999f;
+            new ControlTextCentered(this, y, "Average Lifespan").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§l" + this.getMCDayString(lifespan2)).setColour(this.getColour());
+            y += 22;
+            new ControlTextCentered(this, y, "Seed Dispersal").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§o" + (int) (floweringLifespan / dispersalTime) + " per lifetime").setColour(this.getColour());
+            y += 22;
+            new ControlTextCentered(this, y, "Pollination").setColour(this.getColour());
+            y += 12;
+            new ControlTextCentered(this, y, "§o" + (int) (floweringLifespan / pollinateTime) + " per lifetime").setColour(this.getColour());
+            y += 22;
         }
-
-        this.setSize(new IPoint(this.w(), (float) y));
+        this.setSize(new IPoint(this.w(), y));
     }
 
-    private String getMCDayString(float time) {
-        float seconds = time / 20.0F;
-        float minutes = seconds / 60.0F;
-        float days = minutes / 20.0F;
-        DecimalFormat df = new DecimalFormat("#.0");
-        return df.format((double) days) + " MC days";
+    private String getMCDayString(final float time) {
+        final float seconds = time / 20.0f;
+        final float minutes = seconds / 60.0f;
+        final float days = minutes / 20.0f;
+        final DecimalFormat df = new DecimalFormat("#.0");
+        return df.format(days) + " MC days";
     }
 
+    @Override
     public String getTitle() {
         return "Biology";
     }

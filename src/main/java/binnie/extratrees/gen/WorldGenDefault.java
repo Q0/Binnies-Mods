@@ -7,28 +7,32 @@ import binnie.extratrees.worldgen.BlockTypeLog;
 import forestry.api.arboriculture.ITree;
 
 public class WorldGenDefault extends WorldGenTree {
-    public WorldGenDefault(ITree tree) {
+    public WorldGenDefault(final ITree tree) {
         super(tree);
     }
 
+    @Override
     public void generate() {
         this.generateTreeTrunk(this.height, this.girth);
         int leafSpawn = this.height + 1;
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 1.0F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 1.5F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.9F, 1, this.leaf, false);
-        this.generateCylinder(new WorldGenTree.Vector(0.0F, (float) (leafSpawn--), 0.0F), 2.9F, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 1.0f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 1.5f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.9f, 1, this.leaf, false);
+        this.generateCylinder(new Vector(0.0f, leafSpawn--, 0.0f), 2.9f, 1, this.leaf, false);
     }
 
+    @Override
     public void preGenerate() {
         this.height = this.determineHeight(5, 2);
         this.girth = this.determineGirth(this.tree.getGirth(this.world, this.startX, this.startY, this.startZ));
     }
 
+    @Override
     public BlockType getLeaf() {
         return new BlockTypeLeaf();
     }
 
+    @Override
     public BlockType getWood() {
         return new BlockTypeLog(((ExtraTreeSpecies) this.tree.getGenome().getPrimary()).getLog());
     }

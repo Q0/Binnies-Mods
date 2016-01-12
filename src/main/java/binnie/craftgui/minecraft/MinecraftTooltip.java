@@ -4,34 +4,27 @@ import binnie.craftgui.core.Tooltip;
 import net.minecraft.util.EnumChatFormatting;
 
 public class MinecraftTooltip extends Tooltip {
-    public MinecraftTooltip() {
-        super();
+    public static int getOutline(final ITooltipType type) {
+        return TypeColour.valueOf(type.toString()).getOutline();
     }
 
-    public static int getOutline(Tooltip.ITooltipType type) {
-        return MinecraftTooltip.TypeColour.valueOf(type.toString()).getOutline();
+    public static String getTitle(final ITooltipType type) {
+        return TypeColour.valueOf(type.toString()).getTitle();
     }
 
-    public static String getTitle(Tooltip.ITooltipType type) {
-        return MinecraftTooltip.TypeColour.valueOf(type.toString()).getTitle();
+    public static String getBody(final ITooltipType type) {
+        return TypeColour.valueOf(type.toString()).getBody();
     }
 
-    public static String getBody(Tooltip.ITooltipType type) {
-        return MinecraftTooltip.TypeColour.valueOf(type.toString()).getBody();
-    }
-
-    public static enum Type implements Tooltip.ITooltipType {
+    public enum Type implements ITooltipType {
         Error,
         Warning;
-
-        private Type() {
-        }
     }
 
-    private static enum TypeColour {
+    private enum TypeColour {
         Standard(5243135, EnumChatFormatting.WHITE, EnumChatFormatting.GRAY),
         Help(5046016, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_GREEN),
-        Information('뿿', EnumChatFormatting.AQUA, EnumChatFormatting.DARK_AQUA),
+        Information(49151, EnumChatFormatting.AQUA, EnumChatFormatting.DARK_AQUA),
         Error(16724224, EnumChatFormatting.RED, EnumChatFormatting.DARK_RED),
         Warning(16752384, EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD),
         User(9839667, EnumChatFormatting.RED, EnumChatFormatting.DARK_RED),
@@ -41,7 +34,7 @@ public class MinecraftTooltip extends Tooltip {
         String mainText;
         String bodyText;
 
-        private TypeColour(int outline, EnumChatFormatting mainText, EnumChatFormatting bodyText) {
+        private TypeColour(final int outline, final EnumChatFormatting mainText, final EnumChatFormatting bodyText) {
             this.outline = outline;
             this.mainText = mainText.toString();
             this.bodyText = bodyText.toString();
