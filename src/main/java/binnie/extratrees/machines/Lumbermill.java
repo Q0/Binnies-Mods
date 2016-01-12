@@ -63,16 +63,13 @@ public class Lumbermill {
         final List<ItemStack> list = new ArrayList<ItemStack>();
         for (final Object recipeO : CraftingManager.getInstance().getRecipeList()) {
             if (recipeO instanceof ShapelessRecipes) {
-                final ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
-                if (recipe.recipeItems.size() != 1) {
-                    continue;
-                }
-                if (!(recipe.recipeItems.get(0) instanceof ItemStack)) {
-                    continue;
-                }
-                final ItemStack input = recipe.recipeItems.get(0);
-                if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                    list.add(input);
+                ShapelessRecipes recipe = (ShapelessRecipes)recipeO;
+                if(recipe.recipeItems.size() == 1 && recipe.recipeItems.get(0) instanceof ItemStack) {
+                    ItemStack input = (ItemStack)recipe.recipeItems.get(0);
+                    if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
+                        list.add(input);
+                    }
+                    break;
                 }
             }
             if (recipeO instanceof ShapedRecipes) {
@@ -86,18 +83,13 @@ public class Lumbermill {
                 }
             }
             if (recipeO instanceof ShapelessOreRecipe) {
-                final ShapelessOreRecipe recipe3 = (ShapelessOreRecipe) recipeO;
-                if (recipe3.getInput().size() != 1) {
-                    continue;
+                ShapelessOreRecipe recipe = (ShapelessOreRecipe)recipeO;
+                if(recipe.getInput().size() == 1 && recipe.getInput().get(0) instanceof ItemStack) {
+                    ItemStack input = (ItemStack)recipe.getInput().get(0);
+                    if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
+                        list.add(input);
+                    }
                 }
-                if (!(recipe3.getInput().get(0) instanceof ItemStack)) {
-                    continue;
-                }
-                final ItemStack input = recipe3.getInput().get(0);
-                if (recipe3.getRecipeOutput() == null || !recipe3.getRecipeOutput().isItemEqual(output)) {
-                    continue;
-                }
-                list.add(input);
             }
         }
         return list;
