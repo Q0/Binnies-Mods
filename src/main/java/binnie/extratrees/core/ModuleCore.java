@@ -71,7 +71,7 @@ public class ModuleCore implements IInitializable {
                 while (!logQueue.isEmpty()) {
                     outputLogs.println("<tr>");
                     for (int i = 0; i < 4; ++i) {
-                        final ILogType.ExtraTreeLog wood5 = logQueue.poll();
+                        final ILogType.ExtraTreeLog wood5 = (ILogType.ExtraTreeLog) logQueue.poll();
                         if (wood5 == null) {
                             outputLogs.println("<td></td>");
                         } else {

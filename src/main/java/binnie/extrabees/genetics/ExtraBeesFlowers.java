@@ -1,5 +1,6 @@
 package binnie.extrabees.genetics;
 
+import binnie.botany.api.IFlower;
 import binnie.core.Mods;
 import binnie.extrabees.ExtraBees;
 import forestry.api.genetics.*;

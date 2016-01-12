@@ -116,21 +116,20 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
         tab.addHelp(tabHelp);
         tab.setValues(Arrays.asList(tabs1));
         tab.setValue(0);
-        tab.addEventHandler(new EventValueChanged.Handler() {
-            @Override
-            public void onEvent(final EventValueChanged event) {
-                final NBTTagCompound nbt = new NBTTagCompound();
-                final int i = event.getValue();
-                nbt.setByte("i", (byte) i);
+        tab.addEventHandler((new EventValueChanged.Handler() {
+            public void onEvent(EventValueChanged event) {
+                NBTTagCompound nbt = new NBTTagCompound();
+                int i = ((Integer)event.getValue()).intValue();
+                nbt.setByte("i", (byte)i);
                 Window.get(tab).sendClientAction("tab-change", nbt);
                 WindowCompartment.this.currentTab = i;
             }
-        }.setOrigin(EventHandler.Origin.DirectChild, tab));
+        }).setOrigin(EventHandler.Origin.DirectChild, tab));
         x += 24;
         final ControlPages<Integer> compartmentPages = new ControlPages<Integer>(controlCompartment, 24.0f, 0.0f, compartmentPageWidth, compartmentPageHeight);
         final ControlPage[] page = new ControlPage[inv.getTabNumber()];
-        for (int p = 0; p < inv.getTabNumber(); ++p) {
-            page[p] = new ControlPage(compartmentPages, (T) p);
+        for(int p = 0; p < inv.getTabNumber(); ++p) {
+            page[p] = new ControlPage(compartmentPages, Integer.valueOf(p));
         }
         CraftGUIUtil.linkWidgets(tab, compartmentPages);
         int i = 0;
@@ -182,16 +181,15 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
             tab2.setValues(Arrays.asList(tabs2));
             tab2.setValue(0);
             tab2.addHelp(tabHelp);
-            tab2.addEventHandler(new EventValueChanged.Handler() {
-                @Override
-                public void onEvent(final EventValueChanged event) {
-                    final NBTTagCompound nbt = new NBTTagCompound();
-                    final int i = event.getValue();
-                    nbt.setByte("i", (byte) i);
+            tab2.addEventHandler((new EventValueChanged.Handler() {
+                public void onEvent(EventValueChanged event) {
+                    NBTTagCompound nbt = new NBTTagCompound();
+                    int i = ((Integer)event.getValue()).intValue();
+                    nbt.setByte("i", (byte)i);
                     Window.get(tab).sendClientAction("tab-change", nbt);
                     WindowCompartment.this.currentTab = i;
                 }
-            }.setOrigin(EventHandler.Origin.DirectChild, tab2));
+            }).setOrigin(EventHandler.Origin.DirectChild, tab2));
             CraftGUIUtil.linkWidgets(tab2, compartmentPages);
             x += 24;
         }
@@ -301,34 +299,30 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                 };
                 scroll.setScrollableContent(this.slotGrid = new Control(scroll, 1.0f, 1.0f, 108.0f, 18.0f));
                 new ControlPlayerInventory(this, true);
-                new ControlTextEdit(this, 16.0f, 16.0f, 100.0f, 14.0f).addEventHandler(new EventTextEdit.Handler() {
-                    @Override
-                    public void onEvent(final EventTextEdit event) {
-                        Dialog.this.textSearch = (String) event.value;
-                        Dialog.this.updateSearch();
+                (new ControlTextEdit(this, 16.0F, 16.0F, 100.0F, 14.0F)).addEventHandler(new EventTextEdit.Handler() {
+                    public void onEvent(EventTextEdit event) {
+                        textSearch = (String)event.value;
+                        updateSearch();
                     }
                 });
                 this.includeItems = true;
                 this.includeBlocks = true;
-                new ControlCheckbox(this, 16.0f, 40.0f, 100.0f, "Sort A-Z", this.sortByName) {
-                    @Override
-                    protected void onValueChanged(final boolean value) {
-                        Dialog.this.sortByName = value;
-                        Dialog.this.updateSearch();
+                ControlCheckbox var10001 = new ControlCheckbox(this, 16.0F, 40.0F, 100.0F, "Sort A-Z", this.sortByName) {
+                    protected void onValueChanged(boolean value) {
+                        sortByName = value;
+                        updateSearch();
                     }
                 };
-                new ControlCheckbox(this, 16.0f, 64.0f, 100.0f, "Include Items", this.includeItems) {
-                    @Override
-                    protected void onValueChanged(final boolean value) {
-                        Dialog.this.includeItems = value;
-                        Dialog.this.updateSearch();
+                var10001 = new ControlCheckbox(this, 16.0F, 64.0F, 100.0F, "Include Items", this.includeItems) {
+                    protected void onValueChanged(boolean value) {
+                        includeItems = value;
+                        updateSearch();
                     }
                 };
-                new ControlCheckbox(this, 16.0f, 88.0f, 100.0f, "Include Blocks", this.includeBlocks) {
-                    @Override
-                    protected void onValueChanged(final boolean value) {
-                        Dialog.this.includeBlocks = value;
-                        Dialog.this.updateSearch();
+                var10001 = new ControlCheckbox(this, 16.0F, 88.0F, 100.0F, "Include Blocks", this.includeBlocks) {
+                    protected void onValueChanged(boolean value) {
+                        includeBlocks = value;
+                        updateSearch();
                     }
                 };
                 this.updateSearch();

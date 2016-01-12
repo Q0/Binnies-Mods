@@ -35,6 +35,11 @@ public enum GeneticsGUI implements IBinnieGUID {
         this.windowClass = (Class<? extends Window>) window;
     }
 
+
+    GeneticsGUI() {
+
+    }
+
     public Window getWindow(final EntityPlayer player, final IInventory object, final Side side) throws Exception {
         switch (this) {
             case Analyst: {
@@ -48,7 +53,7 @@ public enum GeneticsGUI implements IBinnieGUID {
             }
             default: {
                 final Constructor constr = this.windowClass.getConstructor(EntityPlayer.class, IInventory.class, Side.class);
-                return constr.newInstance(player, object, side);
+                return (Window) constr.newInstance(player, object, side);
             }
         }
     }
