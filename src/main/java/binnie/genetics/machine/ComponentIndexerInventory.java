@@ -128,7 +128,7 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
 
     public abstract void Sort();
 
-    public static class ComponentApiaristIndexerInventory extends ComponentIndexerInventory<Mode> implements IInventory {
+    public static class ComponentApiaristIndexerInventory extends ComponentIndexerInventory<ComponentApiaristIndexerInventory.Mode> implements IInventory {
         public ComponentApiaristIndexerInventory(final Machine machine) {
             super(machine);
         }

@@ -43,7 +43,7 @@ public class ControlGeneScroll extends Control implements IControlValue<Breeding
         final Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(this.system.getSpeciesRoot());
         int x = 0;
         int y = 0;
-        final boolean isNEI = Window.get(this).isNei;
+        final boolean isNEI = true;
         for (final Map.Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
             final List<IAllele> discovered = new ArrayList<IAllele>();
             for (final IAllele allele : entry.getValue()) {

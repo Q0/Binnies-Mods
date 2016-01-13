@@ -72,7 +72,7 @@ public class ContainerCraftGUI extends Container {
         if (par1 < 0 || par1 >= this.inventorySlots.size()) {
             return null;
         }
-        return this.inventorySlots.get(par1);
+        return (Slot) this.inventorySlots.get(par1);
     }
 
     public void putStackInSlot(final int par1, final ItemStack par2ItemStack) {
@@ -133,7 +133,7 @@ public class ContainerCraftGUI extends Container {
             return null;
         }
         final ItemStack itemstack = request.transfer(true);
-        final Slot shiftClickedSlot = this.inventorySlots.get(slotnumber);
+        final Slot shiftClickedSlot = (Slot) this.inventorySlots.get(slotnumber);
         shiftClickedSlot.putStack(itemstack);
         shiftClickedSlot.onSlotChanged();
         return null;
@@ -143,7 +143,7 @@ public class ContainerCraftGUI extends Container {
         if (slotnumber < 0) {
             return null;
         }
-        final Slot shiftClickedSlot = this.inventorySlots.get(slotnumber);
+        final Slot shiftClickedSlot = (Slot) this.inventorySlots.get(slotnumber);
         ItemStack itemstack = null;
         if (shiftClickedSlot.getHasStack()) {
             itemstack = shiftClickedSlot.getStack().copy();
@@ -248,7 +248,7 @@ public class ContainerCraftGUI extends Container {
             if (shouldSend) {
                 for (int j = 0; j < this.crafters.size(); ++j) {
                     if (this.crafters.get(j) instanceof EntityPlayerMP) {
-                        final EntityPlayerMP player = this.crafters.get(j);
+                        final EntityPlayerMP player = (EntityPlayerMP) this.crafters.get(j);
                         BinnieCore.proxy.sendToPlayer(new MessageContainerUpdate(nbt.getValue()), (EntityPlayer) player);
                     }
                 }

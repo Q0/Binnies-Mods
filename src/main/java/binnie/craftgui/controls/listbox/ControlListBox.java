@@ -48,7 +48,7 @@ public class ControlListBox<T> extends ControlScrollableContent<ControlList<T>> 
     }
 
     public IWidget createOption(final T value, final int y) {
-        return new ControlOption<Object>(this.getContent(), value, y);
+        return new ControlOption<T>(this.getContent(), value, y);
     }
 
     public void setValidator(final IValidator<IWidget> validator) {
