@@ -202,7 +202,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return this.getUID();
     }
 
-    public List<IFlower> getFlowers() {
-        return new ArrayList<IFlower>();
+    public List<forestry.api.genetics.IFlower> getFlowers() {
+        return new ArrayList<>();
     }
 }

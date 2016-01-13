@@ -351,8 +351,8 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                         }
                     }
                 }
-
-                if(this.sortByName) {
+                //TODO: FIX
+                /*if(this.sortByName) {
                     LinkedList list = new LinkedList(slotIds.entrySet());
                     Collections.sort(list, new Comparator(){
 
@@ -365,7 +365,7 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                         result.put(entry.getKey(), entry.getValue());
                     }
                     slotIds = result;
-                }
+                }*/
 
                 int y = 0;
                 int x = 0;

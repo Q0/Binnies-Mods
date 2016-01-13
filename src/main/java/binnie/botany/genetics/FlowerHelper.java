@@ -2,6 +2,7 @@ package binnie.botany.genetics;
 
 import binnie.botany.Botany;
 import binnie.botany.api.*;
+import binnie.botany.api.IFlower;
 import com.mojang.authlib.GameProfile;
 import forestry.api.genetics.*;
 import forestry.core.genetics.SpeciesRoot;

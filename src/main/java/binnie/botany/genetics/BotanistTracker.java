@@ -17,16 +17,6 @@ public class BotanistTracker extends BreedingTracker implements IBotanistTracker
         super(s, player);
     }
 
-    @Override
-    protected IBreedingTracker getCommonTracker(EntityPlayer entityPlayer) {
-        return null;
-    }
-
-    @Override
-    protected String getPacketTag() {
-        return null;
-    }
-
     public void registerPickup(final IIndividual individual) {
     }
 
