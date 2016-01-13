@@ -173,7 +173,7 @@ public abstract class WindowAbstractDatabase extends Window {
         for (final IDatabaseMode mode : this.modes.keySet()) {
             this.modes.get(mode).infoTabs = (ControlTabBar<DatabaseTab>) new ControlTabBar(this.modes.get(mode).modePage, 8.0f, 24.0f, 16.0f, 176.0f, Position.Left);
             this.modes.get(mode).infoTabs.setValues(this.modes.get(mode).infoPages.getValues());
-            CraftGUIUtil.linkWidgets(this.modes.get(mode).infoTabs, (IControlValue<Object>) this.modes.get(mode).infoPages);
+            CraftGUIUtil.linkWidgets(this.modes.get(mode).infoTabs, this.modes.get(mode).infoPages);
         }
     }
 

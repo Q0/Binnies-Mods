@@ -337,26 +337,28 @@ public class WindowAnalyst extends Window {
                     this.addAttribute(Attribute.MouseOver);
                     this.value = page;
                     this.addSelfEventHandler(new EventMouse.Down.Handler() {
-                        @Override
-                        public void onEvent(final EventMouse.Down event) {
-                            final int currentIndex = WindowAnalyst.this.analystPages.indexOf(WindowAnalyst.this.rightPage.getContent());
-                            int clickedIndex = WindowAnalyst.this.analystPages.indexOf(ControlTooltip.this.value);
-                            if (WindowAnalyst.this.isDatabase) {
-                                if (clickedIndex != 0 && clickedIndex != currentIndex) {
-                                    WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, ControlTooltip.this.value);
+                        public void onEvent(EventMouse.Down event) {
+                            int currentIndex = WindowAnalyst.this.analystPages.indexOf(WindowAnalyst.this.rightPage.getContent());
+                            int clickedIndex = WindowAnalyst.this.analystPages.indexOf(value);
+                            if(WindowAnalyst.this.isDatabase) {
+                                if(clickedIndex != 0 && clickedIndex != currentIndex) {
+                                    WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, value);
                                 }
                             } else {
-                                if (clickedIndex < 0) {
+                                if(clickedIndex < 0) {
                                     clickedIndex = 0;
                                 }
-                                if (clickedIndex < currentIndex) {
+
+                                if(clickedIndex < currentIndex) {
                                     ++clickedIndex;
                                 }
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, WindowAnalyst.this.analystPages.get(clickedIndex));
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, WindowAnalyst.this.analystPages.get(clickedIndex - 1));
+
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage)null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage)null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage)WindowAnalyst.this.analystPages.get(clickedIndex));
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage)WindowAnalyst.this.analystPages.get(clickedIndex - 1));
                             }
+
                         }
                     });
                 }
@@ -419,18 +421,20 @@ public class WindowAnalyst extends Window {
         }
     }
 
-    public void setPage(final ControlScrollableContent side, final ControlAnalystPage page) {
-        final ControlAnalystPage existingPage = side.getContent();
-        if (existingPage != null) {
+    public void setPage(ControlScrollableContent side, ControlAnalystPage page) {
+        ControlAnalystPage existingPage = (ControlAnalystPage)side.getContent();
+        if(existingPage != null) {
             existingPage.hide();
-            side.setScrollableContent(null);
+            side.setScrollableContent((IWidget)null);
         }
-        if (page != null) {
+
+        if(page != null) {
             page.show();
             side.setScrollableContent(page);
-            side.setPercentageIndex(0.0f);
-            page.setPosition(side.pos().add(1.0f, 1.0f));
+            side.setPercentageIndex(0.0F);
+            page.setPosition(side.pos().add(1.0F, 1.0F));
         }
+
     }
 
     @Override

@@ -93,11 +93,10 @@ public class AnalystPageDatabase extends ControlAnalystPage {
                 }
 
                 @Override
-                public IWidget createOption(final IAlleleSpecies v, final int y) {
-                    return new Control(((ControlScrollableContent<IWidget>) this).getContent(), 0.0f, (float) y, this.w(), 12.0f) {
+                public IWidget createOption(final IAlleleSpecies v, int y) {
+                    return new Control(this.getContent(), 0.0F, (float)y, this.w(), 12.0F) {
                         IAlleleSpecies value = v;
 
-                        @Override
                         public void onRenderBackground() {
                             CraftGUI.Render.text(this.getArea(), TextJustification.MiddleCenter, this.value.getName(), 16777215);
                         }

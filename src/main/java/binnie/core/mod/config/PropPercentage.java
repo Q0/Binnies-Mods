@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
-@ConfigProperty.Type(propertyClass = PropertyPercentage.class)
+@ConfigProperty.Type(propertyClass = PropPercentage.PropertyPercentage.class)
 public @interface PropPercentage {
     int upper() default 100;
 

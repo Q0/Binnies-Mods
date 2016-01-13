@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
-@ConfigProperty.Type(propertyClass = PropertyBoolean.class)
+@ConfigProperty.Type(propertyClass = PropBoolean.PropertyBoolean.class)
 public @interface PropBoolean {
     public static class PropertyBoolean extends PropertyBase<Boolean, PropBoolean> {
         public PropertyBoolean(final Field field, final BinnieConfiguration file, final ConfigProperty configProperty, final PropBoolean annotedProperty) throws IllegalArgumentException, IllegalAccessException {

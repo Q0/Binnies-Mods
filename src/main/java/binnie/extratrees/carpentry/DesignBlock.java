@@ -1,6 +1,13 @@
 package binnie.extratrees.carpentry;
 
-import binnie.extratrees.api.*;
+import binnie.extratrees.api.IDesign;
+import binnie.extratrees.api.IDesignMaterial;
+import binnie.extratrees.api.IDesignSystem;
+import binnie.extratrees.api.ILayout;
+import binnie.extratrees.api.IToolHammer;
+import binnie.extratrees.carpentry.BlockCarpentryPanel;
+import binnie.extratrees.carpentry.EnumDesign;
+import binnie.extratrees.carpentry.ModuleCarpentry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -11,11 +18,10 @@ public class DesignBlock {
     IDesign design;
     IDesignMaterial primaryMaterial;
     IDesignMaterial secondaryMaterial;
-    int rotation;
-    ForgeDirection facing;
-    boolean panel;
+    int rotation = 0;
+    ForgeDirection facing = ForgeDirection.UP;
+    boolean panel = false;
 
-    @Override
     public String toString() {
         return super.toString() + " { design:" + this.design + " }, { primary:" + this.primaryMaterial + " }, { secondary:" + this.secondaryMaterial + " }, { rotation:" + this.rotation + " }, { facing:" + this.facing + " }";
     }
@@ -32,30 +38,33 @@ public class DesignBlock {
         return this.secondaryMaterial;
     }
 
-    DesignBlock(final IDesignSystem system, final IDesignMaterial primaryWood, final IDesignMaterial secondaryWood, final IDesign design, final int rotation, final ForgeDirection dir) {
-        this.rotation = 0;
-        this.facing = ForgeDirection.UP;
-        this.panel = false;
+    DesignBlock(IDesignSystem system, IDesignMaterial primaryWood, IDesignMaterial secondaryWood, IDesign design, int rotation, ForgeDirection dir) {
+        super();
         this.design = design;
         this.primaryMaterial = primaryWood;
         this.secondaryMaterial = secondaryWood;
         this.rotation = rotation;
         this.facing = dir;
-        if (design == null) {
+        if(design == null) {
             this.design = EnumDesign.Blank;
         }
-        if (primaryWood == null) {
+
+        if(primaryWood == null) {
             this.primaryMaterial = system.getDefaultMaterial();
         }
-        if (secondaryWood == null) {
+
+        if(secondaryWood == null) {
             this.secondaryMaterial = system.getDefaultMaterial();
         }
-        if (this.rotation > 3 || this.rotation < 0) {
+
+        if(this.rotation > 3 || this.rotation < 0) {
             this.rotation = 0;
         }
-        if (this.facing == null || this.facing == ForgeDirection.UNKNOWN) {
+
+        if(this.facing == null || this.facing == ForgeDirection.UNKNOWN) {
             this.facing = ForgeDirection.UP;
         }
+
     }
 
     public int getPrimaryColour() {
@@ -66,310 +75,272 @@ public class DesignBlock {
         return this.getSecondaryMaterial().getColour();
     }
 
-    ForgeDirection getRotation(final ForgeDirection dir, final ModuleCarpentry.Axis axis) {
-        if (axis == ModuleCarpentry.Axis.Y) {
-            switch (dir) {
-                case EAST: {
+    ForgeDirection getRotation(ForgeDirection dir, ModuleCarpentry.Axis axis) {
+        if(axis == ModuleCarpentry.Axis.Y) {
+            switch(dir) {
+                case EAST:
                     return ForgeDirection.NORTH;
-                }
-                case NORTH: {
+                case NORTH:
                     return ForgeDirection.WEST;
-                }
-                case SOUTH: {
+                case SOUTH:
                     return ForgeDirection.EAST;
-                }
-                case WEST: {
+                case WEST:
                     return ForgeDirection.SOUTH;
-                }
-                default: {
+                case UP:
+                case DOWN:
+                case UNKNOWN:
+                default:
                     return dir;
-                }
             }
-        } else if (axis == ModuleCarpentry.Axis.X) {
-            switch (dir) {
-                case EAST: {
+        } else if(axis == ModuleCarpentry.Axis.X) {
+            switch(dir) {
+                case EAST:
                     return ForgeDirection.UP;
-                }
-                case UP: {
-                    return ForgeDirection.WEST;
-                }
-                case WEST: {
-                    return ForgeDirection.DOWN;
-                }
-                case DOWN: {
-                    return ForgeDirection.EAST;
-                }
-                default: {
+                case NORTH:
+                case SOUTH:
+                case UNKNOWN:
+                default:
                     return dir;
-                }
+                case WEST:
+                    return ForgeDirection.DOWN;
+                case UP:
+                    return ForgeDirection.WEST;
+                case DOWN:
+                    return ForgeDirection.EAST;
             }
         } else {
-            switch (dir) {
-                case SOUTH: {
-                    return ForgeDirection.UP;
-                }
-                case UP: {
-                    return ForgeDirection.NORTH;
-                }
-                case NORTH: {
-                    return ForgeDirection.DOWN;
-                }
-                case DOWN: {
-                    return ForgeDirection.SOUTH;
-                }
-                default: {
+            switch(dir) {
+                case EAST:
+                case WEST:
+                case UNKNOWN:
+                default:
                     return dir;
-                }
+                case NORTH:
+                    return ForgeDirection.DOWN;
+                case SOUTH:
+                    return ForgeDirection.UP;
+                case UP:
+                    return ForgeDirection.NORTH;
+                case DOWN:
+                    return ForgeDirection.SOUTH;
             }
         }
     }
 
     public ILayout getLayout(ForgeDirection dir) {
-        ForgeDirection adjustedDir;
-        dir = (adjustedDir = dir.getRotation(ForgeDirection.DOWN));
-        switch (this.getFacing()) {
-            case DOWN: {
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
-                break;
-            }
-            case EAST: {
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
+        dir = dir.getRotation(ForgeDirection.DOWN);
+        ForgeDirection adjustedDir = dir;
+        switch(this.getFacing()) {
+            case EAST:
+                adjustedDir = dir.getRotation(ForgeDirection.EAST);
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.NORTH);
                 break;
-            }
-            case NORTH: {
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
+            case NORTH:
+                adjustedDir = dir.getRotation(ForgeDirection.EAST);
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.SOUTH);
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.SOUTH);
                 break;
-            }
-            case SOUTH: {
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
+            case SOUTH:
+                adjustedDir = dir.getRotation(ForgeDirection.EAST);
                 break;
-            }
-            case WEST: {
-                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
+            case WEST:
+                adjustedDir = dir.getRotation(ForgeDirection.EAST);
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.SOUTH);
+            case UP:
+            case UNKNOWN:
+            default:
                 break;
-            }
+            case DOWN:
+                adjustedDir = dir.getRotation(ForgeDirection.EAST);
+                adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
         }
-        for (int i = 0; i < this.rotation; ++i) {
+
+        for(int i = 0; i < this.rotation; ++i) {
             adjustedDir = adjustedDir.getRotation(ForgeDirection.DOWN);
         }
-        ILayout layout = null;
-        switch (adjustedDir) {
-            case EAST: {
+
+        ILayout layout;
+        switch(adjustedDir) {
+            case EAST:
                 layout = this.getDesign().getEastPattern();
                 break;
-            }
-            case NORTH: {
+            case NORTH:
                 layout = this.getDesign().getNorthPattern();
                 break;
-            }
-            case SOUTH: {
+            case SOUTH:
                 layout = this.getDesign().getSouthPattern();
                 break;
-            }
-            case WEST: {
+            case WEST:
                 layout = this.getDesign().getWestPattern();
                 break;
-            }
-            case DOWN: {
-                layout = this.getDesign().getBottomPattern();
-                break;
-            }
-            default: {
+            case UP:
+            default:
                 layout = this.getDesign().getTopPattern();
                 break;
-            }
+            case DOWN:
+                layout = this.getDesign().getBottomPattern();
         }
-        Label_1107:
-        {
-            switch (this.getFacing()) {
-                case UP: {
-                    if (dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
-                        for (int j = 0; j < this.rotation; ++j) {
-                            layout = layout.rotateRight();
-                        }
+
+        switch(this.getFacing()) {
+            case EAST:
+                switch(dir) {
+                    case NORTH:
+                        layout = layout.rotateLeft();
                         break;
-                    }
-                    break;
-                }
-                case DOWN: {
-                    switch (dir) {
-                        case UP:
-                        case DOWN: {
-                            layout = layout.flipVertical();
-                            break;
-                        }
-                        case EAST:
-                        case NORTH:
-                        case SOUTH:
-                        case WEST: {
-                            layout = layout.rotateRight().rotateRight();
-                            break;
-                        }
-                    }
-                    if (dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
-                        for (int j = 0; j < this.rotation; ++j) {
-                            layout = layout.rotateLeft();
-                        }
+                    case SOUTH:
+                    case UP:
+                        layout = layout.rotateRight();
                         break;
-                    }
-                    break;
-                }
-                case EAST: {
-                    switch (dir) {
-                        case SOUTH:
-                        case UP: {
-                            layout = layout.rotateRight();
-                            break;
-                        }
-                        case NORTH: {
-                            layout = layout.rotateLeft();
-                            break;
-                        }
-                        case DOWN: {
-                            layout = layout.rotateLeft().flipHorizontal();
-                            break;
-                        }
-                        case WEST: {
-                            layout = layout.flipHorizontal();
-                            break;
-                        }
-                    }
-                    if (dir == ForgeDirection.EAST) {
-                        for (int j = 0; j < this.rotation; ++j) {
-                            layout = layout.rotateRight();
-                        }
-                    }
-                    if (dir == ForgeDirection.WEST) {
-                        for (int j = 0; j < this.rotation; ++j) {
-                            layout = layout.rotateLeft();
-                        }
+                    case WEST:
+                        layout = layout.flipHorizontal();
                         break;
-                    }
-                    break;
+                    case DOWN:
+                        layout = layout.rotateLeft().flipHorizontal();
                 }
-                case WEST: {
-                    switch (dir) {
-                        case NORTH: {
+
+                if(dir == ForgeDirection.EAST) {
+                    for(int i = 0; i < this.rotation; ++i) {
+                        layout = layout.rotateRight();
+                    }
+                }
+
+                if(dir == ForgeDirection.WEST) {
+                    for(int i = 0; i < this.rotation; ++i) {
+                        layout = layout.rotateLeft();
+                    }
+                }
+                break;
+            case NORTH:
+                switch(dir) {
+                    case EAST:
+                        layout = layout.rotateRight();
+                        return layout;
+                    case NORTH:
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
-                            break;
                         }
-                        case SOUTH:
-                        case UP: {
+
+                        return layout;
+                    case SOUTH:
+                        layout = layout.flipHorizontal();
+
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
-                            break;
                         }
-                        case DOWN: {
-                            layout = layout.rotateLeft().flipVertical();
-                            break;
-                        }
-                        case EAST: {
-                            layout = layout.flipHorizontal();
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateLeft();
-                            }
-                            break;
-                        }
-                        case WEST: {
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateRight();
-                            }
-                            break;
-                        }
-                    }
-                    break;
+
+                        return layout;
+                    case WEST:
+                        layout = layout.rotateLeft();
+                        return layout;
+                    case UP:
+                    default:
+                        return layout;
+                    case DOWN:
+                        layout = layout.flipHorizontal();
+                        return layout;
                 }
-                case NORTH: {
-                    switch (dir) {
-                        case WEST: {
+            case SOUTH:
+                switch(dir) {
+                    case EAST:
+                        layout = layout.rotateLeft();
+                        return layout;
+                    case NORTH:
+                        layout = layout.flipHorizontal();
+
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
-                            break Label_1107;
                         }
-                        case EAST: {
+
+                        return layout;
+                    case SOUTH:
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
-                            break Label_1107;
                         }
-                        case DOWN: {
-                            layout = layout.flipHorizontal();
-                            break Label_1107;
-                        }
-                        case SOUTH: {
-                            layout = layout.flipHorizontal();
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateLeft();
-                            }
-                            break Label_1107;
-                        }
-                        case NORTH: {
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateRight();
-                            }
-                            break Label_1107;
-                        }
-                        default: {
-                            break Label_1107;
-                        }
-                    }
-                    break;
+
+                        return layout;
+                    case WEST:
+                        layout = layout.rotateRight();
+                        return layout;
+                    case UP:
+                        layout = layout.rotateRight().rotateRight();
+                        return layout;
+                    case DOWN:
+                        layout = layout.flipVertical();
+                        return layout;
+                    default:
+                        return layout;
                 }
-                case SOUTH: {
-                    switch (dir) {
-                        case EAST: {
+            case WEST:
+                switch(dir) {
+                    case EAST:
+                        layout = layout.flipHorizontal();
+
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
-                            break Label_1107;
                         }
-                        case WEST: {
+
+                        return layout;
+                    case NORTH:
+                        layout = layout.rotateRight();
+                        return layout;
+                    case SOUTH:
+                    case UP:
+                        layout = layout.rotateLeft();
+                        return layout;
+                    case WEST:
+                        for(int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
-                            break Label_1107;
                         }
-                        case UP: {
-                            layout = layout.rotateRight().rotateRight();
-                            break Label_1107;
-                        }
-                        case DOWN: {
-                            layout = layout.flipVertical();
-                            break Label_1107;
-                        }
-                        case NORTH: {
-                            layout = layout.flipHorizontal();
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateLeft();
-                            }
-                            break Label_1107;
-                        }
-                        case SOUTH: {
-                            for (int j = 0; j < this.rotation; ++j) {
-                                layout = layout.rotateRight();
-                            }
-                            break Label_1107;
-                        }
-                        default: {
-                            break Label_1107;
-                        }
-                    }
-                    break;
+
+                        return layout;
+                    case DOWN:
+                        layout = layout.rotateLeft().flipVertical();
+                        return layout;
+                    default:
+                        return layout;
                 }
-            }
+            case UP:
+                if(dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
+                    for(int i = 0; i < this.rotation; ++i) {
+                        layout = layout.rotateRight();
+                    }
+                }
+                break;
+            case DOWN:
+                switch(dir) {
+                    case EAST:
+                    case NORTH:
+                    case SOUTH:
+                    case WEST:
+                        layout = layout.rotateRight().rotateRight();
+                        break;
+                    case UP:
+                    case DOWN:
+                        layout = layout.flipVertical();
+                }
+
+                if(dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
+                    for(int i = 0; i < this.rotation; ++i) {
+                        layout = layout.rotateLeft();
+                    }
+                }
         }
+
         return layout;
     }
 
-    public IIcon getPrimaryIcon(final IDesignSystem system, final ForgeDirection dir) {
-        final ILayout l = this.getLayout(dir);
-        return (l == null) ? null : l.getPrimaryIcon(system);
+    public IIcon getPrimaryIcon(IDesignSystem system, ForgeDirection dir) {
+        ILayout l = this.getLayout(dir);
+        return l == null?null:l.getPrimaryIcon(system);
     }
 
-    public IIcon getSecondaryIcon(final IDesignSystem system, final ForgeDirection dir) {
-        final ILayout l = this.getLayout(dir);
-        return (l == null) ? null : l.getSecondaryIcon(system);
+    public IIcon getSecondaryIcon(IDesignSystem system, ForgeDirection dir) {
+        ILayout l = this.getLayout(dir);
+        return l == null?null:l.getSecondaryIcon(system);
     }
 
-    public IIcon getIcon(final IDesignSystem system, final boolean secondary, final ForgeDirection dir) {
-        return secondary ? this.getSecondaryIcon(system, dir) : this.getPrimaryIcon(system, dir);
+    public IIcon getIcon(IDesignSystem system, boolean secondary, ForgeDirection dir) {
+        return secondary?this.getSecondaryIcon(system, dir):this.getPrimaryIcon(system, dir);
     }
 
     public ForgeDirection getFacing() {
@@ -380,50 +351,60 @@ public class DesignBlock {
         return this.rotation;
     }
 
-    public void rotate(final int face, final ItemStack hammer, final EntityPlayer player, final World world, final int x, final int y, final int z) {
-        final ForgeDirection dir = ForgeDirection.getOrientation(face);
-        final IToolHammer hammerI = (IToolHammer) hammer.getItem();
-        if (player.isSneaking()) {
-            if (this.panel) {
+    public void rotate(int face, ItemStack hammer, EntityPlayer player, World world, int x, int y, int z) {
+        ForgeDirection dir = ForgeDirection.getOrientation(face);
+        IToolHammer hammerI = (IToolHammer)hammer.getItem();
+        if(player.isSneaking()) {
+            if(this.panel) {
                 ForgeDirection newFacing = this.getFacing();
-                do {
+
+                while(true) {
                     newFacing = ForgeDirection.getOrientation(newFacing.ordinal() + 1);
-                    if (newFacing == ForgeDirection.UNKNOWN) {
+                    if(newFacing == ForgeDirection.UNKNOWN) {
                         newFacing = ForgeDirection.DOWN;
                     }
+
+                    if(newFacing == this.getFacing() || BlockCarpentryPanel.isValidPanelPlacement(world, x, y, z, newFacing)) {
+                        break;
+                    }
                 }
-                while (newFacing != this.getFacing() && !BlockCarpentryPanel.isValidPanelPlacement(world, x, y, z, newFacing));
-                if (newFacing != this.getFacing()) {
+
+                if(newFacing != this.getFacing()) {
                     hammerI.onHammerUsed(hammer, player);
                 }
+
                 this.setFacing(newFacing);
             } else {
-                if (dir != this.getFacing()) {
+                if(dir != this.getFacing()) {
                     hammerI.onHammerUsed(hammer, player);
                 }
+
                 this.setFacing(dir);
             }
         } else {
             ++this.rotation;
             hammerI.onHammerUsed(hammer, player);
         }
-        if (this.rotation > 3) {
+
+        if(this.rotation > 3) {
             this.rotation = 0;
         }
-        if (this.rotation < 0) {
+
+        if(this.rotation < 0) {
             this.rotation = 3;
         }
+
     }
 
-    public void setFacing(final ForgeDirection facing) {
+    public void setFacing(ForgeDirection facing) {
         this.facing = facing;
     }
 
-    public int getBlockMetadata(final IDesignSystem system) {
+    public int getBlockMetadata(IDesignSystem system) {
         return ModuleCarpentry.getBlockMetadata(system, this);
     }
 
-    public int getItemMetadata(final IDesignSystem system) {
+    public int getItemMetadata(IDesignSystem system) {
         return ModuleCarpentry.getItemMetadata(system, this);
     }
 
@@ -433,11 +414,12 @@ public class DesignBlock {
 
     public String getString() {
         String type = "";
-        if (this.getPrimaryMaterial() != this.getSecondaryMaterial()) {
+        if(this.getPrimaryMaterial() != this.getSecondaryMaterial()) {
             type = this.getPrimaryMaterial().getName() + " and " + this.getSecondaryMaterial().getName();
         } else {
             type = this.getPrimaryMaterial().getName();
         }
-        return super.toString() + " " + "{" + type + " " + this.getDesign().getName() + " " + (this.panel ? "Panel" : "Tile") + ", Facing:" + this.getFacing().toString() + ", Rotation:" + this.getRotation() + "}";
+
+        return super.toString() + " " + "{" + type + " " + this.getDesign().getName() + " " + (this.panel?"Panel":"Tile") + ", Facing:" + this.getFacing().toString() + ", Rotation:" + this.getRotation() + "}";
     }
 }
