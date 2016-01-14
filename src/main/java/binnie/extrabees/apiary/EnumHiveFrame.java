@@ -6,10 +6,7 @@ import binnie.core.genetics.EnumBeeBooleanModifier;
 import binnie.core.genetics.EnumBeeModifier;
 import binnie.extrabees.ExtraBees;
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
-import forestry.api.apiculture.IHiveFrame;
+import forestry.api.apiculture.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -57,6 +54,11 @@ public enum EnumHiveFrame implements IHiveFrame {
     private EnumHiveFrame() {
         this.maxDamage = 240;
         this.logic = new BeeModifierLogic();
+    }
+
+    @Override
+    public IBeeModifier getBeeModifier() {
+        return null;
     }
 
     public ItemStack frameUsed(final IBeeHousing house, final ItemStack frame, final IBee queen, final int wear) {

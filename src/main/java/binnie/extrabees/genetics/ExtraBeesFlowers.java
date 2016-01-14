@@ -1,8 +1,8 @@
 package binnie.extrabees.genetics;
 
-import binnie.botany.api.IFlower;
 import binnie.core.Mods;
 import binnie.extrabees.ExtraBees;
+import forestry.api.apiculture.FlowerManager;
 import forestry.api.genetics.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,6 +17,7 @@ import net.minecraftforge.common.EnumPlantType;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     WATER,
@@ -151,6 +152,11 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         }
     }
 
+    @Override
+    public String getFlowerType() {
+        return null;
+    }
+
     public boolean growFlower(final World world, final IIndividual individual, final int x, final int y, final int z) {
         switch (this) {
             case WATER: {
@@ -202,7 +208,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return this.getUID();
     }
 
-    public List<forestry.api.genetics.IFlower> getFlowers() {
-        return new ArrayList<>();
+    public Set<IFlower> getFlowers() {
+        return FlowerManager.flowerRegistry.getAcceptableFlowers(getFlowerType());
     }
 }

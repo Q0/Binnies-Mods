@@ -76,27 +76,27 @@ public class AlvearyFrame {
 
         @Override
         public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getTerritoryModifier(genome, currentModifier);
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getBeeModifier().getTerritoryModifier(genome, currentModifier);
         }
 
         @Override
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getMutationModifier(genome, mate, currentModifier);
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getBeeModifier().getMutationModifier(genome, mate, currentModifier);
         }
 
         @Override
         public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getLifespanModifier(genome, mate, currentModifier);
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getBeeModifier().getLifespanModifier(genome, mate, currentModifier);
         }
 
         @Override
         public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getProductionModifier(genome, currentModifier);
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getBeeModifier().getProductionModifier(genome, currentModifier);
         }
 
         @Override
         public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getFloweringModifier(genome, currentModifier);
+            return (this.getHiveFrame() == null) ? 1.0f : this.getHiveFrame().getBeeModifier().getFloweringModifier(genome, currentModifier);
         }
     }
 }

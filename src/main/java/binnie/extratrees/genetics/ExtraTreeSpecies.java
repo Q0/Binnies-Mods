@@ -629,6 +629,21 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         return this;
     }
 
+    @Override
+    public ITreeGenerator getGenerator() {
+        return null;
+    }
+
+    @Override
+    public int getLeafColour(boolean pollinated) {
+        return 0;
+    }
+
+    @Override
+    public IIcon getLeafIcon(boolean pollinated, boolean fancy) {
+        return null;
+    }
+
     public ExtraTreeSpecies setSappiness(final ForestryAllele.Sappiness height) {
         final IAllele allele = height.getAllele();
         if (allele != null) {

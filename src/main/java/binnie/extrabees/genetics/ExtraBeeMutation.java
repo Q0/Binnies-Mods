@@ -255,7 +255,9 @@ public class ExtraBeeMutation implements IBeeMutation {
         if (this.req != null && !this.req.fufilled(housing, allele0, allele1, genome0, genome1)) {
             return 0.0f;
         }
-        final int processedChance = Math.round(this.chance * housing.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f) * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f));
+        IBeeModifier housingBeeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+        IBeeModifier modeBeeModifier = BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier();
+        final int processedChance = Math.round(this.chance * housingBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f) * modeBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f));
         if (this.species0.getUID().equals(allele0.getUID()) && this.species1.getUID().equals(allele1.getUID())) {
             return processedChance;
         }
@@ -321,7 +323,7 @@ public class ExtraBeeMutation implements IBeeMutation {
 
         @Override
         public boolean fufilled(final IBeeHousing housing, final IAllele allele0, final IAllele allele1, final IGenome genome0, final IGenome genome1) {
-            return housing.getOwnerName() != null && housing.getOwnerName().equals((Object) this.name);
+            return housing.getOwner() != null && housing.getOwner().equals((Object) this.name);
         }
     }
 }
