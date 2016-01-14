@@ -4,8 +4,10 @@ import binnie.Binnie;
 import binnie.core.genetics.ForestryAllele;
 import forestry.api.apiculture.*;
 import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
@@ -208,12 +210,12 @@ public class ExtraBeeMutation implements IBeeMutation {
         }
     }
 
-    public IAllele getAllele0() {
-        return (IAllele) this.species0;
+    public IAlleleSpecies getAllele0() {
+        return (IAlleleSpecies) this.species0;
     }
 
-    public IAllele getAllele1() {
-        return (IAllele) this.species1;
+    public IAlleleSpecies getAllele1() {
+        return (IAlleleSpecies) this.species1;
     }
 
     public IAllele[] getTemplate() {
@@ -245,9 +247,10 @@ public class ExtraBeeMutation implements IBeeMutation {
             return 0.0f;
         }
         final World world = housing.getWorld();
-        final int x = housing.getXCoord();
-        final int y = housing.getYCoord();
-        final int z = housing.getZCoord();
+        ChunkCoordinates coords = housing.getCoordinates();
+        final int x = coords.posX;
+        final int y = coords.posX;
+        final int z = coords.posX;
         final BiomeGenBase biome = housing.getBiome();
         if (this.req != null && !this.req.fufilled(housing, allele0, allele1, genome0, genome1)) {
             return 0.0f;

@@ -3,6 +3,7 @@ package binnie.botany.api;
 import com.mojang.authlib.GameProfile;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.ISpeciesRoot;
+import forestry.api.genetics.ISpeciesType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -23,7 +24,7 @@ public interface IFlowerRoot extends ISpeciesRoot {
 
     Collection<IFlowerMutation> getMutations(final boolean p0);
 
-    EnumFlowerStage getType(final ItemStack p0);
+    ISpeciesType getType(final ItemStack p0);
 
     IFlower getFlower(final World p0, final IFlowerGenome p1);
 

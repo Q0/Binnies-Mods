@@ -14,7 +14,6 @@ import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.*;
 import forestry.api.genetics.IIndividual;
-import forestry.core.EnumErrorCode;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -69,8 +68,8 @@ public class AlvearyHatchery {
                 final TileEntity tile = this.getMachine().getTileEntity();
                 if (tile instanceof TileExtraBeeAlveary) {
                     final IBeeHousing house = ((TileExtraBeeAlveary) tile).getBeeHousing();
-                    if (house != null && house.getErrorState() == EnumErrorCode.OK) {
-                        final ItemStack queenStack = house.getQueen();
+                    if (house != null) {
+                        final ItemStack queenStack = house.getBeeInventory().getQueen();
                         final IBee queen = (queenStack == null) ? null : Binnie.Genetics.getBeeRoot().getMember(queenStack);
                         if (queen != null) {
                             final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().getBee(this.getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
@@ -79,6 +78,16 @@ public class AlvearyHatchery {
                     }
                 }
             }
+        }
+
+        @Override
+        public void onQueenDeath() {
+
+        }
+
+        @Override
+        public boolean onPollenRetrieved(IIndividual pollen) {
+            return false;
         }
     }
 }

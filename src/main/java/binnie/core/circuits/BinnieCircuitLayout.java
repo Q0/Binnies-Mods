@@ -4,6 +4,7 @@ import binnie.Binnie;
 import binnie.core.AbstractMod;
 import forestry.api.circuits.ChipsetManager;
 import forestry.api.circuits.ICircuitLayout;
+import forestry.api.circuits.ICircuitSocketType;
 
 public class BinnieCircuitLayout implements ICircuitLayout {
     private String uid;
@@ -25,5 +26,10 @@ public class BinnieCircuitLayout implements ICircuitLayout {
 
     public String getUsage() {
         return Binnie.Language.localise(this.mod, "circuit.layout." + this.uid.toLowerCase() + ".usage");
+    }
+
+    @Override
+    public ICircuitSocketType getSocketType() {
+        return null;
     }
 }

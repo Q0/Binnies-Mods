@@ -3,10 +3,7 @@ package binnie.extrabees.apiary;
 import binnie.extrabees.ExtraBees;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
-import forestry.api.apiculture.IHiveFrame;
+import forestry.api.apiculture.*;
 import forestry.api.core.Tabs;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -49,6 +46,11 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
             return null;
         }
         return frame;
+    }
+
+    @Override
+    public IBeeModifier getBeeModifier() {
+        return null;
     }
 
     public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {

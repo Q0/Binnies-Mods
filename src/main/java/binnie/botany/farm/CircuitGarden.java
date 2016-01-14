@@ -5,6 +5,7 @@ import binnie.botany.api.EnumAcidity;
 import binnie.botany.api.EnumMoisture;
 import binnie.core.circuits.BinnieCircuit;
 import forestry.api.circuits.ChipsetManager;
+import forestry.api.farming.FarmDirection;
 import forestry.api.farming.IFarmHousing;
 import forestry.api.farming.IFarmLogic;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ public class CircuitGarden extends BinnieCircuit {
         }
         final GardenLogic logic = new GardenLogic((IFarmHousing) tile);
         logic.setData(this.moisture, this.acidity, this.isManual, this.isFertilised, this.icon, Binnie.Language.localise(this.getName()));
-        ((IFarmHousing) tile).setFarmLogic(ForgeDirection.values()[slot + 2], (IFarmLogic) logic);
+        ((IFarmHousing) tile).setFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]), (IFarmLogic) logic);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class CircuitGarden extends BinnieCircuit {
         if (!this.isCircuitable(tile)) {
             return;
         }
-        ((IFarmHousing) tile).resetFarmLogic(ForgeDirection.values()[slot + 2]);
+        ((IFarmHousing) tile).resetFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]));
     }
 
     @Override

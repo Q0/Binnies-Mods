@@ -2,12 +2,10 @@ package binnie.extratrees.genetics;
 
 import binnie.Binnie;
 import forestry.api.arboriculture.IAlleleTreeSpecies;
+import forestry.api.arboriculture.ITreeGenome;
 import forestry.api.arboriculture.ITreeMutation;
 import forestry.api.arboriculture.ITreeRoot;
-import forestry.api.genetics.AlleleManager;
-import forestry.api.genetics.IAllele;
-import forestry.api.genetics.IGenome;
-import forestry.api.genetics.IMutation;
+import forestry.api.genetics.*;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -184,12 +182,12 @@ public class ExtraTreeMutation implements ITreeMutation {
         return this;
     }
 
-    public IAllele getAllele0() {
-        return this.allele0;
+    public IAlleleSpecies getAllele0() {
+        return (IAlleleSpecies) this.allele0;
     }
 
-    public IAllele getAllele1() {
-        return this.allele1;
+    public IAlleleSpecies getAllele1() {
+        return (IAlleleSpecies) this.allele1;
     }
 
     public float getBaseChance() {
@@ -246,5 +244,10 @@ public class ExtraTreeMutation implements ITreeMutation {
 
     public ITreeRoot getRoot() {
         return Binnie.Genetics.getTreeRoot();
+    }
+
+    @Override
+    public float getChance(World world, int x, int y, int z, IAlleleTreeSpecies allele0, IAlleleTreeSpecies allele1, ITreeGenome genome0, ITreeGenome genome1) {
+        return 0;
     }
 }

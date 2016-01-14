@@ -3,6 +3,7 @@ package binnie.botany.genetics;
 import binnie.botany.api.IFlowerMutation;
 import binnie.botany.core.BotanyCore;
 import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.ISpeciesRoot;
 
@@ -22,12 +23,12 @@ public class FlowerMutation implements IFlowerMutation {
         this.chance = chance;
     }
 
-    public IAllele getAllele0() {
-        return this.allele0;
+    public IAlleleSpecies getAllele0() {
+        return (IAlleleSpecies) this.allele0;
     }
 
-    public IAllele getAllele1() {
-        return this.allele1;
+    public IAlleleSpecies getAllele1() {
+        return (IAlleleSpecies) this.allele1;
     }
 
     public IAllele[] getTemplate() {

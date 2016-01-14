@@ -1,11 +1,12 @@
 package binnie.core.genetics;
 
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
+import com.mojang.authlib.GameProfile;
+import forestry.api.apiculture.*;
+import forestry.api.core.IErrorLogic;
 import forestry.api.genetics.IIndividual;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
@@ -94,5 +95,50 @@ public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
 
     public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
         return 1.0f;
+    }
+
+    @Override
+    public Iterable<IBeeModifier> getBeeModifiers() {
+        return null;
+    }
+
+    @Override
+    public Iterable<IBeeListener> getBeeListeners() {
+        return null;
+    }
+
+    @Override
+    public IBeeHousingInventory getBeeInventory() {
+        return null;
+    }
+
+    @Override
+    public IBeekeepingLogic getBeekeepingLogic() {
+        return null;
+    }
+
+    @Override
+    public int getBlockLightValue() {
+        return 0;
+    }
+
+    @Override
+    public boolean canBlockSeeTheSky() {
+        return false;
+    }
+
+    @Override
+    public GameProfile getOwner() {
+        return null;
+    }
+
+    @Override
+    public Vec3 getBeeFXCoordinates() {
+        return null;
+    }
+
+    @Override
+    public IErrorLogic getErrorLogic() {
+        return null;
     }
 }
