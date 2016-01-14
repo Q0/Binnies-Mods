@@ -21,6 +21,7 @@ import java.util.List;
 
 public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyComponent, IBeeModifier, IBeeListener {
     boolean init;
+    IStructureLogic structureLogic;
     private boolean isMaster;
     protected int masterX;
     protected int masterZ;
@@ -37,6 +38,16 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
             if (!this.isIntegratedIntoStructure() || this.isMaster()) {
                 this.validateStructure();
             }
+            final ITileStructure master = this.getCentralTE();
+            if (master == null) {
+                return;
+            }
+            if (this.getBeeListener() != null) {
+                ((IAlvearyComponent) master).registerBeeListener(this.getBeeListener());
+            }
+            if (this.getBeeModifier() != null) {
+                ((IAlvearyComponent) master).registerBeeModifier(this.getBeeModifier());
+            }
             this.init = true;
         }
     }
@@ -51,7 +62,7 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         if (this.isMaster) {
             this.makeMaster();
         }
-
+        this.structureLogic.readFromNBT(nbttagcompound);
         this.updateAlvearyBlocks();
         this.init = false;
     }
@@ -63,7 +74,7 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         nbttagcompound.setInteger("MasterX", this.masterX);
         nbttagcompound.setInteger("MasterY", this.masterY);
         nbttagcompound.setInteger("MasterZ", this.masterZ);
-
+        this.structureLogic.writeToNBT(nbttagcompound);
     }
 
     AlvearyMachine.AlvearyPackage getAlvearyPackage() {
@@ -74,6 +85,7 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         this.init = false;
         this.masterY = -99;
         this.tiles = new ArrayList<TileEntity>();
+        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
     }
 
     public TileExtraBeeAlveary(final AlvearyMachine.AlvearyPackage alvearyPackage) {
@@ -81,6 +93,11 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         this.init = false;
         this.masterY = -99;
         this.tiles = new ArrayList<TileEntity>();
+        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
+    }
+
+    public String getTypeUID() {
+        return this.structureLogic.getTypeUID();
     }
 
     public void makeMaster() {
@@ -93,7 +110,26 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         this.updateAlvearyBlocks();
     }
 
+    public ITileStructure getCentralTE() {
+        if (this.worldObj == null || !this.isIntegratedIntoStructure()) {
+            return null;
+        }
+        if (this.isMaster()) {
+            return (ITileStructure) this;
+        }
+        final TileEntity tile = this.worldObj.getTileEntity(this.masterX, this.masterY, this.masterZ);
+        if (!(tile instanceof ITileStructure)) {
+            return null;
+        }
+        final ITileStructure master = (ITileStructure) this.worldObj.getTileEntity(this.masterX, this.masterY, this.masterZ);
+        if (master.isMaster()) {
+            return master;
+        }
+        return null;
+    }
+
     public void validateStructure() {
+        this.structureLogic.validateStructure();
         this.updateAlvearyBlocks();
     }
 
@@ -115,6 +151,12 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         this.masterY = tile.yCoord;
         this.masterZ = tile.zCoord;
         this.markDirty();
+        if (this.getBeeListener() != null) {
+            ((IAlvearyComponent) tile).registerBeeListener(this.getBeeListener());
+        }
+        if (this.getBeeModifier() != null) {
+            ((IAlvearyComponent) tile).registerBeeModifier(this.getBeeModifier());
+        }
         this.updateAlvearyBlocks();
     }
 
@@ -198,6 +240,7 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
 
     public void onQueenChange(final ItemStack queen) {
         if (this.getBeeListener() != null) {
+            this.getBeeListener().onQueenChange(queen);
         }
     }
 
@@ -219,11 +262,13 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
 
     public void onQueenDeath(final IBee queen) {
         if (this.getBeeListener() != null) {
+            this.getBeeListener().onQueenDeath(queen);
         }
     }
 
     public void onPostQueenDeath(final IBee queen) {
         if (this.getBeeListener() != null) {
+            this.getBeeListener().onPostQueenDeath(queen);
         }
     }
 
@@ -239,6 +284,10 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         return 1.0f;
     }
 
+    public IBeeHousing getBeeHousing() {
+        return (this.getCentralTE() == null) ? null : ((IBeeHousing) this.getCentralTE());
+    }
+
     public List<TileEntity> getAlvearyBlocks() {
         this.updateAlvearyBlocks();
         return this.tiles;
@@ -246,6 +295,23 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
 
     private void updateAlvearyBlocks() {
         this.tiles.clear();
+        if (this.getCentralTE() != null) {
+            final ITileStructure struct = this.getCentralTE();
+            if (!struct.isIntegratedIntoStructure()) {
+                return;
+            }
+            final TileEntity central = (TileEntity) struct;
+            for (int x = -2; x <= 2; ++x) {
+                for (int z = -2; z <= 2; ++z) {
+                    for (int y = -2; y <= 2; ++y) {
+                        final TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord + x, this.yCoord + y, this.zCoord + z);
+                        if (tile != null && tile instanceof ITileStructure && ((ITileStructure) tile).getCentralTE() == struct) {
+                            this.tiles.add(tile);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public ISidedInventory getStructureInventory() {
