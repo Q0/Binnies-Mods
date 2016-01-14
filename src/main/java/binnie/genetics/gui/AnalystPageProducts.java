@@ -34,7 +34,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
         this.setColour(13382400);
         final IBeeGenome genome = ind.getGenome();
         final float speed = genome.getSpeed();
-        final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getProductionModifier(genome, 1.0f);
+        final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getBeeModifier().getProductionModifier(genome, 1.0f);
         int y = 4;
         new ControlTextCentered(this, y, "§nProduce").setColour(this.getColour());
         y += 12;

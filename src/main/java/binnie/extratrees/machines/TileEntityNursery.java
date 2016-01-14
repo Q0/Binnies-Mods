@@ -9,6 +9,7 @@ import forestry.api.genetics.IIndividual;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IButterflyNursery;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -106,5 +107,10 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
 
     public int getErrorOrdinal() {
         return 0;
+    }
+
+    @Override
+    public ChunkCoordinates getCoordinates() {
+        return null;
     }
 }
