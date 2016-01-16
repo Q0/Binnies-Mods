@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-version = "2.0-pre15-UNOFFICIAL"
+version = "2.0-pre14-Build_1-UNOFFICIAL"
 group= "binnie.Binnie"
 archivesBaseName = "Binnie-mods"
 
@@ -34,17 +34,9 @@ repositories {
 		url = "http://maven.ic2.player.to/"
 	}
 	maven {
-		name = "waila"
-		url = "http://mobiusstrip.eu/maven"
-	}
-	maven {
 		name = "ChickenBones"
 		url = "http://chickenbones.net/maven/"
 	}
-	/*ivy {
-		name "BuildCraft"
-		artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/7.1.14/buildcraft-7.1.14-dev.jar"
-	}*/
 }
 
 dependencies {
