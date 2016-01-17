@@ -4,7 +4,6 @@ import binnie.core.BinnieCore;
 import binnie.core.genetics.BreedingSystem;
 import binnie.core.util.IValidator;
 import binnie.craftgui.controls.ControlTextEdit;
-import binnie.craftgui.controls.core.IControlValue;
 import binnie.craftgui.controls.listbox.ControlListBox;
 import binnie.craftgui.controls.listbox.ControlTextOption;
 import binnie.craftgui.controls.page.ControlPage;

@@ -4,7 +4,6 @@ import binnie.Binnie;
 import binnie.core.BinnieCore;
 import binnie.core.util.UniqueItemStackSet;
 import binnie.extratrees.ExtraTrees;
-import binnie.extratrees.machines.Lumbermill;
 import com.mojang.authlib.GameProfile;
 import forestry.api.arboriculture.*;
 import forestry.api.genetics.*;

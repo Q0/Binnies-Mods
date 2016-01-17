@@ -10,7 +10,6 @@ import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.core.geometry.TextJustification;
-import binnie.craftgui.extratrees.dictionary.ControlBlockIconDisplay;
 import binnie.craftgui.minecraft.control.ControlItemDisplay;
 import binnie.craftgui.mod.database.DatabaseTab;
 import binnie.craftgui.mod.database.PageSpecies;

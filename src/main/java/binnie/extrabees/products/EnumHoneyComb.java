@@ -2,7 +2,6 @@ package binnie.extrabees.products;
 
 import binnie.core.item.IItemEnum;
 import binnie.extrabees.ExtraBees;
-import forestry.api.recipes.RecipeManagers;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 

@@ -27,8 +27,6 @@ import binnie.extratrees.gen.WorldGenTree2;
 import binnie.extratrees.gen.WorldGenTree3;
 import binnie.extratrees.gen.WorldGenTropical;
 import binnie.extratrees.gen.WorldGenWalnut;
-import binnie.extratrees.genetics.ExtraTreeFruitFamily;
-import binnie.extratrees.genetics.ExtraTreeFruitGene;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
