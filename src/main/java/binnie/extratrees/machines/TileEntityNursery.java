@@ -29,10 +29,6 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return this.getNursery() != null;
     }
 
-    public GameProfile getOwnerName() {
-        return this.hasNursery() ? this.getNursery().getOwnerName() : null;
-    }
-
     public World getWorld() {
         return this.worldObj;
     }

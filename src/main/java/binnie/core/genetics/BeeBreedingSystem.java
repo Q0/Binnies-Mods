@@ -18,7 +18,7 @@ class BeeBreedingSystem extends BreedingSystem {
 
     @Override
     public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
-        return ((IBeeMutation) mutation).getChance((IBeeHousing) new VirtualBeeHousing(player), species1, species2, this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID())), this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID())));
+        return ((IBeeMutation) mutation).getChance((IBeeHousing) new VirtualBeeHousing(player), (IAlleleBeeSpecies)species1, (IAlleleBeeSpecies) species2, (IBeeGenome)this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID())), (IBeeGenome)this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID())));
     }
 
     @Override

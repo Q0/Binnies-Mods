@@ -125,7 +125,8 @@ public enum EnumHoneyComb implements IItemEnum {
             productsI[i] = entry.getKey();
             ++i;
         }
-        RecipeManagers.centrifugeManager.addRecipe(20, this.get(1), productsI, chancesI);
+        //TODO:FIX
+        //RecipeManagers.centrifugeManager.addRecipe(20, this.get(1), productsI, chancesI);
     }
 
     @Override

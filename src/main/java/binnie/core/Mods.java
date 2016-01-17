@@ -50,7 +50,7 @@ public class Mods {
         };
         Mods.IC2 = new Mod("IC2");
         Mods.Botania = new Mod("Botania");
-        Mods.WARN = true;
+        Mods.WARN = false; //TODO:FIX
     }
 
     public static class Mod {

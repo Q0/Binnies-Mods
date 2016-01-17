@@ -40,11 +40,12 @@ public class AlvearyTransmission {
             }
             final TileExtraBeeAlveary tile = (TileExtraBeeAlveary) this.getMachine().getTileEntity();
             final List<IEnergyHandler> handlers = new ArrayList<IEnergyHandler>();
-            for (final TileEntity alvearyTile : tile.getAlvearyBlocks()) {
+            //TODO:FIX
+           /* for (final TileEntity alvearyTile : tile.getAlvearyBlocks()) {
                 if (alvearyTile instanceof IEnergyHandler && alvearyTile != tile) {
                     handlers.add((IEnergyHandler) alvearyTile);
                 }
-            }
+            }*/
             if (handlers.isEmpty()) {
                 return;
             }

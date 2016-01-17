@@ -14,7 +14,7 @@ public class BotanistTracker extends BreedingTracker implements IBotanistTracker
     }
 
     public BotanistTracker(final String s, final GameProfile player) {
-        super(s, player);
+        super(s);
     }
 
     public void registerPickup(final IIndividual individual) {

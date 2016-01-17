@@ -179,7 +179,8 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         SweetCrabapple.finished();
         FloweringCrabapple.finished();
         PrairieCrabapple.finished();
-        ExtraTreeSpecies[] pruneSpecies = new ExtraTreeSpecies[]{Blackthorn, CherryPlum, Almond, Apricot, Peach, Nectarine, WildCherry, SourCherry, BlackCherry};
+        //TODO: FIX
+        /*ExtraTreeSpecies[] pruneSpecies = new ExtraTreeSpecies[]{Blackthorn, CherryPlum, Almond, Apricot, Peach, Nectarine, WildCherry, SourCherry, BlackCherry};
 
         for(ExtraTreeSpecies species : pruneSpecies) {
             IAlleleTreeSpecies citrus = (IAlleleTreeSpecies)AlleleManager.alleleRegistry.getAllele("forestry.treePlum");
@@ -196,7 +197,7 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
             IAlleleTreeSpecies citrus = (IAlleleTreeSpecies)AlleleManager.alleleRegistry.getAllele("forestry.treeLemon");
             species.setWorldGen(citrus.getGeneratorClasses()[0]);
             species.finished();
-        }
+        }*/
 
         Banana.setLeafType(ExtraTreeSpecies.LeafType.Palm);
         RedBanana.setLeafType(ExtraTreeSpecies.LeafType.Palm);
@@ -642,7 +643,7 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         return new WorldGenDefault(tree);
     }
 
-    public Class[] getGeneratorClasses() {
+    public Class<? extends WorldGenerator>[] getGeneratorClasses() {
         return null;
     }
 

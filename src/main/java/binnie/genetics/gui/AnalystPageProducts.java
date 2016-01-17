@@ -43,13 +43,13 @@ public class AnalystPageProducts extends AnalystPageProduce {
         final Collection<ItemStack> refinedProducts = new UniqueItemStackSet();
         final Collection<ItemStack> productList = new UniqueItemStackSet();
         final Collection<ItemStack> specialtyList = new UniqueItemStackSet();
-        Map<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
-        products.putAll(genome.getPrimary().getProducts());
-        products.putAll(genome.getSecondary().getProducts());
+        Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
+        products.putAll(genome.getPrimary().getProductChances());
+        products.putAll(genome.getSecondary().getProductChances());
         if (!products.isEmpty()) {
             new ControlTextCentered(this, y, "Natural Products").setColour(this.getColour());
             y += 12;
-            for (final Map.Entry<ItemStack, Integer> entry : products.entrySet()) {
+            for (final Map.Entry<ItemStack, Float> entry : products.entrySet()) {
                 if (!productList.add(entry.getKey())) {
                     continue;
                 }
@@ -59,11 +59,11 @@ public class AnalystPageProducts extends AnalystPageProduce {
             }
             y += 12;
         }
-        products = (Map<ItemStack, Integer>) genome.getPrimary().getSpecialty();
+        products = (Map<ItemStack, Float>) genome.getPrimary().getSpecialtyChances();
         if (!products.isEmpty()) {
             new ControlTextCentered(this, y, "Specialty Products").setColour(this.getColour());
             y += 12;
-            for (final Map.Entry<ItemStack, Integer> entry : products.entrySet()) {
+            for (final Map.Entry<ItemStack, Float> entry : products.entrySet()) {
                 refinedProducts.addAll(this.getAllProducts(entry.getKey()));
                 this.createProductEntry(entry.getKey(), entry.getValue(), y, speed * modeSpeed);
                 y += 18;
@@ -144,7 +144,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
         this.setSize(new IPoint(this.w(), y + dy + 18 + 8));
     }
 
-    private void createProductEntry(final ItemStack key, final Integer value, final int y, final float speed) {
+    private void createProductEntry(final ItemStack key, final Float value, final int y, final float speed) {
         final ControlItemDisplay item = new ControlItemDisplay(this, 16.0f, (float) y) {
             @Override
             public void getTooltip(final Tooltip tooltip) {

@@ -792,9 +792,10 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         ExtraBeesSpecies.BLUTONIUM.addProduct(EnumHoneyComb.BARREN, 20);
         ExtraBeesSpecies.BLUTONIUM.addSpecialty(EnumHoneyComb.BLUTONIUM, 1);
         ExtraBeesSpecies.MYSTICAL.importTemplate(ForestryAllele.BeeSpecies.Noble);
-        for (final Map.Entry<ItemStack, Integer> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProducts().entrySet()) {
+        //TODO: FIX
+        /*for (final Map.Entry<ItemStack, Integer> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProducts().entrySet()) {
             ExtraBeesSpecies.MYSTICAL.addProduct(entry.getKey(), entry.getValue());
-        }
+        }*/
         ExtraBeesSpecies.MYSTICAL.setFlowerProvider(ExtraBeesFlowers.Mystical.getUID());
         for (final ExtraBeesSpecies species2 : values()) {
             if (species2.state != State.Active) {

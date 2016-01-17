@@ -47,7 +47,9 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
     }
 
     public boolean isMember(final ItemStack stack, final int type) {
-        return this.getType(stack).ordinal() == type;
+        //TODO: FIX
+        //return this.getType(stack).ordinal() == type;
+        return false;
     }
 
     public boolean isMember(final IIndividual individual) {

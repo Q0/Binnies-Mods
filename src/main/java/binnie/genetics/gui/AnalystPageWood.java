@@ -32,9 +32,10 @@ public class AnalystPageWood extends AnalystPageProduce {
         }
         y += 30;
         final Collection<ItemStack> products = new UniqueItemStackSet();
-        for (final ItemStack stack : ind.getGenome().getPrimary().getLogStacks()) {
+        //TODO:FIX
+        /*for (final ItemStack stack : ind.getGenome().getPrimary().getLogStacks()) {
             products.add(stack);
-        }
+        }*/
         if (products.size() > 0) {
             new ControlTextCentered(this, y, "Logs").setColour(this.getColour());
             y += 10;

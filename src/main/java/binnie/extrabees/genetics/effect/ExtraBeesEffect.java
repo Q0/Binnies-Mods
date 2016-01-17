@@ -498,7 +498,8 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
             area[2] = 1;
         }
         ChunkCoordinates coords = housing.getCoordinates();
-        PluginApiculture.proxy.addBeeHiveFX("particles/swarm_bee", housing.getWorld(), (double) coords.posX, (double) coords.posY, (double) coords.posZ, genome.getPrimary().getIconColour(0), area[0], area[1], area[2]);
+        //TODO: FIX
+        //PluginApiculture.proxy.addBeeHiveFX("particles/swarm_bee", housing.getWorld(), (double) coords.posX, (double) coords.posY, (double) coords.posZ, genome.getPrimary().getIconColour(0), area[0], area[1], area[2]);
         return storedData;
     }
 

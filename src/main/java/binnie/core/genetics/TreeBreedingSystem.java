@@ -36,7 +36,8 @@ public class TreeBreedingSystem extends BreedingSystem {
     public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
         final IGenome genome0 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID()));
         final IGenome genome2 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID()));
-        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, species1, species2, genome0, genome2);
+        //TODO: FIX
+        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, (IAlleleTreeSpecies)species1, (IAlleleTreeSpecies)species2, (ITreeGenome)genome0, (ITreeGenome)genome2);
     }
 
     @Override
@@ -85,9 +86,10 @@ public class TreeBreedingSystem extends BreedingSystem {
         for (final IAlleleSpecies species : this.getDiscoveredSpecies(tracker)) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
             final ITreeGenome genome = (ITreeGenome) this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(tSpecies.getUID()));
-            for (final ItemStack wood : tSpecies.getLogStacks()) {
+            //TODO:FIX
+            /*for (final ItemStack wood : tSpecies.getLogStacks()) {
                 this.discoveredWoods.add(wood);
-            }
+            }*/
             for (final ItemStack fruit : genome.getFruitProvider().getProducts()) {
                 this.discoveredFruits.add(fruit);
             }
@@ -102,9 +104,10 @@ public class TreeBreedingSystem extends BreedingSystem {
         for (final IAlleleSpecies species : this.allActiveSpecies) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
             final ITreeGenome genome = (ITreeGenome) this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(tSpecies.getUID()));
-            for (final ItemStack wood : tSpecies.getLogStacks()) {
+            //TODO:FIX
+            /*for (final ItemStack wood : tSpecies.getLogStacks()) {
                 this.allWoods.add(wood);
-            }
+            }*/
             for (final ItemStack fruit : genome.getFruitProvider().getProducts()) {
                 this.allFruits.add(fruit);
             }
@@ -156,11 +159,12 @@ public class TreeBreedingSystem extends BreedingSystem {
         final List<IAlleleSpecies> found = new ArrayList<IAlleleSpecies>();
         for (final IAlleleSpecies species : set) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
-            for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
+            //TODO:FIX
+            /*for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
                 if (fruit2.isItemEqual(fruit)) {
                     found.add(species);
                 }
-            }
+            }*/
         }
         return found;
     }
@@ -173,11 +177,12 @@ public class TreeBreedingSystem extends BreedingSystem {
         final List<IAlleleSpecies> found = new ArrayList<IAlleleSpecies>();
         for (final IAlleleSpecies species : set) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
-            for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
+            //TODO:FIX
+            /*for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
                 if (Lumbermill.getPlankProduct(fruit2) != null && fruit.isItemEqual(Lumbermill.getPlankProduct(fruit2))) {
                     found.add(species);
                 }
-            }
+            }*/
         }
         return found;
     }

@@ -59,7 +59,8 @@ public class PageSpeciesTreeGenome extends PageSpecies {
                 new ControlText(contents, new IArea(0.0F, (float)y, (float)w1, (float)th), BinnieCore.proxy.localise("gui.temperature.short") + " : ", TextJustification.MiddleRight);
                 new ControlText(contents, new IArea((float)w1, (float)y, (float)w2, (float)th), treeSpecies.getTemperature().getName(), TextJustification.MiddleLeft);
                 y = y + th;
-                IIcon leaf = ForestryAPI.textureManager.getIcon(treeSpecies.getLeafIconIndex(tree, false));
+                //TODO:FIX
+                IIcon leaf = treeSpecies.getLeafIcon(true, false);
                 IIcon fruit = null;
                 int fruitColour = 16777215;
 
@@ -72,22 +73,22 @@ public class PageSpeciesTreeGenome extends PageSpecies {
 
                 if(leaf != null) {
                     new ControlText(contents, new IArea(0.0F, (float)y, (float)w1, (float)th2), ExtraTrees.proxy.localise("gui.database.leaves") + " : ", TextJustification.MiddleRight);
-                    (new ControlBlockIconDisplay(contents, (float)w1, (float)y, leaf)).setColour(treeSpecies.getLeafColour(tree));
+                    (new ControlBlockIconDisplay(contents, (float)w1, (float)y, leaf)).setColour(treeSpecies.getIconColour(0));
                     if(fruit != null && !treeSpecies.getUID().equals("forestry.treeOak")) {
                         (new ControlBlockIconDisplay(contents, (float)w1, (float)y, fruit)).setColour(fruitColour);
                     }
 
                     y += th2;
                 }
-
-                ItemStack log = treeSpecies.getLogStacks().length > 0?treeSpecies.getLogStacks()[0]:null;
+                //TODO:FIX
+                /*ItemStack log = treeSpecies.getLogStacks().length > 0?treeSpecies.getLogStacks()[0]:null;
                 if(log != null) {
                     new ControlText(contents, new IArea(0.0F, (float)y, (float)w1, (float)th2), ExtraTrees.proxy.localise("gui.database.log") + " : ", TextJustification.MiddleRight);
                     ControlItemDisplay display = new ControlItemDisplay(contents, (float)w1, (float)y);
                     display.setItemStack(log);
                     display.setTooltip();
                     y += th2;
-                }
+                }*/
 
                 new ControlText(contents, new IArea(0.0F, (float)y, (float)w1, (float)th), syst.getChromosomeShortName(EnumTreeChromosome.GROWTH) + " : ", TextJustification.MiddleRight);
                 new ControlText(contents, new IArea((float)w1, (float)y, (float)w2, (float)th), genome.getGrowthProvider().getDescription(), TextJustification.MiddleLeft);

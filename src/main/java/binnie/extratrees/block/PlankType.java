@@ -231,7 +231,7 @@ public class PlankType {
             }
             final int n = this.ordinal() / 16 + 1;
             final ItemStack fence = Mods.Forestry.stack("fences" + ((n == 1) ? "" : n));
-            fence.setItemDamage(ordinal);
+            //fence.setItemDamage(ordinal); //TODO:FIX
             return fence;
         }
     }
