@@ -15,10 +15,10 @@ public class ItemPropolis extends ItemProduct {
     }
 
     public int getColorFromItemStack(final ItemStack itemStack, final int j) {
-        final int i = itemStack.getItemDamage();
         if (j == 0) {
             return EnumPropolis.get(itemStack).colour[0];
         }
+
         return EnumPropolis.get(itemStack).colour[1];
     }
 

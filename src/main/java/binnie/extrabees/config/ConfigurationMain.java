@@ -10,15 +10,19 @@ public class ConfigurationMain {
     @ConfigProperty(key = "canQuarryMineHives")
     @PropBoolean
     public static boolean canQuarryMineHives;
+    
     @ConfigProperty(key = "waterHiveRate")
     @PropInteger
     public static int waterHiveRate;
+    
     @ConfigProperty(key = "rockHiveRate")
     @PropInteger
     public static int rockHiveRate;
+    
     @ConfigProperty(key = "netherHiveRate")
     @PropInteger
     public static int netherHiveRate;
+    
     @ConfigProperty(key = "marbleHiveRate")
     @PropInteger
     public static int marbleHiveRate;

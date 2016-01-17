@@ -12,11 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemPunnettSquare extends Item {
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = ExtraBees.proxy.getIcon(register, "");
-    }
-
     public ItemPunnettSquare() {
         this.setCreativeTab(CreativeTabs.tabTools);
         this.setMaxStackSize(1);
@@ -30,4 +25,10 @@ public class ItemPunnettSquare extends Item {
         ExtraBees.proxy.openGui(ExtraBeeGUID.PunnettSquare, player, (int) player.posX, (int) player.posY, (int) player.posZ);
         return itemstack;
     }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        itemIcon = ExtraBees.proxy.getIcon(register, "");
+    }
+
 }

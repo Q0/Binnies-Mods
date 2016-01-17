@@ -7,7 +7,6 @@ import binnie.craftgui.minecraft.IMachineInformation;
 import binnie.extrabees.apiary.TileExtraBeeAlveary;
 import binnie.extrabees.core.ExtraBeeTexture;
 import cofh.api.energy.IEnergyHandler;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -34,10 +33,12 @@ public class AlvearyTransmission {
         @Override
         public void onUpdate() {
             super.onUpdate();
-            int energy = this.getUtil().getPoweredMachine().getEnergyStored(ForgeDirection.NORTH);
+            int energy = getUtil().getPoweredMachine().getEnergyStored(ForgeDirection.NORTH);
+
             if (energy == 0) {
                 return;
             }
+
             final TileExtraBeeAlveary tile = (TileExtraBeeAlveary) this.getMachine().getTileEntity();
             final List<IEnergyHandler> handlers = new ArrayList<IEnergyHandler>();
             //TODO:FIX
@@ -49,18 +50,23 @@ public class AlvearyTransmission {
             if (handlers.isEmpty()) {
                 return;
             }
+
             final int maxOutput = 500;
             int output = energy / handlers.size();
+
             if (output > maxOutput) {
                 output = maxOutput;
             }
+
             if (output < 1) {
                 output = 1;
             }
+
             for (final IEnergyHandler handler : handlers) {
                 final int recieved = handler.receiveEnergy(ForgeDirection.NORTH, output, false);
-                this.getUtil().getPoweredMachine().extractEnergy(ForgeDirection.NORTH, recieved, false);
-                energy = this.getUtil().getPoweredMachine().getEnergyStored(ForgeDirection.NORTH);
+                getUtil().getPoweredMachine().extractEnergy(ForgeDirection.NORTH, recieved, false);
+                energy = getUtil().getPoweredMachine().getEnergyStored(ForgeDirection.NORTH);
+
                 if (energy == 0) {
                     return;
                 }

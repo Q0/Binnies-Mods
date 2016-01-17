@@ -5,14 +5,13 @@ import binnie.core.BinnieCore;
 import binnie.craftgui.controls.listbox.ControlList;
 import binnie.craftgui.controls.listbox.ControlListBox;
 import binnie.craftgui.core.IWidget;
-import binnie.extrabees.gui.database.ControlProductsItem;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.genetics.IAllele;
+import net.minecraft.item.ItemStack;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-import net.minecraft.item.ItemStack;
 
 public class ControlProductsBox extends ControlListBox {
     private int index;
@@ -20,20 +19,21 @@ public class ControlProductsBox extends ControlListBox {
     IAlleleBeeSpecies species = null;
 
     public IWidget createOption(ControlProductsBox.Product value, int y) {
-        return new ControlProductsItem((ControlList)this.getContent(), value, y);
+        return new ControlProductsItem((ControlList) getContent(), value, y);
     }
 
     public ControlProductsBox(IWidget parent, int x, int y, int width, int height, ControlProductsBox.Type type) {
-        super(parent, (float)x, (float)y, (float)width, (float)height, 12.0F);
+        super(parent, x, y, width, height, 12.0F);
         this.type = type;
     }
 
     public void setSpecies(IAlleleBeeSpecies species) {
-        if(species != this.species) {
+        if (species != this.species) {
             this.species = species;
-            if(species != null) {
+            
+            if (species != null) {
                 IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
-                if(template == null) {
+                if (template == null) {
                     return;
                 }
 
@@ -52,10 +52,9 @@ public class ControlProductsBox extends ControlListBox {
                     }
                 }*/
 
-                this.setOptions(strings);
+                setOptions(strings);
             }
         }
-
     }
 
     class Product {
@@ -69,11 +68,11 @@ public class ControlProductsBox extends ControlListBox {
         }
     }
 
-    static enum Type {
+    enum Type {
         Products,
         Specialties;
 
-        private Type() {
+        Type() {
         }
     }
 }

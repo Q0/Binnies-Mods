@@ -73,75 +73,104 @@ public enum ExtraBeeItems implements IItemMisc {
             if (item.metalString != null) {
                 ItemStack dust = null;
                 ItemStack ingot = null;
+
                 if (!OreDictionary.getOres("ingot" + item.metalString).isEmpty()) {
                     ingot = OreDictionary.getOres("ingot" + item.metalString).get(0).copy();
                 }
+
                 if (!OreDictionary.getOres("dust" + item.metalString).isEmpty()) {
                     dust = OreDictionary.getOres("dust" + item.metalString).get(0).copy();
                 }
+
                 final ItemStack input = item.get(1);
+
                 if (dust != null) {
-                    GameRegistry.addShapelessRecipe(dust, new Object[]{input, input, input, input});
-                } else if (ingot != null) {
-                    GameRegistry.addShapelessRecipe(ingot, new Object[]{input, input, input, input, input, input, input, input, input});
-                } else if (item == ExtraBeeItems.CoalDust) {
-                    GameRegistry.addShapelessRecipe(new ItemStack(Items.coal), new Object[]{input, input, input, input});
+                    GameRegistry.addShapelessRecipe(dust, input, input, input, input);
                 }
-            } else if (item.gemString != null) {
+                else if (ingot != null) {
+                    GameRegistry.addShapelessRecipe(ingot, input, input, input, input, input, input, input, input, input);
+                }
+                else if (item == ExtraBeeItems.CoalDust) {
+                    GameRegistry.addShapelessRecipe(new ItemStack(Items.coal), input, input, input, input);
+                }
+            }
+            else if (item.gemString != null) {
                 ItemStack gem = null;
                 if (!OreDictionary.getOres("gem" + item.gemString).isEmpty()) {
                     gem = OreDictionary.getOres("gem" + item.gemString).get(0);
                 }
+
                 final ItemStack input2 = item.get(1);
+
                 if (gem != null) {
-                    GameRegistry.addShapelessRecipe(gem.copy(), new Object[]{input2, input2, input2, input2, input2, input2, input2, input2, input2});
+                    GameRegistry.addShapelessRecipe(gem.copy(), input2, input2, input2, input2, input2, input2, input2, input2, input2);
                 }
             }
         }
+        
         Item woodGear = null;
+        
         try {
             woodGear = (Item) Class.forName("buildcraft.BuildCraftCore").getField("woodenGearItem").get(null);
-        } catch (Exception ex) {
         }
+        catch (Exception ignored) {
+            // ignored
+        }
+        
         ItemStack gear = new ItemStack(Blocks.planks, 1);
+        
         if (woodGear != null) {
             gear = new ItemStack(woodGear, 1);
         }
-        RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("for.honey", 500), (ItemStack) null, ExtraBeeItems.ScentedGear.get(1), new Object[]{" j ", "bgb", " p ", 'j', Mods.Forestry.item("royalJelly"), 'b', Mods.Forestry.item("beeswax"), 'p', Mods.Forestry.item("pollen"), 'g', gear});
+        
+        RecipeManagers.carpenterManager.addRecipe(
+            100,
+            Binnie.Liquid.getLiquidStack("for.honey", 500),
+            null,
+            ExtraBeeItems.ScentedGear.get(1),
+            " j ",
+            "bgb",
+            " p ",
+            'j', Mods.Forestry.item("royalJelly"),
+            'b', Mods.Forestry.item("beeswax"),
+            'p', Mods.Forestry.item("pollen"),
+            'g', gear
+        );
     }
 
-    private ExtraBeeItems(final String name, final String iconPath) {
-        this.metalString = null;
-        this.gemString = null;
+    ExtraBeeItems(final String name, final String iconPath) {
+        metalString = null;
+        gemString = null;
         this.name = name;
         this.iconPath = iconPath;
     }
 
     private void setGem(final String string) {
-        this.gemString = string;
+        gemString = string;
     }
 
     private void setMetal(final String string) {
-        this.metalString = string;
+        metalString = string;
     }
 
     @Override
     public boolean isActive() {
-        if (this.metalString != null) {
-            return !OreDictionary.getOres("ingot" + this.metalString).isEmpty() || !OreDictionary.getOres("dust" + this.metalString).isEmpty() || this == ExtraBeeItems.CoalDust;
+        if (metalString != null) {
+            return !OreDictionary.getOres("ingot" + metalString).isEmpty() || !OreDictionary.getOres("dust" + metalString).isEmpty() || this == ExtraBeeItems.CoalDust;
         }
-        return this.gemString == null || !OreDictionary.getOres("gem" + this.gemString).isEmpty();
+
+        return gemString == null || !OreDictionary.getOres("gem" + gemString).isEmpty();
     }
 
     @Override
     public IIcon getIcon(final ItemStack stack) {
-        return this.icon;
+        return icon;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(final IIconRegister register) {
-        this.icon = ExtraBees.proxy.getIcon(register, "misc/" + this.iconPath);
+        icon = ExtraBees.proxy.getIcon(register, "misc/" + iconPath);
     }
 
     @Override
@@ -150,12 +179,12 @@ public enum ExtraBeeItems implements IItemMisc {
 
     @Override
     public String getName(final ItemStack stack) {
-        return this.name;
+        return name;
     }
 
     @Override
     public ItemStack get(final int i) {
-        return new ItemStack(ExtraBees.itemMisc, i, this.ordinal());
+        return new ItemStack(ExtraBees.itemMisc, i, ordinal());
     }
 
     static {

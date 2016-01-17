@@ -1,6 +1,5 @@
 package binnie.extrabees.apiary;
 
-import binnie.Binnie;
 import binnie.core.BinnieCore;
 import binnie.core.machines.TileEntityMachine;
 import binnie.extrabees.apiary.machine.AlvearyMachine;
@@ -11,7 +10,6 @@ import forestry.api.multiblock.IAlvearyComponent;
 import forestry.api.multiblock.IMultiblockController;
 import forestry.api.multiblock.IMultiblockLogicAlveary;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -31,73 +29,73 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (!BinnieCore.proxy.isSimulating(this.worldObj)) {
+        if (!BinnieCore.proxy.isSimulating(worldObj)) {
             return;
         }
-        if (this.worldObj.getWorldTime() % 200L == 0L) {
-            if (!this.isIntegratedIntoStructure() || this.isMaster()) {
-                this.validateStructure();
+        if (worldObj.getWorldTime() % 200L == 0L) {
+            if (!isIntegratedIntoStructure() || isMaster()) {
+                validateStructure();
             }
-           /* final ITileStructure master = this.getCentralTE();
+           /* final ITileStructure master = getCentralTE();
             if (master == null) {
                 return;
             }
-            if (this.getBeeListener() != null) {
-                ((IAlvearyComponent) master).registerBeeListener(this.getBeeListener());
+            if (getBeeListener() != null) {
+                ((IAlvearyComponent) master).registerBeeListener(getBeeListener());
             }
-            if (this.getBeeModifier() != null) {
-                ((IAlvearyComponent) master).registerBeeModifier(this.getBeeModifier());
+            if (getBeeModifier() != null) {
+                ((IAlvearyComponent) master).registerBeeModifier(getBeeModifier());
             }*/
-            this.init = true;
+            init = true;
         }
     }
 
     @Override
     public void readFromNBT(final NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        this.isMaster = nbttagcompound.getBoolean("IsMaster");
-        this.masterX = nbttagcompound.getInteger("MasterX");
-        this.masterY = nbttagcompound.getInteger("MasterY");
-        this.masterZ = nbttagcompound.getInteger("MasterZ");
-        if (this.isMaster) {
-            this.makeMaster();
+        isMaster = nbttagcompound.getBoolean("IsMaster");
+        masterX = nbttagcompound.getInteger("MasterX");
+        masterY = nbttagcompound.getInteger("MasterY");
+        masterZ = nbttagcompound.getInteger("MasterZ");
+        if (isMaster) {
+            makeMaster();
         }
-        //this.structureLogic.readFromNBT(nbttagcompound);
-        //this.updateAlvearyBlocks();
-        this.init = false;
+        //structureLogic.readFromNBT(nbttagcompound);
+        //updateAlvearyBlocks();
+        init = false;
     }
 
     @Override
     public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("IsMaster", this.isMaster);
-        nbttagcompound.setInteger("MasterX", this.masterX);
-        nbttagcompound.setInteger("MasterY", this.masterY);
-        nbttagcompound.setInteger("MasterZ", this.masterZ);
-        //this.structureLogic.writeToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("IsMaster", isMaster);
+        nbttagcompound.setInteger("MasterX", masterX);
+        nbttagcompound.setInteger("MasterY", masterY);
+        nbttagcompound.setInteger("MasterZ", masterZ);
+        //structureLogic.writeToNBT(nbttagcompound);
     }
 
     AlvearyMachine.AlvearyPackage getAlvearyPackage() {
-        return (AlvearyMachine.AlvearyPackage) this.getMachine().getPackage();
+        return (AlvearyMachine.AlvearyPackage) getMachine().getPackage();
     }
 
     public TileExtraBeeAlveary() {
-        this.init = false;
-        this.masterY = -99;
-        this.tiles = new ArrayList<TileEntity>();
-        //this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
+        init = false;
+        masterY = -99;
+        tiles = new ArrayList<TileEntity>();
+        //structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic(this);
     }
 
     public TileExtraBeeAlveary(final AlvearyMachine.AlvearyPackage alvearyPackage) {
         super(alvearyPackage);
-        this.init = false;
-        this.masterY = -99;
-        this.tiles = new ArrayList<TileEntity>();
-        //this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
+        init = false;
+        masterY = -99;
+        tiles = new ArrayList<TileEntity>();
+        //structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic(this);
     }
 
     public String getTypeUID() {
-        //return this.structureLogic.getTypeUID();
+        //return structureLogic.getTypeUID();
         return null;
     }
 
@@ -105,24 +103,24 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }
 
     public void onStructureReset() {
-        this.setCentralTE(null);
-        this.isMaster = false;
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        //this.updateAlvearyBlocks();
+        setCentralTE(null);
+        isMaster = false;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        //updateAlvearyBlocks();
     }
 
     /*public ITileStructure getCentralTE() {
-        if (this.worldObj == null || !this.isIntegratedIntoStructure()) {
+        if (worldObj == null || !isIntegratedIntoStructure()) {
             return null;
         }
-        if (this.isMaster()) {
+        if (isMaster()) {
             return (ITileStructure) this;
         }
-        final TileEntity tile = this.worldObj.getTileEntity(this.masterX, this.masterY, this.masterZ);
+        final TileEntity tile = worldObj.getTileEntity(masterX, masterY, masterZ);
         if (!(tile instanceof ITileStructure)) {
             return null;
         }
-        final ITileStructure master = (ITileStructure) this.worldObj.getTileEntity(this.masterX, this.masterY, this.masterZ);
+        final ITileStructure master = (ITileStructure) worldObj.getTileEntity(masterX, masterY, masterZ);
         if (master.isMaster()) {
             return master;
         }
@@ -130,47 +128,47 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }*/
 
     public void validateStructure() {
-        //this.structureLogic.validateStructure();
-        //this.updateAlvearyBlocks();
+        //structureLogic.validateStructure();
+        //updateAlvearyBlocks();
     }
 
     private boolean isSameTile(final TileEntity tile) {
-        return tile.xCoord == this.xCoord && tile.yCoord == this.yCoord && tile.zCoord == this.zCoord;
+        return tile.xCoord == xCoord && tile.yCoord == yCoord && tile.zCoord == zCoord;
     }
 
     public void setCentralTE(final TileEntity tile) {
-        if (tile == null || tile == this || this.isSameTile(tile)) {
+        if (tile == null || tile == this || isSameTile(tile)) {
             final boolean b = false;
-            this.masterZ = (b ? 1 : 0);
-            this.masterX = (b ? 1 : 0);
-            this.masterY = -99;
-            //this.updateAlvearyBlocks();
+            masterZ = (b ? 1 : 0);
+            masterX = (b ? 1 : 0);
+            masterY = -99;
+            //updateAlvearyBlocks();
             return;
         }
-        this.isMaster = false;
-        this.masterX = tile.xCoord;
-        this.masterY = tile.yCoord;
-        this.masterZ = tile.zCoord;
-        this.markDirty();
-        /*if (this.getBeeListener() != null) {
-            ((IAlvearyComponent) tile).registerBeeListener(this.getBeeListener());
+        isMaster = false;
+        masterX = tile.xCoord;
+        masterY = tile.yCoord;
+        masterZ = tile.zCoord;
+        markDirty();
+        /*if (getBeeListener() != null) {
+            ((IAlvearyComponent) tile).registerBeeListener(getBeeListener());
         }
-        if (this.getBeeModifier() != null) {
-            ((IAlvearyComponent) tile).registerBeeModifier(this.getBeeModifier());
+        if (getBeeModifier() != null) {
+            ((IAlvearyComponent) tile).registerBeeModifier(getBeeModifier());
         }*/
-        //this.updateAlvearyBlocks();
+        //updateAlvearyBlocks();
     }
 
     public boolean isMaster() {
-        return this.isMaster;
+        return isMaster;
     }
 
     protected boolean hasMaster() {
-        return this.masterY >= 0;
+        return masterY >= 0;
     }
 
     public boolean isIntegratedIntoStructure() {
-        return this.isMaster || this.masterY >= 0;
+        return isMaster || masterY >= 0;
     }
 
     public void registerBeeModifier(final IBeeModifier modifier) {
@@ -190,47 +188,47 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }
 
     public IBeeModifier getBeeModifier() {
-        return this.getMachine().getInterface(IBeeModifier.class);
+        return getMachine().getInterface(IBeeModifier.class);
     }
 
     public IBeeListener getBeeListener() {
-        return this.getMachine().getInterface(IBeeListener.class);
+        return getMachine().getInterface(IBeeListener.class);
     }
 
     public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-        return (this.getBeeModifier() == null) ? 1.0f : this.getBeeModifier().getTerritoryModifier(genome, currentModifier);
+        return (getBeeModifier() == null) ? 1.0f : getBeeModifier().getTerritoryModifier(genome, currentModifier);
     }
 
     public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return (this.getBeeModifier() == null) ? 1.0f : this.getBeeModifier().getMutationModifier(genome, mate, currentModifier);
+        return (getBeeModifier() == null) ? 1.0f : getBeeModifier().getMutationModifier(genome, mate, currentModifier);
     }
 
     public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return (this.getBeeModifier() == null) ? 1.0f : this.getBeeModifier().getLifespanModifier(genome, mate, currentModifier);
+        return (getBeeModifier() == null) ? 1.0f : getBeeModifier().getLifespanModifier(genome, mate, currentModifier);
     }
 
     public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-        return (this.getBeeModifier() == null) ? 1.0f : this.getBeeModifier().getProductionModifier(genome, currentModifier);
+        return (getBeeModifier() == null) ? 1.0f : getBeeModifier().getProductionModifier(genome, currentModifier);
     }
 
     public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-        return (this.getBeeModifier() == null) ? 1.0f : this.getBeeModifier().getFloweringModifier(genome, currentModifier);
+        return (getBeeModifier() == null) ? 1.0f : getBeeModifier().getFloweringModifier(genome, currentModifier);
     }
 
     public boolean isSealed() {
-        return this.getBeeModifier() != null && this.getBeeModifier().isSealed();
+        return getBeeModifier() != null && getBeeModifier().isSealed();
     }
 
     public boolean isSelfLighted() {
-        return this.getBeeModifier() != null && this.getBeeModifier().isSelfLighted();
+        return getBeeModifier() != null && getBeeModifier().isSelfLighted();
     }
 
     public boolean isSunlightSimulated() {
-        return this.getBeeModifier() != null && this.getBeeModifier().isSunlightSimulated();
+        return getBeeModifier() != null && getBeeModifier().isSunlightSimulated();
     }
 
     public boolean isHellish() {
-        return this.getBeeModifier() != null && this.getBeeModifier().isHellish();
+        return getBeeModifier() != null && getBeeModifier().isHellish();
     }
 
     public void registerBeeListener(final IBeeListener event) {
@@ -240,14 +238,14 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }
 
     /*public void onQueenChange(final ItemStack queen) {
-        if (this.getBeeListener() != null) {
-            this.getBeeListener().onQueenChange(queen);
+        if (getBeeListener() != null) {
+            getBeeListener().onQueenChange(queen);
         }
     }*/
 
     public void wearOutEquipment(final int amount) {
-        if (this.getBeeListener() != null) {
-            this.getBeeListener().wearOutEquipment(amount);
+        if (getBeeListener() != null) {
+            getBeeListener().wearOutEquipment(amount);
         }
     }
 
@@ -262,14 +260,14 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }
 
     /*public void onQueenDeath(final IBee queen) {
-        if (this.getBeeListener() != null) {
-            this.getBeeListener().onQueenDeath(queen);
+        if (getBeeListener() != null) {
+            getBeeListener().onQueenDeath(queen);
         }
     }*/
 
     /*public void onPostQueenDeath(final IBee queen) {
-        if (this.getBeeListener() != null) {
-            this.getBeeListener().onPostQueenDeath(queen);
+        if (getBeeListener() != null) {
+            getBeeListener().onPostQueenDeath(queen);
         }
     }*/
 
@@ -286,18 +284,18 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }
 
     /*public IBeeHousing getBeeHousing() {
-        return (this.getCentralTE() == null) ? null : ((IBeeHousing) this.getCentralTE());
+        return (getCentralTE() == null) ? null : ((IBeeHousing) getCentralTE());
     }*/
 
     /*public List<TileEntity> getAlvearyBlocks() {
-        this.updateAlvearyBlocks();
-        return this.tiles;
+        updateAlvearyBlocks();
+        return tiles;
     }*/
 
     /*private void updateAlvearyBlocks() {
-        this.tiles.clear();
-        if (this.getCentralTE() != null) {
-            final ITileStructure struct = this.getCentralTE();
+        tiles.clear();
+        if (getCentralTE() != null) {
+            final ITileStructure struct = getCentralTE();
             if (!struct.isIntegratedIntoStructure()) {
                 return;
             }
@@ -305,9 +303,9 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
             for (int x = -2; x <= 2; ++x) {
                 for (int z = -2; z <= 2; ++z) {
                     for (int y = -2; y <= 2; ++y) {
-                        final TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord + x, this.yCoord + y, this.zCoord + z);
+                        final TileEntity tile = getWorldObj().getTileEntity(xCoord + x, yCoord + y, zCoord + z);
                         if (tile != null && tile instanceof ITileStructure && ((ITileStructure) tile).getCentralTE() == struct) {
-                            this.tiles.add(tile);
+                            tiles.add(tile);
                         }
                     }
                 }
@@ -316,7 +314,7 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     }*/
 
     public ISidedInventory getStructureInventory() {
-        return this.getMachine().getInterface(ISidedInventory.class);
+        return getMachine().getInterface(ISidedInventory.class);
     }
 
     @Override

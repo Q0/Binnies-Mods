@@ -13,12 +13,15 @@ import java.util.Random;
 public class WorldGenHiveNether extends WorldGenerator {
     public boolean generate(final World world, final Random random, final int i, final int j, final int k) {
         final BiomeGenBase biome = world.getWorldChunkManager().getBiomeGenAt(i, k);
+
         if (!BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.NETHER)) {
             return true;
         }
+
         if (this.embedInWall(world, Blocks.netherrack, i, j, k)) {
             world.setBlock(i, j, k, ExtraBees.hive, 2, 0);
         }
+
         return true;
     }
 

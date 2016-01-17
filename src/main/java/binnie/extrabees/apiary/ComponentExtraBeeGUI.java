@@ -18,6 +18,6 @@ public class ComponentExtraBeeGUI extends MachineComponent implements IInteracti
 
     @Override
     public void onRightClick(final World world, final EntityPlayer player, final int x, final int y, final int z) {
-        ExtraBees.proxy.openGui(this.id, player, x, y, z);
+        ExtraBees.proxy.openGui(id, player, x, y, z);
     }
 }

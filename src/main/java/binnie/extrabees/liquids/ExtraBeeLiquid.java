@@ -19,7 +19,7 @@ public enum ExtraBeeLiquid implements ILiquidType {
     IIcon icon;
     int colour;
 
-    private ExtraBeeLiquid(final String ident, final int colour) {
+    ExtraBeeLiquid(final String ident, final int colour) {
         this.ident = ident;
         this.colour = colour;
     }
@@ -47,7 +47,7 @@ public enum ExtraBeeLiquid implements ILiquidType {
 
     @Override
     public int getColour() {
-        return 16777215;
+        return 0xffffff;
     }
 
     @Override
@@ -67,7 +67,10 @@ public enum ExtraBeeLiquid implements ILiquidType {
 
     @Override
     public boolean showInCreative(final FluidContainer container) {
-        return container == FluidContainer.Bucket || container == FluidContainer.Can || container == FluidContainer.Capsule || container == FluidContainer.Refractory;
+        return container == FluidContainer.Bucket ||
+            container == FluidContainer.Can ||
+            container == FluidContainer.Capsule ||
+            container == FluidContainer.Refractory;
     }
 
     @Override

@@ -49,7 +49,8 @@ public class AlvearyHatchery {
 
         @Override
         public boolean isValid(final ItemStack itemStack) {
-            return Binnie.Genetics.getBeeRoot().isMember(itemStack) && Binnie.Genetics.getBeeRoot().getType(itemStack) == EnumBeeType.LARVAE;
+            return Binnie.Genetics.getBeeRoot().isMember(itemStack) &&
+                Binnie.Genetics.getBeeRoot().getType(itemStack) == EnumBeeType.LARVAE;
         }
 
         @Override
@@ -65,15 +66,18 @@ public class AlvearyHatchery {
 
         public void onUpdate() {
             if (new Random().nextInt(2400) == 0) {
-                final TileEntity tile = this.getMachine().getTileEntity();
+                final TileEntity tile = getMachine().getTileEntity();
+
                 if (tile instanceof TileExtraBeeAlveary) {
                     final IBeeHousing house = ((TileExtraBeeAlveary) tile).getBeeHousing();
+
                     if (house != null) {
                         final ItemStack queenStack = house.getBeeInventory().getQueen();
                         final IBee queen = (queenStack == null) ? null : Binnie.Genetics.getBeeRoot().getMember(queenStack);
+
                         if (queen != null) {
-                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().getBee(this.getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
-                            new TransferRequest(larvae, this.getInventory()).transfer(true);
+                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack(Binnie.Genetics.getBeeRoot().getBee(getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
+                            new TransferRequest(larvae, getInventory()).transfer(true);
                         }
                     }
                 }

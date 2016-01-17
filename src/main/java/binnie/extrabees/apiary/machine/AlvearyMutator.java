@@ -94,16 +94,16 @@ public class AlvearyMutator {
 
         @Override
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            if (this.getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
+            if (getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
                 return 1.0f;
             }
-            final float mult = AlvearyMutator.getMutationMult(this.getUtil().getStack(AlvearyMutator.slotMutator));
+            final float mult = AlvearyMutator.getMutationMult(getUtil().getStack(AlvearyMutator.slotMutator));
             return Math.min(mult, 15.0f / currentModifier);
         }
 
         @Override
         public void onPostQueenDeath(final IBee queen) {
-            this.getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
+            getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
         }
     }
 }

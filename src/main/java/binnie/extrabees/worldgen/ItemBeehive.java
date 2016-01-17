@@ -20,9 +20,9 @@ public class ItemBeehive extends ItemBlock {
         return i;
     }
 
-    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
+    public void getSubItems(final Item item, final CreativeTabs creativeTab, final List itemList) {
         for (int i = 0; i < 4; ++i) {
-            itemList.add(new ItemStack((Item) this, 1, i));
+            itemList.add(new ItemStack(this, 1, i));
         }
     }
 

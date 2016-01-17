@@ -18,22 +18,28 @@ import java.util.List;
 public class ItemDictionary extends Item {
     IIcon iconMaster;
 
+    public ItemDictionary() {
+        setCreativeTab(Tabs.tabApiculture);
+        setUnlocalizedName("dictionary");
+        setMaxStackSize(1);
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister register) {
-        this.itemIcon = ExtraBees.proxy.getIcon(register, "apiaristDatabase");
-        this.iconMaster = ExtraBees.proxy.getIcon(register, "masterApiaristDatabase");
+        itemIcon = ExtraBees.proxy.getIcon(register, "apiaristDatabase");
+        iconMaster = ExtraBees.proxy.getIcon(register, "masterApiaristDatabase");
     }
 
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(final int par1) {
-        return (par1 == 0) ? this.itemIcon : this.iconMaster;
+        return (par1 == 0) ? itemIcon : iconMaster;
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        if (par1ItemStack.getItemDamage() > 0) {
-            par3List.add("Flora-in-a-box");
+    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List list, final boolean par4) {
+        super.addInformation(itemStack, player, list, par4);
+        if (itemStack.getItemDamage() > 0) {
+            list.add("Flora-in-a-box");
         }
     }
 
@@ -43,18 +49,14 @@ public class ItemDictionary extends Item {
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
-    public ItemDictionary() {
-        this.setCreativeTab(Tabs.tabApiculture);
-        this.setUnlocalizedName("dictionary");
-        this.setMaxStackSize(1);
-    }
-
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {
         if (itemstack.getItemDamage() == 0) {
             ExtraBees.proxy.openGui(ExtraBeeGUID.Database, player, (int) player.posX, (int) player.posY, (int) player.posZ);
-        } else {
+        }
+        else {
             ExtraBees.proxy.openGui(ExtraBeeGUID.DatabaseNEI, player, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
+
         return itemstack;
     }
 

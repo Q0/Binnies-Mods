@@ -72,170 +72,182 @@ public class AlvearyStimulator {
 
         public ComponentStimulatorModifier(final Machine machine) {
             super(machine);
-            this.powerUsage = 0.0f;
-            this.powered = false;
-            this.modifiers = new StimulatorCircuit[0];
+            powerUsage = 0.0f;
+            powered = false;
+            modifiers = new StimulatorCircuit[0];
         }
 
         public void onUpdate() {
             super.onUpdate();
-            this.modifiers = this.getCircuits();
-            this.powerUsage = 0.0f;
-            for (final StimulatorCircuit beeMod : this.modifiers) {
-                this.powerUsage += beeMod.getPowerUsage();
+            modifiers = getCircuits();
+            powerUsage = 0.0f;
+
+            for (final StimulatorCircuit beeMod : modifiers) {
+                powerUsage += beeMod.getPowerUsage();
             }
-            this.powered = this.getUtil().hasEnergyMJ(this.powerUsage);
+
+            powered = getUtil().hasEnergyMJ(powerUsage);
         }
 
         public ICircuitBoard getHiveFrame() {
-            if (!this.getUtil().isSlotEmpty(AlvearyStimulator.slotCircuit)) {
-                return ChipsetManager.circuitRegistry.getCircuitboard(this.getUtil().getStack(AlvearyStimulator.slotCircuit));
+            if (!getUtil().isSlotEmpty(AlvearyStimulator.slotCircuit)) {
+                return ChipsetManager.circuitRegistry.getCircuitboard(getUtil().getStack(AlvearyStimulator.slotCircuit));
             }
             return null;
         }
 
         public StimulatorCircuit[] getCircuits() {
-            final ICircuitBoard board = this.getHiveFrame();
+            final ICircuitBoard board = getHiveFrame();
+
             if (board == null) {
                 return new StimulatorCircuit[0];
             }
+
             final ICircuit[] circuits = board.getCircuits();
             final List<IBeeModifier> mod = new ArrayList<IBeeModifier>();
+
             for (final ICircuit circuit : circuits) {
                 if (circuit instanceof StimulatorCircuit) {
                     mod.add((IBeeModifier) circuit);
                 }
             }
+
             return mod.toArray(new StimulatorCircuit[0]);
         }
 
         @Override
         public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getTerritoryModifier(genome, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getTerritoryModifier(genome, mod);
-            }
+
             return mod;
         }
 
         @Override
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getMutationModifier(genome, mate, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getMutationModifier(genome, mate, mod);
-            }
+
             return mod;
         }
 
         @Override
         public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getLifespanModifier(genome, mate, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getLifespanModifier(genome, mate, mod);
-            }
+
             return mod;
         }
 
         @Override
         public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getProductionModifier(genome, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getProductionModifier(genome, mod);
-            }
+
             return mod;
         }
 
         @Override
         public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getFloweringModifier(genome, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getFloweringModifier(genome, mod);
-            }
+
             return mod;
         }
 
         @Override
         public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
             float mod = 1.0f;
-            if (!this.powered) {
-                return mod;
+
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    mod *= beeMod.getGeneticDecay(genome, mod);
+                }
             }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                mod *= beeMod.getGeneticDecay(genome, mod);
-            }
+
             return mod;
         }
 
         @Override
         public boolean isSealed() {
-            if (!this.powered) {
-                return false;
-            }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                if (beeMod.isSealed()) {
-                    return true;
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    if (beeMod.isSealed()) {
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
         @Override
         public boolean isSelfLighted() {
-            if (!this.powered) {
-                return false;
-            }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                if (beeMod.isSelfLighted()) {
-                    return true;
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    if (beeMod.isSelfLighted()) {
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
         @Override
         public boolean isSunlightSimulated() {
-            if (!this.powered) {
-                return false;
-            }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                if (beeMod.isSunlightSimulated()) {
-                    return true;
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    if (beeMod.isSunlightSimulated()) {
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
         @Override
         public boolean isHellish() {
-            if (!this.powered) {
-                return false;
-            }
-            for (final IBeeModifier beeMod : this.modifiers) {
-                if (beeMod.isHellish()) {
-                    return true;
+            if (powered) {
+                for (final IBeeModifier beeMod : modifiers) {
+                    if (beeMod.isHellish()) {
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
         @Override
         public void wearOutEquipment(final int amount) {
-            this.getUtil().useEnergyMJ(this.powerUsage);
+            getUtil().useEnergyMJ(powerUsage);
         }
     }
 
@@ -248,47 +260,47 @@ public class AlvearyStimulator {
         }
 
         public int getPowerUsage() {
-            return this.type.power;
+            return type.power;
         }
 
         public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.type.getTerritoryModifier(genome, currentModifier);
+            return type.getTerritoryModifier(genome, currentModifier);
         }
 
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return this.type.getMutationModifier(genome, mate, currentModifier);
+            return type.getMutationModifier(genome, mate, currentModifier);
         }
 
         public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return this.type.getLifespanModifier(genome, mate, currentModifier);
+            return type.getLifespanModifier(genome, mate, currentModifier);
         }
 
         public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.type.getProductionModifier(genome, currentModifier);
+            return type.getProductionModifier(genome, currentModifier);
         }
 
         public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.type.getFloweringModifier(genome, currentModifier);
+            return type.getFloweringModifier(genome, currentModifier);
         }
 
         public boolean isSealed() {
-            return this.type.isSealed();
+            return type.isSealed();
         }
 
         public boolean isSelfLighted() {
-            return this.type.isSelfLighted();
+            return type.isSelfLighted();
         }
 
         public boolean isSunlightSimulated() {
-            return this.type.isSunlightSimulated();
+            return type.isSunlightSimulated();
         }
 
         public boolean isHellish() {
-            return this.type.isHellish();
+            return type.isHellish();
         }
 
         public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-            return this.type.getGeneticDecay(genome, currentModifier);
+            return type.getGeneticDecay(genome, currentModifier);
         }
     }
 
@@ -307,8 +319,8 @@ public class AlvearyStimulator {
         public int power;
         BeeModifierLogic logic;
 
-        private CircuitType(final int recipe, final int power) {
-            this.logic = new BeeModifierLogic();
+        CircuitType(final int recipe, final int power) {
+            logic = new BeeModifierLogic();
             this.recipe = recipe;
             this.power = power;
         }
@@ -316,12 +328,13 @@ public class AlvearyStimulator {
         public void createCircuit(final ICircuitLayout layout) {
             final StimulatorCircuit circuit = new StimulatorCircuit(this, layout);
             for (final EnumBeeModifier modifier : EnumBeeModifier.values()) {
-                final float mod = this.logic.getModifier(modifier, 1.0f);
+                final float mod = logic.getModifier(modifier, 1.0f);
                 if (mod != 1.0f) {
                     if (mod > 1.0f) {
                         final int increase = (int) ((mod - 1.0f) * 100.0f);
                         circuit.addTooltipString("Increases " + modifier.getName() + " by " + increase + "%");
-                    } else {
+                    }
+                    else {
                         final int decrease = (int) ((1.0f - mod) * 100.0f);
                         circuit.addTooltipString("Decreases " + modifier.getName() + " by " + decrease + "%");
                     }
@@ -330,43 +343,43 @@ public class AlvearyStimulator {
         }
 
         public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.Territory, currentModifier);
+            return logic.getModifier(EnumBeeModifier.Territory, currentModifier);
         }
 
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
+            return logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
         }
 
         public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
+            return logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
         }
 
         public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.Production, currentModifier);
+            return logic.getModifier(EnumBeeModifier.Production, currentModifier);
         }
 
         public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
+            return logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
         }
 
         public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-            return this.logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
+            return logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
         }
 
         public boolean isSealed() {
-            return this.logic.getModifier(EnumBeeBooleanModifier.Sealed);
+            return logic.getModifier(EnumBeeBooleanModifier.Sealed);
         }
 
         public boolean isSelfLighted() {
-            return this.logic.getModifier(EnumBeeBooleanModifier.SelfLighted);
+            return logic.getModifier(EnumBeeBooleanModifier.SelfLighted);
         }
 
         public boolean isSunlightSimulated() {
-            return this.logic.getModifier(EnumBeeBooleanModifier.SunlightStimulated);
+            return logic.getModifier(EnumBeeBooleanModifier.SunlightStimulated);
         }
 
         public boolean isHellish() {
-            return this.logic.getModifier(EnumBeeBooleanModifier.Hellish);
+            return logic.getModifier(EnumBeeBooleanModifier.Hellish);
         }
 
         static {
@@ -380,6 +393,7 @@ public class AlvearyStimulator {
             CircuitType.Inhibitor.logic.setModifier(EnumBeeModifier.Territory, 0.4f, 0.1f);
             CircuitType.Inhibitor.logic.setModifier(EnumBeeModifier.Production, 0.9f, 0.5f);
             CircuitType.Territory.logic.setModifier(EnumBeeModifier.Territory, 1.5f, 5.0f);
+
             for (final CircuitType type : values()) {
                 type.logic.setModifier(EnumBeeModifier.GeneticDecay, 1.5f, 10.0f);
             }
