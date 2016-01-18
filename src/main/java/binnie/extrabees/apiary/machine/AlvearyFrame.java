@@ -5,7 +5,7 @@ import binnie.core.machines.Machine;
 import binnie.core.machines.inventory.ComponentInventorySlots;
 import binnie.core.machines.inventory.SlotValidator;
 import binnie.craftgui.minecraft.IMachineInformation;
-import binnie.extrabees.apiary.ComponentBeeModifier;
+import binnie.extrabees.apiary.modifiers.ComponentBeeModifier;
 import binnie.extrabees.apiary.ComponentExtraBeeGUI;
 import binnie.extrabees.apiary.TileExtraBeeAlveary;
 import binnie.extrabees.core.ExtraBeeGUID;
@@ -16,10 +16,6 @@ import net.minecraft.world.World;
 
 public class AlvearyFrame {
     public static int slotFrame;
-
-    static {
-        AlvearyFrame.slotFrame = 0;
-    }
 
     public static class PackageAlvearyFrame extends AlvearyMachine.AlvearyPackage implements IMachineInformation {
         public PackageAlvearyFrame() {

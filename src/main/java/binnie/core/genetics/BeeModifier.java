@@ -5,10 +5,6 @@ import binnie.core.genetics.BeeModifierLogic.FloatModifier;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
 
-/**
- * @author Alexander Kornilov (KorDum)
- */
-
 public class BeeModifier implements IBeeModifier {
     protected BeeModifierLogic logic;
 

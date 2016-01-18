@@ -1,4 +1,4 @@
-package binnie.extrabees.apiary;
+package binnie.extrabees.apiary.items;
 
 import binnie.core.genetics.BeeModifier;
 import binnie.core.genetics.BeeModifierLogic;

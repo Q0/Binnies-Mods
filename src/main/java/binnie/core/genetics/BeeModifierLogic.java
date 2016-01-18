@@ -34,7 +34,7 @@ public class BeeModifierLogic {
             return 1.0f;
         }
         
-        final float mult = modifiers.get(modifier)[0];
+        final float multiplier = modifiers.get(modifier)[0];
         final float max = modifiers.get(modifier)[1];
         
         if (max >= 1.0f) {
@@ -42,14 +42,14 @@ public class BeeModifierLogic {
                 return 1.0f;
             }
             
-            return Math.min(max / currentModifier, mult);
+            return Math.min(max / currentModifier, multiplier);
         }
 
         if (max >= currentModifier) {
             return 1.0f;
         }
         
-        return Math.max(max / currentModifier, mult);
+        return Math.max(max / currentModifier, multiplier);
     }
 
     public boolean getModifier(final BooleanModifier modifier) {
@@ -60,9 +60,9 @@ public class BeeModifierLogic {
         booleanModifiers.add(modifier);
     }
 
-    public void addModifier(final FloatModifier modifier, final float mult, final float max) {
+    public void addModifier(final FloatModifier modifier, final float multiplier, final float max) {
         modifiers.put(modifier, new Float[]{
-            mult,
+            multiplier,
             max
         });
     }

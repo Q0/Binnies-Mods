@@ -9,7 +9,6 @@ import forestry.api.farming.FarmDirection;
 import forestry.api.farming.IFarmHousing;
 import forestry.api.farming.IFarmLogic;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class CircuitGarden extends BinnieCircuit {
@@ -22,8 +21,6 @@ public class CircuitGarden extends BinnieCircuit {
 
     public CircuitGarden(final EnumMoisture moisture, final EnumAcidity ph, final boolean manual, final boolean fertilised, final ItemStack recipe, final ItemStack icon) {
         super("garden." + moisture.getID() + ((ph != null) ? ("." + ph.getID()) : "") + (manual ? ".manual" : "") + (fertilised ? ".fert" : ""), 4, manual ? ChipsetManager.circuitRegistry.getLayout("forestry.farms.manual") : ChipsetManager.circuitRegistry.getLayout("forestry.farms.managed"), recipe);
-        this.isManual = false;
-        this.isFertilised = false;
         this.isManual = manual;
         this.isFertilised = fertilised;
         this.moisture = moisture;
@@ -61,12 +58,12 @@ public class CircuitGarden extends BinnieCircuit {
     }
 
     @Override
-    public boolean isCircuitable(final TileEntity tile) {
+    public boolean isCircuitable(final Object tile) {
         return tile instanceof IFarmHousing;
     }
 
     @Override
-    public void onInsertion(final int slot, final TileEntity tile) {
+    public void onInsertion(final int slot, final Object tile) {
         if (!this.isCircuitable(tile)) {
             return;
         }
@@ -76,12 +73,12 @@ public class CircuitGarden extends BinnieCircuit {
     }
 
     @Override
-    public void onLoad(final int slot, final TileEntity tile) {
+    public void onLoad(int slot, Object tile) {
         this.onInsertion(slot, tile);
     }
 
     @Override
-    public void onRemoval(final int slot, final TileEntity tile) {
+    public void onRemoval(int slot, Object tile) {
         if (!this.isCircuitable(tile)) {
             return;
         }
@@ -89,6 +86,6 @@ public class CircuitGarden extends BinnieCircuit {
     }
 
     @Override
-    public void onTick(final int slot, final TileEntity tile) {
+    public void onTick(int slot, Object tile) {
     }
 }

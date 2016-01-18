@@ -19,9 +19,10 @@ public class BinnieCircuit implements ICircuit {
         this.tooltips = new ArrayList<String>();
         this.uid = "binnie.circuit." + uid;
         this.limit = limit;
-        ChipsetManager.circuitRegistry.registerCircuit((ICircuit) this);
+        ChipsetManager.circuitRegistry.registerCircuit(this);
+
         if (itemStack != null) {
-            ChipsetManager.solderManager.addRecipe(layout, itemStack, (ICircuit) this);
+            ChipsetManager.solderManager.addRecipe(layout, itemStack, this);
         }
     }
 
@@ -76,18 +77,6 @@ public class BinnieCircuit implements ICircuit {
 
     public boolean isCircuitable(final TileEntity tile) {
         return false;
-    }
-
-    public void onInsertion(final int slot, final TileEntity tile) {
-    }
-
-    public void onLoad(final int slot, final TileEntity tile) {
-    }
-
-    public void onRemoval(final int slot, final TileEntity tile) {
-    }
-
-    public void onTick(final int slot, final TileEntity tile) {
     }
 
     public void addTooltip(final List<String> list) {
