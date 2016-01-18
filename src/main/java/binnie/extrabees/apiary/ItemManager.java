@@ -1,5 +1,8 @@
 package binnie.extrabees.apiary;
 
+import binnie.core.genetics.BeeModifier;
+import binnie.core.genetics.BeeModifierLogic.FloatModifier;
+
 public class ItemManager {
     public static ItemHiveFrame cocoaFrame;
     public static ItemHiveFrame soulFrame;
@@ -17,32 +20,37 @@ public class ItemManager {
         /**
          * Frames
          */
-        cocoaFrame = new ItemHiveFrame("hiveFrame.cocoa", 240, 1.0f);
-        HiveFrameBeeModifier modifier = (HiveFrameBeeModifier) cocoaFrame.getBeeModifier();
-        modifier.setProductionModifier(1.5f, 5.0f);
-        modifier.setLifespanModifier(0.75f, 0.25f);
+        cocoaFrame = new ItemHiveFrame("hiveFrame.cocoa", 240);
+        BeeModifier modifier = (BeeModifier) cocoaFrame.getBeeModifier();
+        modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 1.0f);
+        modifier.addModifier(FloatModifier.Production, 1.5f, 5.0f);
+        modifier.addModifier(FloatModifier.Lifespan, 0.75f, 0.25f);
 
-        cageFrame = new ItemHiveFrame("hiveFrame.cage", 240, 1.0f);
-        modifier = (HiveFrameBeeModifier) cageFrame.getBeeModifier();
-        modifier.setProductionModifier(0.75f, 0.5f);
-        modifier.setLifespanModifier(0.75f, 0.5f);
-        modifier.setTerritoryModifier(0.5f, 0.1f);
+        cageFrame = new ItemHiveFrame("hiveFrame.cage", 240);
+        modifier = (BeeModifier) cageFrame.getBeeModifier();
+        modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 1.0f);
+        modifier.addModifier(FloatModifier.Production, 0.75f, 0.5f);
+        modifier.addModifier(FloatModifier.Lifespan, 0.75f, 0.5f);
+        modifier.addModifier(FloatModifier.Territory, 0.5f, 0.1f);
 
-        soulFrame = new ItemHiveFrame("hiveFrame.soul", 80, 1.0f);
-        modifier = (HiveFrameBeeModifier) soulFrame.getBeeModifier();
-        modifier.setProductionModifier(0.75f, 0.5f);
-        modifier.setLifespanModifier(0.75f, 0.5f);
-        modifier.setTerritoryModifier(0.5f, 0.1f);
-        modifier.setMutationModifier(1.5f, 5.0f);
+        soulFrame = new ItemHiveFrame("hiveFrame.soul", 80);
+        modifier = (BeeModifier) soulFrame.getBeeModifier();
+        modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 1.0f);
+        modifier.addModifier(FloatModifier.Production, 0.75f, 0.5f);
+        modifier.addModifier(FloatModifier.Lifespan, 0.75f, 0.5f);
+        modifier.addModifier(FloatModifier.Territory, 0.5f, 0.1f);
+        modifier.addModifier(FloatModifier.Mutation, 1.5f, 5.0f);
 
-        clayFrame = new ItemHiveFrame("hiveFrame.clay", 80, 1.0f);
-        modifier = (HiveFrameBeeModifier) clayFrame.getBeeModifier();
-        modifier.setProductionModifier(0.75f, 0.2f);
-        modifier.setLifespanModifier(1.5f, 5.0f);
-        modifier.setMutationModifier(0.5f, 0.2f);
+        clayFrame = new ItemHiveFrame("hiveFrame.clay", 80);
+        modifier = (BeeModifier) clayFrame.getBeeModifier();
+        modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 1.0f);
+        modifier.addModifier(FloatModifier.Production, 0.75f, 0.2f);
+        modifier.addModifier(FloatModifier.Lifespan, 1.5f, 5.0f);
+        modifier.addModifier(FloatModifier.Mutation, 0.5f, 0.2f);
 
-        debugFrame = new ItemHiveFrame("hiveFrame.debug", 1000, 1.0f);
-        modifier = (HiveFrameBeeModifier) soulFrame.getBeeModifier();
-        modifier.setLifespanModifier(1.0E-4f, 1.0E-4f);
+        debugFrame = new ItemHiveFrame("hiveFrame.debug", 1000);
+        modifier = (BeeModifier) soulFrame.getBeeModifier();
+        modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 1.0f);
+        modifier.addModifier(FloatModifier.Lifespan, 1.0E-4f, 1.0E-4f);
     }
 }

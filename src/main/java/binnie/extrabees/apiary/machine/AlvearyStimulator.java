@@ -3,8 +3,8 @@ package binnie.extrabees.apiary.machine;
 import binnie.core.Mods;
 import binnie.core.circuits.BinnieCircuit;
 import binnie.core.genetics.BeeModifierLogic;
-import binnie.core.genetics.EnumBeeBooleanModifier;
-import binnie.core.genetics.EnumBeeModifier;
+import binnie.core.genetics.BeeModifierLogic.BooleanModifier;
+import binnie.core.genetics.BeeModifierLogic.FloatModifier;
 import binnie.core.machines.Machine;
 import binnie.core.machines.inventory.ComponentInventorySlots;
 import binnie.core.machines.inventory.SlotValidator;
@@ -327,7 +327,7 @@ public class AlvearyStimulator {
 
         public void createCircuit(final ICircuitLayout layout) {
             final StimulatorCircuit circuit = new StimulatorCircuit(this, layout);
-            for (final EnumBeeModifier modifier : EnumBeeModifier.values()) {
+            for (final FloatModifier modifier : FloatModifier.values()) {
                 final float mod = logic.getModifier(modifier, 1.0f);
                 if (mod != 1.0f) {
                     if (mod > 1.0f) {
@@ -343,59 +343,59 @@ public class AlvearyStimulator {
         }
 
         public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.Territory, currentModifier);
+            return logic.getModifier(FloatModifier.Territory, currentModifier);
         }
 
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.Mutation, currentModifier);
+            return logic.getModifier(FloatModifier.Mutation, currentModifier);
         }
 
         public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
+            return logic.getModifier(FloatModifier.Lifespan, currentModifier);
         }
 
         public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.Production, currentModifier);
+            return logic.getModifier(FloatModifier.Production, currentModifier);
         }
 
         public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.Flowering, currentModifier);
+            return logic.getModifier(FloatModifier.Flowering, currentModifier);
         }
 
         public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(EnumBeeModifier.GeneticDecay, currentModifier);
+            return logic.getModifier(FloatModifier.GeneticDecay, currentModifier);
         }
 
         public boolean isSealed() {
-            return logic.getModifier(EnumBeeBooleanModifier.Sealed);
+            return logic.getModifier(BooleanModifier.Sealed);
         }
 
         public boolean isSelfLighted() {
-            return logic.getModifier(EnumBeeBooleanModifier.SelfLighted);
+            return logic.getModifier(BooleanModifier.SelfLighted);
         }
 
         public boolean isSunlightSimulated() {
-            return logic.getModifier(EnumBeeBooleanModifier.SunlightStimulated);
+            return logic.getModifier(BooleanModifier.SunlightStimulated);
         }
 
         public boolean isHellish() {
-            return logic.getModifier(EnumBeeBooleanModifier.Hellish);
+            return logic.getModifier(BooleanModifier.Hellish);
         }
 
         static {
-            CircuitType.LowVoltage.logic.setModifier(EnumBeeModifier.Production, 1.5f, 5.0f);
-            CircuitType.HighVoltage.logic.setModifier(EnumBeeModifier.Production, 2.5f, 10.0f);
-            CircuitType.Plant.logic.setModifier(EnumBeeModifier.Flowering, 1.5f, 5.0f);
-            CircuitType.Death.logic.setModifier(EnumBeeModifier.Lifespan, 0.8f, 0.2f);
-            CircuitType.Life.logic.setModifier(EnumBeeModifier.Lifespan, 1.5f, 5.0f);
-            CircuitType.Nether.logic.setModifier(EnumBeeBooleanModifier.Hellish);
-            CircuitType.Mutation.logic.setModifier(EnumBeeModifier.Mutation, 1.5f, 5.0f);
-            CircuitType.Inhibitor.logic.setModifier(EnumBeeModifier.Territory, 0.4f, 0.1f);
-            CircuitType.Inhibitor.logic.setModifier(EnumBeeModifier.Production, 0.9f, 0.5f);
-            CircuitType.Territory.logic.setModifier(EnumBeeModifier.Territory, 1.5f, 5.0f);
+            CircuitType.LowVoltage.logic.addModifier(FloatModifier.Production, 1.5f, 5.0f);
+            CircuitType.HighVoltage.logic.addModifier(FloatModifier.Production, 2.5f, 10.0f);
+            CircuitType.Plant.logic.addModifier(FloatModifier.Flowering, 1.5f, 5.0f);
+            CircuitType.Death.logic.addModifier(FloatModifier.Lifespan, 0.8f, 0.2f);
+            CircuitType.Life.logic.addModifier(FloatModifier.Lifespan, 1.5f, 5.0f);
+            CircuitType.Nether.logic.addModifier(BooleanModifier.Hellish);
+            CircuitType.Mutation.logic.addModifier(FloatModifier.Mutation, 1.5f, 5.0f);
+            CircuitType.Inhibitor.logic.addModifier(FloatModifier.Territory, 0.4f, 0.1f);
+            CircuitType.Inhibitor.logic.addModifier(FloatModifier.Production, 0.9f, 0.5f);
+            CircuitType.Territory.logic.addModifier(FloatModifier.Territory, 1.5f, 5.0f);
 
             for (final CircuitType type : values()) {
-                type.logic.setModifier(EnumBeeModifier.GeneticDecay, 1.5f, 10.0f);
+                type.logic.addModifier(FloatModifier.GeneticDecay, 1.5f, 10.0f);
             }
         }
     }
