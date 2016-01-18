@@ -3,12 +3,10 @@ package binnie.extrabees.apiary;
 import binnie.core.BinnieCore;
 import binnie.core.IInitializable;
 import binnie.core.Mods;
-import binnie.core.circuits.BinnieCircuitLayout;
 import binnie.core.machines.MachineGroup;
 import binnie.extrabees.ExtraBees;
 import binnie.extrabees.apiary.machine.AlvearyMachine;
 import binnie.extrabees.apiary.machine.AlvearyMutator;
-import binnie.extrabees.apiary.machine.AlvearyStimulator;
 import forestry.api.core.Tabs;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -17,7 +15,6 @@ import net.minecraft.item.ItemStack;
 
 public class ModuleApiary implements IInitializable {
     public static Block blockComponent;
-    BinnieCircuitLayout stimulatorLayout;
 
     //---------------------------------------------------------------------------
     //
@@ -45,16 +42,12 @@ public class ModuleApiary implements IInitializable {
 
     @Override
     public void init() {
-        stimulatorLayout = new BinnieCircuitLayout(ExtraBees.instance, "Stimulator");
+        
     }
 
     @Override
     public void postInit() {
         ItemManager.registerItems();
         RecipeManager.registerRecipes();
-
-        for (final AlvearyStimulator.CircuitType type : AlvearyStimulator.CircuitType.values()) {
-            type.createCircuit(stimulatorLayout);
-        }
     }
 }

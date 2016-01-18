@@ -2,8 +2,8 @@ package binnie.extrabees.apiary.machine;
 
 import binnie.core.Mods;
 import binnie.core.circuits.BinnieCircuit;
+import binnie.core.genetics.BeeModifier;
 import binnie.core.genetics.BeeModifierLogic;
-import binnie.core.genetics.BeeModifierLogic.BooleanModifier;
 import binnie.core.genetics.BeeModifierLogic.FloatModifier;
 import binnie.core.machines.Machine;
 import binnie.core.machines.inventory.ComponentInventorySlots;
@@ -252,9 +252,9 @@ public class AlvearyStimulator {
     }
 
     public static class StimulatorCircuit extends BinnieCircuit implements IBeeModifier {
-        CircuitType type;
+        Circuit type;
 
-        public StimulatorCircuit(final CircuitType type, final ICircuitLayout layout) {
+        public StimulatorCircuit(final Circuit type, final ICircuitLayout layout) {
             super("stimulator." + type.toString().toLowerCase(), 4, layout, Mods.Forestry.item("thermionicTubes"), type.recipe);
             this.type = type;
         }
@@ -304,31 +304,23 @@ public class AlvearyStimulator {
         }
     }
 
-    public enum CircuitType implements IBeeModifier {
-        LowVoltage(3, 10),
-        HighVoltage(5, 20),
-        Plant(10, 10),
-        Death(6, 10),
-        Life(11, 10),
-        Nether(7, 15),
-        Mutation(4, 15),
-        Inhibitor(1, 10),
-        Territory(2, 10);
-
+    public static class Circuit extends BeeModifier {
         public int recipe;
         public int power;
-        BeeModifierLogic logic;
 
-        CircuitType(final int recipe, final int power) {
-            logic = new BeeModifierLogic();
+        public Circuit(final int recipe, final int power, final ICircuitLayout layout) {
+            super(new BeeModifierLogic());
             this.recipe = recipe;
             this.power = power;
+
+            createCircuit(layout);
         }
 
-        public void createCircuit(final ICircuitLayout layout) {
+        private void createCircuit(final ICircuitLayout layout) {
             final StimulatorCircuit circuit = new StimulatorCircuit(this, layout);
             for (final FloatModifier modifier : FloatModifier.values()) {
                 final float mod = logic.getModifier(modifier, 1.0f);
+
                 if (mod != 1.0f) {
                     if (mod > 1.0f) {
                         final int increase = (int) ((mod - 1.0f) * 100.0f);
@@ -339,63 +331,6 @@ public class AlvearyStimulator {
                         circuit.addTooltipString("Decreases " + modifier.getName() + " by " + decrease + "%");
                     }
                 }
-            }
-        }
-
-        public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(FloatModifier.Territory, currentModifier);
-        }
-
-        public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return logic.getModifier(FloatModifier.Mutation, currentModifier);
-        }
-
-        public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            return logic.getModifier(FloatModifier.Lifespan, currentModifier);
-        }
-
-        public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(FloatModifier.Production, currentModifier);
-        }
-
-        public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(FloatModifier.Flowering, currentModifier);
-        }
-
-        public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-            return logic.getModifier(FloatModifier.GeneticDecay, currentModifier);
-        }
-
-        public boolean isSealed() {
-            return logic.getModifier(BooleanModifier.Sealed);
-        }
-
-        public boolean isSelfLighted() {
-            return logic.getModifier(BooleanModifier.SelfLighted);
-        }
-
-        public boolean isSunlightSimulated() {
-            return logic.getModifier(BooleanModifier.SunlightStimulated);
-        }
-
-        public boolean isHellish() {
-            return logic.getModifier(BooleanModifier.Hellish);
-        }
-
-        static {
-            CircuitType.LowVoltage.logic.addModifier(FloatModifier.Production, 1.5f, 5.0f);
-            CircuitType.HighVoltage.logic.addModifier(FloatModifier.Production, 2.5f, 10.0f);
-            CircuitType.Plant.logic.addModifier(FloatModifier.Flowering, 1.5f, 5.0f);
-            CircuitType.Death.logic.addModifier(FloatModifier.Lifespan, 0.8f, 0.2f);
-            CircuitType.Life.logic.addModifier(FloatModifier.Lifespan, 1.5f, 5.0f);
-            CircuitType.Nether.logic.addModifier(BooleanModifier.Hellish);
-            CircuitType.Mutation.logic.addModifier(FloatModifier.Mutation, 1.5f, 5.0f);
-            CircuitType.Inhibitor.logic.addModifier(FloatModifier.Territory, 0.4f, 0.1f);
-            CircuitType.Inhibitor.logic.addModifier(FloatModifier.Production, 0.9f, 0.5f);
-            CircuitType.Territory.logic.addModifier(FloatModifier.Territory, 1.5f, 5.0f);
-
-            for (final CircuitType type : values()) {
-                type.logic.addModifier(FloatModifier.GeneticDecay, 1.5f, 10.0f);
             }
         }
     }

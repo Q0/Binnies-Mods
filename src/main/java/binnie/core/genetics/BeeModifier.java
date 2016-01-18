@@ -10,7 +10,7 @@ import forestry.api.apiculture.IBeeModifier;
  */
 
 public class BeeModifier implements IBeeModifier {
-    private BeeModifierLogic logic;
+    protected BeeModifierLogic logic;
 
     //---------------------------------------------------------------------------
     //
