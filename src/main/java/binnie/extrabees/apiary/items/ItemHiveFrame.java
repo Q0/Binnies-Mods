@@ -1,13 +1,12 @@
-package binnie.extrabees.apiary;
+package binnie.extrabees.apiary.items;
 
+import binnie.core.genetics.BeeModifier;
+import binnie.core.genetics.BeeModifierLogic;
 import binnie.extrabees.ExtraBees;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeHousing;
-import forestry.api.apiculture.IBeeModifier;
-import forestry.api.apiculture.IHiveFrame;
+import forestry.api.apiculture.*;
 import forestry.api.core.Tabs;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -15,6 +14,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemHiveFrame extends Item implements IHiveFrame {
     private final IBeeModifier beeModifier;
+    private final BeeModifierLogic logic;
     private final String name;
 
     //---------------------------------------------------------------------------
@@ -23,13 +23,15 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
     //
     //---------------------------------------------------------------------------
 
-    public ItemHiveFrame(String name, int maxDamage, float geneticDecay) {
+    public ItemHiveFrame(String name, int maxDamage) {
         this.name = name;
         setMaxStackSize(1);
         setMaxDamage(maxDamage);
         setCreativeTab(Tabs.tabApiculture);
-        beeModifier = new HiveFrameBeeModifier(geneticDecay);
         setUnlocalizedName(name);
+
+        logic = new BeeModifierLogic();
+        beeModifier = new BeeModifier(logic);
 
         GameRegistry.registerItem(this, name);
     }

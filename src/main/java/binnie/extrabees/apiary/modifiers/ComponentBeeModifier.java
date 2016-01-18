@@ -1,4 +1,4 @@
-package binnie.extrabees.apiary;
+package binnie.extrabees.apiary.modifiers;
 
 import binnie.core.machines.Machine;
 import binnie.core.machines.MachineComponent;

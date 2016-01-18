@@ -1,5 +1,6 @@
-package binnie.extrabees.apiary;
+package binnie.extrabees.apiary.items;
 
+import binnie.extrabees.apiary.IndustrialFrame;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;

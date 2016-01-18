@@ -1,47 +1,95 @@
 package binnie.core.genetics;
 
+import binnie.Binnie;
+import binnie.core.BinnieCore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BeeModifierLogic {
-    private Map<EnumBeeModifier, Float[]> modifiers;
-    private List<EnumBeeBooleanModifier> booleanModifiers;
+    private Map<FloatModifier, Float[]> modifiers;
+    private List<BooleanModifier> booleanModifiers;
+
+    //---------------------------------------------------------------------------
+    //
+    // CONSTRUCTOR
+    //
+    //---------------------------------------------------------------------------
 
     public BeeModifierLogic() {
-        this.modifiers = new HashMap<EnumBeeModifier, Float[]>();
-        this.booleanModifiers = new ArrayList<EnumBeeBooleanModifier>();
+        modifiers = new HashMap<FloatModifier, Float[]>();
+        booleanModifiers = new ArrayList<BooleanModifier>();
     }
 
-    public float getModifier(final EnumBeeModifier modifier, final float currentModifier) {
-        if (!this.modifiers.containsKey(modifier)) {
+    //---------------------------------------------------------------------------
+    //
+    // PUBLIC METHODS
+    //
+    //---------------------------------------------------------------------------
+
+    public float getModifier(final FloatModifier modifier, final float currentModifier) {
+        if (!modifiers.containsKey(modifier)) {
             return 1.0f;
         }
-        final float mult = this.modifiers.get(modifier)[0];
-        final float max = this.modifiers.get(modifier)[1];
+        
+        final float multiplier = modifiers.get(modifier)[0];
+        final float max = modifiers.get(modifier)[1];
+        
         if (max >= 1.0f) {
             if (max <= currentModifier) {
                 return 1.0f;
             }
-            return Math.min(max / currentModifier, mult);
-        } else {
-            if (max >= currentModifier) {
-                return 1.0f;
-            }
-            return Math.max(max / currentModifier, mult);
+            
+            return Math.min(max / currentModifier, multiplier);
         }
+
+        if (max >= currentModifier) {
+            return 1.0f;
+        }
+        
+        return Math.max(max / currentModifier, multiplier);
     }
 
-    public boolean getModifier(final EnumBeeBooleanModifier modifier) {
-        return this.booleanModifiers.contains(modifier);
+    public boolean getModifier(final BooleanModifier modifier) {
+        return booleanModifiers.contains(modifier);
     }
 
-    public void setModifier(final EnumBeeBooleanModifier modifier) {
-        this.booleanModifiers.add(modifier);
+    public void addModifier(final BooleanModifier modifier) {
+        booleanModifiers.add(modifier);
     }
 
-    public void setModifier(final EnumBeeModifier modifier, final float mult, final float max) {
-        this.modifiers.put(modifier, new Float[]{mult, max});
+    public void addModifier(final FloatModifier modifier, final float multiplier, final float max) {
+        modifiers.put(modifier, new Float[]{
+            multiplier,
+            max
+        });
+    }
+
+    //---------------------------------------------------------------------------
+    //
+    // ENUMS
+    //
+    //---------------------------------------------------------------------------
+
+    public enum BooleanModifier {
+        Sealed,
+        SelfLighted,
+        SunlightStimulated,
+        Hellish
+    }
+
+    public enum FloatModifier {
+        Territory,
+        Mutation,
+        Lifespan,
+        Production,
+        Flowering,
+        GeneticDecay;
+
+        public String getName() {
+            return Binnie.Language.localise(BinnieCore.instance, "beemodifier." + name().toLowerCase());
+        }
     }
 }
