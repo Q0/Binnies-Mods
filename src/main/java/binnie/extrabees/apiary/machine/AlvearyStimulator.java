@@ -5,7 +5,6 @@ import binnie.core.machines.inventory.ComponentInventorySlots;
 import binnie.core.machines.inventory.SlotValidator;
 import binnie.core.machines.power.ComponentPowerReceptor;
 import binnie.craftgui.minecraft.IMachineInformation;
-import binnie.extrabees.apiary.ComponentExtraBeeGUI;
 import binnie.extrabees.apiary.modifiers.ComponentStimulatorModifier;
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;

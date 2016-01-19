@@ -156,10 +156,13 @@ public enum ExtraBeeItems implements IItemMisc {
     @Override
     public boolean isActive() {
         if (metalString != null) {
-            return !OreDictionary.getOres("ingot" + metalString).isEmpty() || !OreDictionary.getOres("dust" + metalString).isEmpty() || this == ExtraBeeItems.CoalDust;
+            return !OreDictionary.getOres("ingot" + metalString).isEmpty() ||
+                !OreDictionary.getOres("dust" + metalString).isEmpty() ||
+                this == ExtraBeeItems.CoalDust;
         }
 
-        return gemString == null || !OreDictionary.getOres("gem" + gemString).isEmpty();
+        return gemString == null ||
+            !OreDictionary.getOres("gem" + gemString).isEmpty();
     }
 
     @Override

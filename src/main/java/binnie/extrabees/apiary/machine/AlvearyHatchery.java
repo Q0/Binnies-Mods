@@ -8,7 +8,6 @@ import binnie.core.machines.inventory.SlotValidator;
 import binnie.core.machines.transfer.TransferRequest;
 import binnie.craftgui.minecraft.IMachineInformation;
 import binnie.extrabees.apiary.modifiers.ComponentBeeModifier;
-import binnie.extrabees.apiary.ComponentExtraBeeGUI;
 import binnie.extrabees.apiary.TileExtraBeeAlveary;
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;

@@ -28,8 +28,8 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
-    ARID("aridus", 12511316),
-    BARREN("infelix", 14733923),
+    ARID("aridus", 0xbee854),
+    BARREN("infelix", 0xe0d263),
     DESOLATE("desolo", 13744272),
     GNAWING("apica", 15234224),
     ROTTEN("caries", 12574902),
@@ -177,7 +177,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     private IIcon[][] icons;
     boolean nocturnal;
 
-    private ExtraBeesSpecies(final String binomial, final int colour) {
+    ExtraBeesSpecies(final String binomial, final int colour) {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -201,7 +201,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.primaryColor = colour;
     }
 
-    private ExtraBeesSpecies() {
+    ExtraBeesSpecies() {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -339,7 +339,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     public IAllele[] getTemplate() {
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
         return this.template;
     }
 
@@ -356,7 +356,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.setHumidity(((IAlleleSpecies) template[0]).getHumidity());
         this.setTemperature(((IAlleleSpecies) template[0]).getTemperature());
         this.setSecondaryColor(((IAlleleSpecies) template[0]).getIconColour(1));
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
     }
 
     public void recessive() {
@@ -802,7 +802,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
                 AlleleManager.alleleRegistry.blacklistAllele(species2.getUID());
             }
             for (final EnumBeeChromosome chromo : EnumBeeChromosome.values()) {
-                if (chromo != EnumBeeChromosome.HUMIDITY) {
+                if (chromo != EnumBeeChromosome.HUMIDITY_TOLERANCE) {
                     final IAllele allele = species2.template[chromo.ordinal()];
                     if (allele == null || !chromo.getAlleleClass().isInstance(allele)) {
                         throw new RuntimeException(species2.getName() + " has an invalid " + chromo.toString() + " chromosome!");

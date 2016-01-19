@@ -11,10 +11,6 @@ import forestry.api.circuits.ICircuitBoard;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Alexander Kornilov (KorDum)
- */
-
 public class ComponentStimulatorModifier extends ComponentBeeModifier {
     private StimulatorCircuit[] circuits;
     private float powerUsage;
