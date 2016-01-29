@@ -23,11 +23,11 @@ version = "2.0-pre14-Build_1-UNOFFICIAL"
 group = "binnie.Binnie"
 archivesBaseName = "Binnie-mods"
 
-sourceSets {
+/*sourceSets {
     main {
         output.resourcesDir = output.classesDir
     }
-}
+}*/
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
