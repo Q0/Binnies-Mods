@@ -34,11 +34,11 @@ public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
         return null;
     }
 
-    public ItemStack getDrone() {
-        return null;
+    public void setQueen(final ItemStack itemstack) {
     }
 
-    public void setQueen(final ItemStack itemstack) {
+    public ItemStack getDrone() {
+        return null;
     }
 
     public void setDrone(final ItemStack itemstack) {

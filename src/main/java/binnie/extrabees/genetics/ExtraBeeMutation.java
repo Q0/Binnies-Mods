@@ -15,11 +15,40 @@ import java.util.List;
 
 public class ExtraBeeMutation implements IBeeMutation {
     public static List<IBeeMutation> mutations;
+
+    static {
+        ExtraBeeMutation.mutations = new ArrayList<IBeeMutation>();
+    }
+
     MutationRequirement req;
     IAlleleBeeSpecies species0;
     IAlleleBeeSpecies species1;
     IAllele[] template;
     int chance;
+
+    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final ExtraBeesSpecies mutation, final int chance) {
+        this(allele0, allele1, mutation.getTemplate(), chance, null);
+    }
+
+    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final ExtraBeesSpecies mutation, final int chance, final MutationRequirement req) {
+        this(allele0, allele1, mutation.getTemplate(), chance, req);
+    }
+
+    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final IAllele[] mutation, final int chance) {
+        this(allele0, allele1, mutation, chance, null);
+    }
+
+    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final IAllele[] mutation, final int chance, final MutationRequirement req) {
+        this.chance = chance;
+        this.req = req;
+        species0 = allele0;
+        species1 = allele1;
+        template = mutation;
+
+        if (species0 != null && species1 != null && template != null) {
+            ExtraBeeMutation.mutations.add(this);
+        }
+    }
 
     public static void doInit() {
         new ExtraBeeMutation(ForestryAllele.BeeSpecies.Meadows.getAllele(), ForestryAllele.BeeSpecies.Frugal.getAllele(), ExtraBeesSpecies.ARID, 10);
@@ -180,30 +209,6 @@ public class ExtraBeeMutation implements IBeeMutation {
         }
     }
 
-    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final ExtraBeesSpecies mutation, final int chance) {
-        this(allele0, allele1, mutation.getTemplate(), chance, null);
-    }
-
-    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final ExtraBeesSpecies mutation, final int chance, final MutationRequirement req) {
-        this(allele0, allele1, mutation.getTemplate(), chance, req);
-    }
-
-    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final IAllele[] mutation, final int chance) {
-        this(allele0, allele1, mutation, chance, null);
-    }
-
-    public ExtraBeeMutation(final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final IAllele[] mutation, final int chance, final MutationRequirement req) {
-        this.chance = chance;
-        this.req = req;
-        species0 = allele0;
-        species1 = allele1;
-        template = mutation;
-
-        if (species0 != null && species1 != null && template != null) {
-            ExtraBeeMutation.mutations.add(this);
-        }
-    }
-
     public IAlleleSpecies getAllele0() {
         return species0;
     }
@@ -278,10 +283,6 @@ public class ExtraBeeMutation implements IBeeMutation {
 
     public IBeeRoot getRoot() {
         return Binnie.Genetics.getBeeRoot();
-    }
-
-    static {
-        ExtraBeeMutation.mutations = new ArrayList<IBeeMutation>();
     }
 
     abstract static class MutationRequirement {

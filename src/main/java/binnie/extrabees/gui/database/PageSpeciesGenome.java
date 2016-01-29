@@ -53,41 +53,6 @@ public class PageSpeciesGenome extends PageSpecies {
         this.pageSpeciesGenome_EffectText = new ControlText(this, new IArea(x, 155.0f, 72.0f, 30.0f), "", TextJustification.TopLeft);
     }
 
-    @Override
-    public void onValueChanged(final IAlleleSpecies species) {
-        final IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
-        if (template != null) {
-            final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
-            final IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
-            this.pageSpeciesGenome_SpeedText.setValue(rateSpeed(genome.getSpeed()));
-            this.pageSpeciesGenome_LifespanText.setValue(rateLifespan(genome.getLifespan()));
-            this.pageSpeciesGenome_FertilityText.setValue(genome.getFertility() + " children");
-            this.pageSpeciesGenome_FloweringText.setValue(rateFlowering(genome.getFlowering()));
-            final int[] area = genome.getTerritory();
-            this.pageSpeciesGenome_TerritoryText.setValue(area[0] + "x" + area[1] + "x" + area[2]);
-            String behavior = "Daytime";
-            if (genome.getPrimary().isNocturnal()) {
-                behavior = "Nighttime";
-            }
-            if (genome.getNocturnal()) {
-                behavior = "All Day";
-            }
-            this.pageSpeciesGenome_NocturnalText.setValue(behavior);
-            if (genome.getCaveDwelling()) {
-                this.pageSpeciesGenome_CaveDwellingText.setValue("Not Needed");
-            } else {
-                this.pageSpeciesGenome_CaveDwellingText.setValue("Required");
-            }
-            this.pageSpeciesGenome_TolerantFlyerText.setValue(tolerated(genome.getTolerantFlyer()));
-            if (genome.getFlowerProvider() != null) {
-                this.pageSpeciesGenome_FlowerText.setValue(genome.getFlowerProvider().getDescription());
-            } else {
-                this.pageSpeciesGenome_FlowerText.setValue("None");
-            }
-            this.pageSpeciesGenome_EffectText.setValue(genome.getEffect().getName());
-        }
-    }
-
     public static String rateFlowering(final int flowering) {
         if (flowering >= 99) {
             return "Maximum";
@@ -168,5 +133,40 @@ public class PageSpeciesGenome extends PageSpecies {
             return "Tolerated";
         }
         return "Not Tolerated";
+    }
+
+    @Override
+    public void onValueChanged(final IAlleleSpecies species) {
+        final IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
+        if (template != null) {
+            final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
+            final IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
+            this.pageSpeciesGenome_SpeedText.setValue(rateSpeed(genome.getSpeed()));
+            this.pageSpeciesGenome_LifespanText.setValue(rateLifespan(genome.getLifespan()));
+            this.pageSpeciesGenome_FertilityText.setValue(genome.getFertility() + " children");
+            this.pageSpeciesGenome_FloweringText.setValue(rateFlowering(genome.getFlowering()));
+            final int[] area = genome.getTerritory();
+            this.pageSpeciesGenome_TerritoryText.setValue(area[0] + "x" + area[1] + "x" + area[2]);
+            String behavior = "Daytime";
+            if (genome.getPrimary().isNocturnal()) {
+                behavior = "Nighttime";
+            }
+            if (genome.getNocturnal()) {
+                behavior = "All Day";
+            }
+            this.pageSpeciesGenome_NocturnalText.setValue(behavior);
+            if (genome.getCaveDwelling()) {
+                this.pageSpeciesGenome_CaveDwellingText.setValue("Not Needed");
+            } else {
+                this.pageSpeciesGenome_CaveDwellingText.setValue("Required");
+            }
+            this.pageSpeciesGenome_TolerantFlyerText.setValue(tolerated(genome.getTolerantFlyer()));
+            if (genome.getFlowerProvider() != null) {
+                this.pageSpeciesGenome_FlowerText.setValue(genome.getFlowerProvider().getDescription());
+            } else {
+                this.pageSpeciesGenome_FlowerText.setValue("None");
+            }
+            this.pageSpeciesGenome_EffectText.setValue(genome.getEffect().getName());
+        }
     }
 }

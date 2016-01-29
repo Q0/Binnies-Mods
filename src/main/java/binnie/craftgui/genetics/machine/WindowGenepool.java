@@ -18,12 +18,17 @@ public class WindowGenepool extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowGenepool(player, inventory, side);
+    static {
+        WindowGenepool.ProgressBase = new StandardTexture(64, 0, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowGenepool.Progress = new StandardTexture(64, 21, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
     }
 
     public WindowGenepool(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(280, 198, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowGenepool(player, inventory, side);
     }
 
     @Override
@@ -62,10 +67,5 @@ public class WindowGenepool extends WindowMachine {
     @Override
     protected String getName() {
         return "Genepool";
-    }
-
-    static {
-        WindowGenepool.ProgressBase = new StandardTexture(64, 0, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
-        WindowGenepool.Progress = new StandardTexture(64, 21, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
     }
 }

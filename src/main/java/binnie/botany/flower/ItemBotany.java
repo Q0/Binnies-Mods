@@ -30,15 +30,15 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public abstract class ItemBotany extends Item {
-    @SideOnly(Side.CLIENT)
-    public int getSpriteNumber() {
-        return 0;
-    }
-
     public ItemBotany(final String name) {
         this.setCreativeTab(CreativeTabBotany.instance);
         this.setUnlocalizedName(name);
         this.hasSubtypes = true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getSpriteNumber() {
+        return 0;
     }
 
     public boolean isDamageable() {

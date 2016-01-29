@@ -8,10 +8,10 @@ import org.lwjgl.input.Mouse;
 import java.util.*;
 
 public abstract class TopLevelWidget extends Widget implements ITopLevelWidget {
+    protected IPoint mousePosition;
     IWidget mousedOverWidget;
     IWidget draggedWidget;
     IWidget focusedWidget;
-    protected IPoint mousePosition;
     IPoint dragStart;
 
     public TopLevelWidget() {
@@ -42,6 +42,24 @@ public abstract class TopLevelWidget extends Widget implements ITopLevelWidget {
         });
     }
 
+    public void setDraggedWidget(final IWidget widget, final int button) {
+        if (this.draggedWidget == widget) {
+            return;
+        }
+        if (this.draggedWidget != null) {
+            this.callEvent(new EventWidget.EndDrag(this.draggedWidget));
+        }
+        this.draggedWidget = widget;
+        if (this.draggedWidget != null) {
+            this.callEvent(new EventWidget.StartDrag(this.draggedWidget, button));
+        }
+    }
+
+    @Override
+    public IWidget getMousedOverWidget() {
+        return this.mousedOverWidget;
+    }
+
     public void setMousedOverWidget(final IWidget widget) {
         if (this.mousedOverWidget == widget) {
             return;
@@ -55,21 +73,18 @@ public abstract class TopLevelWidget extends Widget implements ITopLevelWidget {
         }
     }
 
+    @Override
+    public IWidget getDraggedWidget() {
+        return this.draggedWidget;
+    }
+
     public void setDraggedWidget(final IWidget widget) {
         this.setDraggedWidget(widget, -1);
     }
 
-    public void setDraggedWidget(final IWidget widget, final int button) {
-        if (this.draggedWidget == widget) {
-            return;
-        }
-        if (this.draggedWidget != null) {
-            this.callEvent(new EventWidget.EndDrag(this.draggedWidget));
-        }
-        this.draggedWidget = widget;
-        if (this.draggedWidget != null) {
-            this.callEvent(new EventWidget.StartDrag(this.draggedWidget, button));
-        }
+    @Override
+    public IWidget getFocusedWidget() {
+        return this.focusedWidget;
     }
 
     public void setFocusedWidget(final IWidget widget) {
@@ -87,21 +102,6 @@ public abstract class TopLevelWidget extends Widget implements ITopLevelWidget {
         if (this.focusedWidget != null) {
             this.callEvent(new EventWidget.GainFocus(this.focusedWidget));
         }
-    }
-
-    @Override
-    public IWidget getMousedOverWidget() {
-        return this.mousedOverWidget;
-    }
-
-    @Override
-    public IWidget getDraggedWidget() {
-        return this.draggedWidget;
-    }
-
-    @Override
-    public IWidget getFocusedWidget() {
-        return this.focusedWidget;
     }
 
     @Override

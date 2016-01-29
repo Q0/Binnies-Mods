@@ -21,6 +21,11 @@ import java.util.Map;
 
 public class CeramicDesignSystem implements IDesignSystem {
     public static CeramicDesignSystem instance;
+
+    static {
+        CeramicDesignSystem.instance = new CeramicDesignSystem();
+    }
+
     Map<Integer, IIcon> primary;
     Map<Integer, IIcon> secondary;
 
@@ -90,9 +95,5 @@ public class CeramicDesignSystem implements IDesignSystem {
     @Override
     public IDesignMaterial getMaterial(final ItemStack itemStack) {
         return (itemStack.getItem() == Item.getItemFromBlock((Block) Botany.ceramic)) ? this.getMaterial(itemStack.getItemDamage()) : null;
-    }
-
-    static {
-        CeramicDesignSystem.instance = new CeramicDesignSystem();
     }
 }

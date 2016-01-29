@@ -50,11 +50,40 @@ public enum ExtraBeeItems implements IItemMisc {
     BlutoniumDust("Blutonium Grains", "blutoniumDust"),
     CyaniteDust("Cyanite Grains", "cyaniteDust");
 
+    static {
+        ExtraBeeItems.TinDust.setMetal("Tin");
+        ExtraBeeItems.ZincDust.setMetal("Zinc");
+        ExtraBeeItems.CopperDust.setMetal("Copper");
+        ExtraBeeItems.IronDust.setMetal("Iron");
+        ExtraBeeItems.NickelDust.setMetal("Nickel");
+        ExtraBeeItems.LeadDust.setMetal("Lead");
+        ExtraBeeItems.SilverDust.setMetal("Silver");
+        ExtraBeeItems.GoldDust.setMetal("Gold");
+        ExtraBeeItems.PlatinumDust.setMetal("Platinum");
+        ExtraBeeItems.TungstenDust.setMetal("Tungsten");
+        ExtraBeeItems.TitaniumDust.setMetal("Titanium");
+        ExtraBeeItems.CoalDust.setMetal("Coal");
+        ExtraBeeItems.YelloriumDust.setMetal("Yellorium");
+        ExtraBeeItems.BlutoniumDust.setMetal("Blutonium");
+        ExtraBeeItems.CyaniteDust.setMetal("Cyanite");
+        ExtraBeeItems.DiamondShard.setGem("Diamond");
+        ExtraBeeItems.EmeraldShard.setGem("Emerald");
+        ExtraBeeItems.RubyShard.setGem("Ruby");
+        ExtraBeeItems.SapphireShard.setGem("Sapphire");
+    }
+
     String name;
     String iconPath;
     IIcon icon;
     String metalString;
     String gemString;
+
+    ExtraBeeItems(final String name, final String iconPath) {
+        metalString = null;
+        gemString = null;
+        this.name = name;
+        this.iconPath = iconPath;
+    }
 
     public static void init() {
         OreDictionary.registerOre("dyeRed", ExtraBeeItems.RedDye.get(1));
@@ -86,15 +115,12 @@ public enum ExtraBeeItems implements IItemMisc {
 
                 if (dust != null) {
                     GameRegistry.addShapelessRecipe(dust, input, input, input, input);
-                }
-                else if (ingot != null) {
+                } else if (ingot != null) {
                     GameRegistry.addShapelessRecipe(ingot, input, input, input, input, input, input, input, input, input);
-                }
-                else if (item == ExtraBeeItems.CoalDust) {
+                } else if (item == ExtraBeeItems.CoalDust) {
                     GameRegistry.addShapelessRecipe(new ItemStack(Items.coal), input, input, input, input);
                 }
-            }
-            else if (item.gemString != null) {
+            } else if (item.gemString != null) {
                 ItemStack gem = null;
                 if (!OreDictionary.getOres("gem" + item.gemString).isEmpty()) {
                     gem = OreDictionary.getOres("gem" + item.gemString).get(0);
@@ -107,42 +133,34 @@ public enum ExtraBeeItems implements IItemMisc {
                 }
             }
         }
-        
+
         Item woodGear = null;
-        
+
         try {
             woodGear = (Item) Class.forName("buildcraft.BuildCraftCore").getField("woodenGearItem").get(null);
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) {
             // ignored
         }
-        
+
         ItemStack gear = new ItemStack(Blocks.planks, 1);
-        
+
         if (woodGear != null) {
             gear = new ItemStack(woodGear, 1);
         }
-        
-        RecipeManagers.carpenterManager.addRecipe(
-            100,
-            Binnie.Liquid.getLiquidStack("for.honey", 500),
-            null,
-            ExtraBeeItems.ScentedGear.get(1),
-            " j ",
-            "bgb",
-            " p ",
-            'j', Mods.Forestry.item("royalJelly"),
-            'b', Mods.Forestry.item("beeswax"),
-            'p', Mods.Forestry.item("pollen"),
-            'g', gear
-        );
-    }
 
-    ExtraBeeItems(final String name, final String iconPath) {
-        metalString = null;
-        gemString = null;
-        this.name = name;
-        this.iconPath = iconPath;
+        RecipeManagers.carpenterManager.addRecipe(
+                100,
+                Binnie.Liquid.getLiquidStack("for.honey", 500),
+                null,
+                ExtraBeeItems.ScentedGear.get(1),
+                " j ",
+                "bgb",
+                " p ",
+                'j', Mods.Forestry.item("royalJelly"),
+                'b', Mods.Forestry.item("beeswax"),
+                'p', Mods.Forestry.item("pollen"),
+                'g', gear
+        );
     }
 
     private void setGem(final String string) {
@@ -157,12 +175,12 @@ public enum ExtraBeeItems implements IItemMisc {
     public boolean isActive() {
         if (metalString != null) {
             return !OreDictionary.getOres("ingot" + metalString).isEmpty() ||
-                !OreDictionary.getOres("dust" + metalString).isEmpty() ||
-                this == ExtraBeeItems.CoalDust;
+                    !OreDictionary.getOres("dust" + metalString).isEmpty() ||
+                    this == ExtraBeeItems.CoalDust;
         }
 
         return gemString == null ||
-            !OreDictionary.getOres("gem" + gemString).isEmpty();
+                !OreDictionary.getOres("gem" + gemString).isEmpty();
     }
 
     @Override
@@ -188,27 +206,5 @@ public enum ExtraBeeItems implements IItemMisc {
     @Override
     public ItemStack get(final int i) {
         return new ItemStack(ExtraBees.itemMisc, i, ordinal());
-    }
-
-    static {
-        ExtraBeeItems.TinDust.setMetal("Tin");
-        ExtraBeeItems.ZincDust.setMetal("Zinc");
-        ExtraBeeItems.CopperDust.setMetal("Copper");
-        ExtraBeeItems.IronDust.setMetal("Iron");
-        ExtraBeeItems.NickelDust.setMetal("Nickel");
-        ExtraBeeItems.LeadDust.setMetal("Lead");
-        ExtraBeeItems.SilverDust.setMetal("Silver");
-        ExtraBeeItems.GoldDust.setMetal("Gold");
-        ExtraBeeItems.PlatinumDust.setMetal("Platinum");
-        ExtraBeeItems.TungstenDust.setMetal("Tungsten");
-        ExtraBeeItems.TitaniumDust.setMetal("Titanium");
-        ExtraBeeItems.CoalDust.setMetal("Coal");
-        ExtraBeeItems.YelloriumDust.setMetal("Yellorium");
-        ExtraBeeItems.BlutoniumDust.setMetal("Blutonium");
-        ExtraBeeItems.CyaniteDust.setMetal("Cyanite");
-        ExtraBeeItems.DiamondShard.setGem("Diamond");
-        ExtraBeeItems.EmeraldShard.setGem("Emerald");
-        ExtraBeeItems.RubyShard.setGem("Ruby");
-        ExtraBeeItems.SapphireShard.setGem("Sapphire");
     }
 }

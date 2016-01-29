@@ -12,15 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemGenesis extends Item {
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = BinnieCore.proxy.getIcon(register, "genesis");
-    }
-
     public ItemGenesis() {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setUnlocalizedName("genesis");
         this.setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = BinnieCore.proxy.getIcon(register, "genesis");
     }
 
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {

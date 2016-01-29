@@ -28,6 +28,20 @@ public class WindowWoodworker extends Window {
     ControlTextEdit textEdit;
     ControlTileSelect tileSelect;
 
+    public WindowWoodworker(final EntityPlayer player, final IInventory inventory, final Side side) {
+        super(320.0f, 216.0f, player, inventory, side);
+        this.addEventHandler(new EventTextEdit.Handler() {
+            @Override
+            public void onEvent(final EventTextEdit event) {
+                WindowWoodworker.this.tileSelect.refresh(event.getValue());
+            }
+        }.setOrigin(EventHandler.Origin.DirectChild, this));
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowWoodworker(player, inventory, side);
+    }
+
     @Override
     public void initialiseClient() {
         this.setTitle(Machine.getMachine(this.getInventory()).getPackage().getDisplayName());
@@ -47,20 +61,6 @@ public class WindowWoodworker extends Window {
             slotBeeswax.assign(Designer.beeswaxSlot);
             final ControlRecipeSlot slotFinished = new ControlRecipeSlot(this, 112, 34);
         }
-    }
-
-    public WindowWoodworker(final EntityPlayer player, final IInventory inventory, final Side side) {
-        super(320.0f, 216.0f, player, inventory, side);
-        this.addEventHandler(new EventTextEdit.Handler() {
-            @Override
-            public void onEvent(final EventTextEdit event) {
-                WindowWoodworker.this.tileSelect.refresh(event.getValue());
-            }
-        }.setOrigin(EventHandler.Origin.DirectChild, this));
-    }
-
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowWoodworker(player, inventory, side);
     }
 
     @Override

@@ -9,6 +9,11 @@ public enum EnumFlowerStage implements ISpeciesType {
     NONE("NONE");
 
     public static final EnumFlowerStage[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     String name;
 
     private EnumFlowerStage(final String name) {
@@ -17,9 +22,5 @@ public enum EnumFlowerStage implements ISpeciesType {
 
     public String getName() {
         return this.name;
-    }
-
-    static {
-        VALUES = values();
     }
 }

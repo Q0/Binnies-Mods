@@ -14,11 +14,6 @@ import net.minecraft.item.ItemStack;
 public class ItemHammer extends Item implements IToolHammer {
     boolean isDurableHammer;
 
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = ExtraTrees.proxy.getIcon(register, this.isDurableHammer ? "durableHammer" : "carpentryHammer");
-    }
-
     public ItemHammer(final boolean durable) {
         this.isDurableHammer = false;
         this.isDurableHammer = durable;
@@ -26,6 +21,11 @@ public class ItemHammer extends Item implements IToolHammer {
         this.setUnlocalizedName(durable ? "durableHammer" : "hammer");
         this.setMaxStackSize(1);
         this.setMaxDamage(durable ? 1562 : 251);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = ExtraTrees.proxy.getIcon(register, this.isDurableHammer ? "durableHammer" : "carpentryHammer");
     }
 
     public String getItemStackDisplayName(final ItemStack i) {

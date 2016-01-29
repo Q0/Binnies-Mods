@@ -20,6 +20,14 @@ public class ItemIndustrialFrame extends Item {
         this.setUnlocalizedName("industrialFrame");
     }
 
+    public static IndustrialFrame getFrame(final ItemStack stack) {
+        if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("frame")) {
+            return null;
+        }
+
+        return IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")];
+    }
+
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         for (final IndustrialFrame frame : IndustrialFrame.values()) {
@@ -38,22 +46,13 @@ public class ItemIndustrialFrame extends Item {
 
         if (frame == null) {
             par3List.add("Invalid Contents");
-        }
-        else {
+        } else {
             par3List.add(frame.getName());
         }
     }
 
     public String getItemStackDisplayName(final ItemStack par1ItemStack) {
         return "Industrial Frame";
-    }
-
-    public static IndustrialFrame getFrame(final ItemStack stack) {
-        if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("frame")) {
-            return null;
-        }
-
-        return IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")];
     }
 
     @SideOnly(Side.CLIENT)

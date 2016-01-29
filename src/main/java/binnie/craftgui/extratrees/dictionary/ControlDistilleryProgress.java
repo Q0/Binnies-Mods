@@ -24,27 +24,11 @@ public class ControlDistilleryProgress extends ControlProgressBase {
     static Texture LiquidFlow;
     static Texture Output;
 
-    @Override
-    public void onRenderBackground() {
-        CraftGUI.Render.texture(ControlDistilleryProgress.DistilleryBase, new IPoint(0.0f, 0.0f));
-        CraftGUI.Render.texturePercentage(ControlDistilleryProgress.LiquidFlow, new IArea(18.0f, 0.0f, 38.0f, 66.0f), Position.Left, this.progress);
-        final Distillery.ComponentDistilleryLogic component = Machine.getInterface(Distillery.ComponentDistilleryLogic.class, Window.get(this).getInventory());
-        FluidStack stack = null;
-        if (component != null) {
-            stack = component.currentFluid;
-        }
-        if (stack != null) {
-            for (int y = 0; y < 4; ++y) {
-                this.renderFluid(stack, new IPoint(1.0f, 1 + y * 16));
-            }
-        }
-    }
-
-    @Override
-    public void onRenderForeground() {
-        final int level = Machine.getInterface(Distillery.ComponentDistilleryLogic.class, Window.get(this).getInventory()).level;
-        CraftGUI.Render.texture(ControlDistilleryProgress.Output, new IPoint(47.0f, 14 + level * 15));
-        CraftGUI.Render.texture(ControlDistilleryProgress.DistilleryOverlay, new IPoint(0.0f, 0.0f));
+    static {
+        ControlDistilleryProgress.DistilleryBase = new StandardTexture(43, 0, 58, 66, ExtraTreeTexture.Gui);
+        ControlDistilleryProgress.DistilleryOverlay = new StandardTexture(139, 0, 18, 66, ExtraTreeTexture.Gui);
+        ControlDistilleryProgress.LiquidFlow = new StandardTexture(101, 0, 38, 66, ExtraTreeTexture.Gui);
+        ControlDistilleryProgress.Output = new StandardTexture(68, 66, 17, 7, ExtraTreeTexture.Gui);
     }
 
     protected ControlDistilleryProgress(final IWidget parent, final float x, final float y) {
@@ -69,6 +53,29 @@ public class ControlDistilleryProgress extends ControlProgressBase {
         });
     }
 
+    @Override
+    public void onRenderBackground() {
+        CraftGUI.Render.texture(ControlDistilleryProgress.DistilleryBase, new IPoint(0.0f, 0.0f));
+        CraftGUI.Render.texturePercentage(ControlDistilleryProgress.LiquidFlow, new IArea(18.0f, 0.0f, 38.0f, 66.0f), Position.Left, this.progress);
+        final Distillery.ComponentDistilleryLogic component = Machine.getInterface(Distillery.ComponentDistilleryLogic.class, Window.get(this).getInventory());
+        FluidStack stack = null;
+        if (component != null) {
+            stack = component.currentFluid;
+        }
+        if (stack != null) {
+            for (int y = 0; y < 4; ++y) {
+                this.renderFluid(stack, new IPoint(1.0f, 1 + y * 16));
+            }
+        }
+    }
+
+    @Override
+    public void onRenderForeground() {
+        final int level = Machine.getInterface(Distillery.ComponentDistilleryLogic.class, Window.get(this).getInventory()).level;
+        CraftGUI.Render.texture(ControlDistilleryProgress.Output, new IPoint(47.0f, 14 + level * 15));
+        CraftGUI.Render.texture(ControlDistilleryProgress.DistilleryOverlay, new IPoint(0.0f, 0.0f));
+    }
+
     public void renderFluid(final FluidStack fluid, final IPoint pos) {
         final int hex = fluid.getFluid().getColor(fluid);
         final int r = (hex & 0xFF0000) >> 16;
@@ -80,12 +87,5 @@ public class ControlDistilleryProgress extends ControlProgressBase {
         GL11.glBlendFunc(770, 771);
         CraftGUI.Render.iconBlock(pos, fluid.getFluid().getIcon());
         GL11.glDisable(3042);
-    }
-
-    static {
-        ControlDistilleryProgress.DistilleryBase = new StandardTexture(43, 0, 58, 66, ExtraTreeTexture.Gui);
-        ControlDistilleryProgress.DistilleryOverlay = new StandardTexture(139, 0, 18, 66, ExtraTreeTexture.Gui);
-        ControlDistilleryProgress.LiquidFlow = new StandardTexture(101, 0, 38, 66, ExtraTreeTexture.Gui);
-        ControlDistilleryProgress.Output = new StandardTexture(68, 66, 17, 7, ExtraTreeTexture.Gui);
     }
 }

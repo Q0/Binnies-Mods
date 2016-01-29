@@ -87,6 +87,27 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
     List<IAllele[]> variantTemplates;
     IClassification branch;
 
+    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor colour) {
+        this(name, branch, binomial, type, colour, colour);
+    }
+
+    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor primaryColor, final EnumFlowerColor secondaryColor) {
+        this.stemColor = EnumFlowerColor.Green;
+        this.temperature = EnumTemperature.NORMAL;
+        this.pH = EnumAcidity.Neutral;
+        this.moisture = EnumMoisture.Normal;
+        this.tempTolerance = EnumTolerance.BOTH_1;
+        this.pHTolerance = EnumTolerance.NONE;
+        this.moistureTolerance = EnumTolerance.NONE;
+        this.variantTemplates = new ArrayList<IAllele[]>();
+        this.name = name;
+        this.binomial = binomial;
+        this.branchName = branch;
+        this.type = type;
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
+    }
+
     public static void setupVariants() {
         FlowerSpecies.Dandelion.setTraits(ForestryAllele.Fertility.High, ForestryAllele.Lifespan.Shortened, ForestryAllele.Sappiness.Lower);
         FlowerSpecies.Poppy.setTraits(ForestryAllele.Fertility.High, ForestryAllele.Lifespan.Shorter, ForestryAllele.Sappiness.Average);
@@ -339,6 +360,9 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
         }
     }
 
+    public static void init() {
+    }
+
     private void setStemColor(final EnumFlowerColor green) {
         this.stemColor = green;
     }
@@ -351,27 +375,6 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
 
     private void setMutation(final FlowerSpecies dandelion2, final FlowerSpecies tulip2, final int i) {
         BotanyCore.getFlowerRoot().registerMutation((IMutation) new FlowerMutation((IAllele) dandelion2, (IAllele) tulip2, this.getTemplate(), i));
-    }
-
-    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor colour) {
-        this(name, branch, binomial, type, colour, colour);
-    }
-
-    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor primaryColor, final EnumFlowerColor secondaryColor) {
-        this.stemColor = EnumFlowerColor.Green;
-        this.temperature = EnumTemperature.NORMAL;
-        this.pH = EnumAcidity.Neutral;
-        this.moisture = EnumMoisture.Normal;
-        this.tempTolerance = EnumTolerance.BOTH_1;
-        this.pHTolerance = EnumTolerance.NONE;
-        this.moistureTolerance = EnumTolerance.NONE;
-        this.variantTemplates = new ArrayList<IAllele[]>();
-        this.name = name;
-        this.binomial = binomial;
-        this.branchName = branch;
-        this.type = type;
-        this.primaryColor = primaryColor;
-        this.secondaryColor = secondaryColor;
     }
 
     private IAllele[] AddVariant(final EnumFlowerColor a, final EnumFlowerColor b) {
@@ -451,12 +454,12 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
         return "Binnie";
     }
 
-    public void setBranch(final IClassification branch) {
-        this.branch = branch;
-    }
-
     public IClassification getBranch() {
         return this.branch;
+    }
+
+    public void setBranch(final IClassification branch) {
+        this.branch = branch;
     }
 
     public String getUID() {
@@ -505,9 +508,6 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
 
     public ItemStack[] getResearchBounty(final World world, final GameProfile researcher, final IIndividual individual, final int bountyLevel) {
         return null;
-    }
-
-    public static void init() {
     }
 
     @Override

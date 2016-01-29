@@ -9,12 +9,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class CustomSlot extends Slot {
-    public boolean isItemValid(final ItemStack par1ItemStack) {
-        return this.inventory.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
-    }
-
     public CustomSlot(final IInventory inventory, final int index) {
         super(inventory, index, 0, 0);
+    }
+
+    public boolean isItemValid(final ItemStack par1ItemStack) {
+        return this.inventory.isItemValidForSlot(this.getSlotIndex(), par1ItemStack);
     }
 
     public InventorySlot getInventorySlot() {

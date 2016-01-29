@@ -19,9 +19,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public abstract class AbstractMod implements IPacketProvider, IInitializable {
+    protected List<IInitializable> modules;
     private SimpleNetworkWrapper wrapper;
     private LinkedHashSet<Field> fields;
-    protected List<IInitializable> modules;
 
     public AbstractMod() {
         this.fields = new LinkedHashSet<Field>();

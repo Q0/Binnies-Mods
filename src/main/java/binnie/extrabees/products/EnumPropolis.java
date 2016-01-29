@@ -35,6 +35,16 @@ public enum EnumPropolis implements IItemEnum {
         this.liquidName = liquid;
     }
 
+    public static EnumPropolis get(final ItemStack itemStack) {
+        final int i = itemStack.getItemDamage();
+
+        if (i >= 0 && i < values().length) {
+            return values()[i];
+        }
+
+        return values()[0];
+    }
+
     public void addRecipe() {
         final FluidStack liquid = Binnie.Liquid.getLiquidStack(this.liquidName, 500);
         if (liquid != null) {
@@ -45,16 +55,6 @@ public enum EnumPropolis implements IItemEnum {
     @Override
     public boolean isActive() {
         return this.active && Binnie.Liquid.getLiquidStack(this.liquidName, 100) != null;
-    }
-
-    public static EnumPropolis get(final ItemStack itemStack) {
-        final int i = itemStack.getItemDamage();
-
-        if (i >= 0 && i < values().length) {
-            return values()[i];
-        }
-
-        return values()[0];
     }
 
     @Override

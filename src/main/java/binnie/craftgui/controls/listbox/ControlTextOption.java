@@ -1,12 +1,7 @@
 package binnie.craftgui.controls.listbox;
 
 import binnie.craftgui.controls.ControlText;
-import binnie.craftgui.controls.listbox.ControlList;
-import binnie.craftgui.controls.listbox.ControlOption;
-import binnie.craftgui.core.IWidget;
-import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.TextJustification;
-import binnie.craftgui.events.Event;
 import binnie.craftgui.events.EventHandler;
 import binnie.craftgui.events.EventWidget;
 
@@ -17,7 +12,7 @@ public class ControlTextOption<T>
     public ControlTextOption(ControlList<T> controlList, T option, String optionName, int y) {
         super(controlList, option, y);
         this.textWidget = new ControlText(this, this.getArea(), optionName, TextJustification.MiddleCenter);
-        this.addEventHandler(new EventWidget.ChangeColour.Handler(){
+        this.addEventHandler(new EventWidget.ChangeColour.Handler() {
 
             @Override
             public void onEvent(EventWidget.ChangeColour event) {

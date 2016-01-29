@@ -68,9 +68,9 @@ public enum ExtraBeeLiquid implements ILiquidType {
     @Override
     public boolean showInCreative(final FluidContainer container) {
         return container == FluidContainer.Bucket ||
-            container == FluidContainer.Can ||
-            container == FluidContainer.Capsule ||
-            container == FluidContainer.Refractory;
+                container == FluidContainer.Can ||
+                container == FluidContainer.Capsule ||
+                container == FluidContainer.Refractory;
     }
 
     @Override

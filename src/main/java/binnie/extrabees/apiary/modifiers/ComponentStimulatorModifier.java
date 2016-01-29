@@ -141,7 +141,7 @@ public class ComponentStimulatorModifier extends ComponentBeeModifier {
         if (!getUtil().isSlotEmpty(AlvearyStimulator.slotCircuit)) {
             return ChipsetManager.circuitRegistry.getCircuitboard(getUtil().getStack(AlvearyStimulator.slotCircuit));
         }
-        
+
         return null;
     }
 

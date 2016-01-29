@@ -1,13 +1,6 @@
 package binnie.extratrees.carpentry;
 
-import binnie.extratrees.api.IDesign;
-import binnie.extratrees.api.IDesignMaterial;
-import binnie.extratrees.api.IDesignSystem;
-import binnie.extratrees.api.ILayout;
-import binnie.extratrees.api.IToolHammer;
-import binnie.extratrees.carpentry.BlockCarpentryPanel;
-import binnie.extratrees.carpentry.EnumDesign;
-import binnie.extratrees.carpentry.ModuleCarpentry;
+import binnie.extratrees.api.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -21,6 +14,35 @@ public class DesignBlock {
     int rotation = 0;
     ForgeDirection facing = ForgeDirection.UP;
     boolean panel = false;
+
+    DesignBlock(IDesignSystem system, IDesignMaterial primaryWood, IDesignMaterial secondaryWood, IDesign design, int rotation, ForgeDirection dir) {
+        super();
+        this.design = design;
+        this.primaryMaterial = primaryWood;
+        this.secondaryMaterial = secondaryWood;
+        this.rotation = rotation;
+        this.facing = dir;
+        if (design == null) {
+            this.design = EnumDesign.Blank;
+        }
+
+        if (primaryWood == null) {
+            this.primaryMaterial = system.getDefaultMaterial();
+        }
+
+        if (secondaryWood == null) {
+            this.secondaryMaterial = system.getDefaultMaterial();
+        }
+
+        if (this.rotation > 3 || this.rotation < 0) {
+            this.rotation = 0;
+        }
+
+        if (this.facing == null || this.facing == ForgeDirection.UNKNOWN) {
+            this.facing = ForgeDirection.UP;
+        }
+
+    }
 
     public String toString() {
         return super.toString() + " { design:" + this.design + " }, { primary:" + this.primaryMaterial + " }, { secondary:" + this.secondaryMaterial + " }, { rotation:" + this.rotation + " }, { facing:" + this.facing + " }";
@@ -38,35 +60,6 @@ public class DesignBlock {
         return this.secondaryMaterial;
     }
 
-    DesignBlock(IDesignSystem system, IDesignMaterial primaryWood, IDesignMaterial secondaryWood, IDesign design, int rotation, ForgeDirection dir) {
-        super();
-        this.design = design;
-        this.primaryMaterial = primaryWood;
-        this.secondaryMaterial = secondaryWood;
-        this.rotation = rotation;
-        this.facing = dir;
-        if(design == null) {
-            this.design = EnumDesign.Blank;
-        }
-
-        if(primaryWood == null) {
-            this.primaryMaterial = system.getDefaultMaterial();
-        }
-
-        if(secondaryWood == null) {
-            this.secondaryMaterial = system.getDefaultMaterial();
-        }
-
-        if(this.rotation > 3 || this.rotation < 0) {
-            this.rotation = 0;
-        }
-
-        if(this.facing == null || this.facing == ForgeDirection.UNKNOWN) {
-            this.facing = ForgeDirection.UP;
-        }
-
-    }
-
     public int getPrimaryColour() {
         return this.getPrimaryMaterial().getColour();
     }
@@ -76,8 +69,8 @@ public class DesignBlock {
     }
 
     ForgeDirection getRotation(ForgeDirection dir, ModuleCarpentry.Axis axis) {
-        if(axis == ModuleCarpentry.Axis.Y) {
-            switch(dir) {
+        if (axis == ModuleCarpentry.Axis.Y) {
+            switch (dir) {
                 case EAST:
                     return ForgeDirection.NORTH;
                 case NORTH:
@@ -92,8 +85,8 @@ public class DesignBlock {
                 default:
                     return dir;
             }
-        } else if(axis == ModuleCarpentry.Axis.X) {
-            switch(dir) {
+        } else if (axis == ModuleCarpentry.Axis.X) {
+            switch (dir) {
                 case EAST:
                     return ForgeDirection.UP;
                 case NORTH:
@@ -109,7 +102,7 @@ public class DesignBlock {
                     return ForgeDirection.EAST;
             }
         } else {
-            switch(dir) {
+            switch (dir) {
                 case EAST:
                 case WEST:
                 case UNKNOWN:
@@ -130,7 +123,7 @@ public class DesignBlock {
     public ILayout getLayout(ForgeDirection dir) {
         dir = dir.getRotation(ForgeDirection.DOWN);
         ForgeDirection adjustedDir = dir;
-        switch(this.getFacing()) {
+        switch (this.getFacing()) {
             case EAST:
                 adjustedDir = dir.getRotation(ForgeDirection.EAST);
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.NORTH);
@@ -155,12 +148,12 @@ public class DesignBlock {
                 adjustedDir = adjustedDir.getRotation(ForgeDirection.EAST);
         }
 
-        for(int i = 0; i < this.rotation; ++i) {
+        for (int i = 0; i < this.rotation; ++i) {
             adjustedDir = adjustedDir.getRotation(ForgeDirection.DOWN);
         }
 
         ILayout layout;
-        switch(adjustedDir) {
+        switch (adjustedDir) {
             case EAST:
                 layout = this.getDesign().getEastPattern();
                 break;
@@ -181,9 +174,9 @@ public class DesignBlock {
                 layout = this.getDesign().getBottomPattern();
         }
 
-        switch(this.getFacing()) {
+        switch (this.getFacing()) {
             case EAST:
-                switch(dir) {
+                switch (dir) {
                     case NORTH:
                         layout = layout.rotateLeft();
                         break;
@@ -198,25 +191,25 @@ public class DesignBlock {
                         layout = layout.rotateLeft().flipHorizontal();
                 }
 
-                if(dir == ForgeDirection.EAST) {
-                    for(int i = 0; i < this.rotation; ++i) {
+                if (dir == ForgeDirection.EAST) {
+                    for (int i = 0; i < this.rotation; ++i) {
                         layout = layout.rotateRight();
                     }
                 }
 
-                if(dir == ForgeDirection.WEST) {
-                    for(int i = 0; i < this.rotation; ++i) {
+                if (dir == ForgeDirection.WEST) {
+                    for (int i = 0; i < this.rotation; ++i) {
                         layout = layout.rotateLeft();
                     }
                 }
                 break;
             case NORTH:
-                switch(dir) {
+                switch (dir) {
                     case EAST:
                         layout = layout.rotateRight();
                         return layout;
                     case NORTH:
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
                         }
 
@@ -224,7 +217,7 @@ public class DesignBlock {
                     case SOUTH:
                         layout = layout.flipHorizontal();
 
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
                         }
 
@@ -240,20 +233,20 @@ public class DesignBlock {
                         return layout;
                 }
             case SOUTH:
-                switch(dir) {
+                switch (dir) {
                     case EAST:
                         layout = layout.rotateLeft();
                         return layout;
                     case NORTH:
                         layout = layout.flipHorizontal();
 
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
                         }
 
                         return layout;
                     case SOUTH:
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
                         }
 
@@ -271,11 +264,11 @@ public class DesignBlock {
                         return layout;
                 }
             case WEST:
-                switch(dir) {
+                switch (dir) {
                     case EAST:
                         layout = layout.flipHorizontal();
 
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateLeft();
                         }
 
@@ -288,7 +281,7 @@ public class DesignBlock {
                         layout = layout.rotateLeft();
                         return layout;
                     case WEST:
-                        for(int i = 0; i < this.rotation; ++i) {
+                        for (int i = 0; i < this.rotation; ++i) {
                             layout = layout.rotateRight();
                         }
 
@@ -300,14 +293,14 @@ public class DesignBlock {
                         return layout;
                 }
             case UP:
-                if(dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
-                    for(int i = 0; i < this.rotation; ++i) {
+                if (dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
+                    for (int i = 0; i < this.rotation; ++i) {
                         layout = layout.rotateRight();
                     }
                 }
                 break;
             case DOWN:
-                switch(dir) {
+                switch (dir) {
                     case EAST:
                     case NORTH:
                     case SOUTH:
@@ -319,8 +312,8 @@ public class DesignBlock {
                         layout = layout.flipVertical();
                 }
 
-                if(dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
-                    for(int i = 0; i < this.rotation; ++i) {
+                if (dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) {
+                    for (int i = 0; i < this.rotation; ++i) {
                         layout = layout.rotateLeft();
                     }
                 }
@@ -331,20 +324,24 @@ public class DesignBlock {
 
     public IIcon getPrimaryIcon(IDesignSystem system, ForgeDirection dir) {
         ILayout l = this.getLayout(dir);
-        return l == null?null:l.getPrimaryIcon(system);
+        return l == null ? null : l.getPrimaryIcon(system);
     }
 
     public IIcon getSecondaryIcon(IDesignSystem system, ForgeDirection dir) {
         ILayout l = this.getLayout(dir);
-        return l == null?null:l.getSecondaryIcon(system);
+        return l == null ? null : l.getSecondaryIcon(system);
     }
 
     public IIcon getIcon(IDesignSystem system, boolean secondary, ForgeDirection dir) {
-        return secondary?this.getSecondaryIcon(system, dir):this.getPrimaryIcon(system, dir);
+        return secondary ? this.getSecondaryIcon(system, dir) : this.getPrimaryIcon(system, dir);
     }
 
     public ForgeDirection getFacing() {
         return this.facing;
+    }
+
+    public void setFacing(ForgeDirection facing) {
+        this.facing = facing;
     }
 
     public int getRotation() {
@@ -353,29 +350,29 @@ public class DesignBlock {
 
     public void rotate(int face, ItemStack hammer, EntityPlayer player, World world, int x, int y, int z) {
         ForgeDirection dir = ForgeDirection.getOrientation(face);
-        IToolHammer hammerI = (IToolHammer)hammer.getItem();
-        if(player.isSneaking()) {
-            if(this.panel) {
+        IToolHammer hammerI = (IToolHammer) hammer.getItem();
+        if (player.isSneaking()) {
+            if (this.panel) {
                 ForgeDirection newFacing = this.getFacing();
 
-                while(true) {
+                while (true) {
                     newFacing = ForgeDirection.getOrientation(newFacing.ordinal() + 1);
-                    if(newFacing == ForgeDirection.UNKNOWN) {
+                    if (newFacing == ForgeDirection.UNKNOWN) {
                         newFacing = ForgeDirection.DOWN;
                     }
 
-                    if(newFacing == this.getFacing() || BlockCarpentryPanel.isValidPanelPlacement(world, x, y, z, newFacing)) {
+                    if (newFacing == this.getFacing() || BlockCarpentryPanel.isValidPanelPlacement(world, x, y, z, newFacing)) {
                         break;
                     }
                 }
 
-                if(newFacing != this.getFacing()) {
+                if (newFacing != this.getFacing()) {
                     hammerI.onHammerUsed(hammer, player);
                 }
 
                 this.setFacing(newFacing);
             } else {
-                if(dir != this.getFacing()) {
+                if (dir != this.getFacing()) {
                     hammerI.onHammerUsed(hammer, player);
                 }
 
@@ -386,18 +383,14 @@ public class DesignBlock {
             hammerI.onHammerUsed(hammer, player);
         }
 
-        if(this.rotation > 3) {
+        if (this.rotation > 3) {
             this.rotation = 0;
         }
 
-        if(this.rotation < 0) {
+        if (this.rotation < 0) {
             this.rotation = 3;
         }
 
-    }
-
-    public void setFacing(ForgeDirection facing) {
-        this.facing = facing;
     }
 
     public int getBlockMetadata(IDesignSystem system) {
@@ -414,12 +407,12 @@ public class DesignBlock {
 
     public String getString() {
         String type = "";
-        if(this.getPrimaryMaterial() != this.getSecondaryMaterial()) {
+        if (this.getPrimaryMaterial() != this.getSecondaryMaterial()) {
             type = this.getPrimaryMaterial().getName() + " and " + this.getSecondaryMaterial().getName();
         } else {
             type = this.getPrimaryMaterial().getName();
         }
 
-        return super.toString() + " " + "{" + type + " " + this.getDesign().getName() + " " + (this.panel?"Panel":"Tile") + ", Facing:" + this.getFacing().toString() + ", Rotation:" + this.getRotation() + "}";
+        return super.toString() + " " + "{" + type + " " + this.getDesign().getName() + " " + (this.panel ? "Panel" : "Tile") + ", Facing:" + this.getFacing().toString() + ", Rotation:" + this.getRotation() + "}";
     }
 }

@@ -2,12 +2,12 @@ package binnie.core.machines.inventory;
 
 import binnie.core.machines.IMachine;
 import binnie.core.machines.MachineComponent;
-import binnie.core.machines.inventory.IInventoryMachine;
 import binnie.core.machines.transfer.TransferRequest;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComponentInventoryTransfer
         extends MachineComponent {
@@ -30,13 +30,13 @@ public class ComponentInventoryTransfer
     }
 
     public void performTransfer(int source, int[] destination) {
-        new Storage(this.getMachine(), source, destination).transfer((IInventory)this.getMachine().getInterface(IInventoryMachine.class));
+        new Storage(this.getMachine(), source, destination).transfer((IInventory) this.getMachine().getInterface(IInventoryMachine.class));
     }
 
     @Override
     public void onUpdate() {
         for (Transfer transfer : this.transfers) {
-            transfer.transfer((IInventory)this.getMachine().getInterface(IInventoryMachine.class));
+            transfer.transfer((IInventory) this.getMachine().getInterface(IInventoryMachine.class));
         }
     }
 
@@ -97,7 +97,8 @@ public class ComponentInventoryTransfer
             if (inv.getStackInSlot(this.destination) == null) {
                 for (int i : this.buffer) {
                     ItemStack newStack;
-                    if (inv.getStackInSlot(i) == null || (newStack = inv.decrStackSize(i, this.limit)) == null) continue;
+                    if (inv.getStackInSlot(i) == null || (newStack = inv.decrStackSize(i, this.limit)) == null)
+                        continue;
                     inv.setInventorySlotContents(this.destination, newStack);
                     return;
                 }

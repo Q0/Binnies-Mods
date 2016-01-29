@@ -25,6 +25,24 @@ public class ExtraTreeMutation implements ITreeMutation {
     private float maxRainfall;
     private float height;
 
+    public ExtraTreeMutation(final IAllele allele0, final IAllele allele1, final IAllele result, final int chance) {
+        this(allele0, allele1, Binnie.Genetics.getTreeRoot().getTemplate(result.getUID()), chance);
+    }
+
+    public ExtraTreeMutation(final IAllele allele0, final IAllele allele1, final IAllele[] template, final int chance) {
+        this.isSecret = false;
+        this.minTemperature = 0.0f;
+        this.maxTemperature = 2.0f;
+        this.minRainfall = 0.0f;
+        this.maxRainfall = 2.0f;
+        this.height = -1.0f;
+        this.allele0 = allele0;
+        this.allele1 = allele1;
+        this.template = template;
+        this.chance = chance;
+        Binnie.Genetics.getTreeRoot().registerMutation((IMutation) this);
+    }
+
     public static void init() {
         final IAlleleTreeSpecies lemon = (IAlleleTreeSpecies) getVanilla("Lemon");
         new ExtraTreeMutation(getVanilla("Cherry"), (IAllele) lemon, (IAllele) ExtraTreeSpecies.KeyLime, 10);
@@ -132,24 +150,6 @@ public class ExtraTreeMutation implements ITreeMutation {
             throw new RuntimeException("No forestry species with id " + uid);
         }
         return allele;
-    }
-
-    public ExtraTreeMutation(final IAllele allele0, final IAllele allele1, final IAllele result, final int chance) {
-        this(allele0, allele1, Binnie.Genetics.getTreeRoot().getTemplate(result.getUID()), chance);
-    }
-
-    public ExtraTreeMutation(final IAllele allele0, final IAllele allele1, final IAllele[] template, final int chance) {
-        this.isSecret = false;
-        this.minTemperature = 0.0f;
-        this.maxTemperature = 2.0f;
-        this.minRainfall = 0.0f;
-        this.maxRainfall = 2.0f;
-        this.height = -1.0f;
-        this.allele0 = allele0;
-        this.allele1 = allele1;
-        this.template = template;
-        this.chance = chance;
-        Binnie.Genetics.getTreeRoot().registerMutation((IMutation) this);
     }
 
     public ExtraTreeMutation setIsSecret() {

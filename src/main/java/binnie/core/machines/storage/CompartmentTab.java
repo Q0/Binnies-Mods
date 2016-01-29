@@ -40,27 +40,27 @@ class CompartmentTab implements INBTTagable {
         return this.name;
     }
 
-    public ItemStack getIcon() {
-        return this.icon;
-    }
-
-    public EnumColor getColor() {
-        return this.color;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
     public void setName(final String name) {
         this.name = ((name == null) ? "" : name);
+    }
+
+    public ItemStack getIcon() {
+        return this.icon;
     }
 
     public void setIcon(final ItemStack icon) {
         this.icon = icon;
     }
 
+    public EnumColor getColor() {
+        return this.color;
+    }
+
     public void setColor(final EnumColor color) {
         this.color = color;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

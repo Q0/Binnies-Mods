@@ -21,6 +21,28 @@ public class ControlFruitPressProgress extends ControlProgressBase {
     static Texture PressTexture;
     static Texture PressSlot;
 
+    static {
+        ControlFruitPressProgress.PressTexture = new StandardTexture(6, 0, 24, 52, ExtraTreeTexture.Gui);
+        ControlFruitPressProgress.PressSlot = new StandardTexture(9, 52, 34, 17, ExtraTreeTexture.Gui);
+    }
+
+    protected ControlFruitPressProgress(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 37.0f, 69.0f);
+        this.addAttribute(Attribute.MouseOver);
+        this.addSelfEventHandler(new EventMouse.Down.Handler() {
+            @Override
+            public void onEvent(final EventMouse.Down event) {
+                if (event.getButton() == 0) {
+                    final NBTTagCompound action = new NBTTagCompound();
+                    Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("fruitpress-click", action);
+                } else if (event.getButton() == 1) {
+                    final NBTTagCompound action = new NBTTagCompound();
+                    Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("clear-fruit", action);
+                }
+            }
+        });
+    }
+
     @Override
     public void onRenderBackground() {
         CraftGUI.Render.texture(ControlFruitPressProgress.PressSlot, new IPoint(3.0f, 52.0f));
@@ -46,27 +68,5 @@ public class ControlFruitPressProgress extends ControlProgressBase {
     @Override
     public void onRenderForeground() {
         CraftGUI.Render.texture(ControlFruitPressProgress.PressTexture, new IPoint(0.0f, 16.0f * this.progress));
-    }
-
-    protected ControlFruitPressProgress(final IWidget parent, final float x, final float y) {
-        super(parent, x, y, 37.0f, 69.0f);
-        this.addAttribute(Attribute.MouseOver);
-        this.addSelfEventHandler(new EventMouse.Down.Handler() {
-            @Override
-            public void onEvent(final EventMouse.Down event) {
-                if (event.getButton() == 0) {
-                    final NBTTagCompound action = new NBTTagCompound();
-                    Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("fruitpress-click", action);
-                } else if (event.getButton() == 1) {
-                    final NBTTagCompound action = new NBTTagCompound();
-                    Window.get(ControlFruitPressProgress.this.getWidget()).sendClientAction("clear-fruit", action);
-                }
-            }
-        });
-    }
-
-    static {
-        ControlFruitPressProgress.PressTexture = new StandardTexture(6, 0, 24, 52, ExtraTreeTexture.Gui);
-        ControlFruitPressProgress.PressSlot = new StandardTexture(9, 52, 34, 17, ExtraTreeTexture.Gui);
     }
 }

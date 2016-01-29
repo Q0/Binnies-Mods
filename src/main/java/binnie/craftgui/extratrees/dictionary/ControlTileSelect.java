@@ -42,6 +42,10 @@ public class ControlTileSelect extends Control implements IControlValue<IDesign>
     }
 
     @Override
+    public void setPercentageIndex(final float index) {
+    }
+
+    @Override
     public float getPercentageShown() {
         return 0.0f;
     }
@@ -49,6 +53,11 @@ public class ControlTileSelect extends Control implements IControlValue<IDesign>
     @Override
     public IDesign getValue() {
         return this.value;
+    }
+
+    @Override
+    public void setValue(final IDesign value) {
+        this.value = value;
     }
 
     @Override
@@ -101,15 +110,6 @@ public class ControlTileSelect extends Control implements IControlValue<IDesign>
     }
 
     @Override
-    public void setPercentageIndex(final float index) {
-    }
-
-    @Override
-    public void setValue(final IDesign value) {
-        this.value = value;
-    }
-
-    @Override
     public float getMovementRange() {
         return 0.0f;
     }
@@ -147,6 +147,11 @@ public class ControlTileSelect extends Control implements IControlValue<IDesign>
         }
 
         @Override
+        public void setValue(final IDesign value) {
+            this.value = value;
+        }
+
+        @Override
         public void onRenderBackground() {
             CraftGUI.Render.texture(CraftGUITexture.Slot, IPoint.ZERO);
         }
@@ -162,11 +167,6 @@ public class ControlTileSelect extends Control implements IControlValue<IDesign>
                     CraftGUI.Render.gradientRect(this.getArea().inset(1), -1433892728, -1433892728);
                 }
             }
-        }
-
-        @Override
-        public void setValue(final IDesign value) {
-            this.value = value;
         }
     }
 }

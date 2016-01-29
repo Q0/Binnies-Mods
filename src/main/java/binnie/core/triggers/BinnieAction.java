@@ -13,9 +13,14 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 class BinnieAction implements IActionExternal {
-    private static int incrementalID;
     public static BinnieAction actionPauseProcess;
     public static BinnieAction actionCancelTask;
+    private static int incrementalID;
+
+    static {
+        BinnieAction.incrementalID = 800;
+    }
+
     private String desc;
     private BinnieIcon icon;
     private String tag;
@@ -69,9 +74,5 @@ class BinnieAction implements IActionExternal {
     }
 
     public void actionActivate(final TileEntity target, final ForgeDirection side, final IStatementContainer source, final IStatementParameter[] parameters) {
-    }
-
-    static {
-        BinnieAction.incrementalID = 800;
     }
 }

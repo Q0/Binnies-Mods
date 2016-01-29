@@ -19,6 +19,13 @@ public class ModuleGeneration implements IWorldGenerator, IInitializable {
     static int netherRate;
     static int marbleRate;
 
+    static {
+        ModuleGeneration.waterRate = 2;
+        ModuleGeneration.rockRate = 2;
+        ModuleGeneration.netherRate = 2;
+        ModuleGeneration.marbleRate = 2;
+    }
+
     public void preInit() {
         ExtraBees.materialBeehive = new MaterialBeehive();
         GameRegistry.registerBlock(ExtraBees.hive = new BlockExtraBeeHive(), (Class) ItemBeehive.class, "hive");
@@ -71,12 +78,5 @@ public class ModuleGeneration implements IWorldGenerator, IInitializable {
             final int randPosZ = chunkZ + rand.nextInt(16);
             new WorldGenHiveNether().generate(world, rand, randPosX, randPosY, randPosZ);
         }
-    }
-
-    static {
-        ModuleGeneration.waterRate = 2;
-        ModuleGeneration.rockRate = 2;
-        ModuleGeneration.netherRate = 2;
-        ModuleGeneration.marbleRate = 2;
     }
 }

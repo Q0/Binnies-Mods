@@ -2,6 +2,11 @@ package binnie.craftgui.core.geometry;
 
 public class IBorder {
     public static final IBorder ZERO;
+
+    static {
+        ZERO = new IBorder(0.0f);
+    }
+
     float t;
     float b;
     float l;
@@ -97,9 +102,5 @@ public class IBorder {
     @Override
     public String toString() {
         return this.t() + "-" + this.r() + "-" + this.b() + "-" + this.l();
-    }
-
-    static {
-        ZERO = new IBorder(0.0f);
     }
 }

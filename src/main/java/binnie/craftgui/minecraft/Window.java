@@ -34,18 +34,62 @@ import java.util.ArrayList;
 import java.util.Deque;
 
 public abstract class Window extends TopLevelWidget implements INetwork.RecieveGuiNBT {
+    protected float titleButtonLeft;
+    protected float titleButtonRight;
     private GuiCraftGUI gui;
     private ContainerCraftGUI container;
     private WindowInventory windowInventory;
     private ControlText title;
-    protected float titleButtonLeft;
-    protected float titleButtonRight;
     private StandardTexture bgText1;
     private StandardTexture bgText2;
     private boolean hasBeenInitialised;
     private EntityPlayer player;
     private IInventory entityInventory;
     private Side side;
+
+    public Window(final float width, final float height, final EntityPlayer player, final IInventory inventory, final Side side) {
+        this.titleButtonLeft = 8.0f;
+        this.titleButtonRight = 8.0f;
+        this.bgText1 = null;
+        this.bgText2 = null;
+        this.hasBeenInitialised = false;
+        this.side = Side.CLIENT;
+        this.side = side;
+        this.setInventories(player, inventory);
+        this.container = new ContainerCraftGUI(this);
+        this.windowInventory = new WindowInventory(this);
+        if (side == Side.SERVER) {
+            return;
+        }
+        this.setSize(new IPoint(width, height));
+        this.gui = new GuiCraftGUI(this);
+        for (final EnumHighlighting h : EnumHighlighting.values()) {
+            ControlSlot.highlighting.put(h, new ArrayList<Integer>());
+        }
+        (CraftGUI.Render = new Renderer(this.gui)).stylesheet(StyleSheetManager.getDefault());
+        this.titleButtonLeft = -14.0f;
+        if (this.showHelpButton()) {
+            new ControlHelp(this, this.titleButtonLeft += 22.0f, 8.0f);
+        }
+        if (this.showInfoButton() != null) {
+            new ControlInfo(this, this.titleButtonLeft += 22.0f, 8.0f, this.showInfoButton());
+        }
+        this.addSelfEventHandler(new EventWidget.ChangeSize.Handler() {
+            @Override
+            public void onEvent(final EventWidget.ChangeSize event) {
+                if (Window.this.isClient() && Window.this.getGui() != null) {
+                    Window.this.getGui().resize(Window.this.getSize());
+                    if (Window.this.title != null) {
+                        Window.this.title.setSize(new IPoint(Window.this.w(), Window.this.title.h()));
+                    }
+                }
+            }
+        });
+    }
+
+    public static <T extends Window> T get(final IWidget widget) {
+        return (T) widget.getSuperParent();
+    }
 
     public void getTooltip(final Tooltip tooltip) {
         final Deque<IWidget> queue = this.calculateMousedOverWidgets();
@@ -108,46 +152,6 @@ public abstract class Window extends TopLevelWidget implements INetwork.RecieveG
             return Machine.getInterface(IMachineInformation.class, this.getInventory()).getInformation();
         }
         return null;
-    }
-
-    public Window(final float width, final float height, final EntityPlayer player, final IInventory inventory, final Side side) {
-        this.titleButtonLeft = 8.0f;
-        this.titleButtonRight = 8.0f;
-        this.bgText1 = null;
-        this.bgText2 = null;
-        this.hasBeenInitialised = false;
-        this.side = Side.CLIENT;
-        this.side = side;
-        this.setInventories(player, inventory);
-        this.container = new ContainerCraftGUI(this);
-        this.windowInventory = new WindowInventory(this);
-        if (side == Side.SERVER) {
-            return;
-        }
-        this.setSize(new IPoint(width, height));
-        this.gui = new GuiCraftGUI(this);
-        for (final EnumHighlighting h : EnumHighlighting.values()) {
-            ControlSlot.highlighting.put(h, new ArrayList<Integer>());
-        }
-        (CraftGUI.Render = new Renderer(this.gui)).stylesheet(StyleSheetManager.getDefault());
-        this.titleButtonLeft = -14.0f;
-        if (this.showHelpButton()) {
-            new ControlHelp(this, this.titleButtonLeft += 22.0f, 8.0f);
-        }
-        if (this.showInfoButton() != null) {
-            new ControlInfo(this, this.titleButtonLeft += 22.0f, 8.0f, this.showInfoButton());
-        }
-        this.addSelfEventHandler(new EventWidget.ChangeSize.Handler() {
-            @Override
-            public void onEvent(final EventWidget.ChangeSize event) {
-                if (Window.this.isClient() && Window.this.getGui() != null) {
-                    Window.this.getGui().resize(Window.this.getSize());
-                    if (Window.this.title != null) {
-                        Window.this.title.setSize(new IPoint(Window.this.w(), Window.this.title.h()));
-                    }
-                }
-            }
-        });
     }
 
     public void setTitle(final String title) {
@@ -222,6 +226,12 @@ public abstract class Window extends TopLevelWidget implements INetwork.RecieveG
         return null;
     }
 
+    public void setHeldItemStack(final ItemStack stack) {
+        if (this.player != null) {
+            this.player.inventory.setItemStack(stack);
+        }
+    }
+
     public IInventory getInventory() {
         return this.entityInventory;
     }
@@ -232,12 +242,6 @@ public abstract class Window extends TopLevelWidget implements INetwork.RecieveG
     }
 
     public void onClose() {
-    }
-
-    public void setHeldItemStack(final ItemStack stack) {
-        if (this.player != null) {
-            this.player.inventory.setItemStack(stack);
-        }
     }
 
     public boolean isServer() {
@@ -291,9 +295,5 @@ public abstract class Window extends TopLevelWidget implements INetwork.RecieveG
 
     public Texture getBackground2() {
         return this.bgText2;
-    }
-
-    public static <T extends Window> T get(final IWidget widget) {
-        return (T) widget.getSuperParent();
     }
 }

@@ -11,8 +11,21 @@ import binnie.craftgui.resource.minecraft.StandardTexture;
 public class ControlColourMixSymbol extends Control implements ITooltip {
     static Texture MutationPlus;
     static Texture MutationArrow;
+
+    static {
+        ControlColourMixSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
+        ControlColourMixSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
+    }
+
     IColourMix value;
     int type;
+
+    protected ControlColourMixSymbol(final IWidget parent, final int x, final int y, final int type) {
+        super(parent, x, y, 16 + type * 16, 16.0f);
+        this.value = null;
+        this.type = type;
+        this.addAttribute(Attribute.MouseOver);
+    }
 
     @Override
     public void onRenderBackground() {
@@ -22,13 +35,6 @@ public class ControlColourMixSymbol extends Control implements ITooltip {
         } else {
             CraftGUI.Render.texture(ControlColourMixSymbol.MutationArrow, IPoint.ZERO);
         }
-    }
-
-    protected ControlColourMixSymbol(final IWidget parent, final int x, final int y, final int type) {
-        super(parent, x, y, 16 + type * 16, 16.0f);
-        this.value = null;
-        this.type = type;
-        this.addAttribute(Attribute.MouseOver);
     }
 
     public void setValue(final IColourMix value) {
@@ -42,10 +48,5 @@ public class ControlColourMixSymbol extends Control implements ITooltip {
             final float chance = this.value.getChance();
             tooltip.add("Current Chance - " + chance + "%");
         }
-    }
-
-    static {
-        ControlColourMixSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
-        ControlColourMixSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
     }
 }

@@ -11,14 +11,14 @@ import net.minecraft.item.Item;
 import java.util.Random;
 
 public class BlockEctoplasm extends BlockWeb {
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister register) {
-        blockIcon = ExtraBees.proxy.getIcon(register, "ectoplasm");
-    }
-
     public BlockEctoplasm() {
         setLightOpacity(1);
         setHardness(0.5f);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(final IIconRegister register) {
+        blockIcon = ExtraBees.proxy.getIcon(register, "ectoplasm");
     }
 
     public int quantityDropped(final Random rand) {

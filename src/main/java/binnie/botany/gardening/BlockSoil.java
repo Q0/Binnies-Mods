@@ -33,6 +33,35 @@ public class BlockSoil extends Block implements IBlockSoil {
     IIcon[] iconsNoWeed;
     EnumSoilType type;
 
+    public BlockSoil(final EnumSoilType type, final String blockName, final boolean weedKilled) {
+        super(Material.ground);
+        this.weedKilled = false;
+        this.iconsTop = new IIcon[9];
+        this.iconsSide = new IIcon[9];
+        this.iconsNoWeed = new IIcon[9];
+        this.weedKilled = weedKilled;
+        this.setCreativeTab(CreativeTabBotany.instance);
+        this.setBlockName(blockName);
+        this.setTickRandomly(true);
+        this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.9375f, 1.0f);
+        this.setLightOpacity(255);
+        this.setHardness(0.5f);
+        this.setStepSound(BlockSoil.soundTypeGravel);
+        this.type = type;
+    }
+
+    public static int getMeta(final EnumAcidity acid, final EnumMoisture moisture) {
+        return acid.ordinal() * 3 + moisture.ordinal();
+    }
+
+    public static String getPH(final ItemStack stack) {
+        return Binnie.Language.localise(EnumAcidity.values()[stack.getItemDamage() / 3]);
+    }
+
+    public static String getMoisture(final ItemStack stack) {
+        return Binnie.Language.localise(EnumMoisture.values()[stack.getItemDamage() % 3]);
+    }
+
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         for (int i = 0; i < 9; ++i) {
@@ -66,23 +95,6 @@ public class BlockSoil extends Block implements IBlockSoil {
 
     public EnumSoilType getType() {
         return this.type;
-    }
-
-    public BlockSoil(final EnumSoilType type, final String blockName, final boolean weedKilled) {
-        super(Material.ground);
-        this.weedKilled = false;
-        this.iconsTop = new IIcon[9];
-        this.iconsSide = new IIcon[9];
-        this.iconsNoWeed = new IIcon[9];
-        this.weedKilled = weedKilled;
-        this.setCreativeTab(CreativeTabBotany.instance);
-        this.setBlockName(blockName);
-        this.setTickRandomly(true);
-        this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.9375f, 1.0f);
-        this.setLightOpacity(255);
-        this.setHardness(0.5f);
-        this.setStepSound(BlockSoil.soundTypeGravel);
-        this.type = type;
     }
 
     public int damageDropped(final int p_149692_1_) {
@@ -161,23 +173,11 @@ public class BlockSoil extends Block implements IBlockSoil {
         return world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
 
-    public static int getMeta(final EnumAcidity acid, final EnumMoisture moisture) {
-        return acid.ordinal() * 3 + moisture.ordinal();
-    }
-
     public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block p_149695_5_) {
         super.onNeighborBlockChange(world, x, y, z, p_149695_5_);
         if (world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN, false)) {
             world.setBlock(x, y, z, Blocks.dirt, 0, 2);
         }
-    }
-
-    public static String getPH(final ItemStack stack) {
-        return Binnie.Language.localise(EnumAcidity.values()[stack.getItemDamage() / 3]);
-    }
-
-    public static String getMoisture(final ItemStack stack) {
-        return Binnie.Language.localise(EnumMoisture.values()[stack.getItemDamage() % 3]);
     }
 
     public boolean canSustainPlant(final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection direction, final IPlantable plantable) {

@@ -20,15 +20,15 @@ public interface IWidget {
 
     IPoint getPosition();
 
-    IPoint pos();
-
     void setPosition(final IPoint p0);
+
+    IPoint pos();
 
     IPoint getSize();
 
-    IPoint size();
-
     void setSize(final IPoint p0);
+
+    IPoint size();
 
     IPoint getOriginalPosition();
 
@@ -38,19 +38,19 @@ public interface IWidget {
 
     IPoint getOffset();
 
+    void setOffset(final IPoint p0);
+
     IArea getArea();
 
     IArea area();
-
-    void setOffset(final IPoint p0);
 
     IPoint getMousePosition();
 
     IPoint getRelativeMousePosition();
 
-    void setColour(final int p0);
-
     int getColour();
+
+    void setColour(final int p0);
 
     void render();
 

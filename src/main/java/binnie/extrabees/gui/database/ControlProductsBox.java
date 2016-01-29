@@ -14,23 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControlProductsBox extends ControlListBox {
+    IAlleleBeeSpecies species = null;
     private int index;
     private ControlProductsBox.Type type;
-    IAlleleBeeSpecies species = null;
-
-    public IWidget createOption(ControlProductsBox.Product value, int y) {
-        return new ControlProductsItem((ControlList) getContent(), value, y);
-    }
 
     public ControlProductsBox(IWidget parent, int x, int y, int width, int height, ControlProductsBox.Type type) {
         super(parent, x, y, width, height, 12.0F);
         this.type = type;
     }
 
+    public IWidget createOption(ControlProductsBox.Product value, int y) {
+        return new ControlProductsItem((ControlList) getContent(), value, y);
+    }
+
     public void setSpecies(IAlleleBeeSpecies species) {
         if (species != this.species) {
             this.species = species;
-            
+
             if (species != null) {
                 IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
                 if (template == null) {
@@ -57,6 +57,14 @@ public class ControlProductsBox extends ControlListBox {
         }
     }
 
+    enum Type {
+        Products,
+        Specialties;
+
+        Type() {
+        }
+    }
+
     class Product {
         ItemStack item;
         float chance;
@@ -65,14 +73,6 @@ public class ControlProductsBox extends ControlListBox {
             super();
             this.item = item;
             this.chance = chance;
-        }
-    }
-
-    enum Type {
-        Products,
-        Specialties;
-
-        Type() {
         }
     }
 }

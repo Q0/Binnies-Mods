@@ -40,8 +40,8 @@ public class GardenLogic extends FarmLogic {
     boolean fertilised;
     String name;
     ArrayList<ItemStack> produce;
-    private ItemStack icon;
     List<IFarmable> farmables;
+    private ItemStack icon;
 
     public GardenLogic(final IFarmHousing housing) {
         super(housing);
@@ -241,10 +241,6 @@ public class GardenLogic extends FarmLogic {
         }
     }
 
-    public void setIcon(final ItemStack icon) {
-        this.icon = icon;
-    }
-
     public boolean isAcceptedGermling(final ItemStack itemstack) {
         for (final IFarmable farmable : this.farmables) {
             if (farmable.isGermling(itemstack)) {
@@ -261,6 +257,10 @@ public class GardenLogic extends FarmLogic {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon() {
         return this.icon.getIconIndex();
+    }
+
+    public void setIcon(final ItemStack icon) {
+        this.icon = icon;
     }
 
     public ResourceLocation getSpriteSheet() {

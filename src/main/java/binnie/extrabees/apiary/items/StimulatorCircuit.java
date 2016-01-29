@@ -16,10 +16,10 @@ public class StimulatorCircuit extends BinnieCircuit {
 
     public StimulatorCircuit(final CircuitModifier modifier, final ICircuitLayout layout) {
         super(
-            "stimulator." + modifier.toString().toLowerCase(),
-            4,
-            layout,
-            Mods.Forestry.item("thermionicTubes"), modifier.getRecipe()
+                "stimulator." + modifier.toString().toLowerCase(),
+                4,
+                layout,
+                Mods.Forestry.item("thermionicTubes"), modifier.getRecipe()
         );
 
         this.modifier = modifier;

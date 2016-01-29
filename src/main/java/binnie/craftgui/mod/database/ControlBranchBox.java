@@ -7,12 +7,12 @@ import binnie.craftgui.core.IWidget;
 import forestry.api.genetics.IClassification;
 
 class ControlBranchBox extends ControlListBox<IClassification> {
+    public ControlBranchBox(final IWidget parent, final float x, final float y, final float width, final float height) {
+        super(parent, x, y, width, height, 12.0f);
+    }
+
     @Override
     public IWidget createOption(final IClassification value, final int y) {
         return new ControlBranchBoxOption(((ControlScrollableContent<ControlList<IClassification>>) this).getContent(), value, y);
-    }
-
-    public ControlBranchBox(final IWidget parent, final float x, final float y, final float width, final float height) {
-        super(parent, x, y, width, height, 12.0f);
     }
 }

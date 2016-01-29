@@ -9,15 +9,8 @@ import java.util.Collection;
 public abstract class FieldParser {
     public static Collection<FieldParser> parsers;
 
-    public abstract boolean isHandled(final Field p0, final AbstractMod p1);
-
-    public void preInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-    }
-
-    public void init(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
-    }
-
-    public void postInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+    static {
+        FieldParser.parsers = new ArrayList<FieldParser>();
     }
 
     public static void preInitParse(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
@@ -44,7 +37,14 @@ public abstract class FieldParser {
         }
     }
 
-    static {
-        FieldParser.parsers = new ArrayList<FieldParser>();
+    public abstract boolean isHandled(final Field p0, final AbstractMod p1);
+
+    public void preInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+    }
+
+    public void init(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
+    }
+
+    public void postInit(final Field field, final AbstractMod mod) throws IllegalArgumentException, IllegalAccessException {
     }
 }

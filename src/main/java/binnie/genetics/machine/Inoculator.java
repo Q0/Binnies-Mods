@@ -52,6 +52,13 @@ public class Inoculator {
     public static final int[] slotFinished;
     public static final int tankVector = 0;
 
+    static {
+        slotSerumReserve = new int[]{1, 2};
+        slotSerumExpended = new int[]{3, 4};
+        slotReserve = new int[]{5, 6, 7, 8};
+        slotFinished = new int[]{10, 11, 12, 13};
+    }
+
     public static void setGene(final IGene gene, final ItemStack target, final int chromoN) {
         int chromosomeID;
         final int chromosome = chromosomeID = gene.getChromosome().ordinal();
@@ -68,13 +75,6 @@ public class Inoculator {
         final NBTTagCompound chromosomeNBT = chromosomes.getCompoundTagAt(chromosomeID);
         chromosomeNBT.setString("UID" + chromoN, gene.getAllele().getUID());
         target.setTagCompound(beeNBT);
-    }
-
-    static {
-        slotSerumReserve = new int[]{1, 2};
-        slotSerumExpended = new int[]{3, 4};
-        slotReserve = new int[]{5, 6, 7, 8};
-        slotFinished = new int[]{10, 11, 12, 13};
     }
 
     public static class PackageInoculator extends GeneticMachine.PackageGeneticBase implements IMachineInformation {
@@ -170,6 +170,11 @@ public class Inoculator {
     public static class ComponentInoculatorLogic extends ComponentProcessSetCost implements IProcess {
         private float bacteriaDrain;
 
+        public ComponentInoculatorLogic(final Machine machine) {
+            super(machine, 600000, 12000);
+            this.bacteriaDrain = 0.0f;
+        }
+
         @Override
         public int getProcessLength() {
             return super.getProcessLength() * this.getNumberOfGenes();
@@ -192,11 +197,6 @@ public class Inoculator {
         public String getTooltip() {
             final int n = this.getNumberOfGenes();
             return "Inoculating with " + n + " gene" + ((n > 1) ? "s" : "");
-        }
-
-        public ComponentInoculatorLogic(final Machine machine) {
-            super(machine, 600000, 12000);
-            this.bacteriaDrain = 0.0f;
         }
 
         @Override

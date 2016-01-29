@@ -20,6 +20,12 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 public class ItemSoilMeter extends Item {
+    public ItemSoilMeter() {
+        this.setCreativeTab(CreativeTabBotany.instance);
+        this.setUnlocalizedName("soilMeter");
+        this.setMaxStackSize(1);
+    }
+
     public boolean onItemUse(final ItemStack stack, final EntityPlayer player, final World world, final int x, int y, final int z, final int p_77648_7_, final float p_77648_8_, final float p_77648_9_, final float p_77648_10_) {
         Block block = world.getBlock(x, y, z);
         if (!Gardening.isSoil(block)) {
@@ -46,12 +52,6 @@ public class ItemSoilMeter extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister register) {
         this.itemIcon = Botany.proxy.getIcon(register, "soilMeter");
-    }
-
-    public ItemSoilMeter() {
-        this.setCreativeTab(CreativeTabBotany.instance);
-        this.setUnlocalizedName("soilMeter");
-        this.setMaxStackSize(1);
     }
 
     public String getItemStackDisplayName(final ItemStack i) {

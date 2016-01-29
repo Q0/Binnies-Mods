@@ -3,17 +3,17 @@ package binnie.core.liquid;
 import net.minecraftforge.fluids.Fluid;
 
 class BinnieFluid extends Fluid {
-    private final String name;
     final IFluidType fluidType;
-
-    public String getLocalizedName() {
-        return this.name;
-    }
+    private final String name;
 
     public BinnieFluid(final IFluidType fluid) {
         super(fluid.getIdentifier());
         this.fluidType = fluid;
         this.name = fluid.getName();
+    }
+
+    public String getLocalizedName() {
+        return this.name;
     }
 
     public int getColor() {

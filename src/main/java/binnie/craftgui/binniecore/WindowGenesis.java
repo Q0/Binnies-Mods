@@ -28,15 +28,16 @@ import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.IIndividual;
 import forestry.api.genetics.ISpeciesRoot;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class WindowGenesis extends Window {
     private ISpeciesRoot root;
@@ -64,17 +65,17 @@ public class WindowGenesis extends Window {
             public ControlTab createTab(final float x, final float y, final float w, final float h, final BreedingSystem value) {
                 return new ControlTabIcon(this, x, y, w, h, value) {
                     public ItemStack getItemStack() {
-                        int type = ((BreedingSystem)this.value).getDefaultType();
-                        IIndividual ind = ((BreedingSystem)this.value).getDefaultIndividual();
-                        return ((BreedingSystem)this.value).getSpeciesRoot().getMemberStack(ind, type);
+                        int type = ((BreedingSystem) this.value).getDefaultType();
+                        IIndividual ind = ((BreedingSystem) this.value).getDefaultIndividual();
+                        return ((BreedingSystem) this.value).getSpeciesRoot().getMemberStack(ind, type);
                     }
 
                     public String getName() {
-                        return ((BreedingSystem)this.value).getName();
+                        return ((BreedingSystem) this.value).getName();
                     }
 
                     public int getOutlineColour() {
-                        return ((BreedingSystem)this.value).getColour();
+                        return ((BreedingSystem) this.value).getColour();
                     }
 
                     public boolean hasOutline() {
@@ -84,7 +85,7 @@ public class WindowGenesis extends Window {
             }
         };
         tabSystems.setValues(Binnie.Genetics.getActiveSystems());
-        this.root = ((BreedingSystem)Binnie.Genetics.getActiveSystems().iterator().next()).getSpeciesRoot();
+        this.root = ((BreedingSystem) Binnie.Genetics.getActiveSystems().iterator().next()).getSpeciesRoot();
         this.template = this.root.getDefaultTemplate();
         IArea one = new IArea(32.0F, 28.0F, 170.0F, 100.0F);
         IArea two = new IArea(214.0F, 28.0F, 100.0F, 100.0F);
@@ -92,19 +93,19 @@ public class WindowGenesis extends Window {
         new Panel(this, two.outset(1), MinecraftGUI.PanelType.Black);
         this.geneList = new ControlListBox(this, one.x(), one.y(), one.w(), one.h(), 10.0F) {
             public IWidget createOption(Gene value, int y) {
-                return new ControlGenesisOption((ControlList)this.getContent(), value, y);
+                return new ControlGenesisOption((ControlList) this.getContent(), value, y);
             }
         };
         this.geneOptions = new ControlListBox(this, two.x(), two.y(), two.w(), two.h(), 10.0F) {
             public IWidget createOption(Gene value, int y) {
-                return new ControlTextOption((ControlList)this.getContent(), value, y);
+                return new ControlTextOption((ControlList) this.getContent(), value, y);
             }
         };
         tabSystems.addEventHandler((new EventValueChanged.Handler() {
             public void onEvent(EventValueChanged event) {
-                WindowGenesis.this.root = ((BreedingSystem)event.getValue()).getSpeciesRoot();
+                WindowGenesis.this.root = ((BreedingSystem) event.getValue()).getSpeciesRoot();
                 WindowGenesis.this.template = WindowGenesis.this.root.getDefaultTemplate();
-                WindowGenesis.this.refreshTemplate((IChromosomeType)null);
+                WindowGenesis.this.refreshTemplate((IChromosomeType) null);
             }
         }).setOrigin(EventHandler.Origin.Self, tabSystems));
         this.geneList.addEventHandler((new EventValueChanged.Handler() {
@@ -112,7 +113,7 @@ public class WindowGenesis extends Window {
             public void onEvent(final EventValueChanged event) {
                 final Map<IChromosomeType, List<IAllele>> map = Binnie.Genetics.getChromosomeMap(WindowGenesis.this.root);
                 final List<Gene> opts = new ArrayList<Gene>();
-                final IChromosomeType chromo = ((Gene)event.value).getChromosome();
+                final IChromosomeType chromo = ((Gene) event.value).getChromosome();
                 for (final IAllele allele : map.get(chromo)) {
                     opts.add(new Gene(allele, chromo, WindowGenesis.this.root));
                 }
@@ -121,11 +122,11 @@ public class WindowGenesis extends Window {
         }).setOrigin(EventHandler.Origin.Self, this.geneList));
         this.geneOptions.addEventHandler((new EventValueChanged.Handler() {
             public void onEvent(EventValueChanged event) {
-                if(event.value != null) {
-                    IChromosomeType chromo = ((Gene)event.value).getChromosome();
-                    WindowGenesis.this.template[chromo.ordinal()] = ((Gene)event.value).getAllele();
-                    if(chromo == ((Gene)event.value).getSpeciesRoot().getKaryotypeKey()) {
-                        WindowGenesis.this.template = ((Gene)event.value).getSpeciesRoot().getTemplate(((Gene)event.value).getAllele().getUID());
+                if (event.value != null) {
+                    IChromosomeType chromo = ((Gene) event.value).getChromosome();
+                    WindowGenesis.this.template[chromo.ordinal()] = ((Gene) event.value).getAllele();
+                    if (chromo == ((Gene) event.value).getSpeciesRoot().getKaryotypeKey()) {
+                        WindowGenesis.this.template = ((Gene) event.value).getSpeciesRoot().getTemplate(((Gene) event.value).getAllele().getUID());
                     }
 
                     WindowGenesis.this.refreshTemplate(chromo);
@@ -133,16 +134,16 @@ public class WindowGenesis extends Window {
             }
         }).setOrigin(EventHandler.Origin.Self, this.geneOptions));
         this.panelPickup = new Panel(this, 16.0F, 140.0F, 60.0F, 42.0F, MinecraftGUI.PanelType.Black);
-        this.refreshTemplate((IChromosomeType)null);
+        this.refreshTemplate((IChromosomeType) null);
     }
 
     private void refreshTemplate(IChromosomeType selection) {
         List<Gene> genes = new ArrayList();
-        IChromosomeType[] chromos = (IChromosomeType[])Binnie.Genetics.getChromosomeMap(this.root).keySet().toArray(new IChromosomeType[0]);
+        IChromosomeType[] chromos = (IChromosomeType[]) Binnie.Genetics.getChromosomeMap(this.root).keySet().toArray(new IChromosomeType[0]);
 
-        for(IChromosomeType type : chromos) {
+        for (IChromosomeType type : chromos) {
             IAllele allele = this.template[type.ordinal()];
-            if(allele == null) {
+            if (allele == null) {
                 throw new NullPointerException("Allele missing for Chromosome " + type.getName());
             }
 
@@ -151,7 +152,7 @@ public class WindowGenesis extends Window {
 
         Map<IChromosomeType, List<IAllele>> map = Binnie.Genetics.getChromosomeMap(this.root);
         this.geneList.setOptions(genes);
-        if(selection != null) {
+        if (selection != null) {
             this.geneList.setValue(new Gene(this.template[selection.ordinal()], selection, this.root));
         } else {
             this.geneOptions.setOptions(new ArrayList());
@@ -164,11 +165,11 @@ public class WindowGenesis extends Window {
         this.panelPickup.deleteAllChildren();
         int i = 0;
 
-        for(int type : Binnie.Genetics.getSystem(this.root).getActiveTypes()) {
+        for (int type : Binnie.Genetics.getSystem(this.root).getActiveTypes()) {
             IIndividual ind = this.root.templateAsIndividual(this.template);
             ind.analyze();
             final ItemStack stack = this.root.getMemberStack(ind, type);
-            ControlItemDisplay display = new ControlItemDisplay(this.panelPickup, (float)(4 + i % 3 * 18), (float)(4 + i / 3 * 18));
+            ControlItemDisplay display = new ControlItemDisplay(this.panelPickup, (float) (4 + i % 3 * 18), (float) (4 + i / 3 * 18));
             display.setItemStack(stack);
             display.setTooltip();
             display.addEventHandler((new EventMouse.Down.Handler() {
@@ -185,26 +186,26 @@ public class WindowGenesis extends Window {
 
     public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound action) {
         super.recieveGuiNBT(side, player, name, action);
-        if(side == Side.SERVER && name.equals("genesis")) {
+        if (side == Side.SERVER && name.equals("genesis")) {
             ItemStack stack = ItemStack.loadItemStackFromNBT(action);
             InventoryPlayer playerInv = player.inventory;
-            if(stack == null) {
+            if (stack == null) {
                 return;
             }
 
-            if(playerInv.getItemStack() == null) {
+            if (playerInv.getItemStack() == null) {
                 playerInv.setItemStack(stack);
-            } else if(playerInv.getItemStack().isItemEqual(stack) && ItemStack.areItemStackTagsEqual(playerInv.getItemStack(), stack)) {
+            } else if (playerInv.getItemStack().isItemEqual(stack) && ItemStack.areItemStackTagsEqual(playerInv.getItemStack(), stack)) {
                 int fit = stack.getMaxStackSize() - (stack.stackSize + playerInv.getItemStack().stackSize);
-                if(fit >= 0) {
+                if (fit >= 0) {
                     stack.stackSize += playerInv.getItemStack().stackSize;
                     playerInv.setItemStack(stack);
                 }
             }
 
             player.openContainer.detectAndSendChanges();
-            if(player instanceof EntityPlayerMP) {
-                ((EntityPlayerMP)player).updateHeldItem();
+            if (player instanceof EntityPlayerMP) {
+                ((EntityPlayerMP) player).updateHeldItem();
             }
         }
 

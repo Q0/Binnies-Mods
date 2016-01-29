@@ -11,10 +11,10 @@ import java.util.List;
 public class TextureManager {
     static List<Icon> textures;
 
-    public static void init() {
-    }
-
     static {
         TextureManager.textures = new ArrayList<Icon>();
+    }
+
+    public static void init() {
     }
 }

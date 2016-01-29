@@ -17,9 +17,9 @@ import java.util.*;
 public class TreeBreedingSystem extends BreedingSystem {
     public UniqueItemStackSet allFruits;
     public UniqueItemStackSet allWoods;
+    public UniqueItemStackSet discoveredPlanks;
     private UniqueItemStackSet discoveredFruits;
     private UniqueItemStackSet discoveredWoods;
-    public UniqueItemStackSet discoveredPlanks;
 
     public TreeBreedingSystem() {
         this.allFruits = new UniqueItemStackSet();
@@ -36,7 +36,7 @@ public class TreeBreedingSystem extends BreedingSystem {
         final IGenome genome0 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID()));
         final IGenome genome2 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID()));
         //TODO: FIX
-        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, (IAlleleTreeSpecies)species1, (IAlleleTreeSpecies)species2, (ITreeGenome)genome0, (ITreeGenome)genome2);
+        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, (IAlleleTreeSpecies) species1, (IAlleleTreeSpecies) species2, (ITreeGenome) genome0, (ITreeGenome) genome2);
     }
 
     @Override

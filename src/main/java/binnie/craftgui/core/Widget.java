@@ -12,16 +12,16 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class Widget implements IWidget {
+    IArea cropArea;
+    IWidget cropWidget;
+    boolean cropped;
+    int colour;
     private IWidget parent;
     private List<IWidget> subWidgets;
     private List<IWidgetAttribute> attributes;
     private IPoint position;
     private IPoint size;
     private IPoint offset;
-    IArea cropArea;
-    IWidget cropWidget;
-    boolean cropped;
-    int colour;
     private Collection<EventHandler> globalEventHandlers;
     private boolean enabled;
     private boolean visible;
@@ -130,6 +130,14 @@ public class Widget implements IWidget {
     }
 
     @Override
+    public final void setPosition(final IPoint vector) {
+        if (!vector.equals(this.position)) {
+            this.position = new IPoint(vector);
+            this.callEvent(new EventWidget.ChangePosition(this));
+        }
+    }
+
+    @Override
     public final IArea getArea() {
         return new IArea(IPoint.ZERO, this.size());
     }
@@ -167,24 +175,16 @@ public class Widget implements IWidget {
     }
 
     @Override
-    public final IPoint getOffset() {
-        return this.offset;
-    }
-
-    @Override
-    public final void setPosition(final IPoint vector) {
-        if (!vector.equals(this.position)) {
-            this.position = new IPoint(vector);
-            this.callEvent(new EventWidget.ChangePosition(this));
-        }
-    }
-
-    @Override
     public final void setSize(final IPoint vector) {
         if (!vector.equals(this.size)) {
             this.size = new IPoint(vector);
             this.callEvent(new EventWidget.ChangeSize(this));
         }
+    }
+
+    @Override
+    public final IPoint getOffset() {
+        return this.offset;
     }
 
     @Override
@@ -196,16 +196,16 @@ public class Widget implements IWidget {
     }
 
     @Override
+    public final int getColour() {
+        return this.colour;
+    }
+
+    @Override
     public final void setColour(final int colour) {
         if (this.colour != colour) {
             this.colour = colour;
             this.callEvent(new EventWidget.ChangeColour(this));
         }
-    }
-
-    @Override
-    public final int getColour() {
-        return this.colour;
     }
 
     @Override

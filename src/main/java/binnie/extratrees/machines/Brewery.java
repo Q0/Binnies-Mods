@@ -39,6 +39,16 @@ public class Brewery {
     public static int tankOutput;
     private static List<IBreweryRecipe> recipes;
 
+    static {
+        Brewery.slotRecipeGrains = new int[]{0, 1, 2};
+        Brewery.slotRecipeInput = 3;
+        Brewery.slotRecipeYeast = 4;
+        Brewery.slotInventory = new int[]{5, 6, 7, 8, 9, 10, 11, 12, 13};
+        Brewery.tankInput = 0;
+        Brewery.tankOutput = 1;
+        Brewery.recipes = new ArrayList<IBreweryRecipe>();
+    }
+
     public static boolean isValidGrain(final ItemStack itemstack) {
         for (final IBreweryRecipe recipe : Brewery.recipes) {
             for (final ItemStack ingredient : recipe.getGrains()) {
@@ -127,14 +137,18 @@ public class Brewery {
         Brewery.recipes.add(new BeerRecipe());
     }
 
-    static {
-        Brewery.slotRecipeGrains = new int[]{0, 1, 2};
-        Brewery.slotRecipeInput = 3;
-        Brewery.slotRecipeYeast = 4;
-        Brewery.slotInventory = new int[]{5, 6, 7, 8, 9, 10, 11, 12, 13};
-        Brewery.tankInput = 0;
-        Brewery.tankOutput = 1;
-        Brewery.recipes = new ArrayList<IBreweryRecipe>();
+    private interface IBreweryRecipe {
+        FluidStack getOutput(final BreweryCrafting p0);
+
+        FluidStack[] getInput();
+
+        FluidStack[] getOutput();
+
+        ItemStack[] getGrains();
+
+        ItemStack[] getIngredient();
+
+        ItemStack[] getYeasts();
     }
 
     public static class PackageBrewery extends ExtraTreeMachine.PackageExtraTreeMachine implements IMachineInformation {
@@ -443,13 +457,22 @@ public class Brewery {
     }
 
     public static class BeerRecipe implements IBreweryRecipe {
-        Map<ItemStack, String> grainCrops;
-        List<FluidStack> outputs;
         static String barley;
         static String wheat;
         static String rye;
         static String corn;
         static String roasted;
+
+        static {
+            BeerRecipe.barley = "seedBarley";
+            BeerRecipe.wheat = "seedWheat";
+            BeerRecipe.rye = "seedRye";
+            BeerRecipe.corn = "seedCorn";
+            BeerRecipe.roasted = "seedRoasted";
+        }
+
+        Map<ItemStack, String> grainCrops;
+        List<FluidStack> outputs;
         String[] grains;
         FluidStack water;
         ItemStack hops;
@@ -562,27 +585,5 @@ public class Brewery {
         public ItemStack[] getYeasts() {
             return new ItemStack[]{ExtraTreeItems.Yeast.get(1), ExtraTreeItems.LagerYeast.get(1)};
         }
-
-        static {
-            BeerRecipe.barley = "seedBarley";
-            BeerRecipe.wheat = "seedWheat";
-            BeerRecipe.rye = "seedRye";
-            BeerRecipe.corn = "seedCorn";
-            BeerRecipe.roasted = "seedRoasted";
-        }
-    }
-
-    private interface IBreweryRecipe {
-        FluidStack getOutput(final BreweryCrafting p0);
-
-        FluidStack[] getInput();
-
-        FluidStack[] getOutput();
-
-        ItemStack[] getGrains();
-
-        ItemStack[] getIngredient();
-
-        ItemStack[] getYeasts();
     }
 }

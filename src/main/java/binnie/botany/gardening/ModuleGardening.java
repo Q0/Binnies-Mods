@@ -41,6 +41,12 @@ public class ModuleGardening implements IInitializable {
     public static HashMap<ItemStack, Integer> queuedAlkalineFertilisers;
     public static HashMap<ItemStack, Integer> queuedNutrientFertilisers;
 
+    static {
+        ModuleGardening.queuedAcidFertilisers = new HashMap<ItemStack, Integer>();
+        ModuleGardening.queuedAlkalineFertilisers = new HashMap<ItemStack, Integer>();
+        ModuleGardening.queuedNutrientFertilisers = new HashMap<ItemStack, Integer>();
+    }
+
     @Override
     public void preInit() {
         Botany.soil = new BlockSoil(EnumSoilType.SOIL, "soil", false);
@@ -255,11 +261,5 @@ public class ModuleGardening implements IInitializable {
                 }
             }
         }
-    }
-
-    static {
-        ModuleGardening.queuedAcidFertilisers = new HashMap<ItemStack, Integer>();
-        ModuleGardening.queuedAlkalineFertilisers = new HashMap<ItemStack, Integer>();
-        ModuleGardening.queuedNutrientFertilisers = new HashMap<ItemStack, Integer>();
     }
 }

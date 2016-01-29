@@ -14,7 +14,7 @@ public class ItemManager {
     public static ItemHiveFrame cageFrame;
     public static ItemHiveFrame clayFrame;
     public static ItemHiveFrame debugFrame;
-    
+
     public static CircuitModifier lowVoltageCircuit;
     public static CircuitModifier highVoltageCircuit;
     public static CircuitModifier plantCircuit;
@@ -32,7 +32,7 @@ public class ItemManager {
     // PRIVATE METHODS
     //
     //---------------------------------------------------------------------------
-    
+
     private static void registerFrames() {
         cocoaFrame = new ItemHiveFrame("hiveFrame.cocoa", 240);
         BeeModifier modifier = (BeeModifier) cocoaFrame.getBeeModifier();
@@ -67,12 +67,12 @@ public class ItemManager {
         modifier.addModifier(FloatModifier.GeneticDecay, 1.0f, 10.0f);
         modifier.addModifier(FloatModifier.Lifespan, 1.0E-4f, 1.0E-4f);
     }
-    
+
     private static void registerCircuits() {
         lowVoltageCircuit = new CircuitModifier(3, 10, stimulatorLayout);
         lowVoltageCircuit.addModifier(FloatModifier.Production, 1.5f, 5.0f);
         lowVoltageCircuit.addModifier(FloatModifier.GeneticDecay, 1.5f, 10.0f);
-        
+
         highVoltageCircuit = new CircuitModifier(5, 20, stimulatorLayout);
         highVoltageCircuit.addModifier(FloatModifier.Production, 2.5f, 10.0f);
         highVoltageCircuit.addModifier(FloatModifier.GeneticDecay, 1.5f, 10.0f);
@@ -115,7 +115,7 @@ public class ItemManager {
 
     public static void registerItems() {
         stimulatorLayout = new BinnieCircuitLayout(ExtraBees.instance, "Stimulator");
-        
+
         registerFrames();
         registerCircuits();
     }

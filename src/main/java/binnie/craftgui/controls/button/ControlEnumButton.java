@@ -13,6 +13,17 @@ public class ControlEnumButton<T> extends ControlButton implements IControlValue
     private T currentSelection;
     private List<T> enumConstants;
 
+    public ControlEnumButton(final IWidget parent, final float x, final float y, final float width, final float height, final T[] values) {
+        super(parent, x, y, width, height, "");
+        this.enumConstants = new ArrayList<T>();
+        for (final T value : values) {
+            this.enumConstants.add(value);
+        }
+        if (values.length > 0) {
+            this.currentSelection = values[0];
+        }
+    }
+
     @Override
     public String getText() {
         return this.currentSelection.toString();
@@ -30,26 +41,15 @@ public class ControlEnumButton<T> extends ControlButton implements IControlValue
     }
 
     @Override
+    public T getValue() {
+        return this.currentSelection;
+    }
+
+    @Override
     public void setValue(final T selection) {
         if (this.currentSelection != selection) {
             this.currentSelection = selection;
             this.callEvent(new EventValueChanged<Object>(this, this.getValue()));
         }
-    }
-
-    public ControlEnumButton(final IWidget parent, final float x, final float y, final float width, final float height, final T[] values) {
-        super(parent, x, y, width, height, "");
-        this.enumConstants = new ArrayList<T>();
-        for (final T value : values) {
-            this.enumConstants.add(value);
-        }
-        if (values.length > 0) {
-            this.currentSelection = values[0];
-        }
-    }
-
-    @Override
-    public T getValue() {
-        return this.currentSelection;
     }
 }

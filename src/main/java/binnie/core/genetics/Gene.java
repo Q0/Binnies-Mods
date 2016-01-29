@@ -14,15 +14,6 @@ public class Gene implements INBTTagable, IGene {
     private IChromosomeType chromosome;
     private ISpeciesRoot root;
 
-    public ISpeciesRoot getSpeciesRoot() {
-        return this.root;
-    }
-
-    @Override
-    public String toString() {
-        return this.getAlleleName();
-    }
-
     public Gene(final IAllele allele, final IChromosomeType chromosome, final ISpeciesRoot root) {
         this.allele = allele;
         this.chromosome = chromosome;
@@ -31,6 +22,25 @@ public class Gene implements INBTTagable, IGene {
 
     public Gene(final NBTTagCompound nbt) {
         this.readFromNBT(nbt);
+    }
+
+    public static Gene create(final NBTTagCompound nbt) {
+        final Gene gene = new Gene(nbt);
+        return gene.isCorrupted() ? null : gene;
+    }
+
+    public static Gene create(final IAllele allele, final IChromosomeType chromosome, final ISpeciesRoot root) {
+        final Gene gene = new Gene(allele, chromosome, root);
+        return gene.isCorrupted() ? null : gene;
+    }
+
+    public ISpeciesRoot getSpeciesRoot() {
+        return this.root;
+    }
+
+    @Override
+    public String toString() {
+        return this.getAlleleName();
     }
 
     public void readFromNBT(final NBTTagCompound nbt) {
@@ -50,16 +60,6 @@ public class Gene implements INBTTagable, IGene {
 
     public boolean isCorrupted() {
         return this.allele == null || this.chromosome == null || this.root == null;
-    }
-
-    public static Gene create(final NBTTagCompound nbt) {
-        final Gene gene = new Gene(nbt);
-        return gene.isCorrupted() ? null : gene;
-    }
-
-    public static Gene create(final IAllele allele, final IChromosomeType chromosome, final ISpeciesRoot root) {
-        final Gene gene = new Gene(allele, chromosome, root);
-        return gene.isCorrupted() ? null : gene;
     }
 
     public NBTTagCompound getNBTTagCompound() {

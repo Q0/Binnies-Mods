@@ -4,11 +4,11 @@ import binnie.Binnie;
 import net.minecraftforge.fluids.FluidStack;
 
 public class DrinkLiquid implements IDrinkLiquid {
+    public String ident;
     String name;
     int colour;
     float transparency;
     float abv;
-    public String ident;
 
     public DrinkLiquid(final String name, final int colour, final float transparency, final float abv) {
         this.name = name;

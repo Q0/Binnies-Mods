@@ -17,6 +17,14 @@ import java.util.List;
 public abstract class ItemGene extends Item {
     IIcon[] icons;
 
+    public ItemGene(final String unlocName) {
+        this.icons = new IIcon[4];
+        this.setMaxStackSize(1);
+        this.setMaxDamage(16);
+        this.setUnlocalizedName(unlocName);
+        this.setCreativeTab(CreativeTabGenetics.instance);
+    }
+
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         return this.icons[pass];
@@ -40,14 +48,6 @@ public abstract class ItemGene extends Item {
 
     public int getRenderPasses(final int metadata) {
         return 4;
-    }
-
-    public ItemGene(final String unlocName) {
-        this.icons = new IIcon[4];
-        this.setMaxStackSize(1);
-        this.setMaxDamage(16);
-        this.setUnlocalizedName(unlocName);
-        this.setCreativeTab(CreativeTabGenetics.instance);
     }
 
     public int getColorFromItemStack(final ItemStack itemstack, final int j) {

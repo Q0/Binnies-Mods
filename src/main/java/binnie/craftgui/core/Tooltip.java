@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tooltip {
+    public int maxWidth;
     List<String> tooltip;
     ITooltipType type;
-    public int maxWidth;
 
     public Tooltip() {
         this.tooltip = new ArrayList<String>();
@@ -41,16 +41,16 @@ public class Tooltip {
         return this.tooltip.size() > 0;
     }
 
-    public void setType(final ITooltipType type) {
-        this.type = type;
-    }
-
     public void setMaxWidth(final int w) {
         this.maxWidth = w;
     }
 
     public ITooltipType getType() {
         return this.type;
+    }
+
+    public void setType(final ITooltipType type) {
+        this.type = type;
     }
 
     public void add(final ItemStack item, final String string) {

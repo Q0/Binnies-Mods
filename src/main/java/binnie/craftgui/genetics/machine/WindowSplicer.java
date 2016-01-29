@@ -21,12 +21,17 @@ public class WindowSplicer extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowSplicer(player, inventory, side);
+    static {
+        WindowSplicer.ProgressBase = new StandardTexture(0, 72, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
+        WindowSplicer.Progress = new StandardTexture(0, 0, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
     }
 
     public WindowSplicer(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(280, 240, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowSplicer(player, inventory, side);
     }
 
     @Override
@@ -57,10 +62,5 @@ public class WindowSplicer extends WindowMachine {
     @Override
     protected String getName() {
         return "Inoculator";
-    }
-
-    static {
-        WindowSplicer.ProgressBase = new StandardTexture(0, 72, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
-        WindowSplicer.Progress = new StandardTexture(0, 0, 142, 72, GeneticsTexture.GUIProcess2.getTexture());
     }
 }

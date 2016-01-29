@@ -5,8 +5,8 @@ import binnie.craftgui.core.*;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 
 public class ControlUser extends Control implements ITooltip {
-    private String username;
     String team;
+    private String username;
 
     public ControlUser(final IWidget parent, final float x, final float y, final String username) {
         super(parent, x, y, 16.0f, 16.0f);

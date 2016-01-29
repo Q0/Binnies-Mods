@@ -87,6 +87,10 @@ public class Botany extends AbstractMod {
     public static BlockStained stained;
     public static BlockCeramicBrick ceramicBrick;
 
+    public Botany() {
+        Botany.instance = this;
+    }
+
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleCore());
@@ -103,10 +107,6 @@ public class Botany extends AbstractMod {
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
-    }
-
-    public Botany() {
-        Botany.instance = this;
     }
 
     @Override

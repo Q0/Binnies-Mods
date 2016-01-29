@@ -44,6 +44,30 @@ public class Machine implements INetworkedEntity, INBTTagable, INetwork.TilePack
         this.machinePackage = pack;
     }
 
+    public static IMachine getMachine(final Object inventory) {
+        if (inventory != null && inventory instanceof IMachine) {
+            return (IMachine) inventory;
+        }
+        if (inventory != null && inventory instanceof TileEntityMachine) {
+            return ((TileEntityMachine) inventory).getMachine();
+        }
+        if (inventory != null && inventory instanceof MachineComponent) {
+            return ((MachineComponent) inventory).getMachine();
+        }
+        return null;
+    }
+
+    public static <T> T getInterface(final Class<T> interfac, final Object inventory) {
+        final IMachine machine = getMachine(inventory);
+        if (machine != null) {
+            return machine.getInterface(interfac);
+        }
+        if (interfac.isInstance(inventory)) {
+            return interfac.cast(inventory);
+        }
+        return null;
+    }
+
     public void addComponent(final MachineComponent component) {
         if (component == null) {
             throw new NullPointerException("Can't have a null machine component!");
@@ -190,30 +214,6 @@ public class Machine implements INetworkedEntity, INBTTagable, INetwork.TilePack
 
     public MachinePackage getPackage() {
         return this.machinePackage;
-    }
-
-    public static IMachine getMachine(final Object inventory) {
-        if (inventory != null && inventory instanceof IMachine) {
-            return (IMachine) inventory;
-        }
-        if (inventory != null && inventory instanceof TileEntityMachine) {
-            return ((TileEntityMachine) inventory).getMachine();
-        }
-        if (inventory != null && inventory instanceof MachineComponent) {
-            return ((MachineComponent) inventory).getMachine();
-        }
-        return null;
-    }
-
-    public static <T> T getInterface(final Class<T> interfac, final Object inventory) {
-        final IMachine machine = getMachine(inventory);
-        if (machine != null) {
-            return machine.getInterface(interfac);
-        }
-        if (interfac.isInstance(inventory)) {
-            return interfac.cast(inventory);
-        }
-        return null;
     }
 
     public MachineUtil getMachineUtil() {

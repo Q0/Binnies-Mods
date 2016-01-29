@@ -4,11 +4,10 @@ import binnie.craftgui.controls.core.Control;
 import binnie.craftgui.controls.core.IControlValue;
 import binnie.craftgui.controls.core.IControlValues;
 import binnie.craftgui.core.IWidget;
-import binnie.craftgui.events.Event;
 import binnie.craftgui.events.EventValueChanged;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ControlPages<T>
         extends Control
@@ -16,16 +15,16 @@ public class ControlPages<T>
         IControlValue<T> {
     T value = null;
 
+    public ControlPages(IWidget parent, float x, float y, float w, float h) {
+        super(parent, x, y, w, h);
+    }
+
     @Override
     public boolean isChildVisible(IWidget child) {
         if (child == null) {
             return false;
         }
-        return this.value == ((IControlValue)child).getValue();
-    }
-
-    public ControlPages(IWidget parent, float x, float y, float w, float h) {
-        super(parent, x, y, w, h);
+        return this.value == ((IControlValue) child).getValue();
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ControlPages<T>
     public Collection<T> getValues() {
         ArrayList list = new ArrayList();
         for (IWidget child : this.getWidgets()) {
-            list.add(((IControlValue)child).getValue());
+            list.add(((IControlValue) child).getValue());
         }
         return list;
     }

@@ -39,8 +39,7 @@ public class CircuitModifier extends BeeModifier {
                 if (mod > 1.0f) {
                     final int increase = (int) ((mod - 1.0f) * 100.0f);
                     circuit.addTooltipString("Increases " + modifier.getName() + " by " + increase + "%");
-                }
-                else {
+                } else {
                     final int decrease = (int) ((1.0f - mod) * 100.0f);
                     circuit.addTooltipString("Decreases " + modifier.getName() + " by " + decrease + "%");
                 }

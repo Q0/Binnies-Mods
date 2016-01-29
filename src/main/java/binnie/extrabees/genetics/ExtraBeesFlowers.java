@@ -37,6 +37,12 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         this.dominant = true;
     }
 
+    public static void doInit() {
+        for (final ExtraBeesFlowers effect : values()) {
+            effect.register();
+        }
+    }
+
     public String getUID() {
         return "extrabees.flower." + this.toString().toLowerCase();
     }
@@ -55,12 +61,6 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
 
     public void register() {
         AlleleManager.alleleRegistry.registerAllele(this);
-    }
-
-    public static void doInit() {
-        for (final ExtraBeesFlowers effect : values()) {
-            effect.register();
-        }
     }
 
     public ItemStack[] getItemStacks() {

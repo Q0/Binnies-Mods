@@ -33,22 +33,22 @@ public class BeeModifierLogic {
         if (!modifiers.containsKey(modifier)) {
             return 1.0f;
         }
-        
+
         final float multiplier = modifiers.get(modifier)[0];
         final float max = modifiers.get(modifier)[1];
-        
+
         if (max >= 1.0f) {
             if (max <= currentModifier) {
                 return 1.0f;
             }
-            
+
             return Math.min(max / currentModifier, multiplier);
         }
 
         if (max >= currentModifier) {
             return 1.0f;
         }
-        
+
         return Math.max(max / currentModifier, multiplier);
     }
 
@@ -62,8 +62,8 @@ public class BeeModifierLogic {
 
     public void addModifier(final FloatModifier modifier, final float multiplier, final float max) {
         modifiers.put(modifier, new Float[]{
-            multiplier,
-            max
+                multiplier,
+                max
         });
     }
 

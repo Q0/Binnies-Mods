@@ -2,21 +2,12 @@ package binnie.botany.ceramic;
 
 import binnie.botany.Botany;
 import binnie.botany.CreativeTabBotany;
-import binnie.botany.ceramic.BlockCeramic;
 import binnie.botany.genetics.EnumFlowerColor;
 import binnie.botany.items.BotanyItems;
-import binnie.botany.proxy.Proxy;
 import binnie.core.BinnieCore;
-import binnie.core.block.BlockMetadata;
-import binnie.core.block.IBlockMetadata;
-import binnie.core.block.IMultipassBlock;
-import binnie.core.block.MultipassBlockRenderer;
-import binnie.core.block.TileEntityMetadata;
-import binnie.core.item.ItemMisc;
+import binnie.core.block.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,6 +21,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockCeramicBrick
         extends Block
@@ -101,14 +95,14 @@ public class BlockCeramicBrick
         }
         for (TileType type : TileType.values()) {
             if (!type.canDouble()) continue;
-            itemList.add(new BlockType(EnumFlowerColor.Brown, EnumFlowerColor.Gold, (TileType)((Object)type)).getStack(1));
+            itemList.add(new BlockType(EnumFlowerColor.Brown, EnumFlowerColor.Gold, (TileType) ((Object) type)).getStack(1));
         }
         itemList.add(new BlockType(EnumFlowerColor.Gold, EnumFlowerColor.Gold, TileType.Split).getStack(1));
         itemList.add(new BlockType(EnumFlowerColor.Brown, EnumFlowerColor.Brown, TileType.Chequered).getStack(1));
         itemList.add(new BlockType(EnumFlowerColor.Gold, EnumFlowerColor.Brown, TileType.LargeBrick).getStack(1));
     }
 
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
         if (tile != null) {
@@ -121,7 +115,7 @@ public class BlockCeramicBrick
         return BlockCeramicBrick.getType(meta).getIcon(MultipassBlockRenderer.getLayer());
     }
 
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         for (TileType type : TileType.values()) {
             for (int i = 0; i < 3; ++i) {
@@ -130,7 +124,7 @@ public class BlockCeramicBrick
         }
     }
 
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
         TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
         if (tile != null) {
@@ -148,7 +142,7 @@ public class BlockCeramicBrick
         return BlockMetadata.getPickBlock(world, x, y, z);
     }
 
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int getRenderColor(int meta) {
         return this.colorMultiplier(meta);
     }
@@ -172,54 +166,6 @@ public class BlockCeramicBrick
 
     public int getRenderType() {
         return BinnieCore.multipassRenderID;
-    }
-
-    public static class BlockType {
-        EnumFlowerColor color1;
-        EnumFlowerColor color2;
-        TileType type;
-
-        private BlockType(EnumFlowerColor color1, EnumFlowerColor color2, TileType type) {
-            this.color1 = color1;
-            this.color2 = color2;
-            this.type = type;
-        }
-
-        public boolean isTwoColors() {
-            return this.type.canDouble() && this.color2 != this.color1;
-        }
-
-        public BlockType(ItemStack stack) {
-            this(TileEntityMetadata.getItemDamage(stack));
-        }
-
-        public ItemStack getStack(int i) {
-            ItemStack s = TileEntityMetadata.getItemStack(Botany.ceramicBrick, this.ordinal());
-            s.stackSize = i;
-            return s;
-        }
-
-        public BlockType(int id) {
-            this.color1 = EnumFlowerColor.get(id & 255);
-            this.color2 = EnumFlowerColor.get(id >> 8 & 255);
-            this.type = TileType.get(id >> 16 & 255);
-        }
-
-        public String getName() {
-            String name = this.color1.getName();
-            if (this.type.canDouble() && this.color2 != this.color1) {
-                name = name + " & " + this.color2.getName();
-            }
-            return name + " " + this.type.name;
-        }
-
-        public int ordinal() {
-            return this.color1.ordinal() + this.color2.ordinal() * 256 + this.type.ordinal() * 256 * 256;
-        }
-
-        public IIcon getIcon(int layer) {
-            return this.type.icons[layer];
-        }
     }
 
     public static enum TileType {
@@ -269,7 +215,7 @@ public class BlockCeramicBrick
                             ++mortars;
                             continue;
                         }
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramic)) return null;
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramic)) return null;
                         ++blocks;
                         int color = TileEntityMetadata.getItemDamage(stack);
                         if (blockColor == -1) {
@@ -293,7 +239,7 @@ public class BlockCeramicBrick
                     int altCounter = 0;
                     for (ItemStack stack : stacks) {
                         int alt = altCounter == 0 || altCounter == 3 ? 0 : 1;
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramicBrick)) return null;
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) return null;
                         BlockType type = new BlockType(stack);
                         if (type.type != Tile) {
                             return null;
@@ -314,7 +260,7 @@ public class BlockCeramicBrick
                     }
                     int[] colors = new int[]{-1, -1};
                     for (ItemStack stack : stacks) {
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramicBrick)) return null;
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) return null;
                         BlockType type = new BlockType(stack);
                         if (type.type != Split) {
                             return null;
@@ -338,7 +284,7 @@ public class BlockCeramicBrick
                     int[] colors = new int[]{-1, -1};
                     for (int index = 0; index < stacks.size(); ++index) {
                         ItemStack stack = stacks.get(index);
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramicBrick)) {
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
                             return null;
                         }
                         BlockType type = new BlockType(stack);
@@ -359,7 +305,8 @@ public class BlockCeramicBrick
                         }
                         int color2 = type.color2.ordinal();
                     }
-                    if (colors[0] != -1 && colors[1] != -1) return new BlockType(EnumFlowerColor.get(colors[0]), EnumFlowerColor.get(colors[1]), Mixed).getStack(4);
+                    if (colors[0] != -1 && colors[1] != -1)
+                        return new BlockType(EnumFlowerColor.get(colors[0]), EnumFlowerColor.get(colors[1]), Mixed).getStack(4);
                     return null;
                 }
                 case LargeBrick: {
@@ -378,7 +325,7 @@ public class BlockCeramicBrick
                     int b = 0;
                     for (int index = 0; index < stacks.size(); ++index) {
                         ItemStack stack = stacks.get(index);
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramicBrick)) {
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
                             return null;
                         }
                         BlockType type = new BlockType(stack);
@@ -403,7 +350,8 @@ public class BlockCeramicBrick
                         if (colors[1] != color) return null;
                         ++b;
                     }
-                    if (colors[1] != -1) return new BlockType(EnumFlowerColor.get(colors[a > b ? 1 : 0]), EnumFlowerColor.get(colors[a > b ? 0 : 1]), LargeBrick).getStack(3);
+                    if (colors[1] != -1)
+                        return new BlockType(EnumFlowerColor.get(colors[a > b ? 1 : 0]), EnumFlowerColor.get(colors[a > b ? 0 : 1]), LargeBrick).getStack(3);
                     colors[1] = colors[0];
                     return new BlockType(EnumFlowerColor.get(colors[a > b ? 1 : 0]), EnumFlowerColor.get(colors[a > b ? 0 : 1]), LargeBrick).getStack(3);
                 }
@@ -428,7 +376,7 @@ public class BlockCeramicBrick
                     while (index < stacks.size()) {
                         int alt;
                         ItemStack stack = stacks.get(index);
-                        if (stack.getItem() != Item.getItemFromBlock((Block)Botany.ceramicBrick)) {
+                        if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
                             return null;
                         }
                         BlockType type = new BlockType(stack);
@@ -477,6 +425,54 @@ public class BlockCeramicBrick
 
         private boolean isMortar(ItemStack stack) {
             return stack.getItem() == Botany.misc && stack.getItemDamage() == BotanyItems.Mortar.ordinal();
+        }
+    }
+
+    public static class BlockType {
+        EnumFlowerColor color1;
+        EnumFlowerColor color2;
+        TileType type;
+
+        private BlockType(EnumFlowerColor color1, EnumFlowerColor color2, TileType type) {
+            this.color1 = color1;
+            this.color2 = color2;
+            this.type = type;
+        }
+
+        public BlockType(ItemStack stack) {
+            this(TileEntityMetadata.getItemDamage(stack));
+        }
+
+        public BlockType(int id) {
+            this.color1 = EnumFlowerColor.get(id & 255);
+            this.color2 = EnumFlowerColor.get(id >> 8 & 255);
+            this.type = TileType.get(id >> 16 & 255);
+        }
+
+        public boolean isTwoColors() {
+            return this.type.canDouble() && this.color2 != this.color1;
+        }
+
+        public ItemStack getStack(int i) {
+            ItemStack s = TileEntityMetadata.getItemStack(Botany.ceramicBrick, this.ordinal());
+            s.stackSize = i;
+            return s;
+        }
+
+        public String getName() {
+            String name = this.color1.getName();
+            if (this.type.canDouble() && this.color2 != this.color1) {
+                name = name + " & " + this.color2.getName();
+            }
+            return name + " " + this.type.name;
+        }
+
+        public int ordinal() {
+            return this.color1.ordinal() + this.color2.ordinal() * 256 + this.type.ordinal() * 256 * 256;
+        }
+
+        public IIcon getIcon(int layer) {
+            return this.type.icons[layer];
         }
     }
 

@@ -20,6 +20,10 @@ public class WindowPress extends Window {
         super(194.0f, 192.0f, player, inventory, side);
     }
 
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowPress(player, inventory, side);
+    }
+
     @Override
     protected AbstractMod getMod() {
         return ExtraTrees.instance;
@@ -40,10 +44,6 @@ public class WindowPress extends Window {
         new ControlErrorState(this, 128.0f, 54.0f);
         new ControlFruitPressProgress(this, 62.0f, 24.0f);
         ((Window) this.getSuperParent()).getContainer().getOrCreateSlot(InventoryType.Machine, Press.slotCurrent);
-    }
-
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowPress(player, inventory, side);
     }
 
     @Override

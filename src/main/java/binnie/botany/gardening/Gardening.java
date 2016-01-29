@@ -30,6 +30,12 @@ public class Gardening {
     public static Map<ItemStack, Integer> fertiliserAlkaline;
     public static Map<ItemStack, Integer> fertiliserNutrient;
 
+    static {
+        Gardening.fertiliserAcid = new LinkedHashMap<ItemStack, Integer>();
+        Gardening.fertiliserAlkaline = new LinkedHashMap<ItemStack, Integer>();
+        Gardening.fertiliserNutrient = new LinkedHashMap<ItemStack, Integer>();
+    }
+
     public static boolean isSoil(final Block block) {
         return block instanceof IBlockSoil;
     }
@@ -248,11 +254,5 @@ public class Gardening {
             world.setBlockToAir(x, y + 1, z);
         }
         return done;
-    }
-
-    static {
-        Gardening.fertiliserAcid = new LinkedHashMap<ItemStack, Integer>();
-        Gardening.fertiliserAlkaline = new LinkedHashMap<ItemStack, Integer>();
-        Gardening.fertiliserNutrient = new LinkedHashMap<ItemStack, Integer>();
     }
 }

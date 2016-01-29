@@ -12,15 +12,15 @@ public class ItemHoneyDrop extends ItemProduct {
     IIcon icon1;
     IIcon icon2;
 
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses() {
-        return true;
-    }
-
     public ItemHoneyDrop() {
         super(EnumHoneyDrop.values());
         setCreativeTab(Tabs.tabApiculture);
         setUnlocalizedName("honeyDrop");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses() {
+        return true;
     }
 
     public int getColorFromItemStack(final ItemStack itemStack, final int j) {

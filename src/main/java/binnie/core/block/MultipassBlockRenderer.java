@@ -12,8 +12,16 @@ public class MultipassBlockRenderer implements ISimpleBlockRenderingHandler {
     public static MultipassBlockRenderer instance;
     private static int layer;
 
+    static {
+        MultipassBlockRenderer.layer = 0;
+    }
+
     public MultipassBlockRenderer() {
         MultipassBlockRenderer.instance = this;
+    }
+
+    public static int getLayer() {
+        return MultipassBlockRenderer.layer;
     }
 
     private void setColour(final Tessellator tess, final int colour) {
@@ -21,10 +29,6 @@ public class MultipassBlockRenderer implements ISimpleBlockRenderingHandler {
         final float var7 = (colour >> 8 & 0xFF) / 255.0f;
         final float var8 = (colour & 0xFF) / 255.0f;
         GL11.glColor3f(var6, var7, var8);
-    }
-
-    public static int getLayer() {
-        return MultipassBlockRenderer.layer;
     }
 
     public void renderInventoryBlock(final Block block, final int meta, final int modelID, final RenderBlocks renderer) {
@@ -92,9 +96,5 @@ public class MultipassBlockRenderer implements ISimpleBlockRenderingHandler {
         final float f2 = (l >> 8 & 0xFF) / 255.0f;
         final float f3 = (l & 0xFF) / 255.0f;
         GL11.glColor3f(f, f2, f3);
-    }
-
-    static {
-        MultipassBlockRenderer.layer = 0;
     }
 }

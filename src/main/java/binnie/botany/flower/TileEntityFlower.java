@@ -487,13 +487,13 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         return this.caterpillar;
     }
 
-    public IIndividual getNanny() {
-        return (IIndividual) this.getFlower();
-    }
-
     public void setCaterpillar(final IButterfly butterfly) {
         this.caterpillar = butterfly;
         this.matureTime = 0;
+    }
+
+    public IIndividual getNanny() {
+        return (IIndividual) this.getFlower();
     }
 
     public boolean canNurse(final IButterfly butterfly) {
@@ -563,11 +563,11 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         return this.getWorld().getBiomeGenForCoords(this.xCoord, this.zCoord);
     }
 
-    public void setErrorState(final IErrorState state) {
-    }
-
     public IErrorState getErrorState() {
         return null;
+    }
+
+    public void setErrorState(final IErrorState state) {
     }
 
     public boolean setErrorCondition(final boolean condition, final IErrorState errorState) {
@@ -593,15 +593,6 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         public boolean flowered;
         public byte section;
 
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj instanceof RenderInfo) {
-                final RenderInfo o = (RenderInfo) obj;
-                return o.age == this.age && o.wilted == this.wilted && o.flowered == this.flowered && o.primary == this.primary && o.secondary == this.secondary && o.stem == this.stem && o.type == this.type;
-            }
-            return super.equals(obj);
-        }
-
         public RenderInfo() {
         }
 
@@ -614,6 +605,15 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
             this.wilted = flower.isWilted();
             this.flowered = flower.hasFlowered();
             this.type = flower.getGenome().getType();
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj instanceof RenderInfo) {
+                final RenderInfo o = (RenderInfo) obj;
+                return o.age == this.age && o.wilted == this.wilted && o.flowered == this.flowered && o.primary == this.primary && o.secondary == this.secondary && o.stem == this.stem && o.type == this.type;
+            }
+            return super.equals(obj);
         }
     }
 }

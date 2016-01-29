@@ -2,8 +2,6 @@ package binnie.craftgui.core.geometry;
 
 import binnie.craftgui.controls.core.IControlValue;
 import binnie.craftgui.core.IWidget;
-import binnie.craftgui.core.geometry.IPoint;
-import binnie.craftgui.core.geometry.TextJustification;
 import binnie.craftgui.events.EventValueChanged;
 
 public class CraftGUIUtil {
@@ -29,11 +27,11 @@ public class CraftGUIUtil {
         float x = 0.0F;
         float h = 0.0F;
 
-        for(IWidget widget : widgets) {
+        for (IWidget widget : widgets) {
             h = Math.max(h, widget.getSize().y());
         }
 
-        for(IWidget widget : widgets) {
+        for (IWidget widget : widgets) {
             widget.setPosition(new IPoint(px + x, py + (h - widget.getSize().y()) * just.yOffset));
             x += widget.getSize().x() + spacing;
         }
@@ -48,11 +46,11 @@ public class CraftGUIUtil {
         float y = 0.0F;
         float w = 0.0F;
 
-        for(IWidget widget : widgets) {
+        for (IWidget widget : widgets) {
             w = Math.max(w, widget.getSize().x());
         }
 
-        for(IWidget widget : widgets) {
+        for (IWidget widget : widgets) {
             widget.setPosition(new IPoint(px + (w - widget.getSize().x()) * just.xOffset, py + y));
             y += widget.getSize().y() + spacing;
         }

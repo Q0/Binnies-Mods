@@ -10,6 +10,12 @@ public class CarpentryInterface implements ICarpentryInterface {
     static Map<Integer, IDesign> designMap;
     static Map<String, IDesignCategory> designCategories;
 
+    static {
+        CarpentryInterface.woodMap = new LinkedHashMap<Integer, IDesignMaterial>();
+        CarpentryInterface.designMap = new LinkedHashMap<Integer, IDesign>();
+        CarpentryInterface.designCategories = new HashMap<String, IDesignCategory>();
+    }
+
     @Override
     public boolean registerCarpentryWood(final int index, final IDesignMaterial wood) {
         return wood != null && CarpentryInterface.woodMap.put(index, wood) == null;
@@ -100,11 +106,5 @@ public class CarpentryInterface implements ICarpentryInterface {
             }
         }
         return null;
-    }
-
-    static {
-        CarpentryInterface.woodMap = new LinkedHashMap<Integer, IDesignMaterial>();
-        CarpentryInterface.designMap = new LinkedHashMap<Integer, IDesign>();
-        CarpentryInterface.designCategories = new HashMap<String, IDesignCategory>();
     }
 }

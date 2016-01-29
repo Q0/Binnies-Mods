@@ -25,6 +25,12 @@ public class ComponentVillageGrove extends StructureVillagePieces.Village {
         return (StructureComponent.findIntersecting(p_74904_1_, structureboundingbox) != null) ? null : structureboundingbox;
     }
 
+    public static ComponentVillageBeeHouse buildComponent(final StructureVillagePieces.Start startPiece, final List par1List, final Random random, final int par3, final int par4, final int par5, final int par6, final int par7) {
+        System.out.println("GROVE1");
+        final StructureBoundingBox bbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 9, 9, 10, par6);
+        return (canVillageGoDeeper(bbox) && StructureComponent.findIntersecting(par1List, bbox) == null) ? new ComponentVillageBeeHouse(startPiece, par7, random, bbox, par6) : null;
+    }
+
     public boolean addComponentParts(final World p_74875_1_, final Random p_74875_2_, final StructureBoundingBox p_74875_3_) {
         if (this.field_143015_k < 0) {
             this.field_143015_k = this.getAverageGroundLevel(p_74875_1_, p_74875_3_);
@@ -37,11 +43,5 @@ public class ComponentVillageGrove extends StructureVillagePieces.Village {
         this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 3, 3, 3, Blocks.air, Blocks.air, false);
         this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 3, 3, 3, Blocks.stone, Blocks.stone, true);
         return true;
-    }
-
-    public static ComponentVillageBeeHouse buildComponent(final StructureVillagePieces.Start startPiece, final List par1List, final Random random, final int par3, final int par4, final int par5, final int par6, final int par7) {
-        System.out.println("GROVE1");
-        final StructureBoundingBox bbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 9, 9, 10, par6);
-        return (canVillageGoDeeper(bbox) && StructureComponent.findIntersecting(par1List, bbox) == null) ? new ComponentVillageBeeHouse(startPiece, par7, random, bbox, par6) : null;
     }
 }

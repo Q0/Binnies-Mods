@@ -17,10 +17,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ModuleMachine implements IInitializable {
+    public static ValidatorIcon IconDye;
     static ValidatorIcon IconSequencer;
     static ValidatorIcon IconSerum;
     static ValidatorIcon IconEnzyme;
-    public static ValidatorIcon IconDye;
     static ValidatorIcon IconBacteria;
     static ValidatorIcon IconNugget;
 

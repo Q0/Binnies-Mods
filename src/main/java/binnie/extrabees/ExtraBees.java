@@ -25,17 +25,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
 @Mod(
-    modid = "ExtraBees",
-    name = "Extra Bees",
-    useMetadata = true,
-    dependencies = "after:BinnieCore")
+        modid = "ExtraBees",
+        name = "Extra Bees",
+        useMetadata = true,
+        dependencies = "after:BinnieCore")
 public class ExtraBees extends AbstractMod {
     @Mod.Instance("ExtraBees")
     public static ExtraBees instance;
-    
+
     @SidedProxy(
-        clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient",
-        serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer")
+            clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient",
+            serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer")
     public static ExtraBeesProxy proxy;
     public static Block hive;
     public static Material materialBeehive;
@@ -50,6 +50,10 @@ public class ExtraBees extends AbstractMod {
     public static Item honeyCrystalEmpty;
     public static Item dictionary;
     public static Item itemMisc;
+
+    public ExtraBees() {
+        ExtraBees.instance = this;
+    }
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
@@ -72,10 +76,6 @@ public class ExtraBees extends AbstractMod {
         postInit();
     }
 
-    public ExtraBees() {
-        ExtraBees.instance = this;
-    }
-
     @Override
     public IBinnieGUID[] getGUIDs() {
         return ExtraBeeGUID.values();
@@ -84,8 +84,8 @@ public class ExtraBees extends AbstractMod {
     @Override
     public Class<?>[] getConfigs() {
         return new Class[]{
-            ConfigurationMain.class,
-            ConfigurationMachines.class
+                ConfigurationMain.class,
+                ConfigurationMachines.class
         };
     }
 

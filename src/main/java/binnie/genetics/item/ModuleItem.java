@@ -89,11 +89,11 @@ public class ModuleItem implements IInitializable {
         GameRegistry.addSmelting(Genetics.itemSequencer, GeneticsItems.EmptySequencer.get(1), 0.0f);
         GameRegistry.addSmelting(Genetics.itemSerum, GeneticsItems.EmptySerum.get(1), 0.0f);
         GameRegistry.addSmelting(Genetics.itemSerumArray, GeneticsItems.EmptyGenome.get(1), 0.0f);
-        
+
         Item beealyzer = Mods.Forestry.item("beealyzer");
         Item treealyzer = Mods.Forestry.item("treealyzer");
         Item flutterlyzer = Mods.Forestry.item("flutterlyzer");
-        
+
         if (beealyzer != null && treealyzer != null && flutterlyzer != null) {
             final Item[] lyzers = new Item[]{beealyzer, treealyzer, flutterlyzer};
 
@@ -102,22 +102,22 @@ public class ModuleItem implements IInitializable {
                     for (final Item c : lyzers) {
                         if (a != b && a != c && b != c) {
                             GameRegistry.addShapedRecipe(
-                                new ItemStack(Genetics.analyst),
-                                " b ",
-                                "fct",
-                                " d ",
-                                'c', GeneticsItems.IntegratedCircuit.get(1),
-                                'b', a,
-                                't', b,
-                                'f', c,
-                                'd', new ItemStack(Items.diamond)
+                                    new ItemStack(Genetics.analyst),
+                                    " b ",
+                                    "fct",
+                                    " d ",
+                                    'c', GeneticsItems.IntegratedCircuit.get(1),
+                                    'b', a,
+                                    't', b,
+                                    'f', c,
+                                    'd', new ItemStack(Items.diamond)
                             );
                         }
                     }
                 }
             }
         }
-        
+
         if (ExtraTrees.itemDictionaryLepi != null && ExtraBees.dictionary != null && ExtraTrees.itemDictionary != null) {
             final Item[] dbs = {ExtraBees.dictionary, ExtraTrees.itemDictionary, ExtraTrees.itemDictionaryLepi, Botany.database};
 
@@ -128,15 +128,15 @@ public class ModuleItem implements IInitializable {
                             for (final Item d : dbs) {
                                 if (a2 != b2 && a2 != c2 && a2 != d && b2 != c2 && b2 != d && c2 != d) {
                                     GameRegistry.addShapedRecipe(
-                                        new ItemStack(Genetics.registry),
-                                        " b ",
-                                        "fct",
-                                        " l ",
-                                        'c', GeneticsItems.IntegratedCircuit.get(1),
-                                        'b', a2,
-                                        't', b2,
-                                        'f', c2,
-                                        'l', d
+                                            new ItemStack(Genetics.registry),
+                                            " b ",
+                                            "fct",
+                                            " l ",
+                                            'c', GeneticsItems.IntegratedCircuit.get(1),
+                                            'b', a2,
+                                            't', b2,
+                                            'f', c2,
+                                            'l', d
                                     );
                                 }
                             }

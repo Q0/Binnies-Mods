@@ -90,6 +90,49 @@ public enum Food implements IItemMisc {
         this.hunger = hunger;
     }
 
+    public static void registerOreDictionary() {
+        Food.Crabapple.ore("Apple").ore("Crabapple");
+        Food.Orange.ore("Orange");
+        Food.Kumquat.ore("Kumquat");
+        Food.Lime.ore("Lime");
+        Food.WildCherry.ore("Cherry").ore("WildCherry");
+        Food.SourCherry.ore("Cherry").ore("SourCherry");
+        Food.BlackCherry.ore("Cherry").ore("BlackCherry");
+        Food.Blackthorn.ore("Blackthorn");
+        Food.CherryPlum.ore("Plum").ore("CherryPlum");
+        Food.Almond.ore("Almond");
+        Food.Apricot.ore("Apricot");
+        Food.Grapefruit.ore("Grapefruit");
+        Food.Peach.ore("Peach");
+        Food.Satsuma.ore("Satsuma").ore("Orange");
+        Food.BuddhaHand.ore("BuddhaHand").ore("Citron");
+        Food.Citron.ore("Citron");
+        Food.FingerLime.ore("Lime").ore("FingerLime");
+        Food.KeyLime.ore("KeyLime").ore("Lime");
+        Food.Manderin.ore("Orange").ore("Manderin");
+        Food.Nectarine.ore("Peach").ore("Nectarine");
+        Food.Pomelo.ore("Pomelo");
+        Food.Tangerine.ore("Tangerine").ore("Orange");
+        Food.Pear.ore("Pear");
+        Food.SandPear.ore("SandPear");
+        Food.Hazelnut.ore("Hazelnut");
+        Food.Butternut.ore("Butternut").ore("Walnut");
+        Food.Beechnut.ore("Beechnut");
+        Food.Pecan.ore("Pecan");
+        Food.Banana.ore("Banana");
+        Food.RedBanana.ore("RedBanana").ore("Banana");
+        Food.Plantain.ore("Plantain");
+        Food.BrazilNut.ore("BrazilNut");
+        Food.Fig.ore("Fig");
+        Food.Acorn.ore("Acorn");
+        Food.Elderberry.ore("Elderberry");
+        Food.Olive.ore("Olive");
+        Food.GingkoNut.ore("GingkoNut");
+        Food.Coffee.ore("Coffee");
+        Food.OsangeOrange.ore("OsangeOrange");
+        Food.Clove.ore("Clove");
+    }
+
     public boolean isEdible() {
         return this.hunger > 0;
     }
@@ -137,49 +180,6 @@ public enum Food implements IItemMisc {
 
     public void addOil(final int time, final int amount, final int mulch) {
         RecipeManagers.squeezerManager.addRecipe(time, new ItemStack[]{this.get(1)}, Binnie.Liquid.getLiquidStack("seedoil", amount), Mods.Forestry.stack("mulch"), mulch);
-    }
-
-    public static void registerOreDictionary() {
-        Food.Crabapple.ore("Apple").ore("Crabapple");
-        Food.Orange.ore("Orange");
-        Food.Kumquat.ore("Kumquat");
-        Food.Lime.ore("Lime");
-        Food.WildCherry.ore("Cherry").ore("WildCherry");
-        Food.SourCherry.ore("Cherry").ore("SourCherry");
-        Food.BlackCherry.ore("Cherry").ore("BlackCherry");
-        Food.Blackthorn.ore("Blackthorn");
-        Food.CherryPlum.ore("Plum").ore("CherryPlum");
-        Food.Almond.ore("Almond");
-        Food.Apricot.ore("Apricot");
-        Food.Grapefruit.ore("Grapefruit");
-        Food.Peach.ore("Peach");
-        Food.Satsuma.ore("Satsuma").ore("Orange");
-        Food.BuddhaHand.ore("BuddhaHand").ore("Citron");
-        Food.Citron.ore("Citron");
-        Food.FingerLime.ore("Lime").ore("FingerLime");
-        Food.KeyLime.ore("KeyLime").ore("Lime");
-        Food.Manderin.ore("Orange").ore("Manderin");
-        Food.Nectarine.ore("Peach").ore("Nectarine");
-        Food.Pomelo.ore("Pomelo");
-        Food.Tangerine.ore("Tangerine").ore("Orange");
-        Food.Pear.ore("Pear");
-        Food.SandPear.ore("SandPear");
-        Food.Hazelnut.ore("Hazelnut");
-        Food.Butternut.ore("Butternut").ore("Walnut");
-        Food.Beechnut.ore("Beechnut");
-        Food.Pecan.ore("Pecan");
-        Food.Banana.ore("Banana");
-        Food.RedBanana.ore("RedBanana").ore("Banana");
-        Food.Plantain.ore("Plantain");
-        Food.BrazilNut.ore("BrazilNut");
-        Food.Fig.ore("Fig");
-        Food.Acorn.ore("Acorn");
-        Food.Elderberry.ore("Elderberry");
-        Food.Olive.ore("Olive");
-        Food.GingkoNut.ore("GingkoNut");
-        Food.Coffee.ore("Coffee");
-        Food.OsangeOrange.ore("OsangeOrange");
-        Food.Clove.ore("Clove");
     }
 
     private Food ore(final String string) {

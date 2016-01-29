@@ -96,10 +96,10 @@ public enum EnumHoneyComb implements IItemEnum {
     CYANITE(2564173, 34541),
     BLUTONIUM(2564173, 1769702);
 
-    int[] colour;
     public Map<ItemStack, Integer> products;
-    boolean active;
     public boolean deprecated;
+    int[] colour;
+    boolean active;
 
     private EnumHoneyComb() {
         this(16777215, 16777215);
@@ -113,6 +113,14 @@ public enum EnumHoneyComb implements IItemEnum {
         this.active = true;
         this.deprecated = false;
         this.colour = new int[]{colour, colour2};
+    }
+
+    public static EnumHoneyComb get(final ItemStack itemStack) {
+        final int i = itemStack.getItemDamage();
+        if (i >= 0 && i < values().length) {
+            return values()[i];
+        }
+        return values()[0];
     }
 
     public void addRecipe() {
@@ -131,14 +139,6 @@ public enum EnumHoneyComb implements IItemEnum {
     @Override
     public boolean isActive() {
         return this.active;
-    }
-
-    public static EnumHoneyComb get(final ItemStack itemStack) {
-        final int i = itemStack.getItemDamage();
-        if (i >= 0 && i < values().length) {
-            return values()[i];
-        }
-        return values()[0];
     }
 
     @Override

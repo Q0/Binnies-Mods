@@ -25,14 +25,13 @@ public class EntityBeeLightning extends EntityLightningBolt {
         if (lightningState < 0) {
             if (boltLivingTime == 0) {
                 setDead();
-            }
-            else if (lightningState < -rand.nextInt(10)) {
+            } else if (lightningState < -rand.nextInt(10)) {
                 boltLivingTime--;
                 lightningState = 1;
                 boltVertex = rand.nextLong();
 
                 if (!worldObj.isRemote &&
-                    worldObj.doChunksNearChunkExist(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ), 10)) {
+                        worldObj.doChunksNearChunkExist(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ), 10)) {
                     int i = MathHelper.floor_double(posX);
                     int j = MathHelper.floor_double(posY);
                     int k = MathHelper.floor_double(posZ);
@@ -47,8 +46,7 @@ public class EntityBeeLightning extends EntityLightningBolt {
         if (lightningState >= 0) {
             if (worldObj.isRemote) {
                 worldObj.lastLightningBolt = 2;
-            }
-            else {
+            } else {
                 double d0 = 3.0D;
                 List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX - d0, posY - d0, posZ - d0, posX + d0, posY + 6.0D + d0, posZ + d0));
 

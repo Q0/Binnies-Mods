@@ -18,6 +18,39 @@ public class TileEntityMetadata extends TileEntity {
         this.droppedBlock = false;
     }
 
+    public static TileEntityMetadata getTile(final IBlockAccess world, final int x, final int y, final int z) {
+        final TileEntity tile = world.getTileEntity(x, y, z);
+        if (!(tile instanceof TileEntityMetadata)) {
+            return null;
+        }
+        return (TileEntityMetadata) tile;
+    }
+
+    public static ItemStack getItemStack(final Block block, final int damage) {
+        final ItemStack item = new ItemStack(block, 1, 0);
+        setItemDamage(item, damage);
+        return item;
+    }
+
+    public static void setItemDamage(final ItemStack item, final int i) {
+        item.setItemDamage((i < 16387) ? i : 16387);
+        final NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("meta", i);
+        item.setTagCompound(tag);
+    }
+
+    public static int getItemDamage(final ItemStack item) {
+        if (item.hasTagCompound() && item.getTagCompound().hasKey("meta")) {
+            return item.getTagCompound().getInteger("meta");
+        }
+        return item.getItemDamage();
+    }
+
+    public static int getTileMetadata(final IBlockAccess world, final int x, final int y, final int z) {
+        final TileEntityMetadata tile = getTile(world, x, y, z);
+        return (tile == null) ? 0 : tile.getTileMetadata();
+    }
+
     public boolean receiveClientEvent(final int par1, final int par2) {
         if (par1 == 42) {
             this.meta = par2;
@@ -55,39 +88,6 @@ public class TileEntityMetadata extends TileEntity {
 
     public Packet getDescriptionPacket() {
         return BinnieCore.instance.getNetworkWrapper().getPacketFrom((IMessage) new MessageMetadata(this.xCoord, this.yCoord, this.zCoord, this.meta).GetMessage());
-    }
-
-    public static TileEntityMetadata getTile(final IBlockAccess world, final int x, final int y, final int z) {
-        final TileEntity tile = world.getTileEntity(x, y, z);
-        if (!(tile instanceof TileEntityMetadata)) {
-            return null;
-        }
-        return (TileEntityMetadata) tile;
-    }
-
-    public static ItemStack getItemStack(final Block block, final int damage) {
-        final ItemStack item = new ItemStack(block, 1, 0);
-        setItemDamage(item, damage);
-        return item;
-    }
-
-    public static void setItemDamage(final ItemStack item, final int i) {
-        item.setItemDamage((i < 16387) ? i : 16387);
-        final NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("meta", i);
-        item.setTagCompound(tag);
-    }
-
-    public static int getItemDamage(final ItemStack item) {
-        if (item.hasTagCompound() && item.getTagCompound().hasKey("meta")) {
-            return item.getTagCompound().getInteger("meta");
-        }
-        return item.getItemDamage();
-    }
-
-    public static int getTileMetadata(final IBlockAccess world, final int x, final int y, final int z) {
-        final TileEntityMetadata tile = getTile(world, x, y, z);
-        return (tile == null) ? 0 : tile.getTileMetadata();
     }
 
     public boolean hasDroppedBlock() {

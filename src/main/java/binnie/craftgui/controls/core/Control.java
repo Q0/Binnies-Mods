@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Control extends Widget implements ITooltipHelp, ITooltip {
+    public int extraLevel;
     List<String> helpStrings;
     List<String> tooltipStrings;
-    public int extraLevel;
 
     public Control(final IWidget parent, final float x, final float y, final float w, final float h) {
         super(parent);

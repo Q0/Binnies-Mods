@@ -155,6 +155,10 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     BLUTONIUM("caruthus", 1769702),
     MYSTICAL("mystica", 4630306);
 
+    public HashMap<ItemStack, Integer> allProducts;
+    public HashMap<ItemStack, Integer> allSpecialties;
+    public State state;
+    boolean nocturnal;
     private int primaryColor;
     private int secondaryColor;
     private EnumTemperature temperature;
@@ -169,13 +173,9 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     private boolean dominant;
     private HashMap<ItemStack, Integer> products;
     private HashMap<ItemStack, Integer> specialties;
-    public HashMap<ItemStack, Integer> allProducts;
-    public HashMap<ItemStack, Integer> allSpecialties;
     private IAllele[] template;
-    public State state;
     @SideOnly(Side.CLIENT)
     private IIcon[][] icons;
-    boolean nocturnal;
 
     ExtraBeesSpecies(final String binomial, final int colour) {
         this.primaryColor = 16777215;
@@ -223,156 +223,8 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.state = State.Deprecated;
     }
 
-    public String getName() {
-        return ExtraBees.proxy.localise("species." + this.name().toLowerCase() + ".name");
-    }
-
-    public String getDescription() {
-        return ExtraBees.proxy.localiseOrBlank("species." + this.name().toLowerCase() + ".desc");
-    }
-
-    public EnumTemperature getTemperature() {
-        return this.temperature;
-    }
-
-    public EnumHumidity getHumidity() {
-        return this.humidity;
-    }
-
-    public boolean hasEffect() {
-        return this.hasEffect;
-    }
-
-    public boolean isSecret() {
-        return this.isSecret;
-    }
-
-    public boolean isCounted() {
-        return this.isCounted;
-    }
-
-    public String getBinomial() {
-        return this.binomial;
-    }
-
-    public String getAuthority() {
-        return "Binnie";
-    }
-
-    public IClassification getBranch() {
-        return this.branch;
-    }
-
-    public String getUID() {
-        return "extrabees.species." + this.uid;
-    }
-
-    public boolean isDominant() {
-        return this.dominant;
-    }
-
-    public HashMap<ItemStack, Integer> getProducts() {
-        return this.products;
-    }
-
-    public HashMap<ItemStack, Integer> getSpecialty() {
-        return this.specialties;
-    }
-
-    private void setState(final State state) {
-        this.state = state;
-    }
-
-    public void registerTemplate() {
-        Binnie.Genetics.getBeeRoot().registerTemplate(this.getTemplate());
-        if (this.state != State.Active) {
-            AlleleManager.alleleRegistry.blacklistAllele(this.getUID());
-        }
-    }
-
-    public void addProduct(final ItemStack product, final int chance) {
-        if (product == null) {
-            this.setState(State.Inactive);
-        } else {
-            this.products.put(product, chance);
-            this.allProducts.put(product, chance);
-        }
-    }
-
-    public void addProduct(final IItemEnum product, final int chance) {
-        if (product.isActive()) {
-            this.addProduct(product.get(1), chance);
-        } else {
-            this.allProducts.put(product.get(1), chance);
-            this.setState(State.Inactive);
-        }
-    }
-
-    public void addSpecialty(final ItemStack product, final int chance) {
-        if (product == null) {
-            this.setState(State.Inactive);
-        } else {
-            this.specialties.put(product, chance);
-            this.allSpecialties.put(product, chance);
-        }
-    }
-
-    private void addSpecialty(final IItemEnum product, final int chance) {
-        if (product.isActive()) {
-            this.addSpecialty(product.get(1), chance);
-        } else {
-            this.setState(State.Inactive);
-            this.allSpecialties.put(product.get(1), chance);
-        }
-    }
-
-    private void setHumidity(final EnumHumidity humidity) {
-        this.humidity = humidity;
-    }
-
-    private void setTemperature(final EnumTemperature temperature) {
-        this.temperature = temperature;
-    }
-
     public static IAllele[] getDefaultTemplate() {
         return Binnie.Genetics.getBeeRoot().getDefaultTemplate();
-    }
-
-    public IAllele[] getTemplate() {
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
-        return this.template;
-    }
-
-    public void importTemplate(final ForestryAllele.BeeSpecies species) {
-        this.importTemplate(species.getTemplate());
-    }
-
-    public void importTemplate(final ExtraBeesSpecies species) {
-        this.importTemplate(species.getTemplate());
-    }
-
-    public void importTemplate(final IAllele[] template) {
-        this.template = template.clone();
-        this.setHumidity(((IAlleleSpecies) template[0]).getHumidity());
-        this.setTemperature(((IAlleleSpecies) template[0]).getTemperature());
-        this.setSecondaryColor(((IAlleleSpecies) template[0]).getIconColour(1));
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
-    }
-
-    public void recessive() {
-        this.dominant = false;
-    }
-
-    public void setIsSecret(final boolean secret) {
-        this.isSecret = secret;
-    }
-
-    public void setHasEffect(final boolean effect) {
-        this.hasEffect = effect;
-    }
-
-    public void setSecondaryColor(final int colour) {
-        this.secondaryColor = colour;
     }
 
     public static void doInit() {
@@ -822,8 +674,156 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         }
     }
 
+    public String getName() {
+        return ExtraBees.proxy.localise("species." + this.name().toLowerCase() + ".name");
+    }
+
+    public String getDescription() {
+        return ExtraBees.proxy.localiseOrBlank("species." + this.name().toLowerCase() + ".desc");
+    }
+
+    public EnumTemperature getTemperature() {
+        return this.temperature;
+    }
+
+    private void setTemperature(final EnumTemperature temperature) {
+        this.temperature = temperature;
+    }
+
+    public EnumHumidity getHumidity() {
+        return this.humidity;
+    }
+
+    private void setHumidity(final EnumHumidity humidity) {
+        this.humidity = humidity;
+    }
+
+    public boolean hasEffect() {
+        return this.hasEffect;
+    }
+
+    public boolean isSecret() {
+        return this.isSecret;
+    }
+
+    public boolean isCounted() {
+        return this.isCounted;
+    }
+
+    public String getBinomial() {
+        return this.binomial;
+    }
+
+    public String getAuthority() {
+        return "Binnie";
+    }
+
+    public IClassification getBranch() {
+        return this.branch;
+    }
+
     void setBranch(final IClassification branch) {
         this.branch = branch;
+    }
+
+    public String getUID() {
+        return "extrabees.species." + this.uid;
+    }
+
+    public boolean isDominant() {
+        return this.dominant;
+    }
+
+    public HashMap<ItemStack, Integer> getProducts() {
+        return this.products;
+    }
+
+    public HashMap<ItemStack, Integer> getSpecialty() {
+        return this.specialties;
+    }
+
+    private void setState(final State state) {
+        this.state = state;
+    }
+
+    public void registerTemplate() {
+        Binnie.Genetics.getBeeRoot().registerTemplate(this.getTemplate());
+        if (this.state != State.Active) {
+            AlleleManager.alleleRegistry.blacklistAllele(this.getUID());
+        }
+    }
+
+    public void addProduct(final ItemStack product, final int chance) {
+        if (product == null) {
+            this.setState(State.Inactive);
+        } else {
+            this.products.put(product, chance);
+            this.allProducts.put(product, chance);
+        }
+    }
+
+    public void addProduct(final IItemEnum product, final int chance) {
+        if (product.isActive()) {
+            this.addProduct(product.get(1), chance);
+        } else {
+            this.allProducts.put(product.get(1), chance);
+            this.setState(State.Inactive);
+        }
+    }
+
+    public void addSpecialty(final ItemStack product, final int chance) {
+        if (product == null) {
+            this.setState(State.Inactive);
+        } else {
+            this.specialties.put(product, chance);
+            this.allSpecialties.put(product, chance);
+        }
+    }
+
+    private void addSpecialty(final IItemEnum product, final int chance) {
+        if (product.isActive()) {
+            this.addSpecialty(product.get(1), chance);
+        } else {
+            this.setState(State.Inactive);
+            this.allSpecialties.put(product.get(1), chance);
+        }
+    }
+
+    public IAllele[] getTemplate() {
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
+        return this.template;
+    }
+
+    public void importTemplate(final ForestryAllele.BeeSpecies species) {
+        this.importTemplate(species.getTemplate());
+    }
+
+    public void importTemplate(final ExtraBeesSpecies species) {
+        this.importTemplate(species.getTemplate());
+    }
+
+    public void importTemplate(final IAllele[] template) {
+        this.template = template.clone();
+        this.setHumidity(((IAlleleSpecies) template[0]).getHumidity());
+        this.setTemperature(((IAlleleSpecies) template[0]).getTemperature());
+        this.setSecondaryColor(((IAlleleSpecies) template[0]).getIconColour(1));
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
+    }
+
+    public void recessive() {
+        this.dominant = false;
+    }
+
+    public void setIsSecret(final boolean secret) {
+        this.isSecret = secret;
+    }
+
+    public void setHasEffect(final boolean effect) {
+        this.hasEffect = effect;
+    }
+
+    public void setSecondaryColor(final int colour) {
+        this.secondaryColor = colour;
     }
 
     public boolean isJubilant(final World world, final int biomeid, final int x, final int y, final int z) {

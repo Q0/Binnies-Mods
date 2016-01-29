@@ -10,8 +10,6 @@ public enum ExtraTreeTexture implements IBinnieTexture {
     Gui(ResourceType.GUI, "gui"),
     Nursery(ResourceType.Tile, "Nursery");
 
-    String texture;
-    ResourceType type;
     public static String carpenterTexture;
     public static String panelerTexture;
     public static String tileworkerTexture;
@@ -21,16 +19,6 @@ public enum ExtraTreeTexture implements IBinnieTexture {
     public static String distilleryTexture;
     public static String breweryTexture;
     public static String infuserTexture;
-
-    private ExtraTreeTexture(final ResourceType base, final String texture) {
-        this.texture = texture;
-        this.type = base;
-    }
-
-    @Override
-    public BinnieResource getTexture() {
-        return Binnie.Resource.getPNG(ExtraTrees.instance, this.type, this.texture);
-    }
 
     static {
         ExtraTreeTexture.carpenterTexture = "extratrees/carpenter_";
@@ -42,5 +30,18 @@ public enum ExtraTreeTexture implements IBinnieTexture {
         ExtraTreeTexture.distilleryTexture = "extratrees/distillery_";
         ExtraTreeTexture.breweryTexture = "extratrees/brewery_";
         ExtraTreeTexture.infuserTexture = "extratrees/infuser_";
+    }
+
+    String texture;
+    ResourceType type;
+
+    private ExtraTreeTexture(final ResourceType base, final String texture) {
+        this.texture = texture;
+        this.type = base;
+    }
+
+    @Override
+    public BinnieResource getTexture() {
+        return Binnie.Resource.getPNG(ExtraTrees.instance, this.type, this.texture);
     }
 }

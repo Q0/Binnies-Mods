@@ -17,8 +17,8 @@ import binnie.craftgui.resource.Texture;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 
 public class ControlTab<T> extends Control implements ITooltip, IControlValue<T> {
-    private ControlTabBar<T> tabBar;
     protected T value;
+    private ControlTabBar<T> tabBar;
 
     public ControlTab(final ControlTabBar<T> parent, final float x, final float y, final float w, final float h, final T value) {
         super(parent, x, y, w, h);

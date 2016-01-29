@@ -40,43 +40,15 @@ public enum ExtraBeesBranch implements IClassification {
     QUANTUM("Quantapis"),
     BOTANIA("Botaniapis");
 
+    IClassification parent;
     private String uid;
     private String scientific;
     private Set<IAlleleBeeSpecies> speciesSet;
-    IClassification parent;
-
-    public String getUID() {
-        return "extrabees.genus." + uid;
-    }
-
-    public String getName() {
-        return ExtraBees.proxy.localise("branch." + toString().toLowerCase() + ".name");
-    }
-
-    public String getScientific() {
-        return scientific;
-    }
-
-    public String getDescription() {
-        return ExtraBees.proxy.localiseOrBlank("branch." + toString().toLowerCase() + ".desc");
-    }
 
     ExtraBeesBranch(final String scientific) {
         speciesSet = new LinkedHashSet<IAlleleBeeSpecies>();
         this.scientific = scientific;
         uid = toString().toLowerCase();
-    }
-
-    public void register() {
-        if (!this.speciesSet.isEmpty()) {
-            AlleleManager.alleleRegistry.registerClassification(this);
-            final IClassification parent = AlleleManager.alleleRegistry.getClassification("family.apidae");
-
-            if (parent != null) {
-                parent.addMemberGroup(this);
-                this.setParent(parent);
-            }
-        }
     }
 
     public static void doInit() {
@@ -291,6 +263,34 @@ public enum ExtraBeesBranch implements IClassification {
 
         ExtraBeesBranch.BOTANIA.addMemberSpecies(ExtraBeesSpecies.MYSTICAL);
         ExtraBeesBranch.BOTANIA.register();
+    }
+
+    public String getUID() {
+        return "extrabees.genus." + uid;
+    }
+
+    public String getName() {
+        return ExtraBees.proxy.localise("branch." + toString().toLowerCase() + ".name");
+    }
+
+    public String getScientific() {
+        return scientific;
+    }
+
+    public String getDescription() {
+        return ExtraBees.proxy.localiseOrBlank("branch." + toString().toLowerCase() + ".desc");
+    }
+
+    public void register() {
+        if (!this.speciesSet.isEmpty()) {
+            AlleleManager.alleleRegistry.registerClassification(this);
+            final IClassification parent = AlleleManager.alleleRegistry.getClassification("family.apidae");
+
+            if (parent != null) {
+                parent.addMemberGroup(this);
+                this.setParent(parent);
+            }
+        }
     }
 
     public IClassification.EnumClassLevel getLevel() {

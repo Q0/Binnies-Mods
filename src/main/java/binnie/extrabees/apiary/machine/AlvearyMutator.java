@@ -23,6 +23,11 @@ public class AlvearyMutator {
     public static int slotMutator;
     static Map<ItemStack, Float> mutations;
 
+    static {
+        AlvearyMutator.slotMutator = 0;
+        AlvearyMutator.mutations = new HashMap<ItemStack, Float>();
+    }
+
     public static boolean isMutationItem(final ItemStack item) {
         return getMutationMult(item) > 0.0f;
     }
@@ -48,11 +53,6 @@ public class AlvearyMutator {
 
     public static Collection<ItemStack> getMutagens() {
         return AlvearyMutator.mutations.keySet();
-    }
-
-    static {
-        AlvearyMutator.slotMutator = 0;
-        AlvearyMutator.mutations = new HashMap<ItemStack, Float>();
     }
 
     public static class PackageAlvearyMutator extends AlvearyMachine.AlvearyPackage implements IMachineInformation {

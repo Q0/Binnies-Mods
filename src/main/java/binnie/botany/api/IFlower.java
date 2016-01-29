@@ -12,9 +12,9 @@ public interface IFlower extends IIndividual {
 
     int getAge();
 
-    void age();
-
     void setAge(final int p0);
+
+    void age();
 
     IFlower getOffspring(final World p0);
 

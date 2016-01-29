@@ -108,21 +108,6 @@ public enum EnumFlowerColor implements IFlowerColour {
         this.colorDis = (r << 16) + (g << 8) + b;
     }
 
-    @Override
-    public int getColor(final boolean dis) {
-        return dis ? this.colorDis : this.color;
-    }
-
-    @Override
-    public IAlleleInteger getAllele() {
-        return (IAlleleInteger) this.allele;
-    }
-
-    @Override
-    public int getID() {
-        return this.ordinal();
-    }
-
     public static void addMix(final EnumFlowerColor start1, final EnumFlowerColor start2, final EnumFlowerColor result, final int chance) {
         BotanyCore.getFlowerRoot().registerColourMix(new ColourMix(start1, start2, result, chance));
     }
@@ -2945,13 +2930,28 @@ public enum EnumFlowerColor implements IFlowerColour {
         addMix(EnumFlowerColor.YellowGreen, EnumFlowerColor.Yellow, EnumFlowerColor.Khaki, 110);
     }
 
+    public static EnumFlowerColor get(final int i) {
+        return values()[Math.max(0, i) % values().length];
+    }
+
+    @Override
+    public int getColor(final boolean dis) {
+        return dis ? this.colorDis : this.color;
+    }
+
+    @Override
+    public IAlleleInteger getAllele() {
+        return (IAlleleInteger) this.allele;
+    }
+
+    @Override
+    public int getID() {
+        return this.ordinal();
+    }
+
     @Override
     public String getName() {
         return Botany.proxy.localise("colour." + this.name().toLowerCase());
-    }
-
-    public static EnumFlowerColor get(final int i) {
-        return values()[Math.max(0, i) % values().length];
     }
 
     public String getHTMLName() {

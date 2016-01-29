@@ -21,6 +21,26 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ModuleGenetics implements IInitializable {
+    public static IGenome getGenome(final IAlleleBeeSpecies allele0) {
+        return Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(allele0.getUID()));
+    }
+
+    public static ItemStack getBeeIcon(final IAlleleBeeSpecies species) {
+        if (species == null) {
+            return null;
+        }
+
+        final IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
+        if (template == null) {
+            return null;
+        }
+
+        final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
+        final IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
+        final ItemStack item = Binnie.Genetics.getBeeRoot().getMemberStack(bee, EnumBeeType.PRINCESS.ordinal());
+        return item;
+    }
+
     @Override
     public void preInit() {
         for (final ExtraBeesSpecies species : ExtraBeesSpecies.values()) {
@@ -51,39 +71,19 @@ public class ModuleGenetics implements IInitializable {
             }
         }
         RecipeManagers.carpenterManager.addRecipe(
-            100,
-            Binnie.Liquid.getLiquidStack("water", 2000),
-            null,
-            new ItemStack(ExtraBees.dictionary),
-            "X#X",
-            "YEY",
-            "RDR",
-            '#', Blocks.glass_pane,
-            'X', Items.gold_ingot,
-            'Y', "ingotTin",
-            'R', Items.redstone,
-            'D', Items.diamond,
-            'E', Items.emerald
+                100,
+                Binnie.Liquid.getLiquidStack("water", 2000),
+                null,
+                new ItemStack(ExtraBees.dictionary),
+                "X#X",
+                "YEY",
+                "RDR",
+                '#', Blocks.glass_pane,
+                'X', Items.gold_ingot,
+                'Y', "ingotTin",
+                'R', Items.redstone,
+                'D', Items.diamond,
+                'E', Items.emerald
         );
-    }
-
-    public static IGenome getGenome(final IAlleleBeeSpecies allele0) {
-        return Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(allele0.getUID()));
-    }
-
-    public static ItemStack getBeeIcon(final IAlleleBeeSpecies species) {
-        if (species == null) {
-            return null;
-        }
-
-        final IAllele[] template = Binnie.Genetics.getBeeRoot().getTemplate(species.getUID());
-        if (template == null) {
-            return null;
-        }
-
-        final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
-        final IBee bee = Binnie.Genetics.getBeeRoot().getBee(BinnieCore.proxy.getWorld(), genome);
-        final ItemStack item = Binnie.Genetics.getBeeRoot().getMemberStack(bee, EnumBeeType.PRINCESS.ordinal());
-        return item;
     }
 }

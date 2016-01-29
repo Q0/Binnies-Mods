@@ -42,6 +42,15 @@ public class WindowGeneBank extends WindowMachine {
     public boolean isNei;
     ControlGeneScroll genes;
 
+    public WindowGeneBank(final EntityPlayer player, final IInventory inventory, final Side side, final boolean isNEI) {
+        super(320, 224, player, inventory, side);
+        this.isNei = isNEI;
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowGeneBank(player, inventory, side, false);
+    }
+
     @Override
     public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound action) {
         super.recieveGuiNBT(side, player, name, action);
@@ -57,15 +66,6 @@ public class WindowGeneBank extends WindowMachine {
                 }
             }
         }
-    }
-
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowGeneBank(player, inventory, side, false);
-    }
-
-    public WindowGeneBank(final EntityPlayer player, final IInventory inventory, final Side side, final boolean isNEI) {
-        super(320, 224, player, inventory, side);
-        this.isNei = isNEI;
     }
 
     @Override

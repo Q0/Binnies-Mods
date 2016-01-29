@@ -27,21 +27,18 @@ import binnie.extrabees.gui.punnett.ExtraBeeGUITexture;
 import binnie.genetics.gui.ControlChromosome;
 import binnie.genetics.machine.Analyser;
 import cpw.mods.fml.relauncher.Side;
-import forestry.api.genetics.AlleleManager;
-import forestry.api.genetics.IAllele;
-import forestry.api.genetics.IChromosomeType;
-import forestry.api.genetics.IIndividual;
-import forestry.api.genetics.ISpeciesRoot;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import forestry.api.genetics.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class WindowFieldKit
         extends Window {
@@ -73,7 +70,7 @@ public class WindowFieldKit
     }
 
     private void setupValidators() {
-        this.getWindowInventory().setValidator(0, new SlotValidator(null){
+        this.getWindowInventory().setValidator(0, new SlotValidator(null) {
 
             @Override
             public boolean isValid(ItemStack object) {
@@ -85,7 +82,7 @@ public class WindowFieldKit
                 return "Individual";
             }
         });
-        this.getWindowInventory().setValidator(1, new SlotValidator(null){
+        this.getWindowInventory().setValidator(1, new SlotValidator(null) {
 
             @Override
             public boolean isValid(ItemStack object) {
@@ -112,18 +109,18 @@ public class WindowFieldKit
         this.GlassControl = new ControlImage(this, handGlass.x(), handGlass.y(), new StandardTexture(0, 160, 96, 96, ExtraBeeTexture.GUIPunnett));
         new ControlSlot(this, handGlass.x() + 54.0f, handGlass.y() + 26.0f).assign(InventoryType.Window, 0);
         new ControlSlot(this, 208.0f, 8.0f).assign(InventoryType.Window, 1);
-        this.text = new ControlText((IWidget)this, new IPoint(232.0f, 13.0f), "Paper");
+        this.text = new ControlText((IWidget) this, new IPoint(232.0f, 13.0f), "Paper");
         this.text.setColour(2236962);
         this.text = new ControlText(this, new IArea(0.0f, 120.0f, this.w(), 24.0f), "", TextJustification.MiddleCenter);
         this.text.setColour(2236962);
         this.chromo = new ControlChromosome(this, 150.0f, 24.0f);
-        this.addEventHandler(new EventValueChanged.Handler(){
+        this.addEventHandler(new EventValueChanged.Handler() {
 
             @Override
             public void onEvent(EventValueChanged event) {
-                IChromosomeType type = (IChromosomeType)event.getValue();
-                if (type != null && WindowFieldKit.this.info.containsKey((Object)type)) {
-                    String t = (String)WindowFieldKit.this.info.get((Object)type);
+                IChromosomeType type = (IChromosomeType) event.getValue();
+                if (type != null && WindowFieldKit.this.info.containsKey((Object) type)) {
+                    String t = (String) WindowFieldKit.this.info.get((Object) type);
                     WindowFieldKit.this.text.setValue(t);
                 } else {
                     WindowFieldKit.this.text.setValue("");
@@ -191,7 +188,7 @@ public class WindowFieldKit
             }
             String text = Binnie.Genetics.getSystem(root).getAlleleName(type, allele);
             if (!infos.isEmpty()) {
-                text = (String)infos.get(rand.nextInt(infos.size()));
+                text = (String) infos.get(rand.nextInt(infos.size()));
             }
             this.info.put(type, text);
             this.chromo.setRoot(root);
@@ -205,11 +202,11 @@ public class WindowFieldKit
             int size;
             ItemStack kit = this.getPlayer().getHeldItem();
             int sheets = 64 - kit.getItemDamage();
-            int n = size = this.getWindowInventory().getStackInSlot(1) == null ? 0 : this.getWindowInventory().getStackInSlot((int)1).stackSize;
+            int n = size = this.getWindowInventory().getStackInSlot(1) == null ? 0 : this.getWindowInventory().getStackInSlot((int) 1).stackSize;
             if (sheets != size) {
                 kit.setItemDamage(64 - size);
             }
-            ((EntityPlayerMP)this.getPlayer()).updateHeldItem();
+            ((EntityPlayerMP) this.getPlayer()).updateHeldItem();
         }
         if (this.isClient()) {
             ItemStack item;

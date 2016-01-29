@@ -17,11 +17,11 @@ import net.minecraftforge.event.world.WorldEvent;
 import java.util.*;
 
 public class ManagerGenetics extends ManagerBase {
+    private final Map<ISpeciesRoot, BreedingSystem> BREEDING_SYSTEMS;
     public BreedingSystem beeBreedingSystem;
     public BreedingSystem treeBreedingSystem;
     public BreedingSystem mothBreedingSystem;
     public BreedingSystem flowerBreedingSystem;
-    private final Map<ISpeciesRoot, BreedingSystem> BREEDING_SYSTEMS;
     private List<IChromosomeType> invalidChromosomeTypes;
     private Map<ISpeciesRoot, Map<IChromosomeType, List<IAllele>>> chromosomeArray;
 

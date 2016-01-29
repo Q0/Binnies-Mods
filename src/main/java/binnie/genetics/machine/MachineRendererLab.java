@@ -17,6 +17,11 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class MachineRendererLab {
     public static MachineRendererLab instance;
+
+    static {
+        MachineRendererLab.instance = new MachineRendererLab();
+    }
+
     private final EntityItem dummyEntityItem;
     private final EntityItem[] itemSides;
     private final RenderItem customRenderItem;
@@ -108,9 +113,5 @@ public class MachineRendererLab {
             }
         }
         GL11.glPopMatrix();
-    }
-
-    static {
-        MachineRendererLab.instance = new MachineRendererLab();
     }
 }

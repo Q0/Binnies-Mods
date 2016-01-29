@@ -54,8 +54,7 @@ public class ControlClimateBar extends Control implements ITooltip {
         if (type < types) {
             if (isHumidity) {
                 list.add(EnumHumidity.values()[type].name);
-            }
-            else {
+            } else {
                 list.add(EnumTemperature.values()[type + 1].name);
             }
         }
@@ -75,8 +74,7 @@ public class ControlClimateBar extends Control implements ITooltip {
 
                 if (isHumidity) {
                     colour = humidColours[i];
-                }
-                else {
+                } else {
                     colour = tempColours[i];
                 }
 
@@ -101,8 +99,7 @@ public class ControlClimateBar extends Control implements ITooltip {
             main = species.getTemperature().ordinal() - 1;
             final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(species.getUID()));
             tolerance = genome.getToleranceTemp();
-        }
-        else {
+        } else {
             main = species.getHumidity().ordinal();
             final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(Binnie.Genetics.getBeeRoot().getTemplate(species.getUID()));
             tolerance = genome.getToleranceHumid();

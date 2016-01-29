@@ -52,8 +52,7 @@ public class ItemDictionary extends Item {
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {
         if (itemstack.getItemDamage() == 0) {
             ExtraBees.proxy.openGui(ExtraBeeGUID.Database, player, (int) player.posX, (int) player.posY, (int) player.posZ);
-        }
-        else {
+        } else {
             ExtraBees.proxy.openGui(ExtraBeeGUID.DatabaseNEI, player, (int) player.posX, (int) player.posY, (int) player.posZ);
         }
 

@@ -38,19 +38,19 @@ public class GuiCraftGUI extends GuiContainer {
     private Window window;
     private ItemStack draggedItem;
 
+    public GuiCraftGUI(final Window window) {
+        super((Container) window.getContainer());
+        this.mousePos = new IPoint(0.0f, 0.0f);
+        this.window = window;
+        this.resize(window.getSize());
+    }
+
     public void updateScreen() {
         this.window.updateClient();
     }
 
     public Minecraft getMinecraft() {
         return this.mc;
-    }
-
-    public GuiCraftGUI(final Window window) {
-        super((Container) window.getContainer());
-        this.mousePos = new IPoint(0.0f, 0.0f);
-        this.window = window;
-        this.resize(window.getSize());
     }
 
     protected void drawGuiContainerBackgroundLayer(final float var1, final int var2, final int var3) {

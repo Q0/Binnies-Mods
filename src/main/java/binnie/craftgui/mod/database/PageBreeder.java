@@ -5,9 +5,6 @@ import binnie.craftgui.controls.ControlTextCentered;
 import binnie.craftgui.controls.page.ControlPage;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.minecraft.Window;
-import binnie.craftgui.mod.database.ControlBreedingProgress;
-import binnie.craftgui.mod.database.DatabaseTab;
-import binnie.craftgui.mod.database.WindowAbstractDatabase;
 import com.mojang.authlib.GameProfile;
 
 public class PageBreeder extends ControlPage {
@@ -20,18 +17,18 @@ public class PageBreeder extends ControlPage {
     }
 
     public void onPageRefresh() {
-        while(this.getWidgets().size() > 0) {
-            this.deleteChild((IWidget)this.getWidgets().get(0));
+        while (this.getWidgets().size() > 0) {
+            this.deleteChild((IWidget) this.getWidgets().get(0));
         }
 
-        BreedingSystem system = ((WindowAbstractDatabase)Window.get(this)).getBreedingSystem();
+        BreedingSystem system = ((WindowAbstractDatabase) Window.get(this)).getBreedingSystem();
         String descriptor = system.getDescriptor();
         new ControlTextCentered(this, 8.0F, "§n" + system.getDescriptor() + " Profile§r");
         new ControlTextCentered(this, 75.0F, "" + system.discoveredSpeciesCount + "/" + system.totalSpeciesCount + " Species");
         new ControlBreedingProgress(this, 20, 87, 102, 14, system, system.discoveredSpeciesPercentage);
         new ControlTextCentered(this, 115.0F, "" + system.discoveredBranchCount + "/" + system.totalBranchCount + " Branches");
         new ControlBreedingProgress(this, 20, 127, 102, 14, system, system.discoveredBranchPercentage);
-        if(system.discoveredSecretCount > 0) {
+        if (system.discoveredSecretCount > 0) {
             new ControlTextCentered(this, 155.0F, "" + system.discoveredSecretCount + "/" + system.totalSecretCount + " Secret Species");
         }
 

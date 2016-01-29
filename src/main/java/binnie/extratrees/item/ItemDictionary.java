@@ -18,6 +18,12 @@ import java.util.List;
 public class ItemDictionary extends Item {
     IIcon iconMaster;
 
+    public ItemDictionary() {
+        this.setCreativeTab(Tabs.tabArboriculture);
+        this.setUnlocalizedName("database");
+        this.setMaxStackSize(1);
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister register) {
         this.itemIcon = ExtraTrees.proxy.getIcon(register, "arboristDatabase");
@@ -41,12 +47,6 @@ public class ItemDictionary extends Item {
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         super.getSubItems(par1, par2CreativeTabs, par3List);
         par3List.add(new ItemStack(par1, 1, 1));
-    }
-
-    public ItemDictionary() {
-        this.setCreativeTab(Tabs.tabArboriculture);
-        this.setUnlocalizedName("database");
-        this.setMaxStackSize(1);
     }
 
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {

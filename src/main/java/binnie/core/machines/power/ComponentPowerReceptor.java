@@ -22,10 +22,10 @@ import java.util.List;
 
 @Optional.Interface(iface = "binnie.core.machines.component.IBuildcraft.TriggerProvider", modid = "BuildCraft|Silicon")
 public class ComponentPowerReceptor extends MachineComponent implements IPoweredMachine, IBuildcraft.TriggerProvider, IInteraction.ChunkUnload, IInteraction.Invalidation {
-    private boolean registeredToIC2EnergyNet;
+    static final int inputAverageTicks = 20;
     float previousPower;
     LinkedList<Float> inputs;
-    static final int inputAverageTicks = 20;
+    private boolean registeredToIC2EnergyNet;
     private PowerInterface container;
 
     public ComponentPowerReceptor(final IMachine machine) {

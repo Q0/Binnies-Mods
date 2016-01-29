@@ -29,6 +29,20 @@ public class BlockHedge extends Block implements IBlockFence {
         this.setBlockName("hedge");
     }
 
+    public static boolean func_149825_a(final Block p_149825_0_) {
+        return BlockFence.canConnect(p_149825_0_);
+    }
+
+    public static int getColor(final int meta) {
+        final ExtraTreeSpecies.LeafType type = ExtraTreeSpecies.LeafType.values()[meta % 6];
+        if (type == ExtraTreeSpecies.LeafType.Conifer) {
+            return ColorizerFoliage.getFoliageColorPine();
+        }
+        final double d0 = 0.5;
+        final double d2 = 1.0;
+        return ColorizerFoliage.getFoliageColor(d0, d2);
+    }
+
     public void addCollisionBoxesToList(final World world, final int x, final int y, final int z, final AxisAlignedBB aabb, final List list, final Entity p_149743_7_) {
         final boolean connectNegZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z - 1);
         final boolean connectPosZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z + 1);
@@ -114,10 +128,6 @@ public class BlockHedge extends Block implements IBlockFence {
         return block == this || block == Blocks.fence_gate || func_149825_a(block) || block.isLeaves(p_149826_1_, p_149826_2_, p_149826_3_, p_149826_4_) || (block.getMaterial().isOpaque() && block.renderAsNormalBlock() && block.getMaterial() != Material.gourd);
     }
 
-    public static boolean func_149825_a(final Block p_149825_0_) {
-        return BlockFence.canConnect(p_149825_0_);
-    }
-
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(final IBlockAccess p_149646_1_, final int p_149646_2_, final int p_149646_3_, final int p_149646_4_, final int p_149646_5_) {
         return true;
@@ -153,15 +163,5 @@ public class BlockHedge extends Block implements IBlockFence {
     @SideOnly(Side.CLIENT)
     public int colorMultiplier(final IBlockAccess world, final int x, final int y, final int z) {
         return getColor(world.getBlockMetadata(x, y, z));
-    }
-
-    public static int getColor(final int meta) {
-        final ExtraTreeSpecies.LeafType type = ExtraTreeSpecies.LeafType.values()[meta % 6];
-        if (type == ExtraTreeSpecies.LeafType.Conifer) {
-            return ColorizerFoliage.getFoliageColorPine();
-        }
-        final double d0 = 0.5;
-        final double d2 = 1.0;
-        return ColorizerFoliage.getFoliageColor(d0, d2);
     }
 }

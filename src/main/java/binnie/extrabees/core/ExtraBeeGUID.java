@@ -30,7 +30,7 @@ public enum ExtraBeeGUID implements IBinnieGUID {
         if (tileEntity instanceof IInventory) {
             object = (IInventory) tileEntity;
         }
-        
+
         switch (this) {
             case Database:
             case DatabaseNEI:
@@ -38,13 +38,13 @@ public enum ExtraBeeGUID implements IBinnieGUID {
 
             case AlvearyMutator:
                 return WindowAlvearyMutator.create(player, object, side);
-            
+
             case AlvearyFrame:
                 return WindowAlvearyFrame.create(player, object, side);
-            
+
             case AlvearyStimulator:
                 return WindowAlvearyStimulator.create(player, object, side);
-            
+
             case AlvearyHatchery:
                 return WindowAlvearyHatchery.create(player, object, side);
         }

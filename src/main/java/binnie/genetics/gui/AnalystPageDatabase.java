@@ -94,7 +94,7 @@ public class AnalystPageDatabase extends ControlAnalystPage {
 
                 @Override
                 public IWidget createOption(final IAlleleSpecies v, int y) {
-                    return new Control(this.getContent(), 0.0F, (float)y, this.w(), 12.0F) {
+                    return new Control(this.getContent(), 0.0F, (float) y, this.w(), 12.0F) {
                         IAlleleSpecies value = v;
 
                         public void onRenderBackground() {

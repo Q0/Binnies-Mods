@@ -10,13 +10,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 public class ControlFluidDisplay extends Control implements ITooltip {
-    FluidStack itemStack;
     public boolean hastooltip;
-
-    public void setTooltip() {
-        this.hastooltip = true;
-        this.addAttribute(Attribute.MouseOver);
-    }
+    FluidStack itemStack;
 
     public ControlFluidDisplay(final IWidget parent, final float f, final float y) {
         this(parent, f, y, 16.0f);
@@ -34,6 +29,11 @@ public class ControlFluidDisplay extends Control implements ITooltip {
         super(parent, x, y, size, size);
         this.itemStack = null;
         this.hastooltip = false;
+    }
+
+    public void setTooltip() {
+        this.hastooltip = true;
+        this.addAttribute(Attribute.MouseOver);
     }
 
     @Override
