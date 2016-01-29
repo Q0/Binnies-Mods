@@ -654,7 +654,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
                 AlleleManager.alleleRegistry.blacklistAllele(species2.getUID());
             }
             for (final EnumBeeChromosome chromo : EnumBeeChromosome.values()) {
-                if (chromo != EnumBeeChromosome.HUMIDITY_TOLERANCE) {
+                if (chromo != EnumBeeChromosome.HUMIDITY) {
                     final IAllele allele = species2.template[chromo.ordinal()];
                     if (allele == null || !chromo.getAlleleClass().isInstance(allele)) {
                         throw new RuntimeException(species2.getName() + " has an invalid " + chromo.toString() + " chromosome!");
