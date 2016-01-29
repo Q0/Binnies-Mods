@@ -4,83 +4,72 @@ import binnie.core.machines.IMachine;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class ComponentProcess extends ComponentProcessIndefinate implements IProcessTimed {
-    private float progressAmount;
+    private float progressAmount = 0.0F;
 
-    public ComponentProcess(final IMachine machine) {
-        super(machine, 0.0f);
-        this.progressAmount = 0.0f;
+    public ComponentProcess(IMachine machine) {
+        super(machine, 0.0F);
     }
 
-    @Override
     public float getEnergyPerTick() {
-        return this.getProcessEnergy() / this.getProcessLength();
+        return (float)this.getProcessEnergy() / (float)this.getProcessLength();
     }
 
-    @Override
     public float getProgressPerTick() {
-        return 100.0f / this.getProcessLength();
+        return 100.0F / (float)this.getProcessLength();
     }
 
-    @Override
     protected void onStartTask() {
-        this.progressAmount += 0.01f;
+        this.progressAmount += 0.01F;
     }
 
-    @Override
     protected void onCancelTask() {
-        this.progressAmount = 0.0f;
+        this.progressAmount = 0.0F;
     }
 
-    @Override
     public void onUpdate() {
         super.onUpdate();
-        if (this.progressAmount >= 100.0f) {
+        if(this.progressAmount >= 100.0F) {
             this.onFinishTask();
-            this.progressAmount = 0.0f;
+            this.progressAmount = 0.0F;
         }
+
     }
 
-    public void alterProgress(final float f) {
+    public void alterProgress(float f) {
         this.progressAmount += f;
     }
 
-    @Override
+    public void setProgress(float f) {
+        this.progressAmount = f;
+    }
+
     protected void progressTick() {
         super.progressTick();
         this.alterProgress(this.getProgressPerTick());
     }
 
     public boolean inProgress() {
-        return this.progressAmount > 0.0f;
+        return this.progressAmount > 0.0F;
     }
 
-    @Override
     public float getProgress() {
         return this.progressAmount;
-    }
-
-    public void setProgress(final float f) {
-        this.progressAmount = f;
     }
 
     protected void onFinishTask() {
     }
 
-    @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.progressAmount = nbt.getFloat("progress");
     }
 
-    @Override
-    public void writeToNBT(final NBTTagCompound nbt) {
+    public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setFloat("progress", this.progressAmount);
     }
 
-    @Override
     public abstract int getProcessLength();
 
-    @Override
     public abstract int getProcessEnergy();
 }
