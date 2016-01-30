@@ -237,11 +237,8 @@ public class ExtraBeeMutation implements IBeeMutation {
         return false;
     }
 
-    public float getChance(final IBeeHousing housing, final IAlleleBeeSpecies allele0, final IAlleleBeeSpecies allele1, final IBeeGenome genome0, final IBeeGenome genome1) {
-        return getChance(housing, allele0, allele1, genome0, genome1);
-    }
-
-    public float getChance(final IBeeHousing housing, final IAllele allele0, final IAllele allele1, final IGenome genome0, final IGenome genome1) {
+    @Override
+    public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1, IBeeGenome genome0, IBeeGenome genome1) {
         if (species0 == null || species1 == null || allele0 == null || allele1 == null) {
             return 0.0f;
         }

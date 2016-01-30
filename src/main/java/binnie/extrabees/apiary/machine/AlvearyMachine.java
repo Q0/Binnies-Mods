@@ -20,15 +20,15 @@ public enum AlvearyMachine implements IMachineType {
     Hatchery(AlvearyHatchery.PackageAlvearyHatchery.class),
     Transmission(AlvearyTransmission.PackageAlvearyTransmission.class);
 
-    Class<? extends MachinePackage> clss;
+    Class<? extends MachinePackage> cls;
 
-    AlvearyMachine(final Class<? extends MachinePackage> clss) {
-        this.clss = clss;
+    AlvearyMachine(final Class<? extends MachinePackage> cls) {
+        this.cls = cls;
     }
 
     @Override
     public Class<? extends MachinePackage> getPackageClass() {
-        return this.clss;
+        return this.cls;
     }
 
     public ItemStack get(final int size) {
