@@ -7,7 +7,7 @@ import binnie.core.resource.ResourceType;
 import binnie.extrabees.ExtraBees;
 
 public enum BotanyTexture implements IBinnieTexture {
-    ;
+    ;  //TODO: FIX FIX FIX!!!!!
     String texture;
     ResourceType type;
 
