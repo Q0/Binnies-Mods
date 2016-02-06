@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-version = "2.0-pre14-Build_2-UNOFFICIAL"
+version = "2.0-pre14-Build_3-UNOFFICIAL"
 group = "binnie.Binnie"
 archivesBaseName = "Binnie-mods"
 
