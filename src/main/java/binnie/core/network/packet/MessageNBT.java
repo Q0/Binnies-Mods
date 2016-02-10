@@ -8,14 +8,6 @@ import java.io.IOException;
 public class MessageNBT extends MessageBase {
     NBTTagCompound nbt;
 
-    public NBTTagCompound getTagCompound() {
-        return this.nbt;
-    }
-
-    void setTagCompound(final NBTTagCompound nbt) {
-        this.nbt = nbt;
-    }
-
     public MessageNBT(final int id) {
         super(id);
     }
@@ -27,6 +19,14 @@ public class MessageNBT extends MessageBase {
 
     public MessageNBT(final MessageBinnie message) {
         super(message);
+    }
+
+    public NBTTagCompound getTagCompound() {
+        return this.nbt;
+    }
+
+    void setTagCompound(final NBTTagCompound nbt) {
+        this.nbt = nbt;
     }
 
     @Override

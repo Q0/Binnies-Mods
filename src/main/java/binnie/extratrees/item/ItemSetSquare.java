@@ -13,17 +13,17 @@ import net.minecraft.item.ItemStack;
 public class ItemSetSquare extends Item implements IToolHammer {
     EnumSetSquareMode mode;
 
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = ExtraTrees.proxy.getIcon(register, "setSquare" + this.mode.ordinal());
-    }
-
     public ItemSetSquare(final EnumSetSquareMode mode) {
         this.mode = EnumSetSquareMode.Rotate;
         this.mode = mode;
         this.setCreativeTab(CreativeTabs.tabTools);
         this.setUnlocalizedName("setSquare" + mode);
         this.setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = ExtraTrees.proxy.getIcon(register, "setSquare" + this.mode.ordinal());
     }
 
     public String getItemStackDisplayName(final ItemStack i) {

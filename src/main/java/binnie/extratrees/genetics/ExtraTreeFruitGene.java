@@ -104,6 +104,27 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     FruitSprite index;
     HashMap<ItemStack, Float> products;
 
+    private ExtraTreeFruitGene(final int time, final int unripe, final int colour, final FruitSprite index) {
+        this.isRipening = false;
+        this.diffB = 0;
+        this.pod = null;
+        this.ripeningPeriod = 0;
+        this.products = new HashMap<ItemStack, Float>();
+        this.colour = colour;
+        this.index = index;
+        this.setRipening(time, unripe);
+    }
+
+    private ExtraTreeFruitGene(final String name, final FruitPod pod) {
+        this.isRipening = false;
+        this.diffB = 0;
+        this.pod = null;
+        this.ripeningPeriod = 0;
+        this.products = new HashMap<ItemStack, Float>();
+        this.pod = pod;
+        this.ripeningPeriod = 2;
+    }
+
     public static void init() {
         final IFruitFamily familyPrune = AlleleManager.alleleRegistry.getFruitFamily("forestry.prunes");
         final IFruitFamily familyPome = AlleleManager.alleleRegistry.getFruitFamily("forestry.pomes");
@@ -252,29 +273,23 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         }
     }
 
-    private void setFamily(final IFruitFamily family) {
-        this.family = family;
+    public static int getDirectionalMetadata(final World world, final int x, final int y, final int z) {
+        for (int i = 0; i < 4; ++i) {
+            if (isValidPot(world, x, y, z, i)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    private ExtraTreeFruitGene(final int time, final int unripe, final int colour, final FruitSprite index) {
-        this.isRipening = false;
-        this.diffB = 0;
-        this.pod = null;
-        this.ripeningPeriod = 0;
-        this.products = new HashMap<ItemStack, Float>();
-        this.colour = colour;
-        this.index = index;
-        this.setRipening(time, unripe);
-    }
-
-    private ExtraTreeFruitGene(final String name, final FruitPod pod) {
-        this.isRipening = false;
-        this.diffB = 0;
-        this.pod = null;
-        this.ripeningPeriod = 0;
-        this.products = new HashMap<ItemStack, Float>();
-        this.pod = pod;
-        this.ripeningPeriod = 2;
+    public static boolean isValidPot(final World world, int x, final int y, int z, final int notchDirection) {
+        x += Direction.offsetX[notchDirection];
+        z += Direction.offsetZ[notchDirection];
+        final Block block = world.getBlock(x, y, z);
+        if (block == Blocks.log || block == Blocks.log2) {
+            return BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
+        }
+        return block != null && block.isWood((IBlockAccess) world, x, y, z);
     }
 
     public void setRipening(final int time, final int unripe) {
@@ -316,6 +331,10 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
 
     public IFruitFamily getFamily() {
         return this.family;
+    }
+
+    private void setFamily(final IFruitFamily family) {
+        this.family = family;
     }
 
     public int getColour(final ITreeGenome genome, final IBlockAccess world, final int x, final int y, final int z, final int ripeningTime) {
@@ -386,25 +405,6 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
 
     public boolean setFruitBlock(final World world, final IAlleleFruit allele, final float sappiness, final int x, final int y, final int z) {
         return true;
-    }
-
-    public static int getDirectionalMetadata(final World world, final int x, final int y, final int z) {
-        for (int i = 0; i < 4; ++i) {
-            if (isValidPot(world, x, y, z, i)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public static boolean isValidPot(final World world, int x, final int y, int z, final int notchDirection) {
-        x += Direction.offsetX[notchDirection];
-        z += Direction.offsetZ[notchDirection];
-        final Block block = world.getBlock(x, y, z);
-        if (block == Blocks.log || block == Blocks.log2) {
-            return BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
-        }
-        return block != null && block.isWood((IBlockAccess) world, x, y, z);
     }
 
     public short getIconIndex(final ITreeGenome genome, final IBlockAccess world, final int x, final int y, final int z, final int ripeningTime, final boolean fancy) {

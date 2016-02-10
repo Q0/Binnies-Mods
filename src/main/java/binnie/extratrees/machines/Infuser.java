@@ -26,6 +26,12 @@ public class Infuser {
     public static int tankOutput;
     static Map<Fluid, FluidStack> recipes;
 
+    static {
+        Infuser.tankInput = 0;
+        Infuser.tankOutput = 1;
+        Infuser.recipes = new HashMap<Fluid, FluidStack>();
+    }
+
     public static FluidStack getOutput(final FluidStack fluid, final ItemStack stack) {
         if (fluid == null) {
             return null;
@@ -48,12 +54,6 @@ public class Infuser {
 
     public static void addRecipe(final FluidStack input, final FluidStack output) {
         Infuser.recipes.put(input.getFluid(), output);
-    }
-
-    static {
-        Infuser.tankInput = 0;
-        Infuser.tankOutput = 1;
-        Infuser.recipes = new HashMap<Fluid, FluidStack>();
     }
 
     public static class PackageInfuser extends ExtraTreeMachine.PackageExtraTreeMachine implements IMachineInformation {

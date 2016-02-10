@@ -6,9 +6,9 @@ import forestry.api.genetics.*;
 import java.util.*;
 
 public class GeneticEngineeringSystem {
-    BreedingSystem breedingSystem;
-    public Map<IChromosomeType, List<IAllele>> chromosomeMap;
     static List<IAllele> speciesList;
+    public Map<IChromosomeType, List<IAllele>> chromosomeMap;
+    BreedingSystem breedingSystem;
 
     public GeneticEngineeringSystem(final BreedingSystem system) {
         this.chromosomeMap = new HashMap<IChromosomeType, List<IAllele>>();

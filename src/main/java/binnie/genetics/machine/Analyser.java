@@ -42,6 +42,11 @@ public class Analyser {
     public static final int[] slotFinished;
     public static final int slotDye = 13;
 
+    static {
+        slotReserve = new int[]{0, 1, 2, 3, 4, 5};
+        slotFinished = new int[]{7, 8, 9, 10, 11, 12};
+    }
+
     public static boolean isAnalysable(final ItemStack stack) {
         final IIndividual ind = AlleleManager.alleleRegistry.getIndividual(stack);
         return ind != null || stack.getItem() instanceof IItemAnalysable || Binnie.Genetics.getConversion(stack) != null;
@@ -73,11 +78,6 @@ public class Analyser {
             return ((IItemAnalysable) stack.getItem()).analyse(stack);
         }
         return stack;
-    }
-
-    static {
-        slotReserve = new int[]{0, 1, 2, 3, 4, 5};
-        slotFinished = new int[]{7, 8, 9, 10, 11, 12};
     }
 
     public static class PackageAnalyser extends GeneticMachine.PackageGeneticBase implements IMachineInformation {

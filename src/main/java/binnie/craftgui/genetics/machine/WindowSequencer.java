@@ -22,14 +22,20 @@ import net.minecraft.nbt.NBTTagCompound;
 public class WindowSequencer extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
-    ControlText slotText;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowSequencer(player, inventory, side);
+    static {
+        WindowSequencer.ProgressBase = new StandardTexture(64, 114, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowSequencer.Progress = new StandardTexture(64, 123, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
     }
+
+    ControlText slotText;
 
     public WindowSequencer(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(226, 224, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowSequencer(player, inventory, side);
     }
 
     @Override
@@ -76,10 +82,5 @@ public class WindowSequencer extends WindowMachine {
     @Override
     protected String getName() {
         return "Sequencer";
-    }
-
-    static {
-        WindowSequencer.ProgressBase = new StandardTexture(64, 114, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
-        WindowSequencer.Progress = new StandardTexture(64, 123, 98, 9, ExtraBeeTexture.GUIProgress.getTexture());
     }
 }

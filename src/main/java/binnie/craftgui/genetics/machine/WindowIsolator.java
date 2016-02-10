@@ -18,12 +18,17 @@ public class WindowIsolator extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowIsolator(player, inventory, side);
+    static {
+        WindowIsolator.ProgressBase = new StandardTexture(0, 218, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowIsolator.Progress = new StandardTexture(0, 201, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
     }
 
     public WindowIsolator(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(330, 208, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowIsolator(player, inventory, side);
     }
 
     @Override
@@ -68,10 +73,5 @@ public class WindowIsolator extends WindowMachine {
     @Override
     protected String getName() {
         return "Isolator";
-    }
-
-    static {
-        WindowIsolator.ProgressBase = new StandardTexture(0, 218, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
-        WindowIsolator.Progress = new StandardTexture(0, 201, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
     }
 }

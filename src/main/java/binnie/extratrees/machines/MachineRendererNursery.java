@@ -9,6 +9,11 @@ import org.lwjgl.opengl.GL11;
 
 public class MachineRendererNursery {
     public static MachineRendererNursery instance;
+
+    static {
+        MachineRendererNursery.instance = new MachineRendererNursery();
+    }
+
     BinnieResource texture;
     private IModelCustom casinoMachine;
     private ModelNursery model;
@@ -25,9 +30,5 @@ public class MachineRendererNursery {
         BinnieCore.proxy.bindTexture(new BinnieResource(ExtraTrees.instance, ResourceType.Tile, "test.png"));
         this.casinoMachine.renderAll();
         GL11.glPopMatrix();
-    }
-
-    static {
-        MachineRendererNursery.instance = new MachineRendererNursery();
     }
 }

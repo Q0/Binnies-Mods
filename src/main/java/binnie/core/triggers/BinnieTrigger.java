@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 final class BinnieTrigger implements ITriggerExternal {
-    private static int incrementalID;
     protected static BinnieTrigger triggerNoBlankTemplate;
     protected static BinnieTrigger triggerNoTemplate;
     protected static BinnieTrigger triggerIsWorking;
@@ -33,6 +32,12 @@ final class BinnieTrigger implements ITriggerExternal {
     protected static BinnieTrigger triggerAcclimatiserCold;
     protected static BinnieTrigger triggerAcclimatiserWet;
     protected static BinnieTrigger triggerAcclimatiserDry;
+    private static int incrementalID;
+
+    static {
+        BinnieTrigger.incrementalID = 800;
+    }
+
     private String desc;
     private String tag;
     private BinnieIcon icon;
@@ -93,9 +98,5 @@ final class BinnieTrigger implements ITriggerExternal {
 
     public boolean isTriggerActive(final TileEntity target, final ForgeDirection side, final IStatementContainer source, final IStatementParameter[] parameters) {
         return false;
-    }
-
-    static {
-        BinnieTrigger.incrementalID = 800;
     }
 }

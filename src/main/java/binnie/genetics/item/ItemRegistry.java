@@ -12,15 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemRegistry extends Item {
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = Genetics.proxy.getIcon(register, "registry");
-    }
-
     public ItemRegistry() {
         this.setCreativeTab(CreativeTabGenetics.instance);
         this.setUnlocalizedName("registry");
         this.setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = Genetics.proxy.getIcon(register, "registry");
     }
 
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {

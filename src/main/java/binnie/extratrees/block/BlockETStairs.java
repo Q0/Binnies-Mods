@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockETStairs extends BlockStairs implements IBlockMetadata {
-    public int getRenderType() {
-        return ExtraTrees.stairsID;
-    }
-
     public BlockETStairs(final Block par2Block) {
         super(par2Block, 0);
         this.setCreativeTab(Tabs.tabArboriculture);
@@ -36,6 +32,10 @@ public class BlockETStairs extends BlockStairs implements IBlockMetadata {
         this.setHardness(2.0f);
         this.setStepSound(BlockETStairs.soundTypeWood);
         this.useNeighborBrightness = true;
+    }
+
+    public int getRenderType() {
+        return ExtraTrees.stairsID;
     }
 
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {

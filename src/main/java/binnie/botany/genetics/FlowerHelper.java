@@ -15,12 +15,20 @@ import net.minecraft.world.WorldSavedData;
 import java.util.*;
 
 public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
-    public static int flowerSpeciesCount;
     static final String UID = "rootFlowers";
+    public static int flowerSpeciesCount;
     public static ArrayList<IFlower> flowerTemplates;
     private static ArrayList<IFlowerMutation> flowerMutations;
-    Map<ItemStack, IFlower> conversions;
     private static ArrayList<IColourMix> colourMixes;
+
+    static {
+        FlowerHelper.flowerSpeciesCount = -1;
+        FlowerHelper.flowerTemplates = new ArrayList<IFlower>();
+        FlowerHelper.flowerMutations = new ArrayList<IFlowerMutation>();
+        FlowerHelper.colourMixes = new ArrayList<IColourMix>();
+    }
+
+    Map<ItemStack, IFlower> conversions;
 
     public FlowerHelper() {
         this.conversions = new HashMap<ItemStack, IFlower>();
@@ -202,12 +210,5 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
             Collections.shuffle(FlowerHelper.colourMixes);
         }
         return FlowerHelper.colourMixes;
-    }
-
-    static {
-        FlowerHelper.flowerSpeciesCount = -1;
-        FlowerHelper.flowerTemplates = new ArrayList<IFlower>();
-        FlowerHelper.flowerMutations = new ArrayList<IFlowerMutation>();
-        FlowerHelper.colourMixes = new ArrayList<IColourMix>();
     }
 }

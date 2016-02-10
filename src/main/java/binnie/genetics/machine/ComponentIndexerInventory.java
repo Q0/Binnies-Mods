@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ComponentIndexerInventory<T> extends ComponentInventory implements IInventory {
-    int indexerSize;
     public int guiRefreshCounter;
-    List<ItemStack> indexerInventory;
     public List<Integer> sortedInventory;
+    int indexerSize;
+    List<ItemStack> indexerInventory;
     T sortingMode;
     boolean needsSorting;
 
@@ -94,13 +94,13 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
     public void closeInventory() {
     }
 
+    public T getMode() {
+        return this.sortingMode;
+    }
+
     public void setMode(final T mode) {
         this.sortingMode = mode;
         this.needsSorting = true;
-    }
-
-    public T getMode() {
-        return this.sortingMode;
     }
 
     public void writeToNBT(final NBTTagCompound nbttagcompound) {

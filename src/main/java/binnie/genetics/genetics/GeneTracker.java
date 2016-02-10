@@ -21,8 +21,8 @@ import net.minecraft.world.WorldSavedData;
 import java.util.ArrayList;
 
 public class GeneTracker extends WorldSavedData {
-    private ArrayList<IGene> discoveredGenes;
     GameProfile username;
+    private ArrayList<IGene> discoveredGenes;
 
     public GeneTracker(final String s, final GameProfile username) {
         super(s);

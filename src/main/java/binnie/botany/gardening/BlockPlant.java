@@ -21,6 +21,20 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockPlant extends BlockBush {
+    public BlockPlant() {
+        this.setBlockName("plant");
+        this.setCreativeTab(CreativeTabBotany.instance);
+        this.setTickRandomly(true);
+    }
+
+    public static boolean isWeed(final IBlockAccess world, final int x, final int y, final int z) {
+        if (!(world.getBlock(x, y, z) instanceof BlockPlant)) {
+            return false;
+        }
+        final Type type = Type.get(world.getBlockMetadata(x, y, z));
+        return type == Type.Weeds || type == Type.WeedsLong || type == Type.WeedsVeryLong;
+    }
+
     public ArrayList<ItemStack> getDrops(final World world, final int x, final int y, final int z, final int metadata, final int fortune) {
         return new ArrayList<ItemStack>();
     }
@@ -30,12 +44,6 @@ public class BlockPlant extends BlockBush {
         for (final Type t : Type.values()) {
             t.icon = Botany.proxy.getIcon(p_149651_1_, t.name().toLowerCase());
         }
-    }
-
-    public BlockPlant() {
-        this.setBlockName("plant");
-        this.setCreativeTab(CreativeTabBotany.instance);
-        this.setTickRandomly(true);
     }
 
     protected boolean canPlaceBlockOn(final Block p_149854_1_) {
@@ -100,14 +108,6 @@ public class BlockPlant extends BlockBush {
         return true;
     }
 
-    public static boolean isWeed(final IBlockAccess world, final int x, final int y, final int z) {
-        if (!(world.getBlock(x, y, z) instanceof BlockPlant)) {
-            return false;
-        }
-        final Type type = Type.get(world.getBlockMetadata(x, y, z));
-        return type == Type.Weeds || type == Type.WeedsLong || type == Type.WeedsVeryLong;
-    }
-
     public enum Type {
         Weeds("Weeds"),
         WeedsLong("Long Weeds"),
@@ -122,12 +122,12 @@ public class BlockPlant extends BlockBush {
             this.name = name;
         }
 
-        public ItemStack get() {
-            return new ItemStack((Block) Botany.plant, 1, this.ordinal());
-        }
-
         public static Type get(final int id) {
             return values()[id % values().length];
+        }
+
+        public ItemStack get() {
+            return new ItemStack((Block) Botany.plant, 1, this.ordinal());
         }
 
         public String getName() {

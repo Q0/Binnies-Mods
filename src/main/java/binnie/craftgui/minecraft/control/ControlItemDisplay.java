@@ -10,14 +10,9 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 public class ControlItemDisplay extends Control implements ITooltip {
-    private ItemStack itemStack;
     public boolean hastooltip;
+    private ItemStack itemStack;
     private boolean rotating;
-
-    public void setTooltip() {
-        this.hastooltip = true;
-        this.addAttribute(Attribute.MouseOver);
-    }
 
     public ControlItemDisplay(final IWidget parent, final float x, final float y) {
         this(parent, x, y, 16.0f);
@@ -36,6 +31,11 @@ public class ControlItemDisplay extends Control implements ITooltip {
         this.itemStack = null;
         this.hastooltip = false;
         this.rotating = false;
+    }
+
+    public void setTooltip() {
+        this.hastooltip = true;
+        this.addAttribute(Attribute.MouseOver);
     }
 
     @Override
@@ -59,12 +59,12 @@ public class ControlItemDisplay extends Control implements ITooltip {
         }
     }
 
-    public void setItemStack(final ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
-
     public ItemStack getItemStack() {
         return this.itemStack;
+    }
+
+    public void setItemStack(final ItemStack itemStack) {
+        this.itemStack = itemStack;
     }
 
     @Override

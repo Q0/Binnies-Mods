@@ -18,12 +18,17 @@ public class WindowIncubator extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowIncubator(player, inventory, side);
+    static {
+        WindowIncubator.ProgressBase = new StandardTexture(0, 91, 38, 32, GeneticsTexture.GUIProcess);
+        WindowIncubator.Progress = new StandardTexture(38, 91, 38, 32, GeneticsTexture.GUIProcess);
     }
 
     public WindowIncubator(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(228, 196, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowIncubator(player, inventory, side);
     }
 
     @Override
@@ -64,10 +69,5 @@ public class WindowIncubator extends WindowMachine {
     @Override
     protected String getName() {
         return "Incubator";
-    }
-
-    static {
-        WindowIncubator.ProgressBase = new StandardTexture(0, 91, 38, 32, GeneticsTexture.GUIProcess);
-        WindowIncubator.Progress = new StandardTexture(38, 91, 38, 32, GeneticsTexture.GUIProcess);
     }
 }

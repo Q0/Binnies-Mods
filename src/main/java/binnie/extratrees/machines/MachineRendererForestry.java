@@ -10,6 +10,10 @@ public class MachineRendererForestry {
     static Map<String, Object> instances;
     static Method renderMethod;
 
+    static {
+        MachineRendererForestry.instances = new HashMap<String, Object>();
+    }
+
     private static void loadMethod(final String file, final boolean waterTank, final boolean productTank) {
         try {
             final Class clss = Class.forName("forestry.core.render.RenderMachine");
@@ -28,9 +32,5 @@ public class MachineRendererForestry {
             MachineRendererForestry.renderMethod.invoke(MachineRendererForestry.instances.get(name), 0, 0, ForgeDirection.UP, x, y, z);
         } catch (Exception ex) {
         }
-    }
-
-    static {
-        MachineRendererForestry.instances = new HashMap<String, Object>();
     }
 }

@@ -7,6 +7,11 @@ public enum EnumFlowerStage {
     NONE("NONE");
 
     public static final EnumFlowerStage[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     String name;
 
     private EnumFlowerStage(final String name) {
@@ -15,9 +20,5 @@ public enum EnumFlowerStage {
 
     public String getName() {
         return this.name;
-    }
-
-    static {
-        VALUES = values();
     }
 }

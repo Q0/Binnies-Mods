@@ -14,21 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 class TriggerProvider implements ITriggerProvider {
-    static TriggerProvider instance;
     public static List<BinnieTrigger> triggers;
+    static TriggerProvider instance;
 
-    public Collection<ITriggerExternal> getExternalTriggers(final ForgeDirection side, final TileEntity tile) {
-        final LinkedList<TriggerData> list = new LinkedList<TriggerData>();
-        final LinkedList<ITriggerExternal> triggerData = new LinkedList<ITriggerExternal>();
-        if (tile instanceof IBuildcraft.TriggerProvider) {
-            ((IBuildcraft.TriggerProvider) tile).getTriggers(list);
-        }
-        for (final TriggerData data : list) {
-            if (data.getKey() != null && data.getKey().getUniqueTag() != null) {
-                triggerData.add(data.getKey());
-            }
-        }
-        return triggerData;
+    static {
+        TriggerProvider.instance = new TriggerProvider();
+        TriggerProvider.triggers = new ArrayList<BinnieTrigger>();
     }
 
     public static boolean isTriggerActive(final ITriggerExternal trigger, final TileEntity tile) {
@@ -45,12 +36,21 @@ class TriggerProvider implements ITriggerProvider {
         return false;
     }
 
-    public Collection<ITriggerInternal> getInternalTriggers(final IStatementContainer container) {
-        return new ArrayList<ITriggerInternal>();
+    public Collection<ITriggerExternal> getExternalTriggers(final ForgeDirection side, final TileEntity tile) {
+        final LinkedList<TriggerData> list = new LinkedList<TriggerData>();
+        final LinkedList<ITriggerExternal> triggerData = new LinkedList<ITriggerExternal>();
+        if (tile instanceof IBuildcraft.TriggerProvider) {
+            ((IBuildcraft.TriggerProvider) tile).getTriggers(list);
+        }
+        for (final TriggerData data : list) {
+            if (data.getKey() != null && data.getKey().getUniqueTag() != null) {
+                triggerData.add(data.getKey());
+            }
+        }
+        return triggerData;
     }
 
-    static {
-        TriggerProvider.instance = new TriggerProvider();
-        TriggerProvider.triggers = new ArrayList<BinnieTrigger>();
+    public Collection<ITriggerInternal> getInternalTriggers(final IStatementContainer container) {
+        return new ArrayList<ITriggerInternal>();
     }
 }

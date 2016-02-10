@@ -52,10 +52,10 @@ public class WindowAnalyst extends Window {
     boolean isDatabase;
     boolean isMaster;
     boolean lockedSearch;
-    private Control analystNone;
-    private ControlSlide slideUpInv;
     IIndividual current;
     BreedingSystem currentSystem;
+    private Control analystNone;
+    private ControlSlide slideUpInv;
 
     public WindowAnalyst(final EntityPlayer player, final IInventory inventory, final Side side, final boolean database, final boolean master) {
         super(312.0f, 230.0f, player, inventory, side);
@@ -243,35 +243,6 @@ public class WindowAnalyst extends Window {
         this.setSystem(Binnie.Genetics.beeBreedingSystem);
     }
 
-    public void setIndividual(final IIndividual ind) {
-        if (!this.isDatabase) {
-            if (ind == null) {
-                this.analystNone.show();
-                this.slideUpInv.hide();
-            } else {
-                this.analystNone.hide();
-                this.slideUpInv.show();
-            }
-        }
-        if (ind == this.current || (ind != null && this.current != null && ind.isGeneticEqual(this.current))) {
-            return;
-        }
-        final boolean systemChange = (this.current = ind) != null && ind.getGenome().getSpeciesRoot() != this.getSystem().getSpeciesRoot();
-        if (systemChange) {
-            this.currentSystem = Binnie.Genetics.getSystem(ind.getGenome().getSpeciesRoot());
-        }
-        this.updatePages(systemChange);
-    }
-
-    public void setSystem(final BreedingSystem system) {
-        if (system == this.currentSystem) {
-            return;
-        }
-        this.currentSystem = system;
-        this.current = null;
-        this.updatePages(true);
-    }
-
     public void updatePages(final boolean systemChange) {
         int oldLeft = -1;
         int oldRight = -1;
@@ -337,28 +308,26 @@ public class WindowAnalyst extends Window {
                     this.addAttribute(Attribute.MouseOver);
                     this.value = page;
                     this.addSelfEventHandler(new EventMouse.Down.Handler() {
-                        public void onEvent(EventMouse.Down event) {
-                            int currentIndex = WindowAnalyst.this.analystPages.indexOf(WindowAnalyst.this.rightPage.getContent());
+                        @Override
+                        public void onEvent(final EventMouse.Down event) {
+                            final int currentIndex = WindowAnalyst.this.analystPages.indexOf(rightPage.getContent());
                             int clickedIndex = WindowAnalyst.this.analystPages.indexOf(value);
-                            if(WindowAnalyst.this.isDatabase) {
-                                if(clickedIndex != 0 && clickedIndex != currentIndex) {
+                            if (WindowAnalyst.this.isDatabase) {
+                                if (clickedIndex != 0 && clickedIndex != currentIndex) {
                                     WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, value);
                                 }
                             } else {
-                                if(clickedIndex < 0) {
+                                if (clickedIndex < 0) {
                                     clickedIndex = 0;
                                 }
-
-                                if(clickedIndex < currentIndex) {
+                                if (clickedIndex < currentIndex) {
                                     ++clickedIndex;
                                 }
-
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage)null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage)null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage)WindowAnalyst.this.analystPages.get(clickedIndex));
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage)WindowAnalyst.this.analystPages.get(clickedIndex - 1));
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, WindowAnalyst.this.analystPages.get(clickedIndex));
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, WindowAnalyst.this.analystPages.get(clickedIndex - 1));
                             }
-
                         }
                     });
                 }
@@ -421,20 +390,18 @@ public class WindowAnalyst extends Window {
         }
     }
 
-    public void setPage(ControlScrollableContent side, ControlAnalystPage page) {
-        ControlAnalystPage existingPage = (ControlAnalystPage)side.getContent();
-        if(existingPage != null) {
+    public void setPage(final ControlScrollableContent side, final ControlAnalystPage page) {
+        final ControlAnalystPage existingPage = (ControlAnalystPage) side.getContent();
+        if (existingPage != null) {
             existingPage.hide();
-            side.setScrollableContent((IWidget)null);
+            side.setScrollableContent(null);
         }
-
-        if(page != null) {
+        if (page != null) {
             page.show();
             side.setScrollableContent(page);
-            side.setPercentageIndex(0.0F);
-            page.setPosition(side.pos().add(1.0F, 1.0F));
+            side.setPercentageIndex(0.0f);
+            page.setPosition(side.pos().add(1.0f, 1.0f));
         }
-
     }
 
     @Override
@@ -463,7 +430,36 @@ public class WindowAnalyst extends Window {
         return this.current;
     }
 
+    public void setIndividual(final IIndividual ind) {
+        if (!this.isDatabase) {
+            if (ind == null) {
+                this.analystNone.show();
+                this.slideUpInv.hide();
+            } else {
+                this.analystNone.hide();
+                this.slideUpInv.show();
+            }
+        }
+        if (ind == this.current || (ind != null && this.current != null && ind.isGeneticEqual(this.current))) {
+            return;
+        }
+        final boolean systemChange = (this.current = ind) != null && ind.getGenome().getSpeciesRoot() != this.getSystem().getSpeciesRoot();
+        if (systemChange) {
+            this.currentSystem = Binnie.Genetics.getSystem(ind.getGenome().getSpeciesRoot());
+        }
+        this.updatePages(systemChange);
+    }
+
     public BreedingSystem getSystem() {
         return this.currentSystem;
+    }
+
+    public void setSystem(final BreedingSystem system) {
+        if (system == this.currentSystem) {
+            return;
+        }
+        this.currentSystem = system;
+        this.current = null;
+        this.updatePages(true);
     }
 }

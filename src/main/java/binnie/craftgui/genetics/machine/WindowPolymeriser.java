@@ -18,12 +18,17 @@ public class WindowPolymeriser extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowPolymeriser(player, inventory, side);
+    static {
+        WindowPolymeriser.ProgressBase = new StandardTexture(76, 170, 160, 79, GeneticsTexture.GUIProcess.getTexture());
+        WindowPolymeriser.Progress = new StandardTexture(76, 91, 160, 79, GeneticsTexture.GUIProcess.getTexture());
     }
 
     public WindowPolymeriser(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(278, 212, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowPolymeriser(player, inventory, side);
     }
 
     @Override
@@ -61,10 +66,5 @@ public class WindowPolymeriser extends WindowMachine {
     @Override
     protected String getName() {
         return "Polymeriser";
-    }
-
-    static {
-        WindowPolymeriser.ProgressBase = new StandardTexture(76, 170, 160, 79, GeneticsTexture.GUIProcess.getTexture());
-        WindowPolymeriser.Progress = new StandardTexture(76, 91, 160, 79, GeneticsTexture.GUIProcess.getTexture());
     }
 }

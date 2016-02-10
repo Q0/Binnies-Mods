@@ -41,6 +41,15 @@ public class Genetics extends AbstractMod {
     public static Item registry;
     public static Item masterRegistry;
 
+    static {
+        Genetics.itemSerumArray = null;
+        Genetics.channel = "GEN";
+    }
+
+    public Genetics() {
+        Genetics.instance = this;
+    }
+
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleItem());
@@ -56,10 +65,6 @@ public class Genetics extends AbstractMod {
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
-    }
-
-    public Genetics() {
-        Genetics.instance = this;
     }
 
     @Override
@@ -95,11 +100,6 @@ public class Genetics extends AbstractMod {
     @Override
     public boolean isActive() {
         return BinnieCore.isGeneticsActive();
-    }
-
-    static {
-        Genetics.itemSerumArray = null;
-        Genetics.channel = "GEN";
     }
 
     public static class PacketHandler extends BinniePacketHandler {

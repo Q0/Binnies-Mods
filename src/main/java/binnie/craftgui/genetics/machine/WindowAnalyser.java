@@ -21,12 +21,17 @@ public class WindowAnalyser extends WindowMachine {
     static Texture ProgressBase;
     static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowAnalyser(player, inventory, side);
+    static {
+        WindowAnalyser.ProgressBase = new StandardTexture(0, 218, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowAnalyser.Progress = new StandardTexture(0, 201, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
     }
 
     public WindowAnalyser(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(220, 210, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowAnalyser(player, inventory, side);
     }
 
     @Override
@@ -68,10 +73,5 @@ public class WindowAnalyser extends WindowMachine {
     @Override
     protected String getName() {
         return "Analyser";
-    }
-
-    static {
-        WindowAnalyser.ProgressBase = new StandardTexture(0, 218, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
-        WindowAnalyser.Progress = new StandardTexture(0, 201, 142, 17, ExtraBeeTexture.GUIProgress.getTexture());
     }
 }

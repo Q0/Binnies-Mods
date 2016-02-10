@@ -149,14 +149,14 @@ public class Flower extends Individual implements IFlower {
         return this.age;
     }
 
+    public void setAge(final int i) {
+        this.age = i;
+    }
+
     public void age() {
         if (this.age < 15) {
             ++this.age;
         }
-    }
-
-    public void setAge(final int i) {
-        this.age = i;
     }
 
     public int getMaxAge() {

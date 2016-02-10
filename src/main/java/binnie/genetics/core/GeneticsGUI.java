@@ -37,7 +37,7 @@ public enum GeneticsGUI implements IBinnieGUID {
 
 
     GeneticsGUI() {
-
+//TODO:FIX
     }
 
     public Window getWindow(final EntityPlayer player, final IInventory object, final Side side) throws Exception {

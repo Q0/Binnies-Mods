@@ -11,13 +11,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MachineGroup {
+    public boolean customRenderer;
     private AbstractMod mod;
     private String blockName;
     private String uid;
     private Map<String, MachinePackage> packages;
     private Map<Integer, MachinePackage> packagesID;
     private BlockMachine block;
-    public boolean customRenderer;
     private boolean renderedTileEntity;
 
     public MachineGroup(final AbstractMod mod, final String uid, final String blockName, final IMachineType[] types) {

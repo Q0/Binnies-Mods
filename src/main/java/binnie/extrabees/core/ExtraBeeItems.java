@@ -50,11 +50,40 @@ public enum ExtraBeeItems implements IItemMisc {
     BlutoniumDust("Blutonium Grains", "blutoniumDust"),
     CyaniteDust("Cyanite Grains", "cyaniteDust");
 
+    static {
+        ExtraBeeItems.TinDust.setMetal("Tin");
+        ExtraBeeItems.ZincDust.setMetal("Zinc");
+        ExtraBeeItems.CopperDust.setMetal("Copper");
+        ExtraBeeItems.IronDust.setMetal("Iron");
+        ExtraBeeItems.NickelDust.setMetal("Nickel");
+        ExtraBeeItems.LeadDust.setMetal("Lead");
+        ExtraBeeItems.SilverDust.setMetal("Silver");
+        ExtraBeeItems.GoldDust.setMetal("Gold");
+        ExtraBeeItems.PlatinumDust.setMetal("Platinum");
+        ExtraBeeItems.TungstenDust.setMetal("Tungsten");
+        ExtraBeeItems.TitaniumDust.setMetal("Titanium");
+        ExtraBeeItems.CoalDust.setMetal("Coal");
+        ExtraBeeItems.YelloriumDust.setMetal("Yellorium");
+        ExtraBeeItems.BlutoniumDust.setMetal("Blutonium");
+        ExtraBeeItems.CyaniteDust.setMetal("Cyanite");
+        ExtraBeeItems.DiamondShard.setGem("Diamond");
+        ExtraBeeItems.EmeraldShard.setGem("Emerald");
+        ExtraBeeItems.RubyShard.setGem("Ruby");
+        ExtraBeeItems.SapphireShard.setGem("Sapphire");
+    }
+
     String name;
     String iconPath;
     IIcon icon;
     String metalString;
     String gemString;
+
+    private ExtraBeeItems(final String name, final String iconPath) {
+        this.metalString = null;
+        this.gemString = null;
+        this.name = name;
+        this.iconPath = iconPath;
+    }
 
     public static void init() {
         OreDictionary.registerOre("dyeRed", ExtraBeeItems.RedDye.get(1));
@@ -110,13 +139,6 @@ public enum ExtraBeeItems implements IItemMisc {
         RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("for.honey", 500), (ItemStack) null, ExtraBeeItems.ScentedGear.get(1), new Object[]{" j ", "bgb", " p ", 'j', Mods.Forestry.item("royalJelly"), 'b', Mods.Forestry.item("beeswax"), 'p', Mods.Forestry.item("pollen"), 'g', gear});
     }
 
-    private ExtraBeeItems(final String name, final String iconPath) {
-        this.metalString = null;
-        this.gemString = null;
-        this.name = name;
-        this.iconPath = iconPath;
-    }
-
     private void setGem(final String string) {
         this.gemString = string;
     }
@@ -156,27 +178,5 @@ public enum ExtraBeeItems implements IItemMisc {
     @Override
     public ItemStack get(final int i) {
         return new ItemStack(ExtraBees.itemMisc, i, this.ordinal());
-    }
-
-    static {
-        ExtraBeeItems.TinDust.setMetal("Tin");
-        ExtraBeeItems.ZincDust.setMetal("Zinc");
-        ExtraBeeItems.CopperDust.setMetal("Copper");
-        ExtraBeeItems.IronDust.setMetal("Iron");
-        ExtraBeeItems.NickelDust.setMetal("Nickel");
-        ExtraBeeItems.LeadDust.setMetal("Lead");
-        ExtraBeeItems.SilverDust.setMetal("Silver");
-        ExtraBeeItems.GoldDust.setMetal("Gold");
-        ExtraBeeItems.PlatinumDust.setMetal("Platinum");
-        ExtraBeeItems.TungstenDust.setMetal("Tungsten");
-        ExtraBeeItems.TitaniumDust.setMetal("Titanium");
-        ExtraBeeItems.CoalDust.setMetal("Coal");
-        ExtraBeeItems.YelloriumDust.setMetal("Yellorium");
-        ExtraBeeItems.BlutoniumDust.setMetal("Blutonium");
-        ExtraBeeItems.CyaniteDust.setMetal("Cyanite");
-        ExtraBeeItems.DiamondShard.setGem("Diamond");
-        ExtraBeeItems.EmeraldShard.setGem("Emerald");
-        ExtraBeeItems.RubyShard.setGem("Ruby");
-        ExtraBeeItems.SapphireShard.setGem("Sapphire");
     }
 }

@@ -126,8 +126,6 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
     Candlenut("aleurites", "moluccana", 9085804, 9085804, (ILogType) ILogType.VanillaLog.Jungle, (IAlleleFruit) ExtraTreeFruitGene.Candlenut, (Class<? extends WorldGenerator>) WorldGenLazy.Tree.class),
     DwarfHazel("Corylus", "americana", 10204498, 10215762, (ILogType) ILogType.ExtraTreeLog.Hazel, (IAlleleFruit) ExtraTreeFruitGene.Hazelnut, (Class<? extends WorldGenerator>) WorldGenShrub.Shrub.class);
 
-    private LeafType leafType;
-    private SaplingType saplingType;
     ArrayList<IFruitFamily> families;
     int girth;
     Class<? extends WorldGenerator> gen;
@@ -139,6 +137,23 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
     ILogType wood;
     String branchName;
     IClassification branch;
+    private LeafType leafType;
+    private SaplingType saplingType;
+
+    private ExtraTreeSpecies(final String branch, final String binomial, final int color, final int polColor, final ILogType wood, final IAlleleFruit fruit, final Class<? extends WorldGenerator> gen) {
+        this.leafType = LeafType.Normal;
+        this.saplingType = SaplingType.Default;
+        this.families = new ArrayList<IFruitFamily>();
+        this.girth = 1;
+        this.fruit = null;
+        this.color = color;
+        this.uid = this.toString().toLowerCase();
+        this.wood = wood;
+        this.fruit = fruit;
+        this.gen = ((gen == null) ? WorldGenTree.class : gen);
+        this.branchName = branch;
+        this.binomial = binomial;
+    }
 
     public static void init() {
         final String bookArborist = "Arborist Manual";
@@ -477,11 +492,6 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         ExtraTreeSpecies.DwarfHazel.setFertility(ForestryAllele.Saplings.Average).setSappiness(ForestryAllele.Sappiness.Lower).setMaturation(ForestryAllele.Maturation.Faster);
     }
 
-    private ExtraTreeSpecies addFamily(final IFruitFamily family) {
-        this.families.add(family);
-        return this;
-    }
-
     static final ItemStack getEBXLStack(final String name) {
         try {
             final Class elements = Class.forName("extrabiomes.lib.Element");
@@ -492,6 +502,11 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private ExtraTreeSpecies addFamily(final IFruitFamily family) {
+        this.families.add(family);
+        return this;
     }
 
     private void setWorldGen(final Class<? extends WorldGenerator> gen) {
@@ -513,21 +528,6 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
             clas.addMemberSpecies((IAlleleSpecies) this);
             this.branch = clas;
         }
-    }
-
-    private ExtraTreeSpecies(final String branch, final String binomial, final int color, final int polColor, final ILogType wood, final IAlleleFruit fruit, final Class<? extends WorldGenerator> gen) {
-        this.leafType = LeafType.Normal;
-        this.saplingType = SaplingType.Default;
-        this.families = new ArrayList<IFruitFamily>();
-        this.girth = 1;
-        this.fruit = null;
-        this.color = color;
-        this.uid = this.toString().toLowerCase();
-        this.wood = wood;
-        this.fruit = fruit;
-        this.gen = ((gen == null) ? WorldGenTree.class : gen);
-        this.branchName = branch;
-        this.binomial = binomial;
     }
 
     public String getName() {

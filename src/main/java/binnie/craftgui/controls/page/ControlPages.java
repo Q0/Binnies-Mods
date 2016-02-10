@@ -4,32 +4,26 @@ import binnie.craftgui.controls.core.Control;
 import binnie.craftgui.controls.core.IControlValue;
 import binnie.craftgui.controls.core.IControlValues;
 import binnie.craftgui.core.IWidget;
-import binnie.craftgui.events.Event;
 import binnie.craftgui.events.EventValueChanged;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ControlPages<T>
-        extends Control
-        implements IControlValues<T>,
-        IControlValue<T> {
-    T value = null;
+public class ControlPages<T> extends Control implements IControlValues<T>, IControlValue<T> {
+    T value;
 
-    @Override
-    public boolean isChildVisible(IWidget child) {
-        if (child == null) {
-            return false;
-        }
-        return this.value == ((IControlValue)child).getValue();
-    }
-
-    public ControlPages(IWidget parent, float x, float y, float w, float h) {
+    public ControlPages(final IWidget parent, final float x, final float y, final float w, final float h) {
         super(parent, x, y, w, h);
+        this.value = null;
     }
 
     @Override
-    public void onAddChild(IWidget widget) {
+    public boolean isChildVisible(final IWidget child) {
+        return child != null && this.value == ((IControlValue) child).getValue();
+    }
+
+    public void onAddChild(final IWidget widget) {
     }
 
     @Override
@@ -38,23 +32,23 @@ public class ControlPages<T>
     }
 
     @Override
-    public void setValue(T value) {
+    public void setValue(final T value) {
         if (this.value != value) {
             this.value = value;
-            this.callEvent(new EventValueChanged<T>(this, value));
+            this.callEvent(new EventValueChanged<Object>(this, value));
         }
     }
 
     @Override
     public Collection<T> getValues() {
-        ArrayList list = new ArrayList();
-        for (IWidget child : this.getWidgets()) {
-            list.add(((IControlValue)child).getValue());
+        final List<T> list = new ArrayList<T>();
+        for (final IWidget child : this.getWidgets()) {
+            list.add((T) ((IControlValue) child).getValue());
         }
         return list;
     }
 
     @Override
-    public void setValues(Collection<T> values) {
+    public void setValues(final Collection<T> values) {
     }
 }

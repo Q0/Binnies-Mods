@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.EnumSet;
 
 abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
-    private SidedAccess access;
+    protected String unlocName;
     Validator<T> validator;
+    private SidedAccess access;
     private boolean readOnly;
     private int index;
-    protected String unlocName;
 
     public BaseSlot(final int index, final String unlocName) {
         this.access = new SidedAccess();
@@ -35,10 +35,6 @@ abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
     public abstract T getContent();
 
     public abstract void setContent(final T p0);
-
-    public void setValidator(final Validator<T> val) {
-        this.validator = val;
-    }
 
     public boolean isEmpty() {
         return this.getContent() == null;
@@ -69,22 +65,6 @@ abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
         this.forbidExtraction();
     }
 
-    public void setInputSides(final EnumSet<ForgeDirection> sides) {
-        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
-            if (side != ForgeDirection.UNKNOWN) {
-                this.access.setInsert(side, false);
-            }
-        }
-    }
-
-    public void setOutputSides(final EnumSet<ForgeDirection> sides) {
-        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
-            if (side != ForgeDirection.UNKNOWN) {
-                this.access.setExtract(side, false);
-            }
-        }
-    }
-
     public void forbidExtraction() {
         this.access.setExtract(false);
         this.access.forbidExtractChange();
@@ -107,8 +87,24 @@ abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
         return this.access.getInsertionSides();
     }
 
+    public void setInputSides(final EnumSet<ForgeDirection> sides) {
+        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
+            if (side != ForgeDirection.UNKNOWN) {
+                this.access.setInsert(side, false);
+            }
+        }
+    }
+
     public Collection<ForgeDirection> getOutputSides() {
         return this.access.getExtractionSides();
+    }
+
+    public void setOutputSides(final EnumSet<ForgeDirection> sides) {
+        for (final ForgeDirection side : EnumSet.complementOf(sides)) {
+            if (side != ForgeDirection.UNKNOWN) {
+                this.access.setExtract(side, false);
+            }
+        }
     }
 
     public void setUnlocalisedName(final String name) {
@@ -119,5 +115,9 @@ abstract class BaseSlot<T> implements INBTTagable, IValidator<T> {
 
     public Validator<T> getValidator() {
         return this.validator;
+    }
+
+    public void setValidator(final Validator<T> val) {
+        this.validator = val;
     }
 }

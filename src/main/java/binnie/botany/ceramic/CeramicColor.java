@@ -10,8 +10,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CeramicColor implements IDesignMaterial {
-    EnumFlowerColor color;
     static Map<EnumFlowerColor, CeramicColor> map;
+
+    static {
+        CeramicColor.map = new LinkedHashMap<EnumFlowerColor, CeramicColor>();
+        for (final EnumFlowerColor c : EnumFlowerColor.values()) {
+            CeramicColor.map.put(c, new CeramicColor(c));
+        }
+    }
+
+    EnumFlowerColor color;
 
     CeramicColor(final EnumFlowerColor color) {
         this.color = color;
@@ -34,12 +42,5 @@ public class CeramicColor implements IDesignMaterial {
     @Override
     public int getColour() {
         return this.color.getColor(false);
-    }
-
-    static {
-        CeramicColor.map = new LinkedHashMap<EnumFlowerColor, CeramicColor>();
-        for (final EnumFlowerColor c : EnumFlowerColor.values()) {
-            CeramicColor.map.put(c, new CeramicColor(c));
-        }
     }
 }

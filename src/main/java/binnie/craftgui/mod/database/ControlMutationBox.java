@@ -16,15 +16,15 @@ class ControlMutationBox extends ControlListBox<IMutation> {
     private Type type;
     private IAlleleSpecies species;
 
-    @Override
-    public IWidget createOption(final IMutation value, final int y) {
-        return new ControlMutationItem(((ControlScrollableContent<ControlList<IMutation>>) this).getContent(), value, this.species, y);
-    }
-
     public ControlMutationBox(final IWidget parent, final int x, final int y, final int width, final int height, final Type type) {
         super(parent, x, y, width, height, 12.0f);
         this.species = null;
         this.type = type;
+    }
+
+    @Override
+    public IWidget createOption(final IMutation value, final int y) {
+        return new ControlMutationItem(((ControlScrollableContent<ControlList<IMutation>>) this).getContent(), value, this.species, y);
     }
 
     public void setSpecies(final IAlleleSpecies species) {

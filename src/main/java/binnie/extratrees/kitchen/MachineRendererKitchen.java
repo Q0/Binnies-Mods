@@ -15,8 +15,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class MachineRendererKitchen {
-    static int level;
     public static MachineRendererKitchen instance;
+    static int level;
+
+    static {
+        MachineRendererKitchen.level = 0;
+        MachineRendererKitchen.instance = new MachineRendererKitchen();
+    }
+
     BinnieResource texture;
 
     public void renderMachine(final Machine machine, final BinnieResource texture, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
@@ -91,10 +97,5 @@ public class MachineRendererKitchen {
                 tess.startDrawingQuads();
             }
         }
-    }
-
-    static {
-        MachineRendererKitchen.level = 0;
-        MachineRendererKitchen.instance = new MachineRendererKitchen();
     }
 }

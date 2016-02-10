@@ -10,6 +10,11 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 class MachineRendererCompartment {
     public static MachineRendererCompartment instance;
+
+    static {
+        MachineRendererCompartment.instance = new MachineRendererCompartment();
+    }
+
     private ModelCompartment model;
 
     public MachineRendererCompartment() {
@@ -33,9 +38,5 @@ class MachineRendererCompartment {
         this.model.render(null, (float) x, (float) y, (float) z, 0.0625f, 0.0625f, 0.0625f);
         GL11.glPopMatrix();
         GL11.glPopMatrix();
-    }
-
-    static {
-        MachineRendererCompartment.instance = new MachineRendererCompartment();
     }
 }

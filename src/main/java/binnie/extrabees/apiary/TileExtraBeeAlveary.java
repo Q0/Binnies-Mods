@@ -17,13 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyComponent, IBeeModifier, IBeeListener {
-    boolean init;
-    IStructureLogic structureLogic;
-    private boolean isMaster;
     protected int masterX;
     protected int masterZ;
     protected int masterY;
+    boolean init;
+    IStructureLogic structureLogic;
     List<TileEntity> tiles;
+    private boolean isMaster;
+
+    public TileExtraBeeAlveary() {
+        this.init = false;
+        this.masterY = -99;
+        this.tiles = new ArrayList<TileEntity>();
+        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
+    }
+
+    public TileExtraBeeAlveary(final AlvearyMachine.AlvearyPackage alvearyPackage) {
+        super(alvearyPackage);
+        this.init = false;
+        this.masterY = -99;
+        this.tiles = new ArrayList<TileEntity>();
+        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
+    }
 
     @Override
     public void updateEntity() {
@@ -78,21 +93,6 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         return (AlvearyMachine.AlvearyPackage) this.getMachine().getPackage();
     }
 
-    public TileExtraBeeAlveary() {
-        this.init = false;
-        this.masterY = -99;
-        this.tiles = new ArrayList<TileEntity>();
-        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
-    }
-
-    public TileExtraBeeAlveary(final AlvearyMachine.AlvearyPackage alvearyPackage) {
-        super(alvearyPackage);
-        this.init = false;
-        this.masterY = -99;
-        this.tiles = new ArrayList<TileEntity>();
-        this.structureLogic = Binnie.Genetics.getBeeRoot().createAlvearyStructureLogic((IAlvearyComponent) this);
-    }
-
     public String getTypeUID() {
         return this.structureLogic.getTypeUID();
     }
@@ -125,15 +125,6 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         return null;
     }
 
-    public void validateStructure() {
-        this.structureLogic.validateStructure();
-        this.updateAlvearyBlocks();
-    }
-
-    private boolean isSameTile(final TileEntity tile) {
-        return tile.xCoord == this.xCoord && tile.yCoord == this.yCoord && tile.zCoord == this.zCoord;
-    }
-
     public void setCentralTE(final TileEntity tile) {
         if (tile == null || tile == this || this.isSameTile(tile)) {
             final boolean b = false;
@@ -155,6 +146,15 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
             ((IAlvearyComponent) tile).registerBeeModifier(this.getBeeModifier());
         }
         this.updateAlvearyBlocks();
+    }
+
+    public void validateStructure() {
+        this.structureLogic.validateStructure();
+        this.updateAlvearyBlocks();
+    }
+
+    private boolean isSameTile(final TileEntity tile) {
+        return tile.xCoord == this.xCoord && tile.yCoord == this.yCoord && tile.zCoord == this.zCoord;
     }
 
     public boolean isMaster() {

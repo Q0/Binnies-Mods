@@ -18,6 +18,20 @@ import java.util.List;
 public class ItemInsulatedTube extends Item {
     IIcon[] icons;
 
+    public ItemInsulatedTube() {
+        this.icons = new IIcon[3];
+        this.setUnlocalizedName("insulatedTube");
+        this.setCreativeTab(CreativeTabBotany.instance);
+    }
+
+    public static String getInsulate(final ItemStack stack) {
+        return Insulate.get(stack.getItemDamage()).getName();
+    }
+
+    public static ItemStack getInsulateStack(final ItemStack stack) {
+        return Insulate.get(stack.getItemDamage()).getStack();
+    }
+
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item p_150895_1_, final CreativeTabs p_150895_2_, final List p_150895_3_) {
         for (final Material mat : Material.values()) {
@@ -61,20 +75,6 @@ public class ItemInsulatedTube extends Item {
         return true;
     }
 
-    public ItemInsulatedTube() {
-        this.icons = new IIcon[3];
-        this.setUnlocalizedName("insulatedTube");
-        this.setCreativeTab(CreativeTabBotany.instance);
-    }
-
-    public static String getInsulate(final ItemStack stack) {
-        return Insulate.get(stack.getItemDamage()).getName();
-    }
-
-    public static ItemStack getInsulateStack(final ItemStack stack) {
-        return Insulate.get(stack.getItemDamage()).getStack();
-    }
-
     enum Material {
         Copper(14923662, "Copper"),
         Tin(14806772, "Tin"),
@@ -84,14 +84,6 @@ public class ItemInsulatedTube extends Item {
         int color;
         String name;
 
-        public int getColor() {
-            return this.color;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
         private Material(final int color, final String name) {
             this.color = color;
             this.name = name;
@@ -99,6 +91,14 @@ public class ItemInsulatedTube extends Item {
 
         public static Material get(final int i) {
             return values()[i % values().length];
+        }
+
+        public int getColor() {
+            return this.color;
+        }
+
+        public String getName() {
+            return this.name;
         }
     }
 
@@ -113,14 +113,6 @@ public class ItemInsulatedTube extends Item {
         int color;
         String name;
 
-        public int getColor() {
-            return this.color;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
         private Insulate(final int color, final String name) {
             this.color = color;
             this.name = name;
@@ -128,6 +120,14 @@ public class ItemInsulatedTube extends Item {
 
         public static Insulate get(final int i) {
             return values()[i / 128 % values().length];
+        }
+
+        public int getColor() {
+            return this.color;
+        }
+
+        public String getName() {
+            return this.name;
         }
 
         public ItemStack getStack() {

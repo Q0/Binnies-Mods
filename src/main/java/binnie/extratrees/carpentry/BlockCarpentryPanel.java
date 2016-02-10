@@ -24,6 +24,17 @@ public class BlockCarpentryPanel extends BlockCarpentry {
         this.setLightOpacity(0);
     }
 
+    public static boolean isValidPanelPlacement(final World world, final int x, final int y, final int z, final ForgeDirection facing) {
+        if (facing == ForgeDirection.UNKNOWN) {
+            return false;
+        }
+        final int bx = x - facing.offsetX;
+        final int by = y - facing.offsetY;
+        final int bz = z - facing.offsetZ;
+        final Block block = world.getBlock(bx, by, bz);
+        return block != null && block.isSideSolid((IBlockAccess) world, bx, by, bz, facing);
+    }
+
     @Override
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
     }
@@ -88,17 +99,6 @@ public class BlockCarpentryPanel extends BlockCarpentry {
     @Override
     public DesignBlock getCarpentryBlock(final IBlockAccess world, final int x, final int y, final int z) {
         return ModuleCarpentry.getCarpentryPanel(this.getDesignSystem(), TileEntityMetadata.getTileMetadata(world, x, y, z));
-    }
-
-    public static boolean isValidPanelPlacement(final World world, final int x, final int y, final int z, final ForgeDirection facing) {
-        if (facing == ForgeDirection.UNKNOWN) {
-            return false;
-        }
-        final int bx = x - facing.offsetX;
-        final int by = y - facing.offsetY;
-        final int bz = z - facing.offsetZ;
-        final Block block = world.getBlock(bx, by, bz);
-        return block != null && block.isSideSolid((IBlockAccess) world, bx, by, bz, facing);
     }
 
     @Override

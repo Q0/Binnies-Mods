@@ -11,6 +11,11 @@ public class TankSlot extends BaseSlot<FluidStack> {
     public static final String NameJuice = "Juice Tank";
     public static final String NameWater = "Water Tank";
     public static String NameCupboard;
+
+    static {
+        TankSlot.NameCupboard = "Cupboard Slot";
+    }
+
     private FluidTank tank;
 
     public TankSlot(final int index, final String name, final int capacity) {
@@ -46,9 +51,5 @@ public class TankSlot extends BaseSlot<FluidStack> {
     @Override
     public String getName() {
         return Binnie.Language.localise(BinnieCore.instance, "gui.slot." + this.unlocName);
-    }
-
-    static {
-        TankSlot.NameCupboard = "Cupboard Slot";
     }
 }

@@ -12,15 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemAnalyst extends Item {
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = Genetics.proxy.getIcon(register, "analyst");
-    }
-
     public ItemAnalyst() {
         this.setCreativeTab(CreativeTabGenetics.instance);
         this.setUnlocalizedName("analyst");
         this.setMaxStackSize(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = Genetics.proxy.getIcon(register, "analyst");
     }
 
     public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {

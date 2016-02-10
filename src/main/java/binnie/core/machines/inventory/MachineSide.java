@@ -6,12 +6,21 @@ import java.util.Collection;
 import java.util.EnumSet;
 
 public class MachineSide {
-    private static EnumSet<ForgeDirection> All;
     public static EnumSet<ForgeDirection> TopAndBottom;
     public static EnumSet<ForgeDirection> None;
     public static EnumSet<ForgeDirection> Top;
     public static EnumSet<ForgeDirection> Bottom;
     public static EnumSet<ForgeDirection> Sides;
+    private static EnumSet<ForgeDirection> All;
+
+    static {
+        MachineSide.All = EnumSet.of(ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+        MachineSide.TopAndBottom = EnumSet.of(ForgeDirection.UP, ForgeDirection.DOWN);
+        MachineSide.None = EnumSet.noneOf(ForgeDirection.class);
+        MachineSide.Top = EnumSet.of(ForgeDirection.UP);
+        MachineSide.Bottom = EnumSet.of(ForgeDirection.DOWN);
+        MachineSide.Sides = EnumSet.of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+    }
 
     public static String asString(final Collection<ForgeDirection> sides) {
         if (sides.containsAll(MachineSide.All)) {
@@ -65,14 +74,5 @@ public class MachineSide {
             }
         }
         return text;
-    }
-
-    static {
-        MachineSide.All = EnumSet.of(ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
-        MachineSide.TopAndBottom = EnumSet.of(ForgeDirection.UP, ForgeDirection.DOWN);
-        MachineSide.None = EnumSet.noneOf(ForgeDirection.class);
-        MachineSide.Top = EnumSet.of(ForgeDirection.UP);
-        MachineSide.Bottom = EnumSet.of(ForgeDirection.DOWN);
-        MachineSide.Sides = EnumSet.of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
     }
 }

@@ -11,6 +11,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.List;
 
 public class ItemIndustrialFrame extends Item {
+    public ItemIndustrialFrame() {
+        this.setCreativeTab(CreativeTabs.tabMisc);
+        this.setMaxDamage(400);
+        this.setMaxStackSize(1);
+        this.setUnlocalizedName("industrialFrame");
+    }
+
+    public static IndustrialFrame getFrame(final ItemStack stack) {
+        if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("frame")) {
+            return null;
+        }
+        return IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")];
+    }
+
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
@@ -40,19 +54,5 @@ public class ItemIndustrialFrame extends Item {
 
     public String getItemStackDisplayName(final ItemStack par1ItemStack) {
         return "Industrial Frame";
-    }
-
-    public ItemIndustrialFrame() {
-        this.setCreativeTab(CreativeTabs.tabMisc);
-        this.setMaxDamage(400);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName("industrialFrame");
-    }
-
-    public static IndustrialFrame getFrame(final ItemStack stack) {
-        if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("frame")) {
-            return null;
-        }
-        return IndustrialFrame.values()[stack.getTagCompound().getInteger("frame")];
     }
 }

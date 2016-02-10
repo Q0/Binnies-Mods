@@ -145,6 +145,10 @@ public abstract class Designer {
             return this.design;
         }
 
+        private void setDesign(final IDesign design) {
+            this.design = design;
+        }
+
         @Override
         public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound nbt) {
             if (name.equals("recipe")) {
@@ -171,10 +175,6 @@ public abstract class Designer {
             } else if (name.equals("design")) {
                 this.setDesign(CarpentryManager.carpentryInterface.getDesign(nbt.getShort("d")));
             }
-        }
-
-        private void setDesign(final IDesign design) {
-            this.design = design;
         }
 
         @Override

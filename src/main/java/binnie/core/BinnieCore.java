@@ -58,10 +58,56 @@ public final class BinnieCore extends AbstractMod {
     @SidedProxy(clientSide = "binnie.core.proxy.BinnieProxyClient", serverSide = "binnie.core.proxy.BinnieProxyServer")
     public static BinnieProxy proxy;
     public static int multipassRenderID;
-    private static List<AbstractMod> modList;
     public static MachineGroup packageCompartment;
     public static ItemGenesis genesis;
     public static ItemFieldKit fieldKit;
+    private static List<AbstractMod> modList;
+
+    static {
+        BinnieCore.modList = new ArrayList<AbstractMod>();
+    }
+
+    public static boolean isLepidopteryActive() {
+        return PluginManager.Module.LEPIDOPTEROLOGY.isEnabled();
+    }
+
+    public static boolean isApicultureActive() {
+        return PluginManager.Module.APICULTURE.isEnabled();
+    }
+
+    public static boolean isArboricultureActive() {
+        return PluginManager.Module.ARBORICULTURE.isEnabled();
+    }
+
+    public static boolean isBotanyActive() {
+        return ConfigurationMods.botany;
+    }
+
+    public static boolean isGeneticsActive() {
+        return ConfigurationMods.genetics;
+    }
+
+    public static boolean isExtraBeesActive() {
+        return ConfigurationMods.extraBees && isApicultureActive();
+    }
+
+    public static boolean isExtraTreesActive() {
+        return ConfigurationMods.extraTrees && isArboricultureActive();
+    }
+
+    static void registerMod(final AbstractMod mod) {
+        BinnieCore.modList.add(mod);
+    }
+
+    private static List<AbstractMod> getActiveMods() {
+        final List<AbstractMod> list = new ArrayList<AbstractMod>();
+        for (final AbstractMod mod : BinnieCore.modList) {
+            if (mod.isActive()) {
+                list.add(mod);
+            }
+        }
+        return list;
+    }
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
@@ -115,51 +161,9 @@ public final class BinnieCore extends AbstractMod {
         GameRegistry.registerTileEntity((Class) TileEntityMetadata.class, "binnie.tile.metadata");
     }
 
-    public static boolean isLepidopteryActive() {
-        return PluginManager.Module.LEPIDOPTEROLOGY.isEnabled();
-    }
-
-    public static boolean isApicultureActive() {
-        return PluginManager.Module.APICULTURE.isEnabled();
-    }
-
-    public static boolean isArboricultureActive() {
-        return PluginManager.Module.ARBORICULTURE.isEnabled();
-    }
-
-    public static boolean isBotanyActive() {
-        return ConfigurationMods.botany;
-    }
-
-    public static boolean isGeneticsActive() {
-        return ConfigurationMods.genetics;
-    }
-
-    public static boolean isExtraBeesActive() {
-        return ConfigurationMods.extraBees && isApicultureActive();
-    }
-
-    public static boolean isExtraTreesActive() {
-        return ConfigurationMods.extraTrees && isArboricultureActive();
-    }
-
     @Override
     public void postInit() {
         super.postInit();
-    }
-
-    static void registerMod(final AbstractMod mod) {
-        BinnieCore.modList.add(mod);
-    }
-
-    private static List<AbstractMod> getActiveMods() {
-        final List<AbstractMod> list = new ArrayList<AbstractMod>();
-        for (final AbstractMod mod : BinnieCore.modList) {
-            if (mod.isActive()) {
-                list.add(mod);
-            }
-        }
-        return list;
     }
 
     @SubscribeEvent
@@ -219,10 +223,6 @@ public final class BinnieCore extends AbstractMod {
     @Override
     public boolean isActive() {
         return true;
-    }
-
-    static {
-        BinnieCore.modList = new ArrayList<AbstractMod>();
     }
 
     public static class PacketHandler extends BinniePacketHandler {

@@ -27,6 +27,14 @@ public class ItemSerum extends ItemGene implements IItemSerum {
         this.setMaxDamage(16);
     }
 
+    public static ItemStack create(final IGene gene) {
+        final ItemStack item = new ItemStack(Genetics.itemSerum);
+        item.setItemDamage(item.getMaxDamage());
+        final GeneItem seq = new GeneItem(gene);
+        seq.writeToItem(item);
+        return item;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(final ItemStack itemstack, final EntityPlayer entityPlayer, final List list, final boolean par4) {
@@ -90,13 +98,5 @@ public class ItemSerum extends ItemGene implements IItemSerum {
         geneI.addGene(gene);
         geneI.writeToItem(stack);
         return stack;
-    }
-
-    public static ItemStack create(final IGene gene) {
-        final ItemStack item = new ItemStack(Genetics.itemSerum);
-        item.setItemDamage(item.getMaxDamage());
-        final GeneItem seq = new GeneItem(gene);
-        seq.writeToItem(item);
-        return item;
     }
 }

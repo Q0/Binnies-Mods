@@ -35,23 +35,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class WindowAbstractDatabase extends Window {
-    private float selectionBoxWidth;
     private final float infoBoxWidth = 144.0f;
     private final float infoBoxHeight = 176.0f;
     private final float infoTabWidth = 16.0f;
     private final float modeTabWidth = 22.0f;
     private final float searchBoxHeight = 16.0f;
-    private Map<IDatabaseMode, ModeWidgets> modes;
     boolean isNEI;
+    private float selectionBoxWidth;
+    private Map<IDatabaseMode, ModeWidgets> modes;
     private BreedingSystem system;
     private Panel panelInformation;
     private Panel panelSearch;
     private ControlPages<IDatabaseMode> modePages;
     private IAlleleSpecies gotoSpecies;
-
-    public void changeMode(final IDatabaseMode mode) {
-        this.modePages.setValue(mode);
-    }
 
     public WindowAbstractDatabase(final EntityPlayer player, final Side side, final boolean nei, final BreedingSystem system, final float wid) {
         super(100.0f, 192.0f, player, null, side);
@@ -66,6 +62,14 @@ public abstract class WindowAbstractDatabase extends Window {
         this.selectionBoxWidth = wid;
     }
 
+    public WindowAbstractDatabase(final EntityPlayer player, final Side side, final boolean nei, final BreedingSystem system) {
+        this(player, side, nei, system, 95.0f);
+    }
+
+    public void changeMode(final IDatabaseMode mode) {
+        this.modePages.setValue(mode);
+    }
+
     public ControlPages<DatabaseTab> getInfoPages(final IDatabaseMode mode) {
         return this.modes.get(mode).infoPages;
     }
@@ -76,10 +80,6 @@ public abstract class WindowAbstractDatabase extends Window {
 
     public BreedingSystem getBreedingSystem() {
         return this.system;
-    }
-
-    public WindowAbstractDatabase(final EntityPlayer player, final Side side, final boolean nei, final BreedingSystem system) {
-        this(player, side, nei, system, 95.0f);
     }
 
     protected ModeWidgets createMode(final IDatabaseMode mode, final ModeWidgets widgets) {
@@ -223,8 +223,8 @@ public abstract class WindowAbstractDatabase extends Window {
     public abstract static class ModeWidgets {
         public WindowAbstractDatabase database;
         public ControlPage<IDatabaseMode> modePage;
-        private ControlPages<DatabaseTab> infoPages;
         public ControlListBox listBox;
+        private ControlPages<DatabaseTab> infoPages;
         private ControlTabBar<DatabaseTab> infoTabs;
 
         public ModeWidgets(final IDatabaseMode mode, final WindowAbstractDatabase database) {

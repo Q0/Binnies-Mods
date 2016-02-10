@@ -22,6 +22,16 @@ public class ControlBreweryProgress extends ControlProgressBase {
     static Texture Brewery;
     static Texture BreweryOverlay;
 
+    static {
+        ControlBreweryProgress.Brewery = new StandardTexture(0, 69, 34, 39, ExtraTreeTexture.Gui);
+        ControlBreweryProgress.BreweryOverlay = new StandardTexture(34, 69, 34, 39, ExtraTreeTexture.Gui);
+    }
+
+    protected ControlBreweryProgress(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 34.0f, 39.0f);
+        this.addAttribute(Attribute.MouseOver);
+    }
+
     @Override
     public void onRenderBackground() {
         CraftGUI.Render.texture(ControlBreweryProgress.Brewery, new IPoint(0.0f, 0.0f));
@@ -68,11 +78,6 @@ public class ControlBreweryProgress extends ControlProgressBase {
     public void onRenderForeground() {
     }
 
-    protected ControlBreweryProgress(final IWidget parent, final float x, final float y) {
-        super(parent, x, y, 34.0f, 39.0f);
-        this.addAttribute(Attribute.MouseOver);
-    }
-
     public void renderFluid(final FluidStack fluid, final IPoint pos) {
         final int hex = fluid.getFluid().getColor(fluid);
         final int r = (hex & 0xFF0000) >> 16;
@@ -84,10 +89,5 @@ public class ControlBreweryProgress extends ControlProgressBase {
         GL11.glBlendFunc(770, 771);
         CraftGUI.Render.iconBlock(pos, fluid.getFluid().getIcon());
         GL11.glDisable(3042);
-    }
-
-    static {
-        ControlBreweryProgress.Brewery = new StandardTexture(0, 69, 34, 39, ExtraTreeTexture.Gui);
-        ControlBreweryProgress.BreweryOverlay = new StandardTexture(34, 69, 34, 39, ExtraTreeTexture.Gui);
     }
 }

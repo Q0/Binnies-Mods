@@ -1,6 +1,5 @@
 package binnie.extrabees.genetics;
 
-import binnie.botany.api.IFlower;
 import binnie.core.Mods;
 import binnie.extrabees.ExtraBees;
 import forestry.api.genetics.*;
@@ -37,6 +36,12 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         this.dominant = true;
     }
 
+    public static void doInit() {
+        for (final ExtraBeesFlowers effect : values()) {
+            effect.register();
+        }
+    }
+
     public String getUID() {
         return "extrabees.flower." + this.toString().toLowerCase();
     }
@@ -55,12 +60,6 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
 
     public void register() {
         AlleleManager.alleleRegistry.registerAllele((IAllele) this);
-    }
-
-    public static void doInit() {
-        for (final ExtraBeesFlowers effect : values()) {
-            effect.register();
-        }
     }
 
     public ItemStack[] getItemStacks() {
@@ -202,7 +201,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return this.getUID();
     }
 
-    public List<forestry.api.genetics.IFlower> getFlowers() {
-        return new ArrayList<>();
+    public List<IFlower> getFlowers() {
+        return new ArrayList<IFlower>();
     }
 }

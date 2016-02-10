@@ -19,29 +19,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class ModuleCarpentry implements IInitializable {
-    @Override
-    public void preInit() {
-        ExtraTrees.blockCarpentry = new BlockCarpentry();
-        ExtraTrees.blockPanel = new BlockCarpentryPanel();
-        ExtraTrees.blockStained = new BlockStainedDesign();
-        GameRegistry.registerBlock((Block) ExtraTrees.blockCarpentry, (Class) ItemMetadata.class, "carpentry");
-        GameRegistry.registerBlock((Block) ExtraTrees.blockPanel, (Class) ItemMetadata.class, "panel");
-        GameRegistry.registerBlock((Block) ExtraTrees.blockStained, (Class) ItemMetadata.class, "stainedglass");
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockCarpentry), (IItemRenderer) new MultipassItemRenderer());
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockStained), (IItemRenderer) new MultipassItemRenderer());
-        MinecraftForge.EVENT_BUS.register((Object) ExtraTrees.blockCarpentry);
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockPanel), (IItemRenderer) new MultipassItemRenderer());
-    }
-
-    @Override
-    public void init() {
-    }
-
-    @Override
-    public void postInit() {
-        for (final EnumDesign design : EnumDesign.values()) {
-            CarpentryManager.carpentryInterface.registerDesign(design.ordinal(), design);
-        }
+    static {
+        CarpentryManager.carpentryInterface = new CarpentryInterface();
     }
 
     public static ItemStack getItemStack(final BlockDesign block, final IDesignMaterial type1, final IDesignMaterial type2, final IDesign design) {
@@ -94,8 +73,29 @@ public class ModuleCarpentry implements IInitializable {
         return getMetadata(plank1, plank2, design, 0, ForgeDirection.UP.ordinal());
     }
 
-    static {
-        CarpentryManager.carpentryInterface = new CarpentryInterface();
+    @Override
+    public void preInit() {
+        ExtraTrees.blockCarpentry = new BlockCarpentry();
+        ExtraTrees.blockPanel = new BlockCarpentryPanel();
+        ExtraTrees.blockStained = new BlockStainedDesign();
+        GameRegistry.registerBlock((Block) ExtraTrees.blockCarpentry, (Class) ItemMetadata.class, "carpentry");
+        GameRegistry.registerBlock((Block) ExtraTrees.blockPanel, (Class) ItemMetadata.class, "panel");
+        GameRegistry.registerBlock((Block) ExtraTrees.blockStained, (Class) ItemMetadata.class, "stainedglass");
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockCarpentry), (IItemRenderer) new MultipassItemRenderer());
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockStained), (IItemRenderer) new MultipassItemRenderer());
+        MinecraftForge.EVENT_BUS.register((Object) ExtraTrees.blockCarpentry);
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockPanel), (IItemRenderer) new MultipassItemRenderer());
+    }
+
+    @Override
+    public void init() {
+    }
+
+    @Override
+    public void postInit() {
+        for (final EnumDesign design : EnumDesign.values()) {
+            CarpentryManager.carpentryInterface.registerDesign(design.ordinal(), design);
+        }
     }
 
     enum Axis {

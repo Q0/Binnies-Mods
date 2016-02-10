@@ -11,9 +11,9 @@ import forestry.api.genetics.EnumTolerance;
 import java.util.EnumSet;
 
 public abstract class ControlToleranceBar<T extends Enum<T>> extends Control implements ITooltip {
-    private Class<T> enumClass;
     EnumSet<T> tolerated;
     EnumSet<T> fullSet;
+    private Class<T> enumClass;
 
     public ControlToleranceBar(final IWidget parent, final float x, final float y, final float width, final float height, final Class<T> clss) {
         super(parent, x, y, width, height);

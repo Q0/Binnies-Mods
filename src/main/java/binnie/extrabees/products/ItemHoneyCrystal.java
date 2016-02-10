@@ -14,11 +14,6 @@ public class ItemHoneyCrystal extends Item {
     private int transferLimit;
     private int tier;
 
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystal");
-    }
-
     public ItemHoneyCrystal() {
         this.maxCharge = 8000;
         this.transferLimit = 500;
@@ -29,10 +24,6 @@ public class ItemHoneyCrystal extends Item {
         this.setUnlocalizedName("honeyCrystal");
     }
 
-    public String getItemStackDisplayName(final ItemStack i) {
-        return ExtraBees.proxy.localise("item.honeycrystal");
-    }
-
     public static NBTTagCompound getOrCreateNbtData(final ItemStack itemStack) {
         NBTTagCompound ret = itemStack.getTagCompound();
         if (ret == null) {
@@ -40,5 +31,14 @@ public class ItemHoneyCrystal extends Item {
             itemStack.setTagCompound(ret);
         }
         return ret;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystal");
+    }
+
+    public String getItemStackDisplayName(final ItemStack i) {
+        return ExtraBees.proxy.localise("item.honeycrystal");
     }
 }

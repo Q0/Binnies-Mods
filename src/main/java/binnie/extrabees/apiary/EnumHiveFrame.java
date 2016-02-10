@@ -26,6 +26,11 @@ public enum EnumHiveFrame implements IHiveFrame {
     int maxDamage;
     BeeModifierLogic logic;
 
+    private EnumHiveFrame() {
+        this.maxDamage = 240;
+        this.logic = new BeeModifierLogic();
+    }
+
     public static void init() {
         EnumHiveFrame.Cocoa.logic.setModifier(EnumBeeModifier.Lifespan, 0.75f, 0.25f);
         EnumHiveFrame.Cocoa.logic.setModifier(EnumBeeModifier.Production, 1.5f, 5.0f);
@@ -52,11 +57,6 @@ public enum EnumHiveFrame implements IHiveFrame {
 
     public void setMaxDamage(final int damage) {
         this.maxDamage = damage;
-    }
-
-    private EnumHiveFrame() {
-        this.maxDamage = 240;
-        this.logic = new BeeModifierLogic();
     }
 
     public ItemStack frameUsed(final IBeeHousing house, final ItemStack frame, final IBee queen, final int wear) {

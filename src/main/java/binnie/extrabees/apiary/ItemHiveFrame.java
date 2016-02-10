@@ -15,16 +15,16 @@ import net.minecraft.item.ItemStack;
 public class ItemHiveFrame extends Item implements IHiveFrame {
     EnumHiveFrame frame;
 
-    public String getItemStackDisplayName(final ItemStack par1ItemStack) {
-        return this.frame.getName();
-    }
-
     public ItemHiveFrame(final EnumHiveFrame frame) {
         this.frame = frame;
         this.setMaxDamage(frame.maxDamage);
         this.setCreativeTab(Tabs.tabApiculture);
         this.setMaxStackSize(1);
         this.setUnlocalizedName("hiveFrame");
+    }
+
+    public String getItemStackDisplayName(final ItemStack par1ItemStack) {
+        return this.frame.getName();
     }
 
     public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {

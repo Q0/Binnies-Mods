@@ -9,6 +9,10 @@ import java.util.Map;
 public class DrinkManager {
     static Map<String, IDrinkLiquid> drinkLiquids;
 
+    static {
+        DrinkManager.drinkLiquids = new HashMap<String, IDrinkLiquid>();
+    }
+
     public static IDrinkLiquid getLiquid(final String id) {
         return DrinkManager.drinkLiquids.get(id.toLowerCase());
     }
@@ -24,9 +28,5 @@ public class DrinkManager {
 
     public static IDrinkLiquid getLiquid(final FluidStack fluid) {
         return (fluid != null) ? getLiquid(fluid.getFluid()) : null;
-    }
-
-    static {
-        DrinkManager.drinkLiquids = new HashMap<String, IDrinkLiquid>();
     }
 }

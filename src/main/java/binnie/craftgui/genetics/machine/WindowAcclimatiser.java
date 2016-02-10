@@ -14,19 +14,27 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 public class WindowAcclimatiser extends WindowMachine {
-    static Texture ProgressBase;
-    static Texture Progress;
     public static final int[] slotReserve;
     public static final int slotTarget = 4;
     public static final int[] slotAcclimatiser;
     public static final int[] slotDone;
+    static Texture ProgressBase;
+    static Texture Progress;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowAcclimatiser(player, inventory, side);
+    static {
+        WindowAcclimatiser.ProgressBase = new StandardTexture(64, 0, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
+        WindowAcclimatiser.Progress = new StandardTexture(64, 21, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
+        slotReserve = new int[]{0, 1, 2, 3};
+        slotAcclimatiser = new int[]{5, 6, 7};
+        slotDone = new int[]{8, 9, 10, 11};
     }
 
     public WindowAcclimatiser(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(280, 198, player, inventory, side);
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowAcclimatiser(player, inventory, side);
     }
 
     @Override
@@ -58,13 +66,5 @@ public class WindowAcclimatiser extends WindowMachine {
     @Override
     protected String getName() {
         return "Acclimatiser";
-    }
-
-    static {
-        WindowAcclimatiser.ProgressBase = new StandardTexture(64, 0, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
-        WindowAcclimatiser.Progress = new StandardTexture(64, 21, 130, 21, ExtraBeeTexture.GUIProgress.getTexture());
-        slotReserve = new int[]{0, 1, 2, 3};
-        slotAcclimatiser = new int[]{5, 6, 7};
-        slotDone = new int[]{8, 9, 10, 11};
     }
 }

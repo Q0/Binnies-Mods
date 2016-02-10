@@ -26,6 +26,13 @@ public class Press {
     public static int tankWater;
     private static Map<ItemStack, FluidStack> pressRecipes;
 
+    static {
+        Press.slotFruit = 0;
+        Press.slotCurrent = 1;
+        Press.tankWater = 0;
+        Press.pressRecipes = new HashMap<ItemStack, FluidStack>();
+    }
+
     public static boolean isInput(final ItemStack itemstack) {
         return getOutput(itemstack) != null;
     }
@@ -47,13 +54,6 @@ public class Press {
             return;
         }
         Press.pressRecipes.put(stack, fluid);
-    }
-
-    static {
-        Press.slotFruit = 0;
-        Press.slotCurrent = 1;
-        Press.tankWater = 0;
-        Press.pressRecipes = new HashMap<ItemStack, FluidStack>();
     }
 
     public static class PackagePress extends ExtraTreeMachine.PackageExtraTreeMachine implements IMachineInformation {

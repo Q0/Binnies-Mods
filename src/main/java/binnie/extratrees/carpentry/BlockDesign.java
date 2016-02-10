@@ -28,8 +28,22 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import java.util.List;
 
 public abstract class BlockDesign extends BlockMetadata implements IMultipassBlock {
-    IDesignSystem designSystem;
     public static final ForgeDirection[] RENDER_DIRECTIONS;
+
+    static {
+        RENDER_DIRECTIONS = new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH};
+    }
+
+    IDesignSystem designSystem;
+
+    public BlockDesign(final IDesignSystem system, final Material material) {
+        super(material);
+        this.designSystem = system;
+    }
+
+    public static int getMetadata(final int plank1, final int plank2, final int design) {
+        return plank1 + (plank2 << 9) + (design << 18);
+    }
 
     @SubscribeEvent
     public void onClick(final PlayerInteractEvent event) {
@@ -60,11 +74,6 @@ public abstract class BlockDesign extends BlockMetadata implements IMultipassBlo
         block.rotate(event.face, item, player, world, x, y, z);
         final int meta = block.getBlockMetadata(blockC.getDesignSystem());
         tile.setTileMetadata(meta, true);
-    }
-
-    public BlockDesign(final IDesignSystem system, final Material material) {
-        super(material);
-        this.designSystem = system;
     }
 
     public abstract ItemStack getCreativeStack(final IDesign p0);
@@ -137,10 +146,6 @@ public abstract class BlockDesign extends BlockMetadata implements IMultipassBlo
         return TileEntityMetadata.getItemStack((Block) this, getMetadata(plank1, plank2, design));
     }
 
-    public static int getMetadata(final int plank1, final int plank2, final int design) {
-        return plank1 + (plank2 << 9) + (design << 18);
-    }
-
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister register) {
         for (final IDesignSystem system : DesignerManager.instance.getDesignSystems()) {
@@ -157,9 +162,5 @@ public abstract class BlockDesign extends BlockMetadata implements IMultipassBlo
     @Override
     public int getNumberOfPasses() {
         return 2;
-    }
-
-    static {
-        RENDER_DIRECTIONS = new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH};
     }
 }

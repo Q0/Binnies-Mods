@@ -51,11 +51,11 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     Monarch("Monarch", "Danaus plexippus", 16757254),
     MarbledWhite("Marbled White", "Melanargia galathea", 15527148);
 
+    public IClassification branch;
     String name;
     String branchName;
     String scientific;
     BinnieResource texture;
-    public IClassification branch;
     int colour;
     private Map<ItemStack, Float> butterflyLoot;
     private Map<ItemStack, Float> caterpillarLoot;

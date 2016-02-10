@@ -18,11 +18,6 @@ public class ItemHoneyComb extends ItemProduct {
     IIcon icon1;
     IIcon icon2;
 
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses() {
-        return true;
-    }
-
     public ItemHoneyComb() {
         super(EnumHoneyComb.values());
         this.setCreativeTab(Tabs.tabApiculture);
@@ -231,6 +226,11 @@ public class ItemHoneyComb extends ItemProduct {
             return OreDictionary.getOres(string).get(0);
         }
         return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses() {
+        return true;
     }
 
     public int getColorFromItemStack(final ItemStack itemStack, final int j) {

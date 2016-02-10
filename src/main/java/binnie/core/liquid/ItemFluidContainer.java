@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemFluidContainer extends ItemFood {
-    private FluidContainer container;
     public static int LiquidExtraBee;
     public static int LiquidExtraTree;
     public static int LiquidJuice;
@@ -34,10 +33,19 @@ public class ItemFluidContainer extends ItemFood {
     private static Map<Integer, String> idToFluid;
     private static Map<String, Integer> fluidToID;
 
-    public static void registerFluid(final IFluidType fluid, final int id) {
-        ItemFluidContainer.idToFluid.put(id, fluid.getIdentifier().toLowerCase());
-        ItemFluidContainer.fluidToID.put(fluid.getIdentifier().toLowerCase(), id);
+    static {
+        ItemFluidContainer.LiquidExtraBee = 64;
+        ItemFluidContainer.LiquidExtraTree = 128;
+        ItemFluidContainer.LiquidJuice = 256;
+        ItemFluidContainer.LiquidAlcohol = 384;
+        ItemFluidContainer.LiquidSpirit = 512;
+        ItemFluidContainer.LiquidLiqueuer = 640;
+        ItemFluidContainer.LiquidGenetics = 768;
+        ItemFluidContainer.idToFluid = new HashMap<Integer, String>();
+        ItemFluidContainer.fluidToID = new HashMap<String, Integer>();
     }
+
+    private FluidContainer container;
 
     public ItemFluidContainer(final FluidContainer container) {
         super(0, false);
@@ -47,6 +55,11 @@ public class ItemFluidContainer extends ItemFood {
         this.setHasSubtypes(true);
         this.setUnlocalizedName("container" + container.name());
         this.setCreativeTab(CreativeTabs.tabMaterials);
+    }
+
+    public static void registerFluid(final IFluidType fluid, final int id) {
+        ItemFluidContainer.idToFluid.put(id, fluid.getIdentifier().toLowerCase());
+        ItemFluidContainer.fluidToID.put(fluid.getIdentifier().toLowerCase(), id);
     }
 
     private FluidStack getLiquid(final ItemStack stack) {
@@ -155,17 +168,5 @@ public class ItemFluidContainer extends ItemFood {
         final FluidStack fluid = this.getLiquid(stack);
         final IDrinkLiquid liquid = DrinkManager.getLiquid(fluid);
         return liquid != null && liquid.isConsumable();
-    }
-
-    static {
-        ItemFluidContainer.LiquidExtraBee = 64;
-        ItemFluidContainer.LiquidExtraTree = 128;
-        ItemFluidContainer.LiquidJuice = 256;
-        ItemFluidContainer.LiquidAlcohol = 384;
-        ItemFluidContainer.LiquidSpirit = 512;
-        ItemFluidContainer.LiquidLiqueuer = 640;
-        ItemFluidContainer.LiquidGenetics = 768;
-        ItemFluidContainer.idToFluid = new HashMap<Integer, String>();
-        ItemFluidContainer.fluidToID = new HashMap<String, Integer>();
     }
 }

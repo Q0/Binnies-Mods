@@ -80,6 +80,13 @@ public interface ILogType {
             this.plank = plank;
         }
 
+        public static void registerIcons(final IIconRegister register) {
+            for (final ExtraTreeLog log : values()) {
+                log.trunk = ExtraTrees.proxy.getIcon(register, "logs/" + log.toString().toLowerCase() + "Trunk");
+                log.bark = ExtraTrees.proxy.getIcon(register, "logs/" + log.toString().toLowerCase() + "Bark");
+            }
+        }
+
         public String getName() {
             return this.name;
         }
@@ -108,13 +115,6 @@ public interface ILogType {
 
         public IIcon getBark() {
             return this.bark;
-        }
-
-        public static void registerIcons(final IIconRegister register) {
-            for (final ExtraTreeLog log : values()) {
-                log.trunk = ExtraTrees.proxy.getIcon(register, "logs/" + log.toString().toLowerCase() + "Trunk");
-                log.bark = ExtraTrees.proxy.getIcon(register, "logs/" + log.toString().toLowerCase() + "Bark");
-            }
         }
 
         @Override

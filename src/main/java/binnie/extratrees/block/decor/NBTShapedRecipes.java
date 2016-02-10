@@ -11,6 +11,14 @@ import java.util.List;
 public class NBTShapedRecipes implements IRecipe {
     static List<NBTShapedRecipe> recipes;
 
+    static {
+        NBTShapedRecipes.recipes = new ArrayList<NBTShapedRecipe>();
+    }
+
+    public static void addRecipe(final NBTShapedRecipe nbtShapedRecipe) {
+        NBTShapedRecipes.recipes.add(nbtShapedRecipe);
+    }
+
     public boolean matches(final InventoryCrafting inventory, final World world) {
         for (final NBTShapedRecipe recipe : NBTShapedRecipes.recipes) {
             if (recipe.matches(inventory, world)) {
@@ -35,13 +43,5 @@ public class NBTShapedRecipes implements IRecipe {
 
     public ItemStack getRecipeOutput() {
         return null;
-    }
-
-    public static void addRecipe(final NBTShapedRecipe nbtShapedRecipe) {
-        NBTShapedRecipes.recipes.add(nbtShapedRecipe);
-    }
-
-    static {
-        NBTShapedRecipes.recipes = new ArrayList<NBTShapedRecipe>();
     }
 }

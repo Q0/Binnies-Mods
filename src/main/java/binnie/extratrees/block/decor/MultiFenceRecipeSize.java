@@ -14,6 +14,12 @@ import java.util.List;
 public class MultiFenceRecipeSize implements IRecipe {
     ItemStack cached;
 
+    public static void generateTypes() {
+        final int type = 0;
+        for (int type2 = 0; type2 < 2; ++type2) {
+        }
+    }
+
     public boolean matches(final InventoryCrafting inv, final World world) {
         String pattern = "";
         final List<IPlankType> types = new ArrayList<IPlankType>();
@@ -66,11 +72,5 @@ public class MultiFenceRecipeSize implements IRecipe {
 
     public ItemStack getRecipeOutput() {
         return (this.cached == null) ? new ItemStack(Blocks.fence) : this.cached;
-    }
-
-    public static void generateTypes() {
-        final int type = 0;
-        for (int type2 = 0; type2 < 2; ++type2) {
-        }
     }
 }

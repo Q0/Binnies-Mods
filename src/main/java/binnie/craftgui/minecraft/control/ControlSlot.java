@@ -27,6 +27,15 @@ import java.util.Map;
 public class ControlSlot extends ControlSlotBase {
     public static Map<EnumHighlighting, List<Integer>> highlighting;
     public static boolean shiftClickActive;
+
+    static {
+        ControlSlot.highlighting = new HashMap<EnumHighlighting, List<Integer>>();
+        ControlSlot.shiftClickActive = false;
+        for (final EnumHighlighting h : EnumHighlighting.values()) {
+            ControlSlot.highlighting.put(h, new ArrayList<Integer>());
+        }
+    }
+
     public Slot slot;
 
     public ControlSlot(final IWidget parent, final float x, final float y) {
@@ -187,13 +196,5 @@ public class ControlSlot extends ControlSlotBase {
 
     public InventorySlot getInventorySlot() {
         return (this.slot instanceof CustomSlot) ? ((CustomSlot) this.slot).getInventorySlot() : null;
-    }
-
-    static {
-        ControlSlot.highlighting = new HashMap<EnumHighlighting, List<Integer>>();
-        ControlSlot.shiftClickActive = false;
-        for (final EnumHighlighting h : EnumHighlighting.values()) {
-            ControlSlot.highlighting.put(h, new ArrayList<Integer>());
-        }
     }
 }

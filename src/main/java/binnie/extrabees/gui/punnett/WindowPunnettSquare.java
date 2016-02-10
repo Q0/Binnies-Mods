@@ -21,13 +21,13 @@ public class WindowPunnettSquare extends Window {
     ControlPunnett punnett;
     ISpeciesRoot root;
 
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowPunnettSquare(player, inventory, side);
-    }
-
     public WindowPunnettSquare(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(245.0f, 205.0f, player, inventory, side);
         this.root = null;
+    }
+
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowPunnettSquare(player, inventory, side);
     }
 
     public AbstractMod getMod() {

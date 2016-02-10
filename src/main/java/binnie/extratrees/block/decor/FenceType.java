@@ -15,14 +15,6 @@ public class FenceType {
         this.embossed = embedded;
     }
 
-    public String getPrefix() {
-        return ((this.size == 0) ? "" : ((this.size == 1) ? "Full " : "Low ")) + (this.solid ? "Solid " : "") + (this.embossed ? "Embedded " : "");
-    }
-
-    public int ordinal() {
-        return this.size + ((this.solid ? 1 : 0) << 2) + ((this.embossed ? 1 : 0) << 3);
-    }
-
     public FenceType(final int meta) {
         this.size = (meta & 0x3);
         this.solid = ((meta >> 2 & 0x1) > 0);
@@ -39,6 +31,14 @@ public class FenceType {
             }
         }
         return list;
+    }
+
+    public String getPrefix() {
+        return ((this.size == 0) ? "" : ((this.size == 1) ? "Full " : "Low ")) + (this.solid ? "Solid " : "") + (this.embossed ? "Embedded " : "");
+    }
+
+    public int ordinal() {
+        return this.size + ((this.solid ? 1 : 0) << 2) + ((this.embossed ? 1 : 0) << 3);
     }
 
     public boolean isPlain() {

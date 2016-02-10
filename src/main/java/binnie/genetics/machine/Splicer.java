@@ -52,6 +52,13 @@ public class Splicer {
     public static final int slotTarget = 9;
     public static final int[] slotFinished;
 
+    static {
+        slotSerumReserve = new int[]{1, 2};
+        slotSerumExpended = new int[]{3, 4};
+        slotReserve = new int[]{5, 6, 7, 8, 9};
+        slotFinished = new int[]{10, 11, 12, 13};
+    }
+
     public static void setGene(final IGene gene, final ItemStack target, final int chromoN) {
         int chromosomeID;
         final int chromosome = chromosomeID = gene.getChromosome().ordinal();
@@ -68,13 +75,6 @@ public class Splicer {
         final NBTTagCompound chromosomeNBT = chromosomes.getCompoundTagAt(chromosomeID);
         chromosomeNBT.setString("UID" + chromoN, gene.getAllele().getUID());
         target.setTagCompound(beeNBT);
-    }
-
-    static {
-        slotSerumReserve = new int[]{1, 2};
-        slotSerumExpended = new int[]{3, 4};
-        slotReserve = new int[]{5, 6, 7, 8, 9};
-        slotFinished = new int[]{10, 11, 12, 13};
     }
 
     public static class PackageSplicer extends AdvGeneticMachine.PackageAdvGeneticBase implements IMachineInformation {
@@ -159,6 +159,11 @@ public class Splicer {
     public static class ComponentSplicerLogic extends ComponentProcessSetCost implements IProcess {
         int nOfGenes;
 
+        public ComponentSplicerLogic(final Machine machine) {
+            super(machine, 12000000, 1200);
+            this.nOfGenes = 0;
+        }
+
         @Override
         public int getProcessLength() {
             float n = this.getNumberOfGenes();
@@ -220,11 +225,6 @@ public class Splicer {
             final int n = this.getNumberOfGenes();
             final int f = this.getFullNumberOfGenes();
             return "Splicing in " + n + ((f > 1) ? ("/" + f) : "") + " gene" + ((n > 1) ? "s" : "");
-        }
-
-        public ComponentSplicerLogic(final Machine machine) {
-            super(machine, 12000000, 1200);
-            this.nOfGenes = 0;
         }
 
         @Override

@@ -41,6 +41,10 @@ public class BlockFence extends net.minecraft.block.BlockFence implements IBlock
         this.setStepSound(BlockFence.soundTypeWood);
     }
 
+    public static boolean canConnect(final Block block) {
+        return block == ((ItemBlock) Mods.Forestry.item("fences")).field_150939_a || block == ((ItemBlock) Mods.Forestry.item("fences2")).field_150939_a || block == Blocks.fence || block == Blocks.fence_gate || block == Blocks.nether_brick_fence || block instanceof IBlockFence || block == ExtraTrees.blockGate;
+    }
+
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (final IFenceProvider type : PlankType.ExtraTreePlanks.values()) {
             itemList.add(type.getFence());
@@ -125,10 +129,6 @@ public class BlockFence extends net.minecraft.block.BlockFence implements IBlock
     public boolean isFence(final IBlockAccess world, final int x, final int y, final int z) {
         final Block block = world.getBlock(x, y, z);
         return canConnect(block);
-    }
-
-    public static boolean canConnect(final Block block) {
-        return block == ((ItemBlock) Mods.Forestry.item("fences")).field_150939_a || block == ((ItemBlock) Mods.Forestry.item("fences2")).field_150939_a || block == Blocks.fence || block == Blocks.fence_gate || block == Blocks.nether_brick_fence || block instanceof IBlockFence || block == ExtraTrees.blockGate;
     }
 
     public void breakBlock(final World par1World, final int par2, final int par3, final int par4, final Block par5, final int par6) {

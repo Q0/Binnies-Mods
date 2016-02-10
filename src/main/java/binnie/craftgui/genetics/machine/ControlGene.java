@@ -17,6 +17,23 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ControlGene extends Control implements IControlValue<IGene>, ITooltip {
     IGene gene;
 
+    protected ControlGene(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 16.0f, 16.0f);
+        this.addAttribute(Attribute.MouseOver);
+        this.addSelfEventHandler(new EventMouse.Down.Handler() {
+            @Override
+            public void onEvent(final EventMouse.Down event) {
+                if (ControlGene.this.canFill(Window.get(ControlGene.this.getWidget()).getHeldItemStack())) {
+                    final NBTTagCompound action = new NBTTagCompound();
+                    final NBTTagCompound geneNBT = new NBTTagCompound();
+                    ControlGene.this.getValue().writeToNBT(geneNBT);
+                    action.setTag("gene", (NBTBase) geneNBT);
+                    Window.get(ControlGene.this.getWidget()).sendClientAction("gene-select", action);
+                }
+            }
+        });
+    }
+
     @Override
     public void getTooltip(final Tooltip tooltip) {
         final String cName = Binnie.Genetics.getSystem(this.gene.getSpeciesRoot()).getChromosomeName(this.gene.getChromosome());
@@ -34,23 +51,6 @@ public class ControlGene extends Control implements IControlValue<IGene>, IToolt
 
     private boolean canFill(final ItemStack stack) {
         return stack != null && stack.stackSize == 1 && Engineering.isGeneAcceptor(stack) && Engineering.canAcceptGene(stack, this.getValue());
-    }
-
-    protected ControlGene(final IWidget parent, final float x, final float y) {
-        super(parent, x, y, 16.0f, 16.0f);
-        this.addAttribute(Attribute.MouseOver);
-        this.addSelfEventHandler(new EventMouse.Down.Handler() {
-            @Override
-            public void onEvent(final EventMouse.Down event) {
-                if (ControlGene.this.canFill(Window.get(ControlGene.this.getWidget()).getHeldItemStack())) {
-                    final NBTTagCompound action = new NBTTagCompound();
-                    final NBTTagCompound geneNBT = new NBTTagCompound();
-                    ControlGene.this.getValue().writeToNBT(geneNBT);
-                    action.setTag("gene", (NBTBase) geneNBT);
-                    Window.get(ControlGene.this.getWidget()).sendClientAction("gene-select", action);
-                }
-            }
-        });
     }
 
     @Override

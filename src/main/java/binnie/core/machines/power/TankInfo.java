@@ -21,6 +21,14 @@ public class TankInfo implements INBTTagable {
         this.capacity = 0.0f;
     }
 
+    public static TankInfo[] get(final ITankMachine machine) {
+        final TankInfo[] info = new TankInfo[machine.getTanks().length];
+        for (int i = 0; i < info.length; ++i) {
+            info[i] = new TankInfo(machine.getTanks()[i]);
+        }
+        return info;
+    }
+
     public float getAmount() {
         return (this.liquid == null) ? 0.0f : this.liquid.amount;
     }
@@ -56,13 +64,5 @@ public class TankInfo implements INBTTagable {
         final NBTTagCompound tag = new NBTTagCompound();
         this.liquid.writeToNBT(tag);
         nbt.setTag("liquid", (NBTBase) tag);
-    }
-
-    public static TankInfo[] get(final ITankMachine machine) {
-        final TankInfo[] info = new TankInfo[machine.getTanks().length];
-        for (int i = 0; i < info.length; ++i) {
-            info[i] = new TankInfo(machine.getTanks()[i]);
-        }
-        return info;
     }
 }

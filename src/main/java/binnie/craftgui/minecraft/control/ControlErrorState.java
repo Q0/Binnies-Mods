@@ -14,6 +14,12 @@ public class ControlErrorState extends Control implements ITooltip {
     private ErrorState errorState;
     private int type;
 
+    public ControlErrorState(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 16.0f, 16.0f);
+        this.type = 0;
+        this.addAttribute(Attribute.MouseOver);
+    }
+
     @Override
     public void onRenderBackground() {
         Object texture = CraftGUITexture.StateWarning;
@@ -64,12 +70,6 @@ public class ControlErrorState extends Control implements ITooltip {
                 ControlLiquidTank.tankError.add(slot);
             }
         }
-    }
-
-    public ControlErrorState(final IWidget parent, final float x, final float y) {
-        super(parent, x, y, 16.0f, 16.0f);
-        this.type = 0;
-        this.addAttribute(Attribute.MouseOver);
     }
 
     @Override

@@ -15,6 +15,20 @@ public class Mods {
     public static Mod Botania;
     private static boolean WARN;
 
+    static {
+        Mods.Forestry = new Mod("Forestry") {
+            @Override
+            public boolean dev() {
+                final String forVersion = Loader.instance().getIndexedModList().get("Forestry").getVersion();
+                final Restriction rest = new Restriction((ArtifactVersion) new DefaultArtifactVersion("3.6"), true, (ArtifactVersion) null, false);
+                return rest.containsVersion((ArtifactVersion) new DefaultArtifactVersion(forVersion));
+            }
+        };
+        Mods.IC2 = new Mod("IC2");
+        Mods.Botania = new Mod("Botania");
+        Mods.WARN = true;
+    }
+
     private static Item findItem(final String modId, final String name) {
         final Item stack = GameRegistry.findItem(modId, name);
         if (stack == null && Mods.WARN && modId == "Forestry") {
@@ -37,20 +51,6 @@ public class Mods {
             throw new RuntimeException("Block not found: " + modId + ":" + name);
         }
         return stack;
-    }
-
-    static {
-        Mods.Forestry = new Mod("Forestry") {
-            @Override
-            public boolean dev() {
-                final String forVersion = Loader.instance().getIndexedModList().get("Forestry").getVersion();
-                final Restriction rest = new Restriction((ArtifactVersion) new DefaultArtifactVersion("3.6"), true, (ArtifactVersion) null, false);
-                return rest.containsVersion((ArtifactVersion) new DefaultArtifactVersion(forVersion));
-            }
-        };
-        Mods.IC2 = new Mod("IC2");
-        Mods.Botania = new Mod("Botania");
-        Mods.WARN = true;
     }
 
     public static class Mod {

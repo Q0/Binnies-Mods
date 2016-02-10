@@ -44,6 +44,10 @@ public class ExtraBees extends AbstractMod {
     public static Item dictionary;
     public static Item itemMisc;
 
+    public ExtraBees() {
+        ExtraBees.instance = this;
+    }
+
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
         this.addModule(new ModuleCore());
@@ -63,10 +67,6 @@ public class ExtraBees extends AbstractMod {
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent evt) {
         this.postInit();
-    }
-
-    public ExtraBees() {
-        ExtraBees.instance = this;
     }
 
     @Override

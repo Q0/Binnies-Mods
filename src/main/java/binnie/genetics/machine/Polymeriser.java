@@ -115,6 +115,11 @@ public class Polymeriser {
 
     public static class ComponentPolymeriserLogic extends ComponentProcessSetCost implements IProcess {
         private static float chargePerProcess;
+
+        static {
+            ComponentPolymeriserLogic.chargePerProcess = 0.4f;
+        }
+
         private float dnaDrain;
         private float bacteriaDrain;
 
@@ -197,10 +202,6 @@ public class Polymeriser {
         protected void onFinishTask() {
             super.onFinishTask();
             this.getUtil().damageItem(0, -1);
-        }
-
-        static {
-            ComponentPolymeriserLogic.chargePerProcess = 0.4f;
         }
     }
 

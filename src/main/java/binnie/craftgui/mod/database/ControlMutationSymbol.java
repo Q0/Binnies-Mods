@@ -14,9 +14,22 @@ import forestry.api.genetics.IMutation;
 class ControlMutationSymbol extends Control implements ITooltip {
     private static Texture MutationPlus;
     private static Texture MutationArrow;
+
+    static {
+        ControlMutationSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
+        ControlMutationSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
+    }
+
     private IMutation value;
     private boolean discovered;
     private int type;
+
+    protected ControlMutationSymbol(final IWidget parent, final int x, final int y, final int type) {
+        super(parent, x, y, 16 + type * 16, 16.0f);
+        this.value = null;
+        this.type = type;
+        this.addAttribute(Attribute.MouseOver);
+    }
 
     @Override
     public void onRenderBackground() {
@@ -26,13 +39,6 @@ class ControlMutationSymbol extends Control implements ITooltip {
         } else {
             CraftGUI.Render.texture(ControlMutationSymbol.MutationArrow, IPoint.ZERO);
         }
-    }
-
-    protected ControlMutationSymbol(final IWidget parent, final int x, final int y, final int type) {
-        super(parent, x, y, 16 + type * 16, 16.0f);
-        this.value = null;
-        this.type = type;
-        this.addAttribute(Attribute.MouseOver);
     }
 
     public void setValue(final IMutation value) {
@@ -61,10 +67,5 @@ class ControlMutationSymbol extends Control implements ITooltip {
                 }
             }
         }
-    }
-
-    static {
-        ControlMutationSymbol.MutationPlus = new StandardTexture(2, 94, 16, 16, CraftGUITextureSheet.Controls2);
-        ControlMutationSymbol.MutationArrow = new StandardTexture(20, 94, 32, 16, CraftGUITextureSheet.Controls2);
     }
 }

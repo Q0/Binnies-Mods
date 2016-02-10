@@ -64,14 +64,14 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return this.hasNursery() ? this.getNursery().getCaterpillar() : null;
     }
 
-    public IIndividual getNanny() {
-        return null;
-    }
-
     public void setCaterpillar(final IButterfly butterfly) {
         if (this.hasNursery()) {
             this.getNursery().setCaterpillar(butterfly);
         }
+    }
+
+    public IIndividual getNanny() {
+        return null;
     }
 
     public boolean canNurse(final IButterfly butterfly) {
@@ -89,6 +89,9 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
         return null;
     }
 
+    public void setErrorState(final int state) {
+    }
+
     public boolean setErrorCondition(final boolean condition, final IErrorState errorState) {
         return false;
     }
@@ -99,9 +102,6 @@ public class TileEntityNursery extends TileEntityMachine implements IButterflyNu
 
     public int getBiomeId() {
         return 0;
-    }
-
-    public void setErrorState(final int state) {
     }
 
     public int getErrorOrdinal() {

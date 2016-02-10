@@ -16,6 +16,13 @@ public class ItemSoil extends ItemBlock {
     EnumSoilType type;
     private boolean noWeed;
 
+    public ItemSoil(final Block p_i45328_1_) {
+        super(p_i45328_1_);
+        this.type = ((BlockSoil) this.field_150939_a).getType();
+        this.noWeed = ((BlockSoil) this.field_150939_a).weedKilled;
+        this.hasSubtypes = true;
+    }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(final ItemStack stack, final EntityPlayer p_77624_2_, final List p_77624_3_, final boolean p_77624_4_) {
         super.addInformation(stack, p_77624_2_, p_77624_3_, p_77624_4_);
@@ -46,13 +53,6 @@ public class ItemSoil extends ItemBlock {
         if (this.noWeed) {
             p_77624_3_.add("Weedkiller");
         }
-    }
-
-    public ItemSoil(final Block p_i45328_1_) {
-        super(p_i45328_1_);
-        this.type = ((BlockSoil) this.field_150939_a).getType();
-        this.noWeed = ((BlockSoil) this.field_150939_a).weedKilled;
-        this.hasSubtypes = true;
     }
 
     public String getItemStackDisplayName(final ItemStack stack) {

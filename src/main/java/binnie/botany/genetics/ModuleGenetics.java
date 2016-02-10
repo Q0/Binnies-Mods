@@ -25,6 +25,10 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 public class ModuleGenetics implements IInitializable {
     static AlleleEffectNone alleleEffectNone;
 
+    static {
+        ModuleGenetics.alleleEffectNone = new AlleleEffectNone();
+    }
+
     @Override
     public void preInit() {
         EnumFlowerColor.setupMutations();
@@ -66,9 +70,5 @@ public class ModuleGenetics implements IInitializable {
         GameRegistry.addRecipe((IRecipe) new ShapelessOreRecipe(new ItemStack((Item) Botany.encyclopediaIron), new Object[]{new ItemStack((Item) Botany.encyclopedia), "ingotIron"}));
         FlowerManager.flowerRegistry.registerAcceptableFlower((Block) Botany.flower, new String[]{"flowersVanilla"});
         RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("water", 2000), (ItemStack) null, new ItemStack((Item) Botany.database), new Object[]{"X#X", "YEY", "RDR", '#', Blocks.glass_pane, 'X', Items.gold_ingot, 'Y', Items.gold_nugget, 'R', Items.redstone, 'D', Items.diamond, 'E', Items.emerald});
-    }
-
-    static {
-        ModuleGenetics.alleleEffectNone = new AlleleEffectNone();
     }
 }

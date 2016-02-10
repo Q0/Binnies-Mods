@@ -18,6 +18,11 @@ public class ControlPunnett extends Control {
     static int boxWidth;
     static int boxHeight;
 
+    static {
+        ControlPunnett.boxWidth = 80;
+        ControlPunnett.boxHeight = 28;
+    }
+
     protected ControlPunnett(final IWidget parent, final float x, final float y) {
         super(parent, x, y, ControlPunnett.boxWidth * 3, ControlPunnett.boxWidth * 3);
     }
@@ -68,10 +73,5 @@ public class ControlPunnett extends Control {
         new ControlText(this, new IArea(ControlPunnett.boxWidth * 2, 0.0f, ControlPunnett.boxWidth, ControlPunnett.boxHeight), "\n" + secondary1.getName(), TextJustification.TopCenter).setColour(11184810);
         new ControlText(this, new IArea(0.0f, ControlPunnett.boxHeight, ControlPunnett.boxWidth, ControlPunnett.boxHeight), primary2.getName(), TextJustification.TopCenter).setColour(11184810);
         new ControlText(this, new IArea(0.0f, ControlPunnett.boxHeight * 2, ControlPunnett.boxWidth, ControlPunnett.boxHeight), primary2.getName(), TextJustification.TopCenter).setColour(11184810);
-    }
-
-    static {
-        ControlPunnett.boxWidth = 80;
-        ControlPunnett.boxHeight = 28;
     }
 }

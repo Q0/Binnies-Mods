@@ -21,13 +21,17 @@ public class InventorySlot extends BaseSlot<ItemStack> {
         return this.itemStack;
     }
 
+    @Override
+    public void setContent(final ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
     public ItemStack getItemStack() {
         return this.getContent();
     }
 
-    @Override
-    public void setContent(final ItemStack itemStack) {
-        this.itemStack = itemStack;
+    public void setItemStack(final ItemStack duplicate) {
+        this.setContent(duplicate);
     }
 
     public ItemStack decrStackSize(final int amount) {
@@ -63,13 +67,13 @@ public class InventorySlot extends BaseSlot<ItemStack> {
         slotNBT.setTag("item", (NBTBase) itemNBT);
     }
 
-    public void setItemStack(final ItemStack duplicate) {
-        this.setContent(duplicate);
-    }
-
     @Override
     public SlotValidator getValidator() {
         return (SlotValidator) this.validator;
+    }
+
+    public Type getType() {
+        return this.type;
     }
 
     public void setType(final Type type) {
@@ -78,10 +82,6 @@ public class InventorySlot extends BaseSlot<ItemStack> {
             this.setReadOnly();
             this.forbidInteraction();
         }
-    }
-
-    public Type getType() {
-        return this.type;
     }
 
     public boolean isRecipe() {

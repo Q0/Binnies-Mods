@@ -19,6 +19,10 @@ public class WindowDistillery extends Window {
         super(224.0f, 192.0f, player, inventory, side);
     }
 
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowDistillery(player, inventory, side);
+    }
+
     @Override
     protected AbstractMod getMod() {
         return ExtraTrees.instance;
@@ -42,9 +46,5 @@ public class WindowDistillery extends Window {
         new ControlEnergyBar(this, x, 36, 60, 16, Position.Left);
         new ControlPlayerInventory(this);
         new ControlErrorState(this, x + 21, 62.0f);
-    }
-
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowDistillery(player, inventory, side);
     }
 }

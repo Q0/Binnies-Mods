@@ -39,6 +39,12 @@ public class Incubator {
     public static final int tankOutput = 1;
     private static List<IIncubatorRecipe> RECIPES;
 
+    static {
+        slotQueue = new int[]{0, 1, 2};
+        slotOutput = new int[]{4, 5, 6};
+        Incubator.RECIPES = new ArrayList<IIncubatorRecipe>();
+    }
+
     public static void addRecipes() {
         Incubator.RECIPES.add(new IncubatorRecipe(Binnie.Liquid.getLiquidStack("water", 25), GeneticLiquid.GrowthMedium.get(25), 0.2f) {
             @Override
@@ -102,12 +108,6 @@ public class Incubator {
                 }
             });
         }
-    }
-
-    static {
-        slotQueue = new int[]{0, 1, 2};
-        slotOutput = new int[]{4, 5, 6};
-        Incubator.RECIPES = new ArrayList<IIncubatorRecipe>();
     }
 
     public static class PackageIncubator extends GeneticMachine.PackageGeneticBase implements IMachineInformation {
@@ -262,22 +262,12 @@ public class Incubator {
         }
     }
 
-    private class IncubatorCrafting {
-        ItemStack input;
-        FluidStack fluid;
-    }
-
     private abstract static class IncubatorRecipe implements IIncubatorRecipe {
         FluidStack input;
         FluidStack output;
         float lossChance;
         ItemStack outputStack;
         float tickChance;
-
-        @Override
-        public float getChance() {
-            return this.tickChance;
-        }
 
         public IncubatorRecipe(final FluidStack input, final FluidStack output, final float lossChance) {
             this(input, output, lossChance, 1.0f);
@@ -288,6 +278,11 @@ public class Incubator {
             this.output = output;
             this.lossChance = lossChance;
             this.tickChance = chance;
+        }
+
+        @Override
+        public float getChance() {
+            return this.tickChance;
         }
 
         @Override
@@ -346,5 +341,10 @@ public class Incubator {
             }
             return true;
         }
+    }
+
+    private class IncubatorCrafting {
+        ItemStack input;
+        FluidStack fluid;
     }
 }

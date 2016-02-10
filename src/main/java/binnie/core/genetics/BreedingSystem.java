@@ -17,16 +17,6 @@ import net.minecraftforge.common.MinecraftForge;
 import java.util.*;
 
 public abstract class BreedingSystem implements IItemStackRepresentitive {
-    protected BinnieIcon iconUndiscovered;
-    protected BinnieIcon iconDiscovered;
-    private List<IClassification> allBranches;
-    List<IAlleleSpecies> allActiveSpecies;
-    private List<IAlleleSpecies> allSpecies;
-    private List<IMutation> allMutations;
-    private Map<IAlleleSpecies, List<IMutation>> resultantMutations;
-    private Map<IAlleleSpecies, List<IMutation>> furtherMutations;
-    private Map<IAlleleSpecies, List<IMutation>> allResultantMutations;
-    private Map<IAlleleSpecies, List<IMutation>> allFurtherMutations;
     public float discoveredSpeciesPercentage;
     public int totalSpeciesCount;
     public int discoveredSpeciesCount;
@@ -35,9 +25,19 @@ public abstract class BreedingSystem implements IItemStackRepresentitive {
     public float discoveredBranchPercentage;
     public int totalBranchCount;
     public int discoveredBranchCount;
+    protected BinnieIcon iconUndiscovered;
+    protected BinnieIcon iconDiscovered;
+    List<IAlleleSpecies> allActiveSpecies;
+    String currentEpithet;
+    private List<IClassification> allBranches;
+    private List<IAlleleSpecies> allSpecies;
+    private List<IMutation> allMutations;
+    private Map<IAlleleSpecies, List<IMutation>> resultantMutations;
+    private Map<IAlleleSpecies, List<IMutation>> furtherMutations;
+    private Map<IAlleleSpecies, List<IMutation>> allResultantMutations;
+    private Map<IAlleleSpecies, List<IMutation>> allFurtherMutations;
     private int totalSecretBranchCount;
     private int discoveredSecretBranchCount;
-    String currentEpithet;
 
     public BreedingSystem() {
         this.allBranches = new ArrayList<IClassification>();

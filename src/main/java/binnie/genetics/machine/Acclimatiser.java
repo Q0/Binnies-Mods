@@ -36,9 +36,18 @@ public class Acclimatiser {
     public static final int slotTarget = 4;
     public static final int[] slotAcclimatiser;
     public static final int[] slotDone;
-    private static List<ToleranceSystem> toleranceSystems;
     static Map<ItemStack, Float> temperatureItems;
     static Map<ItemStack, Float> humidityItems;
+    private static List<ToleranceSystem> toleranceSystems;
+
+    static {
+        slotReserve = new int[]{0, 1, 2, 3};
+        slotAcclimatiser = new int[]{5, 6, 7};
+        slotDone = new int[]{8, 9, 10, 11};
+        Acclimatiser.toleranceSystems = new ArrayList<ToleranceSystem>();
+        Acclimatiser.temperatureItems = new HashMap<ItemStack, Float>();
+        Acclimatiser.humidityItems = new HashMap<ItemStack, Float>();
+    }
 
     private static ToleranceSystem getToleranceSystem(final ItemStack stack, final ItemStack acclim) {
         final ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(stack);
@@ -166,13 +175,35 @@ public class Acclimatiser {
         return Tolerance.get(both[avg]);
     }
 
-    static {
-        slotReserve = new int[]{0, 1, 2, 3};
-        slotAcclimatiser = new int[]{5, 6, 7};
-        slotDone = new int[]{8, 9, 10, 11};
-        Acclimatiser.toleranceSystems = new ArrayList<ToleranceSystem>();
-        Acclimatiser.temperatureItems = new HashMap<ItemStack, Float>();
-        Acclimatiser.humidityItems = new HashMap<ItemStack, Float>();
+    public enum ToleranceType {
+        Temperature,
+        Humidity,
+        PH;
+
+        public float getEffect(final ItemStack stack) {
+            switch (this) {
+                case Temperature: {
+                    return Acclimatiser.getTemperatureEffect(stack);
+                }
+                case Humidity: {
+                    return Acclimatiser.getHumidityEffect(stack);
+                }
+                case PH: {
+                    if (Gardening.isAcidFertiliser(stack)) {
+                        return -0.5f * Gardening.getFertiliserStrength(stack);
+                    }
+                    if (Gardening.isAlkalineFertiliser(stack)) {
+                        return 0.5f * Gardening.getFertiliserStrength(stack);
+                    }
+                    break;
+                }
+            }
+            return 0.0f;
+        }
+
+        public boolean hasEffect(final ItemStack stack) {
+            return this.getEffect(stack) != 0.0f;
+        }
     }
 
     public static class PackageAcclimatiser extends GeneticMachine.PackageGeneticBase implements IMachineInformation {
@@ -298,37 +329,6 @@ public class Acclimatiser {
         @Override
         public String getTooltip() {
             return "Acclimatising Items";
-        }
-    }
-
-    public enum ToleranceType {
-        Temperature,
-        Humidity,
-        PH;
-
-        public float getEffect(final ItemStack stack) {
-            switch (this) {
-                case Temperature: {
-                    return Acclimatiser.getTemperatureEffect(stack);
-                }
-                case Humidity: {
-                    return Acclimatiser.getHumidityEffect(stack);
-                }
-                case PH: {
-                    if (Gardening.isAcidFertiliser(stack)) {
-                        return -0.5f * Gardening.getFertiliserStrength(stack);
-                    }
-                    if (Gardening.isAlkalineFertiliser(stack)) {
-                        return 0.5f * Gardening.getFertiliserStrength(stack);
-                    }
-                    break;
-                }
-            }
-            return 0.0f;
-        }
-
-        public boolean hasEffect(final ItemStack stack) {
-            return this.getEffect(stack) != 0.0f;
         }
     }
 

@@ -11,6 +11,13 @@ import net.minecraft.network.Packet;
 public class TileEntityMachine extends TileEntityMachineBase implements INetworkedEntity {
     private Machine machine;
 
+    public TileEntityMachine(final MachinePackage pack) {
+        this.setMachine(pack);
+    }
+
+    public TileEntityMachine() {
+    }
+
     public void updateEntity() {
         super.updateEntity();
         if (this.machine != null) {
@@ -20,19 +27,6 @@ public class TileEntityMachine extends TileEntityMachineBase implements INetwork
 
     public boolean canUpdate() {
         return super.canUpdate();
-    }
-
-    public TileEntityMachine(final MachinePackage pack) {
-        this.setMachine(pack);
-    }
-
-    public TileEntityMachine() {
-    }
-
-    public void setMachine(final MachinePackage pack) {
-        if (pack != null) {
-            this.machine = new Machine(pack, this);
-        }
     }
 
     public void readFromNBT(final NBTTagCompound nbtTagCompound) {
@@ -69,6 +63,12 @@ public class TileEntityMachine extends TileEntityMachineBase implements INetwork
 
     public Machine getMachine() {
         return this.machine;
+    }
+
+    public void setMachine(final MachinePackage pack) {
+        if (pack != null) {
+            this.machine = new Machine(pack, this);
+        }
     }
 
     public void onBlockDestroy() {

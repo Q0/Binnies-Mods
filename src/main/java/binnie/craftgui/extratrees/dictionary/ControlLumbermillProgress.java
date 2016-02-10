@@ -19,10 +19,23 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 public class ControlLumbermillProgress extends ControlProgressBase {
-    float oldProgress;
-    float animation;
     static Texture Saw;
     static Texture Saw2;
+
+    static {
+        ControlLumbermillProgress.Saw = new StandardTexture(0, 0, 6, 32, ExtraTreeTexture.Gui);
+        ControlLumbermillProgress.Saw2 = new StandardTexture(2, 0, 4, 32, ExtraTreeTexture.Gui);
+    }
+
+    float oldProgress;
+    float animation;
+
+    protected ControlLumbermillProgress(final IWidget parent, final float x, final float y) {
+        super(parent, x, y, 66.0f, 18.0f);
+        this.oldProgress = 0.0f;
+        this.animation = 0.0f;
+        new Panel(this, 0.0f, 0.0f, 66.0f, 18.0f, MinecraftGUI.PanelType.Black);
+    }
 
     @Override
     public void onUpdateClient() {
@@ -75,17 +88,5 @@ public class ControlLumbermillProgress extends ControlProgressBase {
         }
         GL11.glDisable(3089);
         CraftGUI.Render.texture(ControlLumbermillProgress.Saw2, new IPoint(sawX + 2, -8.0f + 6.0f * (float) Math.sin(this.animation)));
-    }
-
-    protected ControlLumbermillProgress(final IWidget parent, final float x, final float y) {
-        super(parent, x, y, 66.0f, 18.0f);
-        this.oldProgress = 0.0f;
-        this.animation = 0.0f;
-        new Panel(this, 0.0f, 0.0f, 66.0f, 18.0f, MinecraftGUI.PanelType.Black);
-    }
-
-    static {
-        ControlLumbermillProgress.Saw = new StandardTexture(0, 0, 6, 32, ExtraTreeTexture.Gui);
-        ControlLumbermillProgress.Saw2 = new StandardTexture(2, 0, 4, 32, ExtraTreeTexture.Gui);
     }
 }

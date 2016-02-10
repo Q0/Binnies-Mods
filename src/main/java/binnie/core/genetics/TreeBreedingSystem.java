@@ -18,9 +18,9 @@ import java.util.*;
 public class TreeBreedingSystem extends BreedingSystem {
     public UniqueItemStackSet allFruits;
     public UniqueItemStackSet allWoods;
+    public UniqueItemStackSet discoveredPlanks;
     private UniqueItemStackSet discoveredFruits;
     private UniqueItemStackSet discoveredWoods;
-    public UniqueItemStackSet discoveredPlanks;
 
     public TreeBreedingSystem() {
         this.allFruits = new UniqueItemStackSet();

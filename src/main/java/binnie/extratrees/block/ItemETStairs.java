@@ -13,15 +13,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemETStairs extends ItemBlock {
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(final int par1) {
-        return PlankType.ExtraTreePlanks.values()[par1].getIcon();
-    }
-
     public ItemETStairs(final Block block) {
         super(block);
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setUnlocalizedName("stairs");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(final int par1) {
+        return PlankType.ExtraTreePlanks.values()[par1].getIcon();
     }
 
     public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ, final int metadata) {

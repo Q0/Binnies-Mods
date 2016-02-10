@@ -39,15 +39,10 @@ public enum EnumHoneyDrop implements IItemEnum {
     MAGENTA(15040472, 16711884, "for.honey"),
     LIGHTGRAY(10066329, 13224393, "for.honey");
 
+    public boolean deprecated;
     int[] colour;
     String liquidName;
     ItemStack remenant;
-    public boolean deprecated;
-
-    public void addRemenant(final ItemStack stack) {
-        this.remenant = stack;
-        this.deprecated = true;
-    }
 
     private EnumHoneyDrop() {
         this(16777215, 16777215, "");
@@ -61,6 +56,19 @@ public enum EnumHoneyDrop implements IItemEnum {
         this.liquidName = liquid;
     }
 
+    public static EnumHoneyDrop get(final ItemStack itemStack) {
+        final int i = itemStack.getItemDamage();
+        if (i >= 0 && i < values().length) {
+            return values()[i];
+        }
+        return values()[0];
+    }
+
+    public void addRemenant(final ItemStack stack) {
+        this.remenant = stack;
+        this.deprecated = true;
+    }
+
     public void addRecipe() {
         final FluidStack liquid = Binnie.Liquid.getLiquidStack(this.liquidName, 200);
         if (liquid != null) {
@@ -71,14 +79,6 @@ public enum EnumHoneyDrop implements IItemEnum {
     @Override
     public boolean isActive() {
         return !this.deprecated && (this.liquidName == null || FluidRegistry.isFluidRegistered(this.liquidName));
-    }
-
-    public static EnumHoneyDrop get(final ItemStack itemStack) {
-        final int i = itemStack.getItemDamage();
-        if (i >= 0 && i < values().length) {
-            return values()[i];
-        }
-        return values()[0];
     }
 
     @Override

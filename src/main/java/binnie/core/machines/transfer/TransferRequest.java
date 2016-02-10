@@ -57,31 +57,25 @@ public class TransferRequest {
         this.transferLiquids = true;
     }
 
-    private void setItemToTransfer(final ItemStack itemToTransfer) {
-        this.itemToTransfer = itemToTransfer;
+    private static boolean areItemsEqual(final ItemStack merged, final ItemStack itemstack) {
+        return ItemStack.areItemStackTagsEqual(itemstack, merged) && itemstack.isItemEqual(merged);
     }
 
-    private void setReturnItem(final ItemStack returnItem) {
-        this.returnItem = returnItem;
-    }
-
-    public TransferRequest setOrigin(final IInventory origin) {
-        this.origin = origin;
-        return this;
-    }
-
-    private void setDestination(final IInventory destination) {
-        this.destination = destination;
-    }
-
-    public TransferRequest setTargetSlots(final int[] targetSlots) {
-        this.targetSlots = targetSlots;
-        return this;
-    }
-
-    public TransferRequest setTargetTanks(final int[] targetTanks) {
-        this.targetTanks = targetTanks;
-        return this;
+    public static ItemStack[] mergeStacks(ItemStack itemstack, final ItemStack merged) {
+        if (areItemsEqual(itemstack, merged)) {
+            final int space = merged.getMaxStackSize() - merged.stackSize;
+            if (space > 0) {
+                if (itemstack.stackSize > space) {
+                    final ItemStack itemStack = itemstack;
+                    itemStack.stackSize -= space;
+                    merged.stackSize += space;
+                } else if (itemstack.stackSize <= space) {
+                    merged.stackSize += itemstack.stackSize;
+                    itemstack = null;
+                }
+            }
+        }
+        return new ItemStack[]{itemstack, merged};
     }
 
     public TransferRequest ignoreValidation() {
@@ -91,6 +85,10 @@ public class TransferRequest {
 
     public ItemStack getReturnItem() {
         return this.returnItem;
+    }
+
+    private void setReturnItem(final ItemStack returnItem) {
+        this.returnItem = returnItem;
     }
 
     public ItemStack transfer(final boolean doAdd) {
@@ -147,27 +145,6 @@ public class TransferRequest {
         }
         this.setReturnItem(item);
         return this.getReturnItem();
-    }
-
-    private static boolean areItemsEqual(final ItemStack merged, final ItemStack itemstack) {
-        return ItemStack.areItemStackTagsEqual(itemstack, merged) && itemstack.isItemEqual(merged);
-    }
-
-    public static ItemStack[] mergeStacks(ItemStack itemstack, final ItemStack merged) {
-        if (areItemsEqual(itemstack, merged)) {
-            final int space = merged.getMaxStackSize() - merged.stackSize;
-            if (space > 0) {
-                if (itemstack.stackSize > space) {
-                    final ItemStack itemStack = itemstack;
-                    itemStack.stackSize -= space;
-                    merged.stackSize += space;
-                } else if (itemstack.stackSize <= space) {
-                    merged.stackSize += itemstack.stackSize;
-                    itemstack = null;
-                }
-            }
-        }
-        return new ItemStack[]{itemstack, merged};
     }
 
     private ItemStack transferToTank(ItemStack item, final IInventory origin, final ITankMachine destination, final int tankID, final boolean doAdd) {
@@ -348,20 +325,43 @@ public class TransferRequest {
         return this.origin;
     }
 
+    public TransferRequest setOrigin(final IInventory origin) {
+        this.origin = origin;
+        return this;
+    }
+
     public IInventory getDestination() {
         return this.destination;
+    }
+
+    private void setDestination(final IInventory destination) {
+        this.destination = destination;
     }
 
     public ItemStack getItemToTransfer() {
         return this.itemToTransfer;
     }
 
+    private void setItemToTransfer(final ItemStack itemToTransfer) {
+        this.itemToTransfer = itemToTransfer;
+    }
+
     public int[] getTargetSlots() {
         return this.targetSlots;
     }
 
+    public TransferRequest setTargetSlots(final int[] targetSlots) {
+        this.targetSlots = targetSlots;
+        return this;
+    }
+
     public int[] getTargetTanks() {
         return this.targetTanks;
+    }
+
+    public TransferRequest setTargetTanks(final int[] targetTanks) {
+        this.targetTanks = targetTanks;
+        return this;
     }
 
     public static class TransferSlot {

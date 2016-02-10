@@ -14,11 +14,11 @@ public class VirtualMothHousing extends VirtualHousing implements IButterflyNurs
         return null;
     }
 
-    public IIndividual getNanny() {
-        return null;
+    public void setCaterpillar(final IButterfly butterfly) {
     }
 
-    public void setCaterpillar(final IButterfly butterfly) {
+    public IIndividual getNanny() {
+        return null;
     }
 
     public boolean canNurse(final IButterfly butterfly) {

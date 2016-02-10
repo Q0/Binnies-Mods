@@ -36,6 +36,15 @@ public class Lumbermill {
     public static int tankWater;
     static Map<ItemStack, ItemStack> recipes;
 
+    static {
+        Lumbermill.slotWood = 0;
+        Lumbermill.slotPlanks = 1;
+        Lumbermill.slotBark = 2;
+        Lumbermill.slotSawdust = 3;
+        Lumbermill.tankWater = 0;
+        Lumbermill.recipes = new HashMap<ItemStack, ItemStack>();
+    }
+
     public static ItemStack getPlankProduct(final ItemStack item) {
         ItemStack stack = null;
         if (Lumbermill.recipes.isEmpty()) {
@@ -63,13 +72,16 @@ public class Lumbermill {
         final List<ItemStack> list = new ArrayList<ItemStack>();
         for (final Object recipeO : CraftingManager.getInstance().getRecipeList()) {
             if (recipeO instanceof ShapelessRecipes) {
-                ShapelessRecipes recipe = (ShapelessRecipes)recipeO;
-                if(recipe.recipeItems.size() == 1 && recipe.recipeItems.get(0) instanceof ItemStack) {
-                    ItemStack input = (ItemStack)recipe.recipeItems.get(0);
-                    if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                        list.add(input);
-                    }
-                    break;
+                final ShapelessRecipes recipe = (ShapelessRecipes) recipeO;
+                if (recipe.recipeItems.size() != 1) {
+                    continue;
+                }
+                if (!(recipe.recipeItems.get(0) instanceof ItemStack)) {
+                    continue;
+                }
+                final ItemStack input = (ItemStack) recipe.recipeItems.get(0);
+                if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
+                    list.add(input);
                 }
             }
             if (recipeO instanceof ShapedRecipes) {
@@ -83,25 +95,21 @@ public class Lumbermill {
                 }
             }
             if (recipeO instanceof ShapelessOreRecipe) {
-                ShapelessOreRecipe recipe = (ShapelessOreRecipe)recipeO;
-                if(recipe.getInput().size() == 1 && recipe.getInput().get(0) instanceof ItemStack) {
-                    ItemStack input = (ItemStack)recipe.getInput().get(0);
-                    if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(output)) {
-                        list.add(input);
-                    }
+                final ShapelessOreRecipe recipe3 = (ShapelessOreRecipe) recipeO;
+                if (recipe3.getInput().size() != 1) {
+                    continue;
                 }
+                if (!(recipe3.getInput().get(0) instanceof ItemStack)) {
+                    continue;
+                }
+                final ItemStack input = (ItemStack) recipe3.getInput().get(0);
+                if (recipe3.getRecipeOutput() == null || !recipe3.getRecipeOutput().isItemEqual(output)) {
+                    continue;
+                }
+                list.add(input);
             }
         }
         return list;
-    }
-
-    static {
-        Lumbermill.slotWood = 0;
-        Lumbermill.slotPlanks = 1;
-        Lumbermill.slotBark = 2;
-        Lumbermill.slotSawdust = 3;
-        Lumbermill.tankWater = 0;
-        Lumbermill.recipes = new HashMap<ItemStack, ItemStack>();
     }
 
     public static class PackageLumbermill extends ExtraTreeMachine.PackageExtraTreeMachine implements IMachineInformation {

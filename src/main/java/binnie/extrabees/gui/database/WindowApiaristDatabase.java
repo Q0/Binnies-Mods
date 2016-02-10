@@ -9,6 +9,14 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class WindowApiaristDatabase extends WindowAbstractDatabase {
+    public WindowApiaristDatabase(final EntityPlayer player, final Side side, final boolean nei) {
+        super(player, side, nei, Binnie.Genetics.beeBreedingSystem, 110.0f);
+    }
+
+    public static Window create(final EntityPlayer player, final Side side, final boolean nei) {
+        return new WindowApiaristDatabase(player, side, nei);
+    }
+
     @Override
     protected void addTabs() {
         new PageSpeciesOverview(this.getInfoPages(Mode.Species), new DatabaseTab(ExtraBees.instance, "species.overview", 0));
@@ -21,14 +29,6 @@ public class WindowApiaristDatabase extends WindowAbstractDatabase {
         new PageBranchOverview(this.getInfoPages(Mode.Branches), new DatabaseTab(ExtraBees.instance, "branches.overview", 0));
         new PageBranchSpecies(this.getInfoPages(Mode.Branches), new DatabaseTab(ExtraBees.instance, "branches.species", 0));
         new PageBreeder(this.getInfoPages(Mode.Breeder), this.getUsername(), new DatabaseTab(ExtraBees.instance, "breeder", 0));
-    }
-
-    public WindowApiaristDatabase(final EntityPlayer player, final Side side, final boolean nei) {
-        super(player, side, nei, Binnie.Genetics.beeBreedingSystem, 110.0f);
-    }
-
-    public static Window create(final EntityPlayer player, final Side side, final boolean nei) {
-        return new WindowApiaristDatabase(player, side, nei);
     }
 
     public AbstractMod getMod() {

@@ -23,11 +23,17 @@ public enum Glassware {
     Sherry(2, 17, 7),
     Coupe(6, 19, 8);
 
-    private int capacity;
-    float contentBottom;
-    float contentHeight;
     public IIcon glass;
     public IIcon contents;
+    float contentBottom;
+    float contentHeight;
+    private int capacity;
+
+    private Glassware(final int capacity, final int contentBottom, final int contentHeight) {
+        this.capacity = 30 * capacity;
+        this.contentBottom = contentBottom / 32.0f;
+        this.contentHeight = contentHeight / 32.0f;
+    }
 
     public String getName(final String liquid) {
         if (liquid == null) {
@@ -38,12 +44,6 @@ public enum Glassware {
 
     public int getCapacity() {
         return this.capacity;
-    }
-
-    private Glassware(final int capacity, final int contentBottom, final int contentHeight) {
-        this.capacity = 30 * capacity;
-        this.contentBottom = contentBottom / 32.0f;
-        this.contentHeight = contentHeight / 32.0f;
     }
 
     public void registerIcons(final IIconRegister par1IconRegister) {

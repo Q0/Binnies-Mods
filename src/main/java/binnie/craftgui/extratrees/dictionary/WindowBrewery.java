@@ -16,6 +16,10 @@ public class WindowBrewery extends Window {
         super(228.0f, 218.0f, player, inventory, side);
     }
 
+    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
+        return new WindowBrewery(player, inventory, side);
+    }
+
     @Override
     protected AbstractMod getMod() {
         return ExtraTrees.instance;
@@ -39,9 +43,5 @@ public class WindowBrewery extends Window {
         new ControlSlotArray(this, (int) (this.getSize().x() / 2.0f - 81.0f), 104, 9, 1).create(Brewery.slotInventory);
         new ControlPlayerInventory(this);
         new ControlErrorState(this, 133.0f, 79.0f);
-    }
-
-    public static Window create(final EntityPlayer player, final IInventory inventory, final Side side) {
-        return new WindowBrewery(player, inventory, side);
     }
 }

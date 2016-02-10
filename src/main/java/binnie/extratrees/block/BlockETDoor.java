@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockETDoor extends BlockDoor implements IBlockMetadata {
-    private IIcon getFlippedIcon(final boolean upper, final boolean flip, final int tileMeta) {
-        final DoorType type = getDoorType(tileMeta);
-        return upper ? (flip ? type.iconDoorUpperFlip : type.iconDoorUpper) : (flip ? type.iconDoorLowerFlip : type.iconDoorLower);
+    protected BlockETDoor() {
+        super(Material.wood);
+        this.setHardness(3.0f).setStepSound(BlockETDoor.soundTypeWood);
+        this.setCreativeTab(Tabs.tabArboriculture);
+        this.setBlockName("door");
     }
 
     public static DoorType getDoorType(final int tileMeta) {
@@ -41,11 +43,9 @@ public class BlockETDoor extends BlockDoor implements IBlockMetadata {
         return DoorType.Standard;
     }
 
-    protected BlockETDoor() {
-        super(Material.wood);
-        this.setHardness(3.0f).setStepSound(BlockETDoor.soundTypeWood);
-        this.setCreativeTab(Tabs.tabArboriculture);
-        this.setBlockName("door");
+    private IIcon getFlippedIcon(final boolean upper, final boolean flip, final int tileMeta) {
+        final DoorType type = getDoorType(tileMeta);
+        return upper ? (flip ? type.iconDoorUpperFlip : type.iconDoorUpper) : (flip ? type.iconDoorLowerFlip : type.iconDoorLower);
     }
 
     public IIcon getIcon(final int side, final int meta) {

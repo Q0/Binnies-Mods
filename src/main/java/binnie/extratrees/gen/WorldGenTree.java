@@ -33,6 +33,21 @@ public abstract class WorldGenTree extends WorldGenerator {
     BlockType air;
     float bushiness;
 
+    public WorldGenTree(final ITree tree) {
+        this.minHeight = 3;
+        this.maxHeight = 80;
+        this.spawnPods = false;
+        this.minPodHeight = 3;
+        this.vine = new BlockType(Blocks.vine, 0);
+        this.air = new BlockTypeVoid();
+        this.bushiness = 0.0f;
+        this.tree = tree;
+        this.spawnPods = ((ITreeGenData) tree).allowsFruitBlocks();
+        if (tree instanceof ITreeGenData) {
+            this.treeGen = (ITreeGenData) tree;
+        }
+    }
+
     protected int randBetween(final int a, final int b) {
         return a + this.rand.nextInt(b - a);
     }
@@ -79,21 +94,6 @@ public abstract class WorldGenTree extends WorldGenerator {
 
     public BlockType getWood() {
         return new BlockTypeLog(((ExtraTreeSpecies) this.tree.getGenome().getPrimary()).getLog());
-    }
-
-    public WorldGenTree(final ITree tree) {
-        this.minHeight = 3;
-        this.maxHeight = 80;
-        this.spawnPods = false;
-        this.minPodHeight = 3;
-        this.vine = new BlockType(Blocks.vine, 0);
-        this.air = new BlockTypeVoid();
-        this.bushiness = 0.0f;
-        this.tree = tree;
-        this.spawnPods = ((ITreeGenData) tree).allowsFruitBlocks();
-        if (tree instanceof ITreeGenData) {
-            this.treeGen = (ITreeGenData) tree;
-        }
     }
 
     public final boolean generate(final World world, final Random random, final int x, final int y, final int z) {

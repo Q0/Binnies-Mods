@@ -64,12 +64,17 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
     BonemealMushroom,
     Power;
 
-    String fx;
+    static List<Birthday> birthdays;
+
+    static {
+        (ExtraBeesEffect.birthdays = new ArrayList<Birthday>()).add(new Birthday(3, 10, "Binnie"));
+    }
+
     public boolean combinable;
     public boolean dominant;
     public int id;
+    String fx;
     private String uid;
-    static List<Birthday> birthdays;
 
     private ExtraBeesEffect() {
         this.fx = "";
@@ -94,8 +99,50 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         }
     }
 
-    private void setFX(final String string) {
-        this.fx = "particles/" + string;
+    public static void doAcid(final World world, final int x, final int y, final int z) {
+        final Block block = world.getBlock(x, y, z);
+        if (block == Blocks.cobblestone || block == Blocks.stone) {
+            world.setBlock(x, y, z, Blocks.gravel, 0, 0);
+        } else if (block == Blocks.dirt | block == Blocks.grass) {
+            world.setBlock(x, y, z, (Block) Blocks.sand, 0, 0);
+        }
+    }
+
+    public static boolean wearsHelmet(final EntityPlayer player) {
+        final ItemStack armorItem = player.inventory.armorInventory[3];
+        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
+    }
+
+    public static boolean wearsChest(final EntityPlayer player) {
+        final ItemStack armorItem = player.inventory.armorInventory[2];
+        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
+    }
+
+    public static boolean wearsLegs(final EntityPlayer player) {
+        final ItemStack armorItem = player.inventory.armorInventory[1];
+        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
+    }
+
+    public static boolean wearsBoots(final EntityPlayer player) {
+        final ItemStack armorItem = player.inventory.armorInventory[0];
+        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
+    }
+
+    public static int wearsItems(final EntityPlayer player) {
+        int count = 0;
+        if (wearsHelmet(player)) {
+            ++count;
+        }
+        if (wearsChest(player)) {
+            ++count;
+        }
+        if (wearsLegs(player)) {
+            ++count;
+        }
+        if (wearsBoots(player)) {
+            ++count;
+        }
+        return count;
     }
 
     public void register() {
@@ -149,15 +196,6 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
 
     private boolean anyPlayerInRange(final World world, final int x, final int y, final int z, final int distance) {
         return world.getClosestPlayer(x + 0.5, y + 0.5, z + 0.5, (double) distance) != null;
-    }
-
-    public static void doAcid(final World world, final int x, final int y, final int z) {
-        final Block block = world.getBlock(x, y, z);
-        if (block == Blocks.cobblestone || block == Blocks.stone) {
-            world.setBlock(x, y, z, Blocks.gravel, 0, 0);
-        } else if (block == Blocks.dirt | block == Blocks.grass) {
-            world.setBlock(x, y, z, (Block) Blocks.sand, 0, 0);
-        }
     }
 
     public String getUID() {
@@ -504,6 +542,10 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         return this.fx;
     }
 
+    private void setFX(final String string) {
+        this.fx = "particles/" + string;
+    }
+
     public <T extends Entity> List<T> getEntities(final Class<T> eClass, final IBeeGenome genome, final IBeeHousing housing) {
         final int[] area = genome.getTerritory();
         final int[] offset = {-Math.round(area[0] / 2), -Math.round(area[1] / 2), -Math.round(area[2] / 2)};
@@ -513,49 +555,8 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         return (List<T>) housing.getWorld().getEntitiesWithinAABB((Class) eClass, box);
     }
 
-    public static boolean wearsHelmet(final EntityPlayer player) {
-        final ItemStack armorItem = player.inventory.armorInventory[3];
-        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
-    }
-
-    public static boolean wearsChest(final EntityPlayer player) {
-        final ItemStack armorItem = player.inventory.armorInventory[2];
-        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
-    }
-
-    public static boolean wearsLegs(final EntityPlayer player) {
-        final ItemStack armorItem = player.inventory.armorInventory[1];
-        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
-    }
-
-    public static boolean wearsBoots(final EntityPlayer player) {
-        final ItemStack armorItem = player.inventory.armorInventory[0];
-        return armorItem != null && armorItem.getItem() instanceof IArmorApiarist;
-    }
-
-    public static int wearsItems(final EntityPlayer player) {
-        int count = 0;
-        if (wearsHelmet(player)) {
-            ++count;
-        }
-        if (wearsChest(player)) {
-            ++count;
-        }
-        if (wearsLegs(player)) {
-            ++count;
-        }
-        if (wearsBoots(player)) {
-            ++count;
-        }
-        return count;
-    }
-
     public String getUnlocalizedName() {
         return this.getUID();
-    }
-
-    static {
-        (ExtraBeesEffect.birthdays = new ArrayList<Birthday>()).add(new Birthday(3, 10, "Binnie"));
     }
 
     public static class Birthday {
@@ -563,18 +564,18 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         int month;
         String name;
 
+        private Birthday(final int day, final int month, final String name) {
+            this.day = day;
+            this.month = month + 1;
+            this.name = name;
+        }
+
         public boolean isToday() {
             return Calendar.getInstance().get(5) == this.month && Calendar.getInstance().get(2) == this.day;
         }
 
         public String getName() {
             return this.name;
-        }
-
-        private Birthday(final int day, final int month, final String name) {
-            this.day = day;
-            this.month = month + 1;
-            this.name = name;
         }
     }
 }
