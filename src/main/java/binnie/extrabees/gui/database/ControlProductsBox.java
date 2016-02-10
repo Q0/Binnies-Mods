@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ControlProductsBox extends ControlListBox<ControlProductsBox.Product> {
     IAlleleBeeSpecies species;
@@ -28,7 +29,7 @@ public class ControlProductsBox extends ControlListBox<ControlProductsBox.Produc
 
     @Override
     public IWidget createOption(final Product value, final int y) {
-        return new ControlProductsItem(((ControlScrollableContent<ControlList<Product>>) this).getContent(), value, y);
+        return new ControlProductsItem(getContent(), value, y);
     }
 
     public void setSpecies(final IAlleleBeeSpecies species) {
@@ -39,16 +40,12 @@ public class ControlProductsBox extends ControlListBox<ControlProductsBox.Produc
             }
             final IBeeGenome genome = Binnie.Genetics.getBeeRoot().templateAsGenome(template);
             final float speed = genome.getSpeed();
-            final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getProductionModifier(genome, 1.0f);
+            final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getBeeModifier().getProductionModifier(genome, 1.0f);
             final List<Product> strings = new ArrayList<Product>();
             if (this.type == Type.Products) {
-                for (final Map.Entry<ItemStack, Integer> entry : species.getProducts().entrySet()) {
-                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
-                }
+                strings.addAll(species.getProductChances().entrySet().stream().map(entry -> new Product(entry.getKey(), speed * modeSpeed * entry.getValue())).collect(Collectors.toList()));
             } else {
-                for (final Map.Entry<ItemStack, Integer> entry : species.getSpecialty().entrySet()) {
-                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
-                }
+                strings.addAll(species.getSpecialtyChances().entrySet().stream().map(entry -> new Product(entry.getKey(), speed * modeSpeed * entry.getValue())).collect(Collectors.toList()));
             }
             this.setOptions(strings);
         }
