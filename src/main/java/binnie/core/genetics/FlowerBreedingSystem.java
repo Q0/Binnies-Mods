@@ -59,12 +59,12 @@ class FlowerBreedingSystem extends BreedingSystem {
 
     @Override
     public boolean isDNAManipulable(final ItemStack member) {
-        return ((IFlowerRoot) this.getSpeciesRoot()).getType(member) == EnumFlowerStage.POLLEN;
+        return (this.getSpeciesRoot()).getType(member) == EnumFlowerStage.POLLEN;
     }
 
     @Override
     public IIndividual getConversion(final ItemStack stack) {
-        return (IIndividual) BotanyCore.getFlowerRoot().getConversion(stack);
+        return BotanyCore.getFlowerRoot().getConversion(stack);
     }
 
     @Override
