@@ -9,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import java.util.Objects;
+
 public class Mods {
     public static Mod Forestry;
     public static Mod IC2;
@@ -20,18 +22,18 @@ public class Mods {
             @Override
             public boolean dev() {
                 final String forVersion = Loader.instance().getIndexedModList().get("Forestry").getVersion();
-                final Restriction rest = new Restriction((ArtifactVersion) new DefaultArtifactVersion("3.6"), true, (ArtifactVersion) null, false);
-                return rest.containsVersion((ArtifactVersion) new DefaultArtifactVersion(forVersion));
+                final Restriction rest = new Restriction(new DefaultArtifactVersion("4.2"), true, null, false);
+                return rest.containsVersion(new DefaultArtifactVersion(forVersion));
             }
         };
         Mods.IC2 = new Mod("IC2");
         Mods.Botania = new Mod("Botania");
-        Mods.WARN = true;
+        Mods.WARN = false;
     }
 
     private static Item findItem(final String modId, final String name) {
         final Item stack = GameRegistry.findItem(modId, name);
-        if (stack == null && Mods.WARN && modId == "Forestry") {
+        if (stack == null && Mods.WARN && modId.equals("Forestry")) {
             throw new RuntimeException("Item not found: " + modId + ":" + name);
         }
         return stack;
@@ -39,7 +41,7 @@ public class Mods {
 
     private static ItemStack findItemStack(final String modId, final String name, final int stackSize) {
         final ItemStack stack = GameRegistry.findItemStack(modId, name, stackSize);
-        if (stack == null && Mods.WARN && modId == "Forestry") {
+        if (stack == null && Mods.WARN && modId.equals("Forestry")) {
             throw new RuntimeException("Stack not found: " + modId + ":" + name);
         }
         return stack;
@@ -47,7 +49,7 @@ public class Mods {
 
     private static Block findBlock(final String modId, final String name) {
         final Block stack = GameRegistry.findBlock(modId, name);
-        if (stack == null && Mods.WARN && modId == "Forestry") {
+        if (stack == null && Mods.WARN && modId.equals("Forestry")) {
             throw new RuntimeException("Block not found: " + modId + ":" + name);
         }
         return stack;
