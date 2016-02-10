@@ -4,8 +4,10 @@ import binnie.Binnie;
 import binnie.core.genetics.ForestryAllele;
 import forestry.api.apiculture.*;
 import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
@@ -213,12 +215,12 @@ public class ExtraBeeMutation implements IBeeMutation {
         }
     }
 
-    public IAllele getAllele0() {
-        return (IAllele) this.species0;
+    public IAlleleSpecies getAllele0() {
+        return this.species0;
     }
 
-    public IAllele getAllele1() {
-        return (IAllele) this.species1;
+    public IAlleleSpecies getAllele1() {
+        return this.species1;
     }
 
     public IAllele[] getTemplate() {
@@ -250,14 +252,17 @@ public class ExtraBeeMutation implements IBeeMutation {
             return 0.0f;
         }
         final World world = housing.getWorld();
-        final int x = housing.getXCoord();
-        final int y = housing.getYCoord();
-        final int z = housing.getZCoord();
+        ChunkCoordinates coords = housing.getCoordinates();
+        final int x = coords.posX;
+        final int y = coords.posX;
+        final int z = coords.posX;
         final BiomeGenBase biome = housing.getBiome();
         if (this.req != null && !this.req.fufilled(housing, allele0, allele1, genome0, genome1)) {
             return 0.0f;
         }
-        final int processedChance = Math.round(this.chance * housing.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f) * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f));
+        IBeeModifier housingBeeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+        IBeeModifier modeBeeModifier = BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier();
+        final int processedChance = Math.round(this.chance * housingBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f) * modeBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0f));
         if (this.species0.getUID().equals(allele0.getUID()) && this.species1.getUID().equals(allele1.getUID())) {
             return processedChance;
         }
@@ -319,7 +324,7 @@ public class ExtraBeeMutation implements IBeeMutation {
 
         @Override
         public boolean fufilled(final IBeeHousing housing, final IAllele allele0, final IAllele allele1, final IGenome genome0, final IGenome genome1) {
-            return housing.getOwnerName() != null && housing.getOwnerName().equals((Object) this.name);
+            return housing.getOwner() != null && housing.getOwner().equals(this.name);
         }
     }
 }
