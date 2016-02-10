@@ -574,6 +574,24 @@ public enum ExtraTreeSpecies implements IAlleleTreeSpecies, IIconProvider {
         return "extratrees.species." + this.uid;
     }
 
+    @Override
+    public ITreeGenerator getGenerator() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public int getLeafColour(boolean pollinated) {
+        //TODO: UPD TO Forestry4
+        return 0;
+    }
+
+    @Override
+    public IIcon getLeafIcon(boolean pollinated, boolean fancy) {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
     public boolean isDominant() {
         return true;
     }
