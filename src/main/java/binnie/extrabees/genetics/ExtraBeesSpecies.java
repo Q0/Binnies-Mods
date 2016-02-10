@@ -155,8 +155,8 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     BLUTONIUM("caruthus", 1769702),
     MYSTICAL("mystica", 4630306);
 
-    public HashMap<ItemStack, Integer> allProducts;
-    public HashMap<ItemStack, Integer> allSpecialties;
+    public HashMap<ItemStack, Float> allProducts;
+    public HashMap<ItemStack, Float> allSpecialties;
     public State state;
     boolean nocturnal;
     private int primaryColor;
@@ -171,8 +171,8 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     private String uid;
     private Achievement achievement;
     private boolean dominant;
-    private HashMap<ItemStack, Integer> products;
-    private HashMap<ItemStack, Integer> specialties;
+    private HashMap<ItemStack, Float> products;
+    private HashMap<ItemStack, Float> specialties;
     private IAllele[] template;
     @SideOnly(Side.CLIENT)
     private IIcon[][] icons;
@@ -190,10 +190,10 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.uid = "";
         this.achievement = null;
         this.dominant = true;
-        this.products = new LinkedHashMap<ItemStack, Integer>();
-        this.specialties = new LinkedHashMap<ItemStack, Integer>();
-        this.allProducts = new LinkedHashMap<ItemStack, Integer>();
-        this.allSpecialties = new LinkedHashMap<ItemStack, Integer>();
+        this.products = new LinkedHashMap<ItemStack, Float>();
+        this.specialties = new LinkedHashMap<ItemStack, Float>();
+        this.allProducts = new LinkedHashMap<ItemStack, Float>();
+        this.allSpecialties = new LinkedHashMap<ItemStack, Float>();
         this.state = State.Active;
         this.nocturnal = false;
         this.uid = this.toString().toLowerCase();
@@ -214,10 +214,10 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.uid = "";
         this.achievement = null;
         this.dominant = true;
-        this.products = new LinkedHashMap<ItemStack, Integer>();
-        this.specialties = new LinkedHashMap<ItemStack, Integer>();
-        this.allProducts = new LinkedHashMap<ItemStack, Integer>();
-        this.allSpecialties = new LinkedHashMap<ItemStack, Integer>();
+        this.products = new LinkedHashMap<ItemStack, Float>();
+        this.specialties = new LinkedHashMap<ItemStack, Float>();
+        this.allProducts = new LinkedHashMap<ItemStack, Float>();
+        this.allSpecialties = new LinkedHashMap<ItemStack, Float>();
         this.state = State.Active;
         this.nocturnal = false;
         this.state = State.Deprecated;
@@ -644,7 +644,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         ExtraBeesSpecies.BLUTONIUM.addProduct(EnumHoneyComb.BARREN, 20);
         ExtraBeesSpecies.BLUTONIUM.addSpecialty(EnumHoneyComb.BLUTONIUM, 1);
         ExtraBeesSpecies.MYSTICAL.importTemplate(ForestryAllele.BeeSpecies.Noble);
-        for (final Map.Entry<ItemStack, Integer> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProducts().entrySet()) {
+        for (final Map.Entry<ItemStack, Float> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProductChances().entrySet()) {
             ExtraBeesSpecies.MYSTICAL.addProduct(entry.getKey(), entry.getValue());
         }
         ExtraBeesSpecies.MYSTICAL.setFlowerProvider(ExtraBeesFlowers.Mystical.getUID());
@@ -733,11 +733,11 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         return this.dominant;
     }
 
-    public HashMap<ItemStack, Integer> getProducts() {
+    public HashMap<ItemStack, Float> getProducts() {
         return this.products;
     }
 
-    public HashMap<ItemStack, Integer> getSpecialty() {
+    public HashMap<ItemStack, Float> getSpecialty() {
         return this.specialties;
     }
 
@@ -752,7 +752,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         }
     }
 
-    public void addProduct(final ItemStack product, final int chance) {
+    public void addProduct(final ItemStack product, final float chance) {
         if (product == null) {
             this.setState(State.Inactive);
         } else {
@@ -761,7 +761,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         }
     }
 
-    public void addProduct(final IItemEnum product, final int chance) {
+    public void addProduct(final IItemEnum product, final float chance) {
         if (product.isActive()) {
             this.addProduct(product.get(1), chance);
         } else {
@@ -770,7 +770,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         }
     }
 
-    public void addSpecialty(final ItemStack product, final int chance) {
+    public void addSpecialty(final ItemStack product, final float chance) {
         if (product == null) {
             this.setState(State.Inactive);
         } else {
@@ -779,7 +779,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         }
     }
 
-    private void addSpecialty(final IItemEnum product, final int chance) {
+    private void addSpecialty(final IItemEnum product, final float chance) {
         if (product.isActive()) {
             this.addSpecialty(product.get(1), chance);
         } else {

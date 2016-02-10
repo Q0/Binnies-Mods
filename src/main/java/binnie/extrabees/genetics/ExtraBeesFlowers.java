@@ -51,7 +51,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     }
 
     public IFlowerProvider getProvider() {
-        return (IFlowerProvider) this;
+        return this;
     }
 
     public String getDescription() {
@@ -59,7 +59,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     }
 
     public void register() {
-        AlleleManager.alleleRegistry.registerAllele((IAllele) this);
+        AlleleManager.alleleRegistry.registerAllele(this);
     }
 
     public ItemStack[] getItemStacks() {
@@ -80,13 +80,13 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
                 return new ItemStack[]{new ItemStack(Blocks.redstone_torch)};
             }
             case DEAD: {
-                return new ItemStack[]{new ItemStack((Block) Blocks.deadbush)};
+                return new ItemStack[]{new ItemStack(Blocks.deadbush)};
             }
             case Fruit: {
                 return new ItemStack[]{new ItemStack(Items.apple)};
             }
             case LEAVES: {
-                return new ItemStack[]{new ItemStack((Block) Blocks.leaves)};
+                return new ItemStack[]{new ItemStack(Blocks.leaves)};
             }
             case Sapling: {
                 return new ItemStack[]{new ItemStack(Blocks.sapling)};
