@@ -4,10 +4,7 @@ import binnie.Binnie;
 import binnie.extrabees.ExtraBees;
 import binnie.extrabees.genetics.ExtraBeesFlowers;
 import cofh.api.energy.IEnergyReceiver;
-import forestry.api.apiculture.IAlleleBeeEffect;
-import forestry.api.apiculture.IArmorApiarist;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IEffectData;
@@ -27,6 +24,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -204,9 +202,10 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
 
     public IEffectData doEffect(final IBeeGenome genome, final IEffectData storedData, final IBeeHousing housing) {
         final World world = housing.getWorld();
-        final int xHouse = housing.getXCoord();
-        final int yHouse = housing.getYCoord();
-        final int zHouse = housing.getZCoord();
+        ChunkCoordinates housingCoords = housing.getCoordinates();
+        final int xHouse = housingCoords.posX;
+        final int yHouse = housingCoords.posY;
+        final int zHouse = housingCoords.posZ;
         final int[] area = this.getModifiedArea(genome, housing);
         final int xd = 1 + area[0] / 2;
         final int yd = 1 + area[1] / 2;
@@ -495,13 +494,14 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         final int[] territory;
         final int[] area = territory = genome.getTerritory();
         final int n = 0;
-        territory[n] *= (int) (housing.getTerritoryModifier(genome, 1.0f) * 3.0f);
+        IBeeModifier beeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+        territory[n] *= (int) (beeModifier.getTerritoryModifier(genome, 1.0f) * 3.0f);
         final int[] array = area;
         final int n2 = 1;
-        array[n2] *= (int) (housing.getTerritoryModifier(genome, 1.0f) * 3.0f);
+        array[n2] *= (int) (beeModifier.getTerritoryModifier(genome, 1.0f) * 3.0f);
         final int[] array2 = area;
         final int n3 = 2;
-        array2[n3] *= (int) (housing.getTerritoryModifier(genome, 1.0f) * 3.0f);
+        array2[n3] *= (int) (beeModifier.getTerritoryModifier(genome, 1.0f) * 3.0f);
         if (area[0] < 1) {
             area[0] = 1;
         }
@@ -518,13 +518,14 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         final int[] territory;
         final int[] area = territory = genome.getTerritory();
         final int n = 0;
-        territory[n] *= (int) housing.getTerritoryModifier(genome, 1.0f);
+        IBeeModifier beeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+        territory[n] *= (int) beeModifier.getTerritoryModifier(genome, 1.0f);
         final int[] array = area;
         final int n2 = 1;
-        array[n2] *= (int) housing.getTerritoryModifier(genome, 1.0f);
+        array[n2] *= (int) beeModifier.getTerritoryModifier(genome, 1.0f);
         final int[] array2 = area;
         final int n3 = 2;
-        array2[n3] *= (int) housing.getTerritoryModifier(genome, 1.0f);
+        array2[n3] *= (int) beeModifier.getTerritoryModifier(genome, 1.0f);
         if (area[0] < 1) {
             area[0] = 1;
         }
@@ -548,9 +549,10 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
 
     public <T extends Entity> List<T> getEntities(final Class<T> eClass, final IBeeGenome genome, final IBeeHousing housing) {
         final int[] area = genome.getTerritory();
+        ChunkCoordinates coords = housing.getCoordinates();
         final int[] offset = {-Math.round(area[0] / 2), -Math.round(area[1] / 2), -Math.round(area[2] / 2)};
-        final int[] min = {housing.getXCoord() + offset[0], housing.getYCoord() + offset[1], housing.getZCoord() + offset[2]};
-        final int[] max = {housing.getXCoord() + offset[0] + area[0], housing.getYCoord() + offset[1] + area[1], housing.getZCoord() + offset[2] + area[2]};
+        final int[] min = {coords.posX + offset[0], coords.posY + offset[1], coords.posZ + offset[2]};
+        final int[] max = {coords.posX + offset[0] + area[0], coords.posY + offset[1] + area[1], coords.posZ + offset[2] + area[2]};
         final AxisAlignedBB box = AxisAlignedBB.getBoundingBox((double) min[0], (double) min[1], (double) min[2], (double) max[0], (double) max[1], (double) max[2]);
         return (List<T>) housing.getWorld().getEntitiesWithinAABB((Class) eClass, box);
     }
