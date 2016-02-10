@@ -32,7 +32,7 @@ public class AnalystPageWood extends AnalystPageProduce {
         }
         y += 30;
         final Collection<ItemStack> products = new UniqueItemStackSet();
-        for (final ItemStack stack : ind.getGenome().getPrimary().getLogStacks()) {
+        for (final ItemStack stack : ind.getProduceList()) {
             products.add(stack);
         }
         if (products.size() > 0) {
