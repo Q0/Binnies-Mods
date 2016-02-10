@@ -36,11 +36,11 @@ public class ItemMetadata extends ItemBlock {
             return false;
         }
         if (world.getBlock(x, y, z) == block) {
-            final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) world, x, y, z);
+            final TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
             if (tile != null) {
                 tile.setTileMetadata(placedMeta, false);
             }
-            block.onBlockPlacedBy(world, x, y, z, (EntityLivingBase) player, stack);
+            block.onBlockPlacedBy(world, x, y, z, player, stack);
             block.onPostBlockPlaced(world, x, y, z, metadata);
         }
         return true;
