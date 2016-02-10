@@ -193,6 +193,12 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return products;
     }
 
+    @Override
+    public String getFlowerType() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
     public String getName() {
         return this.getDescription();
     }

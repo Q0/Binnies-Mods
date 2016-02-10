@@ -7,10 +7,11 @@ import binnie.core.machines.inventory.SlotValidator;
 import binnie.craftgui.minecraft.IMachineInformation;
 import binnie.extrabees.apiary.ComponentBeeModifier;
 import binnie.extrabees.apiary.ComponentExtraBeeGUI;
-import binnie.extrabees.apiary.TileExtraBeeAlveary;
+//import binnie.extrabees.apiary.TileExtraBeeAlveary;
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.*;
+import forestry.api.genetics.IIndividual;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -65,6 +66,17 @@ public class AlvearyFrame {
             final World world = this.getMachine().getTileEntity().getWorldObj();
             final int wear = Math.round(amount * 5 * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getWearModifier());
             this.getInventory().setInventorySlotContents(AlvearyFrame.slotFrame, this.getHiveFrame().frameUsed((IBeeHousing) ((TileExtraBeeAlveary) this.getMachine().getTileEntity()).getCentralTE(), this.getInventory().getStackInSlot(AlvearyFrame.slotFrame), (IBee) null, wear));
+        }
+
+        @Override
+        public void onQueenDeath() {
+            //TODO: UPD TO Forestry4
+        }
+
+        @Override
+        public boolean onPollenRetrieved(IIndividual pollen) {
+            //TODO: UPD TO Forestry4
+            return false;
         }
 
         public IHiveFrame getHiveFrame() {

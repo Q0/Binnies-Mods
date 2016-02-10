@@ -9,12 +9,13 @@ import binnie.core.machines.transfer.TransferRequest;
 import binnie.craftgui.minecraft.IMachineInformation;
 import binnie.extrabees.apiary.ComponentBeeModifier;
 import binnie.extrabees.apiary.ComponentExtraBeeGUI;
-import binnie.extrabees.apiary.TileExtraBeeAlveary;
+//import binnie.extrabees.apiary.TileExtraBeeAlveary; //TODO: UPD TO Forestry4
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.*;
 import forestry.api.genetics.IIndividual;
-import forestry.core.EnumErrorCode;
+//import forestry.core.EnumErrorCode; //TODO: UPD TO Forestry4
+import forestry.core.errors.EnumErrorCode;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -79,6 +80,17 @@ public class AlvearyHatchery {
                     }
                 }
             }
+        }
+
+        @Override
+        public void onQueenDeath() {
+            //TODO: UPD TO Forestry4
+        }
+
+        @Override
+        public boolean onPollenRetrieved(IIndividual pollen) {
+            //TODO: UPD TO Forestry4
+            return false;
         }
     }
 }

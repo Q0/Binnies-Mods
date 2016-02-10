@@ -6,10 +6,7 @@ import binnie.core.genetics.EnumBeeBooleanModifier;
 import binnie.core.genetics.EnumBeeModifier;
 import binnie.extrabees.ExtraBees;
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
-import forestry.api.apiculture.IHiveFrame;
+import forestry.api.apiculture.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -77,6 +74,12 @@ public enum EnumHiveFrame implements IHiveFrame {
 
     public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
         return this.logic.getModifier(EnumBeeModifier.Lifespan, currentModifier);
+    }
+
+    @Override
+    public IBeeModifier getBeeModifier() {
+        //TODO: UPD TO Forestry4
+        return null;
     }
 
     public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {

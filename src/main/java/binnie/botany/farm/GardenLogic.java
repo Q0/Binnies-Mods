@@ -12,10 +12,12 @@ import binnie.core.Mods;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import forestry.api.farming.FarmDirection;
 import forestry.api.farming.ICrop;
 import forestry.api.farming.IFarmHousing;
 import forestry.api.farming.IFarmable;
-import forestry.core.interfaces.IOwnable;
+//import forestry.core.interfaces.IOwnable; //TODO: UPD TO Forestry4
+import forestry.core.access.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -65,6 +67,18 @@ public class GardenLogic extends FarmLogic {
         final Collection<ItemStack> products = this.produce;
         this.produce = new ArrayList<ItemStack>();
         return products;
+    }
+
+    @Override
+    public boolean cultivate(int x, int y, int z, FarmDirection direction, int extent) {
+        //TODO: UPD TO Forestry4
+        return false;
+    }
+
+    @Override
+    public Collection<ICrop> harvest(int x, int y, int z, FarmDirection direction, int extent) {
+        //TODO: UPD TO Forestry4
+        return null;
     }
 
     public boolean cultivate(final int x, final int y, final int z, final ForgeDirection direction, final int extent) {

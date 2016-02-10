@@ -5,9 +5,11 @@ import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.core.IErrorState;
 import forestry.api.genetics.IHousing;
-import forestry.core.EnumErrorCode;
+//import forestry.core.EnumErrorCode; //TODO: UPD TO Forestry4
+import forestry.core.errors.EnumErrorCode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -79,6 +81,12 @@ class VirtualHousing implements IHousing {
     }
 
     public Set<IErrorState> getErrorStates() {
+        return null;
+    }
+
+    @Override
+    public ChunkCoordinates getCoordinates() {
+        //TODO: UPD TO Forestry4
         return null;
     }
 }

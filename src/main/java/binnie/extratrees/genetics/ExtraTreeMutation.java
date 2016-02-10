@@ -2,6 +2,7 @@ package binnie.extratrees.genetics;
 
 import binnie.Binnie;
 import forestry.api.arboriculture.IAlleleTreeSpecies;
+import forestry.api.arboriculture.ITreeGenome;
 import forestry.api.arboriculture.ITreeMutation;
 import forestry.api.arboriculture.ITreeRoot;
 import forestry.api.genetics.AlleleManager;
@@ -246,5 +247,11 @@ public class ExtraTreeMutation implements ITreeMutation {
 
     public ITreeRoot getRoot() {
         return Binnie.Genetics.getTreeRoot();
+    }
+
+    @Override
+    public float getChance(World world, int x, int y, int z, IAlleleTreeSpecies allele0, IAlleleTreeSpecies allele1, ITreeGenome genome0, ITreeGenome genome1) {
+        //TODO: UPD TO Forestry4
+        return 0;
     }
 }

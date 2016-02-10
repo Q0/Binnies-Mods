@@ -13,7 +13,8 @@ import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IChromosomeType;
 import forestry.api.genetics.IFruitFamily;
 import forestry.arboriculture.FruitProviderNone;
-import forestry.arboriculture.genetics.AlleleTreeSpecies;
+//import forestry.arboriculture.genetics.AlleleTreeSpecies; //TODO: UPD TO Forestry4
+import forestry.arboriculture.genetics.alleles.AlleleTreeSpecies;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.client.renderer.texture.IIconRegister;

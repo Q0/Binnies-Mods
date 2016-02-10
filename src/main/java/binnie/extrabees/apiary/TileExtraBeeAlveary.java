@@ -1,17 +1,23 @@
 package binnie.extrabees.apiary;
-
+//TODO: UPD TO Forestry4
+/*
 import binnie.Binnie;
 import binnie.core.BinnieCore;
 import binnie.core.machines.TileEntityMachine;
 import binnie.extrabees.apiary.machine.AlvearyMachine;
+import com.mojang.authlib.GameProfile;
 import forestry.api.apiculture.*;
-import forestry.api.core.IStructureLogic;
-import forestry.api.core.ITileStructure;
+//import forestry.api.core.IStructureLogic; //TODO: UPD TO Forestry4
+//import forestry.api.core.ITileStructure; //TODO: UPD TO Forestry4
 import forestry.api.genetics.IIndividual;
+import forestry.api.multiblock.IAlvearyComponent;
+import forestry.api.multiblock.IMultiblockController;
+import forestry.api.multiblock.IMultiblockLogicAlveary;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,6 +253,16 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
         }
     }
 
+    @Override
+    public void onQueenDeath() {
+
+    }
+
+    @Override
+    public boolean onPollenRetrieved(IIndividual pollen) {
+        return false;
+    }
+
     public void onQueenDeath(final IBee queen) {
         if (this.getBeeListener() != null) {
             this.getBeeListener().onQueenDeath(queen);
@@ -304,4 +320,35 @@ public class TileExtraBeeAlveary extends TileEntityMachine implements IAlvearyCo
     public ISidedInventory getStructureInventory() {
         return this.getMachine().getInterface(ISidedInventory.class);
     }
+
+
+    @Override
+    public ChunkCoordinates getCoordinates() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public GameProfile getOwner() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public IMultiblockLogicAlveary getMultiblockLogic() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public void onMachineAssembled(IMultiblockController multiblockController, ChunkCoordinates minCoord, ChunkCoordinates maxCoord) {
+        //TODO: UPD TO Forestry4
+    }
+
+    @Override
+    public void onMachineBroken() {
+        //TODO: UPD TO Forestry4
+
+    }
 }
+*/

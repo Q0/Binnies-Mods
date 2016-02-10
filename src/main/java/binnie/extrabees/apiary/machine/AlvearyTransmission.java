@@ -4,7 +4,7 @@ import binnie.core.machines.Machine;
 import binnie.core.machines.MachineComponent;
 import binnie.core.machines.power.ComponentPowerReceptor;
 import binnie.craftgui.minecraft.IMachineInformation;
-import binnie.extrabees.apiary.TileExtraBeeAlveary;
+//import binnie.extrabees.apiary.TileExtraBeeAlveary; //TODO: UPD TO Forestry4
 import binnie.extrabees.core.ExtraBeeTexture;
 import cofh.api.energy.IEnergyHandler;
 import net.minecraft.tileentity.TileEntity;

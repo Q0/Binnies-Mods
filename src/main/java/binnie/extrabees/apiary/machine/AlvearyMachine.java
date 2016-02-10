@@ -6,7 +6,7 @@ import binnie.core.machines.MachinePackage;
 import binnie.core.machines.MachineRendererBlock;
 import binnie.core.resource.BinnieResource;
 import binnie.extrabees.apiary.ModuleApiary;
-import binnie.extrabees.apiary.TileExtraBeeAlveary;
+//import binnie.extrabees.apiary.TileExtraBeeAlveary; //TODO: UPD TO Forestry4
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -54,7 +54,9 @@ public enum AlvearyMachine implements IMachineType {
 
         @Override
         public TileEntity createTileEntity() {
-            return new TileExtraBeeAlveary(this);
+            //TODO: UPD TO Forestry4
+            return null;
+            //return new TileExtraBeeAlveary(this);
         }
 
         @Override

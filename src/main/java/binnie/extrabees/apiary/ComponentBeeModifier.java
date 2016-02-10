@@ -56,6 +56,17 @@ public class ComponentBeeModifier extends MachineComponent implements IBeeModifi
     public void wearOutEquipment(final int amount) {
     }
 
+    @Override
+    public void onQueenDeath() {
+        //TODO: UPD TO Forestry4
+    }
+
+    @Override
+    public boolean onPollenRetrieved(IIndividual pollen) {
+        //TODO: UPD TO Forestry4
+        return false;
+    }
+
     public void onQueenDeath(final IBee queen) {
     }
 

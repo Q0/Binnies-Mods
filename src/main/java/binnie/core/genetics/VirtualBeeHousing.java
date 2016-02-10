@@ -1,11 +1,12 @@
 package binnie.core.genetics;
 
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
+import com.mojang.authlib.GameProfile;
+import forestry.api.apiculture.*;
+import forestry.api.core.IErrorLogic;
 import forestry.api.genetics.IIndividual;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
@@ -94,5 +95,59 @@ public class VirtualBeeHousing extends VirtualHousing implements IBeeHousing {
 
     public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
         return 1.0f;
+    }
+
+    @Override
+    public Iterable<IBeeModifier> getBeeModifiers() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public Iterable<IBeeListener> getBeeListeners() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public IBeeHousingInventory getBeeInventory() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public IBeekeepingLogic getBeekeepingLogic() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public int getBlockLightValue() {
+        //TODO: UPD TO Forestry4
+        return 0;
+    }
+
+    @Override
+    public boolean canBlockSeeTheSky() {
+        //TODO: UPD TO Forestry4
+        return false;
+    }
+
+    @Override
+    public GameProfile getOwner() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public Vec3 getBeeFXCoordinates() {
+        //TODO: UPD TO Forestry4
+        return null;
+    }
+
+    @Override
+    public IErrorLogic getErrorLogic() {
+        //TODO: UPD TO Forestry4
+        return null;
     }
 }

@@ -49,6 +49,32 @@ public class BinnieCircuit implements ICircuit {
         return this.uid;
     }
 
+    @Override
+    public boolean isCircuitable(Object tile) {
+        //TODO: UPD TO Forestry4
+        return false;
+    }
+
+    @Override
+    public void onInsertion(int slot, Object tile) {
+        //TODO: UPD TO Forestry4
+    }
+
+    @Override
+    public void onLoad(int slot, Object tile) {
+        //TODO: UPD TO Forestry4
+    }
+
+    @Override
+    public void onRemoval(int slot, Object tile) {
+        //TODO: UPD TO Forestry4
+    }
+
+    @Override
+    public void onTick(int slot, Object tile) {
+        //TODO: UPD TO Forestry4
+    }
+
     public boolean isCircuitable(final TileEntity tile) {
         return false;
     }

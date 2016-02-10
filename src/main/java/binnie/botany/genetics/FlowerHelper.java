@@ -83,7 +83,7 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
         return flowerStack;
     }
 
-    public EnumFlowerStage getType(final ItemStack stack) {
+    public ISpeciesType getType(final ItemStack stack) {
         return (stack == null) ? EnumFlowerStage.NONE : ((stack.getItem() == Botany.flowerItem) ? EnumFlowerStage.FLOWER : ((stack.getItem() == Botany.pollen) ? EnumFlowerStage.POLLEN : ((stack.getItem() == Botany.seed) ? EnumFlowerStage.SEED : EnumFlowerStage.NONE)));
     }
 
