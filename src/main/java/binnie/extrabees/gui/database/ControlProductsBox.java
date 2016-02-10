@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ControlProductsBox extends ControlListBox<ControlProductsBox.Product> {
     IAlleleBeeSpecies species;
@@ -43,9 +42,13 @@ public class ControlProductsBox extends ControlListBox<ControlProductsBox.Produc
             final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getBeeModifier().getProductionModifier(genome, 1.0f);
             final List<Product> strings = new ArrayList<Product>();
             if (this.type == Type.Products) {
-                strings.addAll(species.getProductChances().entrySet().stream().map(entry -> new Product(entry.getKey(), speed * modeSpeed * entry.getValue())).collect(Collectors.toList()));
+                for (final Map.Entry<ItemStack, Float> entry : species.getProductChances().entrySet()) {
+                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
+                }
             } else {
-                strings.addAll(species.getSpecialtyChances().entrySet().stream().map(entry -> new Product(entry.getKey(), speed * modeSpeed * entry.getValue())).collect(Collectors.toList()));
+                for (final Map.Entry<ItemStack, Float> entry : species.getSpecialtyChances().entrySet()) {
+                    strings.add(new Product(entry.getKey(), speed * modeSpeed * entry.getValue()));
+                }
             }
             this.setOptions(strings);
         }
