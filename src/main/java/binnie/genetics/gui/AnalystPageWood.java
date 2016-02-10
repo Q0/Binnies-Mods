@@ -16,6 +16,7 @@ import forestry.api.genetics.IChromosomeType;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class AnalystPageWood extends AnalystPageProduce {
     public AnalystPageWood(final IWidget parent, final IArea area, final ITree ind) {
@@ -32,9 +33,7 @@ public class AnalystPageWood extends AnalystPageProduce {
         }
         y += 30;
         final Collection<ItemStack> products = new UniqueItemStackSet();
-        for (final ItemStack stack : ind.getProduceList()) {
-            products.add(stack);
-        }
+        Collections.addAll(products, ind.getProduceList());
         if (products.size() > 0) {
             new ControlTextCentered(this, y, "Logs").setColour(this.getColour());
             y += 10;
