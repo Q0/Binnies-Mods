@@ -55,9 +55,7 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
     }
 
     public boolean isMember(final ItemStack stack, final int type) {
-        //TODO: FIX
-        //return this.getType(stack).ordinal() == type;
-        return false;
+        return this.getType(stack).ordinal() == type;
     }
 
     public boolean isMember(final IIndividual individual) {
@@ -85,7 +83,7 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
         return flowerStack;
     }
 
-    public ISpeciesType getType(final ItemStack stack) {
+    public EnumFlowerStage getType(final ItemStack stack) {
         return (stack == null) ? EnumFlowerStage.NONE : ((stack.getItem() == Botany.flowerItem) ? EnumFlowerStage.FLOWER : ((stack.getItem() == Botany.pollen) ? EnumFlowerStage.POLLEN : ((stack.getItem() == Botany.seed) ? EnumFlowerStage.SEED : EnumFlowerStage.NONE)));
     }
 

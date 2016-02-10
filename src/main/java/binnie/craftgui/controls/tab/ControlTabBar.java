@@ -19,7 +19,7 @@ public class ControlTabBar<T> extends Control implements IControlValue<T> {
         this.addEventHandler(new EventValueChanged.Handler() {
             @Override
             public void onEvent(final EventValueChanged event) {
-                ControlTabBar.this.setValue((T) event.getValue());
+                setValue((T) event.getValue());
             }
         }.setOrigin(EventHandler.Origin.DirectChild, this));
     }

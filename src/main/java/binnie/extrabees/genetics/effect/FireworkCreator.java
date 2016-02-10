@@ -2,6 +2,7 @@ package binnie.extrabees.genetics.effect;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -13,7 +14,7 @@ public class FireworkCreator {
         LargeBall,
         Star,
         Creeper,
-        Burst
+        Burst;
     }
 
     public static class Firework {
@@ -23,18 +24,18 @@ public class FireworkCreator {
         byte shape;
 
         public Firework() {
-            flicker = false;
-            trail = false;
-            colors = new ArrayList<Integer>();
-            shape = 0;
+            this.flicker = false;
+            this.trail = false;
+            this.colors = new ArrayList<Integer>();
+            this.shape = 0;
         }
 
         public void setFlicker() {
-            flicker = true;
+            this.flicker = true;
         }
 
         public void setTrail() {
-            trail = true;
+            this.trail = true;
         }
 
         public void setShape(final Shape shape) {
@@ -42,30 +43,26 @@ public class FireworkCreator {
         }
 
         public void addColor(final int color) {
-            colors.add(color);
+            this.colors.add(color);
         }
 
         NBTTagCompound getNBT() {
             final NBTTagCompound nbt = new NBTTagCompound();
-            if (flicker) {
+            if (this.flicker) {
                 nbt.setBoolean("Flicker", true);
             }
-
-            if (trail) {
+            if (this.trail) {
                 nbt.setBoolean("Trail", true);
             }
-
-            if (colors.size() == 0) {
-                addColor(16777215);
+            if (this.colors.size() == 0) {
+                this.addColor(16777215);
             }
-
-            final int[] array = new int[colors.size()];
-            for (int i = 0; i < colors.size(); ++i) {
-                array[i] = colors.get(i);
+            final int[] array = new int[this.colors.size()];
+            for (int i = 0; i < this.colors.size(); ++i) {
+                array[i] = this.colors.get(i);
             }
-
             nbt.setIntArray("Colors", array);
-            nbt.setByte("Type", shape);
+            nbt.setByte("Type", this.shape);
             return nbt;
         }
 
@@ -73,10 +70,10 @@ public class FireworkCreator {
             final NBTTagCompound var15 = new NBTTagCompound();
             final NBTTagCompound var16 = new NBTTagCompound();
             final NBTTagList var17 = new NBTTagList();
-            var17.appendTag(getNBT());
-            var16.setTag("Explosions", var17);
+            var17.appendTag((NBTBase) this.getNBT());
+            var16.setTag("Explosions", (NBTBase) var17);
             var16.setByte("Flight", (byte) 0);
-            var15.setTag("Fireworks", var16);
+            var15.setTag("Fireworks", (NBTBase) var16);
             final ItemStack item = new ItemStack(Items.fireworks);
             item.setTagCompound(var15);
             return item;

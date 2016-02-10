@@ -28,23 +28,13 @@ public class ModuleProducts implements IInitializable {
 
     @Override
     public void postInit() {
-        GameRegistry.addRecipe(
-                new ItemStack(ExtraBees.honeyCrystalEmpty),
-                "#@#",
-                "@#@",
-                "#@#",
-                '@', Mods.Forestry.stack("honeyDrop"),
-                '#', EnumHoneyDrop.ENERGY.get(1)
-        );
-
+        GameRegistry.addRecipe(new ItemStack(ExtraBees.honeyCrystalEmpty), new Object[]{"#@#", "@#@", "#@#", '@', Mods.Forestry.stack("honeyDrop"), '#', EnumHoneyDrop.ENERGY.get(1)});
         for (final EnumHoneyComb info : EnumHoneyComb.values()) {
             info.addRecipe();
         }
-
         for (final EnumHoneyDrop info2 : EnumHoneyDrop.values()) {
             info2.addRecipe();
         }
-
         for (final EnumPropolis info3 : EnumPropolis.values()) {
             info3.addRecipe();
         }

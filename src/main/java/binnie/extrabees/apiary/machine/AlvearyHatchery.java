@@ -7,12 +7,14 @@ import binnie.core.machines.inventory.InventorySlot;
 import binnie.core.machines.inventory.SlotValidator;
 import binnie.core.machines.transfer.TransferRequest;
 import binnie.craftgui.minecraft.IMachineInformation;
+import binnie.extrabees.apiary.ComponentBeeModifier;
+import binnie.extrabees.apiary.ComponentExtraBeeGUI;
 import binnie.extrabees.apiary.TileExtraBeeAlveary;
-import binnie.extrabees.apiary.modifiers.ComponentBeeModifier;
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.*;
 import forestry.api.genetics.IIndividual;
+import forestry.core.EnumErrorCode;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -48,8 +50,7 @@ public class AlvearyHatchery {
 
         @Override
         public boolean isValid(final ItemStack itemStack) {
-            return Binnie.Genetics.getBeeRoot().isMember(itemStack) &&
-                    Binnie.Genetics.getBeeRoot().getType(itemStack) == EnumBeeType.LARVAE;
+            return Binnie.Genetics.getBeeRoot().isMember(itemStack) && Binnie.Genetics.getBeeRoot().getType(itemStack) == EnumBeeType.LARVAE;
         }
 
         @Override
@@ -65,32 +66,19 @@ public class AlvearyHatchery {
 
         public void onUpdate() {
             if (new Random().nextInt(2400) == 0) {
-                final TileEntity tile = getMachine().getTileEntity();
-
+                final TileEntity tile = this.getMachine().getTileEntity();
                 if (tile instanceof TileExtraBeeAlveary) {
                     final IBeeHousing house = ((TileExtraBeeAlveary) tile).getBeeHousing();
-
-                    if (house != null) {
-                        final ItemStack queenStack = house.getBeeInventory().getQueen();
+                    if (house != null && house.getErrorState() == EnumErrorCode.OK) {
+                        final ItemStack queenStack = house.getQueen();
                         final IBee queen = (queenStack == null) ? null : Binnie.Genetics.getBeeRoot().getMember(queenStack);
-
                         if (queen != null) {
-                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack(Binnie.Genetics.getBeeRoot().getBee(getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
-                            new TransferRequest(larvae, getInventory()).transfer(true);
+                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().getBee(this.getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
+                            new TransferRequest(larvae, this.getInventory()).transfer(true);
                         }
                     }
                 }
             }
-        }
-
-        @Override
-        public void onQueenDeath() {
-
-        }
-
-        @Override
-        public boolean onPollenRetrieved(IIndividual pollen) {
-            return false;
         }
     }
 }

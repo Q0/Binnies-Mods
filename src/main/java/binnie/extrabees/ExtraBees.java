@@ -24,18 +24,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
-@Mod(
-        modid = "ExtraBees",
-        name = "Extra Bees",
-        useMetadata = true,
-        dependencies = "after:BinnieCore")
+@Mod(modid = "ExtraBees", name = "Extra Bees", useMetadata = true, dependencies = "after:BinnieCore")
 public class ExtraBees extends AbstractMod {
     @Mod.Instance("ExtraBees")
     public static ExtraBees instance;
-
-    @SidedProxy(
-            clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient",
-            serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer")
+    @SidedProxy(clientSide = "binnie.extrabees.proxy.ExtraBeesProxyClient", serverSide = "binnie.extrabees.proxy.ExtraBeesProxyServer")
     public static ExtraBeesProxy proxy;
     public static Block hive;
     public static Material materialBeehive;
@@ -57,23 +50,23 @@ public class ExtraBees extends AbstractMod {
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent evt) {
-        addModule(new ModuleCore());
-        addModule(new ModuleProducts());
-        addModule(new ModuleGenetics());
-        addModule(new ModuleGeneration());
-        addModule(new ModuleLiquids());
-        addModule(new ModuleApiary());
-        preInit();
+        this.addModule(new ModuleCore());
+        this.addModule(new ModuleProducts());
+        this.addModule(new ModuleGenetics());
+        this.addModule(new ModuleGeneration());
+        this.addModule(new ModuleLiquids());
+        this.addModule(new ModuleApiary());
+        this.preInit();
     }
 
     @Mod.EventHandler
     public void init(final FMLInitializationEvent evt) {
-        init();
+        this.init();
     }
 
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent evt) {
-        postInit();
+        this.postInit();
     }
 
     @Override
@@ -83,10 +76,7 @@ public class ExtraBees extends AbstractMod {
 
     @Override
     public Class<?>[] getConfigs() {
-        return new Class[]{
-                ConfigurationMain.class,
-                ConfigurationMachines.class
-        };
+        return (Class<?>[]) new Class[]{ConfigurationMain.class, ConfigurationMachines.class};
     }
 
     @Override

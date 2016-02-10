@@ -18,15 +18,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class BlockExtraBeeHive extends Block {
-    private IIcon[][] icons;
+    IIcon[][] icons;
 
     public BlockExtraBeeHive() {
         super(ExtraBees.materialBeehive);
-        setLightLevel(0.2f);
-        setHardness(1.0f);
-        setTickRandomly(true);
-        setBlockName("hive");
-        setCreativeTab(Tabs.tabApiculture);
+        this.setLightLevel(0.2f);
+        this.setHardness(1.0f);
+        this.setTickRandomly(true);
+        this.setBlockName("hive");
+        this.setCreativeTab(Tabs.tabApiculture);
     }
 
     public String getUnlocalizedName(final ItemStack par1ItemStack) {
@@ -35,7 +35,7 @@ public class BlockExtraBeeHive extends Block {
 
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (int i = 0; i < 4; ++i) {
-            itemList.add(new ItemStack(this, 1, i));
+            itemList.add(new ItemStack((Block) this, 1, i));
         }
     }
 
@@ -43,21 +43,18 @@ public class BlockExtraBeeHive extends Block {
         if (metadata >= EnumHiveType.values().length) {
             return null;
         }
-
         if (side < 2) {
-            return icons[metadata][1];
+            return this.icons[metadata][1];
         }
-
-        return icons[metadata][0];
+        return this.icons[metadata][0];
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister register) {
-        icons = new IIcon[EnumHiveType.values().length][2];
-
+        this.icons = new IIcon[EnumHiveType.values().length][2];
         for (final EnumHiveType hive : EnumHiveType.values()) {
-            icons[hive.ordinal()][0] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".0");
-            icons[hive.ordinal()][1] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".1");
+            this.icons[hive.ordinal()][0] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".0");
+            this.icons[hive.ordinal()][1] = ExtraBees.proxy.getIcon(register, "hive/" + hive.toString().toLowerCase() + ".1");
         }
     }
 
@@ -66,9 +63,8 @@ public class BlockExtraBeeHive extends Block {
         final List<IHiveDrop> dropList = EnumHiveType.values()[metadata].drops;
         Collections.shuffle(dropList);
         int tries = 0;
-
         for (boolean hasPrincess = false; tries <= 10 && !hasPrincess; hasPrincess = true) {
-            tries++;
+            ++tries;
             for (final IHiveDrop drop : dropList) {
                 if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
                     ret.add(drop.getPrincess(world, x, y, z, fortune));
@@ -76,21 +72,18 @@ public class BlockExtraBeeHive extends Block {
                 }
             }
         }
-
         for (final IHiveDrop drop : dropList) {
             if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
                 ret.addAll(drop.getDrones(world, x, y, z, fortune));
                 break;
             }
         }
-
         for (final IHiveDrop drop : dropList) {
             if (world.rand.nextInt(100) < drop.getChance(world, x, y, z)) {
                 ret.addAll(drop.getAdditional(world, x, y, z, fortune));
                 break;
             }
         }
-
         return ret;
     }
 }

@@ -9,6 +9,7 @@ import binnie.craftgui.controls.core.IControlValue;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.minecraft.Window;
+import binnie.craftgui.mod.database.WindowAbstractDatabase;
 import binnie.genetics.genetics.GeneTracker;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IChromosomeType;
@@ -43,7 +44,7 @@ public class ControlGeneScroll extends Control implements IControlValue<Breeding
         final Map<IChromosomeType, List<IAllele>> genes = Binnie.Genetics.getChromosomeMap(this.system.getSpeciesRoot());
         int x = 0;
         int y = 0;
-        final boolean isNEI = true;
+        final boolean isNEI = ((WindowAbstractDatabase) this.getSuperParent()).isNEI();
         for (final Map.Entry<IChromosomeType, List<IAllele>> entry : genes.entrySet()) {
             final List<IAllele> discovered = new ArrayList<IAllele>();
             for (final IAllele allele : entry.getValue()) {

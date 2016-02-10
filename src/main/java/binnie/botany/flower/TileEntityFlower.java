@@ -31,7 +31,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.EnumPlantType;
@@ -124,11 +123,6 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
             this.getFlower().mate((IFlower) individual);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
-    }
-
-    @Override
-    public boolean isPollinated() {
-        return false;
     }
 
     public IFlower getFlower() {
@@ -576,11 +570,6 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
 
     public Set<IErrorState> getErrorStates() {
         return new HashSet<IErrorState>();
-    }
-
-    @Override
-    public ChunkCoordinates getCoordinates() {
-        return null;
     }
 
     public static class RenderInfo {

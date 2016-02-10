@@ -23,13 +23,13 @@ public enum ExtraBeeTexture implements IBinnieTexture {
     String texture;
     ResourceType type;
 
-    ExtraBeeTexture(final ResourceType base, final String texture) {
+    private ExtraBeeTexture(final ResourceType base, final String texture) {
         this.texture = texture;
-        type = base;
+        this.type = base;
     }
 
     @Override
     public BinnieResource getTexture() {
-        return Binnie.Resource.getPNG(ExtraBees.instance, type, texture);
+        return Binnie.Resource.getPNG(ExtraBees.instance, this.type, this.texture);
     }
 }

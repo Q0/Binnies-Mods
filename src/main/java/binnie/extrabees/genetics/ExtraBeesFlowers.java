@@ -2,7 +2,6 @@ package binnie.extrabees.genetics;
 
 import binnie.core.Mods;
 import binnie.extrabees.ExtraBees;
-import forestry.api.apiculture.FlowerManager;
 import forestry.api.genetics.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -10,13 +9,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     WATER,
@@ -33,7 +32,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
 
     boolean dominant;
 
-    ExtraBeesFlowers() {
+    private ExtraBeesFlowers() {
         this.dominant = true;
     }
 
@@ -52,7 +51,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     }
 
     public IFlowerProvider getProvider() {
-        return this;
+        return (IFlowerProvider) this;
     }
 
     public String getDescription() {
@@ -60,109 +59,109 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     }
 
     public void register() {
-        AlleleManager.alleleRegistry.registerAllele(this);
+        AlleleManager.alleleRegistry.registerAllele((IAllele) this);
     }
 
     public ItemStack[] getItemStacks() {
         switch (this) {
-            case WATER:
+            case WATER: {
                 return new ItemStack[]{new ItemStack(Blocks.waterlily)};
-
-            case SUGAR:
+            }
+            case SUGAR: {
                 return new ItemStack[]{new ItemStack(Blocks.reeds)};
-
-            case ROCK:
+            }
+            case ROCK: {
                 return new ItemStack[]{new ItemStack(Blocks.cobblestone)};
-
-            case BOOK:
+            }
+            case BOOK: {
                 return new ItemStack[]{new ItemStack(Blocks.bookshelf)};
-
-            case REDSTONE:
+            }
+            case REDSTONE: {
                 return new ItemStack[]{new ItemStack(Blocks.redstone_torch)};
-
-            case DEAD:
-                return new ItemStack[]{new ItemStack(Blocks.deadbush)};
-
-            case Fruit:
+            }
+            case DEAD: {
+                return new ItemStack[]{new ItemStack((Block) Blocks.deadbush)};
+            }
+            case Fruit: {
                 return new ItemStack[]{new ItemStack(Items.apple)};
-
-            case LEAVES:
-                return new ItemStack[]{new ItemStack(Blocks.leaves)};
-
-            case Sapling:
+            }
+            case LEAVES: {
+                return new ItemStack[]{new ItemStack((Block) Blocks.leaves)};
+            }
+            case Sapling: {
                 return new ItemStack[]{new ItemStack(Blocks.sapling)};
-
-            case WOOD:
+            }
+            case WOOD: {
                 return new ItemStack[]{new ItemStack(Blocks.log)};
+            }
+            default: {
+                return new ItemStack[0];
+            }
         }
-        return new ItemStack[0];
     }
 
     public boolean isAcceptedPollinatable(final World world, final IPollinatable pollinatable) {
-        final EnumSet<EnumPlantType> types = pollinatable.getPlantType();
+        final EnumSet<EnumPlantType> types = (EnumSet<EnumPlantType>) pollinatable.getPlantType();
         return types.size() > 1 || !types.contains(EnumPlantType.Nether);
     }
 
     public boolean isAcceptedFlower(final World world, final IIndividual individual, final int x, final int y, final int z) {
         final Block block = world.getBlock(x, y, z);
-
         if (block == null) {
             return false;
         }
-
         switch (this) {
-            case WATER:
+            case WATER: {
                 return block == Blocks.waterlily;
-
-            case ROCK:
+            }
+            case ROCK: {
                 return block.getMaterial() == Material.rock;
-
-            case SUGAR:
+            }
+            case SUGAR: {
                 return block == Blocks.reeds;
-
-            case BOOK:
+            }
+            case BOOK: {
                 return block == Blocks.bookshelf;
-
-            case REDSTONE:
+            }
+            case REDSTONE: {
                 return block == Blocks.redstone_torch;
-
-            case DEAD:
+            }
+            case DEAD: {
                 return block == Blocks.deadbush;
-
-            case WOOD:
-                return block.isWood(world, x, y, z);
-
-            case Fruit:
+            }
+            case WOOD: {
+                return block.isWood((IBlockAccess) world, x, y, z);
+            }
+            case Fruit: {
                 return world.getTileEntity(x, y, z) instanceof IFruitBearer;
-
-            case LEAVES:
-                return block.isLeaves(world, x, y, z);
-
-            case Sapling:
+            }
+            case LEAVES: {
+                return block.isLeaves((IBlockAccess) world, x, y, z);
+            }
+            case Sapling: {
                 return block.getClass().getName().toLowerCase().contains("sapling");
-
-            case Mystical:
+            }
+            case Mystical: {
                 return block == Mods.Botania.block("flower");
+            }
+            default: {
+                return false;
+            }
         }
-
-        return false;
-    }
-
-    @Override
-    public String getFlowerType() {
-        return null;
     }
 
     public boolean growFlower(final World world, final IIndividual individual, final int x, final int y, final int z) {
         switch (this) {
-            case WATER:
+            case WATER: {
                 return world.isAirBlock(x, y, z) && world.getBlock(x, y - 1, z) == Blocks.water && world.setBlock(x, y, z, Blocks.waterlily, 0, 2);
-
-            case SUGAR:
+            }
+            case SUGAR: {
                 return world.getBlock(x, y - 1, z) == Blocks.reeds && world.isAirBlock(x, y, z) && world.setBlock(x, y, z, Blocks.reeds, 0, 0);
+            }
+            default: {
+                return false;
+            }
         }
-
-        return false;
     }
 
     public ItemStack[] affectProducts(final World world, final IIndividual individual, final int x, final int y, final int z, final ItemStack[] products) {
@@ -179,12 +178,10 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
                 final int y2 = y - tY + world.rand.nextInt(1 + 2 * tY);
                 final int z2 = z - tZ + world.rand.nextInt(1 + 2 * tZ);
                 final Block block = world.getBlock(x2, y2, z2);
-
                 if (block != null) {
                     if (block == Mods.Botania.block("flower")) {
                         final int meta = world.getBlockMetadata(x2, y2, z2);
                         final Item item = Mods.Botania.item("petal");
-
                         if (item != null) {
                             prods.add(new ItemStack(item, 1, meta));
                         }
@@ -193,7 +190,6 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
             }
             return prods.toArray(new ItemStack[0]);
         }
-
         return products;
     }
 
@@ -205,7 +201,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return this.getUID();
     }
 
-    public Set<IFlower> getFlowers() {
-        return FlowerManager.flowerRegistry.getAcceptableFlowers(getFlowerType());
+    public List<IFlower> getFlowers() {
+        return new ArrayList<IFlower>();
     }
 }

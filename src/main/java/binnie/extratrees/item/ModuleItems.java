@@ -32,7 +32,7 @@ public class ModuleItems implements IInitializable {
             ExtraTrees.itemDictionaryLepi = new ItemMothDatabase();
         }
         Binnie.Liquid.createLiquids(ExtraTreeLiquid.values(), ItemFluidContainer.LiquidExtraTree);
-        ExtraTrees.itemFood = new ItemFood();
+        ExtraTrees.itemFood = (Item) new ItemFood();
         OreDictionary.registerOre("pulpWood", ExtraTreeItems.Sawdust.get(1));
         ExtraTrees.itemHammer = new ItemHammer(false);
         ExtraTrees.itemDurableHammer = new ItemHammer(true);

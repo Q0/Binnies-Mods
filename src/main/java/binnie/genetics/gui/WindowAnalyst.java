@@ -308,8 +308,9 @@ public class WindowAnalyst extends Window {
                     this.addAttribute(Attribute.MouseOver);
                     this.value = page;
                     this.addSelfEventHandler(new EventMouse.Down.Handler() {
-                        public void onEvent(EventMouse.Down event) {
-                            int currentIndex = WindowAnalyst.this.analystPages.indexOf(WindowAnalyst.this.rightPage.getContent());
+                        @Override
+                        public void onEvent(final EventMouse.Down event) {
+                            final int currentIndex = WindowAnalyst.this.analystPages.indexOf(rightPage.getContent());
                             int clickedIndex = WindowAnalyst.this.analystPages.indexOf(value);
                             if (WindowAnalyst.this.isDatabase) {
                                 if (clickedIndex != 0 && clickedIndex != currentIndex) {
@@ -319,17 +320,14 @@ public class WindowAnalyst extends Window {
                                 if (clickedIndex < 0) {
                                     clickedIndex = 0;
                                 }
-
                                 if (clickedIndex < currentIndex) {
                                     ++clickedIndex;
                                 }
-
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage) null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage) null);
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, (ControlAnalystPage) WindowAnalyst.this.analystPages.get(clickedIndex));
-                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, (ControlAnalystPage) WindowAnalyst.this.analystPages.get(clickedIndex - 1));
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, null);
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.rightPage, WindowAnalyst.this.analystPages.get(clickedIndex));
+                                WindowAnalyst.this.setPage(WindowAnalyst.this.leftPage, WindowAnalyst.this.analystPages.get(clickedIndex - 1));
                             }
-
                         }
                     });
                 }
@@ -392,20 +390,18 @@ public class WindowAnalyst extends Window {
         }
     }
 
-    public void setPage(ControlScrollableContent side, ControlAnalystPage page) {
-        ControlAnalystPage existingPage = (ControlAnalystPage) side.getContent();
+    public void setPage(final ControlScrollableContent side, final ControlAnalystPage page) {
+        final ControlAnalystPage existingPage = (ControlAnalystPage) side.getContent();
         if (existingPage != null) {
             existingPage.hide();
-            side.setScrollableContent((IWidget) null);
+            side.setScrollableContent(null);
         }
-
         if (page != null) {
             page.show();
             side.setScrollableContent(page);
-            side.setPercentageIndex(0.0F);
-            page.setPosition(side.pos().add(1.0F, 1.0F));
+            side.setPercentageIndex(0.0f);
+            page.setPosition(side.pos().add(1.0f, 1.0f));
         }
-
     }
 
     @Override

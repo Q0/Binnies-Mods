@@ -8,15 +8,15 @@ import net.minecraft.item.ItemStack;
 
 public class ItemHoneyCrystalEmpty extends ItemHoneyCrystal {
     public ItemHoneyCrystalEmpty() {
-        setMaxDamage(0);
-        setMaxStackSize(64);
-        setUnlocalizedName("honeyCrystalEmpty");
+        this.setMaxDamage(0);
+        this.setMaxStackSize(64);
+        this.setUnlocalizedName("honeyCrystalEmpty");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(final IIconRegister register) {
-        itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystalEmpty");
+        this.itemIcon = ExtraBees.proxy.getIcon(register, "honeyCrystalEmpty");
     }
 
     @Override

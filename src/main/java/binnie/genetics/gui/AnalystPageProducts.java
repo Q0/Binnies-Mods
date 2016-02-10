@@ -34,7 +34,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
         this.setColour(13382400);
         final IBeeGenome genome = ind.getGenome();
         final float speed = genome.getSpeed();
-        final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getBeeModifier().getProductionModifier(genome, 1.0f);
+        final float modeSpeed = Binnie.Genetics.getBeeRoot().getBeekeepingMode(BinnieCore.proxy.getWorld()).getProductionModifier(genome, 1.0f);
         int y = 4;
         new ControlTextCentered(this, y, "§nProduce").setColour(this.getColour());
         y += 12;
@@ -43,13 +43,13 @@ public class AnalystPageProducts extends AnalystPageProduce {
         final Collection<ItemStack> refinedProducts = new UniqueItemStackSet();
         final Collection<ItemStack> productList = new UniqueItemStackSet();
         final Collection<ItemStack> specialtyList = new UniqueItemStackSet();
-        Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
-        products.putAll(genome.getPrimary().getProductChances());
-        products.putAll(genome.getSecondary().getProductChances());
+        Map<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
+        products.putAll(genome.getPrimary().getProducts());
+        products.putAll(genome.getSecondary().getProducts());
         if (!products.isEmpty()) {
             new ControlTextCentered(this, y, "Natural Products").setColour(this.getColour());
             y += 12;
-            for (final Map.Entry<ItemStack, Float> entry : products.entrySet()) {
+            for (final Map.Entry<ItemStack, Integer> entry : products.entrySet()) {
                 if (!productList.add(entry.getKey())) {
                     continue;
                 }
@@ -59,11 +59,11 @@ public class AnalystPageProducts extends AnalystPageProduce {
             }
             y += 12;
         }
-        products = (Map<ItemStack, Float>) genome.getPrimary().getSpecialtyChances();
+        products = (Map<ItemStack, Integer>) genome.getPrimary().getSpecialty();
         if (!products.isEmpty()) {
             new ControlTextCentered(this, y, "Specialty Products").setColour(this.getColour());
             y += 12;
-            for (final Map.Entry<ItemStack, Float> entry : products.entrySet()) {
+            for (final Map.Entry<ItemStack, Integer> entry : products.entrySet()) {
                 refinedProducts.addAll(this.getAllProducts(entry.getKey()));
                 this.createProductEntry(entry.getKey(), entry.getValue(), y, speed * modeSpeed);
                 y += 18;
@@ -144,7 +144,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
         this.setSize(new IPoint(this.w(), y + dy + 18 + 8));
     }
 
-    private void createProductEntry(final ItemStack key, final Float value, final int y, final float speed) {
+    private void createProductEntry(final ItemStack key, final Integer value, final int y, final float speed) {
         final ControlItemDisplay item = new ControlItemDisplay(this, 16.0f, (float) y) {
             @Override
             public void getTooltip(final Tooltip tooltip) {

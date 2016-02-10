@@ -209,22 +209,18 @@ public class PlankType {
 
         @Override
         public ItemStack getStack() {
-            final int ordinal = ordinal();
-            final int n = ordinal / 16 + 1;
-            final Item item = Mods.Forestry.item("planks" + ((n == 1) ? "" : n));
-            return new ItemStack(item, 1, ordinal % 16);
+            final int n = this.ordinal() / 16 + 1;
+            final Item stack = Mods.Forestry.item("planks" + ((n == 1) ? "" : n));
+            return new ItemStack(stack, 1, this.ordinal() % 16);
         }
 
         @Override
         public IIcon getIcon() {
-            ItemStack itemStack = getStack();
-
-            if (itemStack != null && itemStack.getItem() != null) {
-                final int meta = itemStack.getItemDamage();
-                final Block block = ((ItemBlock) itemStack.getItem()).field_150939_a;
+            if (this.getStack() != null) {
+                final int meta = this.getStack().getItemDamage();
+                final Block block = ((ItemBlock) this.getStack().getItem()).field_150939_a;
                 return block.getIcon(2, meta);
             }
-
             return null;
         }
 
@@ -235,7 +231,7 @@ public class PlankType {
             }
             final int n = this.ordinal() / 16 + 1;
             final ItemStack fence = Mods.Forestry.stack("fences" + ((n == 1) ? "" : n));
-            //fence.setItemDamage(ordinal); //TODO:FIX
+            fence.setItemDamage(ordinal);
             return fence;
         }
     }

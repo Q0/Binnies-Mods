@@ -28,8 +28,8 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
-    ARID("aridus", 0xbee854),
-    BARREN("infelix", 0xe0d263),
+    ARID("aridus", 12511316),
+    BARREN("infelix", 14733923),
     DESOLATE("desolo", 13744272),
     GNAWING("apica", 15234224),
     ROTTEN("caries", 12574902),
@@ -177,7 +177,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     @SideOnly(Side.CLIENT)
     private IIcon[][] icons;
 
-    ExtraBeesSpecies(final String binomial, final int colour) {
+    private ExtraBeesSpecies(final String binomial, final int colour) {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -201,7 +201,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.primaryColor = colour;
     }
 
-    ExtraBeesSpecies() {
+    private ExtraBeesSpecies() {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -644,10 +644,9 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         ExtraBeesSpecies.BLUTONIUM.addProduct(EnumHoneyComb.BARREN, 20);
         ExtraBeesSpecies.BLUTONIUM.addSpecialty(EnumHoneyComb.BLUTONIUM, 1);
         ExtraBeesSpecies.MYSTICAL.importTemplate(ForestryAllele.BeeSpecies.Noble);
-        //TODO: FIX
-        /*for (final Map.Entry<ItemStack, Integer> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProducts().entrySet()) {
+        for (final Map.Entry<ItemStack, Integer> entry : ForestryAllele.BeeSpecies.Noble.getAllele().getProducts().entrySet()) {
             ExtraBeesSpecies.MYSTICAL.addProduct(entry.getKey(), entry.getValue());
-        }*/
+        }
         ExtraBeesSpecies.MYSTICAL.setFlowerProvider(ExtraBeesFlowers.Mystical.getUID());
         for (final ExtraBeesSpecies species2 : values()) {
             if (species2.state != State.Active) {
@@ -790,7 +789,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     public IAllele[] getTemplate() {
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
         return this.template;
     }
 
@@ -807,7 +806,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.setHumidity(((IAlleleSpecies) template[0]).getHumidity());
         this.setTemperature(((IAlleleSpecies) template[0]).getTemperature());
         this.setSecondaryColor(((IAlleleSpecies) template[0]).getIconColour(1));
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
     }
 
     public void recessive() {

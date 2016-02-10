@@ -55,14 +55,17 @@ public enum IndustrialFrame implements IBeeModifier {
     int wearMod;
     int power;
 
-    IndustrialFrame(final String name, final int wear, final int power) {
-        territoryMod = 1.0f;
-        mutationMod = 1.0f;
-        lifespanMod = 1.0f;
-        productionMod = 1.0f;
-        floweringMod = 1.0f;
-        wearMod = wear;
+    private IndustrialFrame(final String name, final int wear, final int power) {
+        this.territoryMod = 1.0f;
+        this.mutationMod = 1.0f;
+        this.lifespanMod = 1.0f;
+        this.productionMod = 1.0f;
+        this.floweringMod = 1.0f;
+        this.lighted = false;
+        this.sunlight = false;
+        this.rain = false;
         this.name = name;
+        this.wearMod = wear;
         this.power = power;
     }
 
@@ -75,35 +78,35 @@ public enum IndustrialFrame implements IBeeModifier {
     }
 
     public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-        return territoryMod;
+        return this.territoryMod;
     }
 
     public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return mutationMod;
+        return this.mutationMod;
     }
 
     public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-        return lifespanMod;
+        return this.lifespanMod;
     }
 
     public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-        return productionMod;
+        return this.productionMod;
     }
 
     public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-        return floweringMod;
+        return this.floweringMod;
     }
 
     public boolean isSealed() {
-        return rain;
+        return this.rain;
     }
 
     public boolean isSelfLighted() {
-        return lighted;
+        return this.lighted;
     }
 
     public boolean isSunlightSimulated() {
-        return sunlight;
+        return this.sunlight;
     }
 
     public boolean isHellish() {
@@ -111,15 +114,15 @@ public enum IndustrialFrame implements IBeeModifier {
     }
 
     public Object getName() {
-        return name;
+        return this.name;
     }
 
     public int getWearModifier() {
-        return wearMod;
+        return this.wearMod;
     }
 
     public int getPowerUsage() {
-        return power;
+        return this.power;
     }
 
     public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {

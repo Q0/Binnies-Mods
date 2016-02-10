@@ -1,5 +1,6 @@
 package binnie.extrabees.genetics.effect;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.Blocks;
@@ -10,48 +11,44 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class EntityBeeLightning extends EntityLightningBolt {
-    int lightningState = 2;
+    int lightningState;
     int boltLivingTime;
 
-    public EntityBeeLightning(World par1World, double par2, double par4, double par6) {
+    public EntityBeeLightning(final World par1World, final double par2, final double par4, final double par6) {
         super(par1World, par2, par4, par6);
-        boltLivingTime = rand.nextInt(3) + 1;
+        this.lightningState = 2;
+        this.boltLivingTime = this.rand.nextInt(3) + 1;
     }
 
     public void onUpdate() {
-        onEntityUpdate();
-        lightningState--;
-
-        if (lightningState < 0) {
-            if (boltLivingTime == 0) {
-                setDead();
-            } else if (lightningState < -rand.nextInt(10)) {
-                boltLivingTime--;
-                lightningState = 1;
-                boltVertex = rand.nextLong();
-
-                if (!worldObj.isRemote &&
-                        worldObj.doChunksNearChunkExist(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ), 10)) {
-                    int i = MathHelper.floor_double(posX);
-                    int j = MathHelper.floor_double(posY);
-                    int k = MathHelper.floor_double(posZ);
-
-                    if (worldObj.getBlock(i, j, k) == null && Blocks.fire.canPlaceBlockAt(worldObj, i, j, k)) {
-                        worldObj.setBlock(i, j, k, Blocks.fire);
+        this.onEntityUpdate();
+        --this.lightningState;
+        if (this.lightningState < 0) {
+            if (this.boltLivingTime == 0) {
+                this.setDead();
+            } else if (this.lightningState < -this.rand.nextInt(10)) {
+                --this.boltLivingTime;
+                this.lightningState = 1;
+                this.boltVertex = this.rand.nextLong();
+                if (!this.worldObj.isRemote && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
+                    final int i = MathHelper.floor_double(this.posX);
+                    final int j = MathHelper.floor_double(this.posY);
+                    final int k = MathHelper.floor_double(this.posZ);
+                    if (this.worldObj.getBlock(i, j, k) == null && Blocks.fire.canPlaceBlockAt(this.worldObj, i, j, k)) {
+                        this.worldObj.setBlock(i, j, k, (Block) Blocks.fire);
                     }
                 }
             }
         }
-
-        if (lightningState >= 0) {
-            if (worldObj.isRemote) {
-                worldObj.lastLightningBolt = 2;
+        if (this.lightningState >= 0) {
+            if (this.worldObj.isRemote) {
+                this.worldObj.lastLightningBolt = 2;
             } else {
-                double d0 = 3.0D;
-                List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(posX - d0, posY - d0, posZ - d0, posX + d0, posY + 6.0D + d0, posZ + d0));
-
-                for (Entity entity : list) {
-                    entity.onStruckByLightning(this);
+                final double d0 = 3.0;
+                final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) this, AxisAlignedBB.getBoundingBox(this.posX - d0, this.posY - d0, this.posZ - d0, this.posX + d0, this.posY + 6.0 + d0, this.posZ + d0));
+                for (int l = 0; l < list.size(); ++l) {
+                    final Entity entity = (Entity) list.get(l);
+                    entity.onStruckByLightning((EntityLightningBolt) this);
                 }
             }
         }

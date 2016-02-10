@@ -4,6 +4,7 @@ import binnie.Binnie;
 import binnie.core.BinnieCore;
 import binnie.core.util.UniqueItemStackSet;
 import binnie.extratrees.ExtraTrees;
+import binnie.extratrees.machines.Lumbermill;
 import com.mojang.authlib.GameProfile;
 import forestry.api.arboriculture.*;
 import forestry.api.genetics.*;
@@ -35,8 +36,7 @@ public class TreeBreedingSystem extends BreedingSystem {
     public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
         final IGenome genome0 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID()));
         final IGenome genome2 = this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID()));
-        //TODO: FIX
-        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, (IAlleleTreeSpecies) species1, (IAlleleTreeSpecies) species2, (ITreeGenome) genome0, (ITreeGenome) genome2);
+        return ((ITreeMutation) mutation).getChance(player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ, species1, species2, genome0, genome2);
     }
 
     @Override
@@ -85,10 +85,9 @@ public class TreeBreedingSystem extends BreedingSystem {
         for (final IAlleleSpecies species : this.getDiscoveredSpecies(tracker)) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
             final ITreeGenome genome = (ITreeGenome) this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(tSpecies.getUID()));
-            //TODO:FIX
-            /*for (final ItemStack wood : tSpecies.getLogStacks()) {
+            for (final ItemStack wood : tSpecies.getLogStacks()) {
                 this.discoveredWoods.add(wood);
-            }*/
+            }
             for (final ItemStack fruit : genome.getFruitProvider().getProducts()) {
                 this.discoveredFruits.add(fruit);
             }
@@ -103,10 +102,9 @@ public class TreeBreedingSystem extends BreedingSystem {
         for (final IAlleleSpecies species : this.allActiveSpecies) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
             final ITreeGenome genome = (ITreeGenome) this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(tSpecies.getUID()));
-            //TODO:FIX
-            /*for (final ItemStack wood : tSpecies.getLogStacks()) {
+            for (final ItemStack wood : tSpecies.getLogStacks()) {
                 this.allWoods.add(wood);
-            }*/
+            }
             for (final ItemStack fruit : genome.getFruitProvider().getProducts()) {
                 this.allFruits.add(fruit);
             }
@@ -158,12 +156,11 @@ public class TreeBreedingSystem extends BreedingSystem {
         final List<IAlleleSpecies> found = new ArrayList<IAlleleSpecies>();
         for (final IAlleleSpecies species : set) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
-            //TODO:FIX
-            /*for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
+            for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
                 if (fruit2.isItemEqual(fruit)) {
                     found.add(species);
                 }
-            }*/
+            }
         }
         return found;
     }
@@ -176,12 +173,11 @@ public class TreeBreedingSystem extends BreedingSystem {
         final List<IAlleleSpecies> found = new ArrayList<IAlleleSpecies>();
         for (final IAlleleSpecies species : set) {
             final IAlleleTreeSpecies tSpecies = (IAlleleTreeSpecies) species;
-            //TODO:FIX
-            /*for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
+            for (final ItemStack fruit2 : tSpecies.getLogStacks()) {
                 if (Lumbermill.getPlankProduct(fruit2) != null && fruit.isItemEqual(Lumbermill.getPlankProduct(fruit2))) {
                     found.add(species);
                 }
-            }*/
+            }
         }
         return found;
     }

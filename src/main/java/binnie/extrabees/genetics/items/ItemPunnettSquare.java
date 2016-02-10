@@ -17,6 +17,11 @@ public class ItemPunnettSquare extends Item {
         this.setMaxStackSize(1);
     }
 
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister register) {
+        this.itemIcon = ExtraBees.proxy.getIcon(register, "");
+    }
+
     public String getItemStackDisplayName(final ItemStack itemstack) {
         return "Punnett Square";
     }
@@ -25,10 +30,4 @@ public class ItemPunnettSquare extends Item {
         ExtraBees.proxy.openGui(ExtraBeeGUID.PunnettSquare, player, (int) player.posX, (int) player.posY, (int) player.posZ);
         return itemstack;
     }
-
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister register) {
-        itemIcon = ExtraBees.proxy.getIcon(register, "");
-    }
-
 }

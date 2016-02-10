@@ -7,7 +7,6 @@ import binnie.core.machines.inventory.SlotValidator;
 import binnie.craftgui.controls.ControlText;
 import binnie.craftgui.controls.core.Control;
 import binnie.craftgui.core.CraftGUI;
-import binnie.craftgui.core.IWidget;
 import binnie.craftgui.core.geometry.IArea;
 import binnie.craftgui.core.geometry.IPoint;
 import binnie.craftgui.core.geometry.TextJustification;
@@ -35,28 +34,33 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-public class WindowFieldKit
-        extends Window {
-    private float glassOffsetX = 0.0f;
-    private float glassOffsetY = 0.0f;
-    private float glassVX = 0.0f;
-    private float glassVY = 0.0f;
-    private Random glassRand = new Random();
+public class WindowFieldKit extends Window {
+    private float glassOffsetX;
+    private float glassOffsetY;
+    private float glassVX;
+    private float glassVY;
+    private Random glassRand;
     private Control GlassControl;
     private ControlChromosome chromo;
     private ControlText text;
-    private float analyseProgress = 1.0f;
-    private boolean isAnalysing = false;
-    private Map<IChromosomeType, String> info = new HashMap<IChromosomeType, String>();
-    private ItemStack prev = null;
+    private float analyseProgress;
+    private boolean isAnalysing;
+    private Map<IChromosomeType, String> info;
+    private ItemStack prev;
 
-    public WindowFieldKit(EntityPlayer player, IInventory inventory, Side side) {
+    public WindowFieldKit(final EntityPlayer player, final IInventory inventory, final Side side) {
         super(280.0f, 230.0f, player, inventory, side);
+        this.glassOffsetX = 0.0f;
+        this.glassOffsetY = 0.0f;
+        this.glassVX = 0.0f;
+        this.glassVY = 0.0f;
+        this.glassRand = new Random();
+        this.analyseProgress = 1.0f;
+        this.isAnalysing = false;
+        this.info = new HashMap<IChromosomeType, String>();
+        this.prev = null;
     }
 
     @Override
@@ -71,9 +75,8 @@ public class WindowFieldKit
 
     private void setupValidators() {
         this.getWindowInventory().setValidator(0, new SlotValidator(null) {
-
             @Override
-            public boolean isValid(ItemStack object) {
+            public boolean isValid(final ItemStack object) {
                 return AlleleManager.alleleRegistry.isIndividual(object) || Binnie.Genetics.getConversion(object) != null;
             }
 
@@ -83,9 +86,8 @@ public class WindowFieldKit
             }
         });
         this.getWindowInventory().setValidator(1, new SlotValidator(null) {
-
             @Override
-            public boolean isValid(ItemStack object) {
+            public boolean isValid(final ItemStack object) {
                 return object.getItem() == Items.paper;
             }
 
@@ -105,22 +107,19 @@ public class WindowFieldKit
         this.getWindowInventory().createSlot(1);
         this.setupValidators();
         new ControlPlayerInventory(this);
-        IPoint handGlass = new IPoint(16.0f, 32.0f);
+        final IPoint handGlass = new IPoint(16.0f, 32.0f);
         this.GlassControl = new ControlImage(this, handGlass.x(), handGlass.y(), new StandardTexture(0, 160, 96, 96, ExtraBeeTexture.GUIPunnett));
         new ControlSlot(this, handGlass.x() + 54.0f, handGlass.y() + 26.0f).assign(InventoryType.Window, 0);
         new ControlSlot(this, 208.0f, 8.0f).assign(InventoryType.Window, 1);
-        this.text = new ControlText((IWidget) this, new IPoint(232.0f, 13.0f), "Paper");
-        this.text.setColour(2236962);
-        this.text = new ControlText(this, new IArea(0.0f, 120.0f, this.w(), 24.0f), "", TextJustification.MiddleCenter);
-        this.text.setColour(2236962);
+        (this.text = new ControlText(this, new IPoint(232.0f, 13.0f), "Paper")).setColour(2236962);
+        (this.text = new ControlText(this, new IArea(0.0f, 120.0f, this.w(), 24.0f), "", TextJustification.MiddleCenter)).setColour(2236962);
         this.chromo = new ControlChromosome(this, 150.0f, 24.0f);
         this.addEventHandler(new EventValueChanged.Handler() {
-
             @Override
-            public void onEvent(EventValueChanged event) {
-                IChromosomeType type = (IChromosomeType) event.getValue();
-                if (type != null && WindowFieldKit.this.info.containsKey((Object) type)) {
-                    String t = (String) WindowFieldKit.this.info.get((Object) type);
+            public void onEvent(final EventValueChanged event) {
+                final IChromosomeType type = (IChromosomeType) event.getValue();
+                if (type != null && WindowFieldKit.this.info.containsKey(type)) {
+                    final String t = WindowFieldKit.this.info.get(type);
                     WindowFieldKit.this.text.setValue(t);
                 } else {
                     WindowFieldKit.this.text.setValue("");
@@ -131,8 +130,8 @@ public class WindowFieldKit
 
     @Override
     public void initialiseServer() {
-        ItemStack kit = this.getPlayer().getHeldItem();
-        int sheets = 64 - kit.getItemDamage();
+        final ItemStack kit = this.getPlayer().getHeldItem();
+        final int sheets = 64 - kit.getItemDamage();
         if (sheets != 0) {
             this.getWindowInventory().setInventorySlotContents(1, new ItemStack(Items.paper, sheets));
         }
@@ -147,7 +146,7 @@ public class WindowFieldKit
             if (this.analyseProgress >= 1.0f) {
                 this.isAnalysing = false;
                 this.analyseProgress = 1.0f;
-                ItemStack stack = this.getWindowInventory().getStackInSlot(0);
+                final ItemStack stack = this.getWindowInventory().getStackInSlot(0);
                 if (stack != null) {
                     this.sendClientAction("analyse", new NBTTagCompound());
                 }
@@ -164,34 +163,33 @@ public class WindowFieldKit
     }
 
     private void refreshSpecies() {
-        ItemStack item = this.getWindowInventory().getStackInSlot(0);
+        final ItemStack item = this.getWindowInventory().getStackInSlot(0);
         if (item == null || !AlleleManager.alleleRegistry.isIndividual(item)) {
             return;
         }
-        IIndividual ind = AlleleManager.alleleRegistry.getIndividual(item);
+        final IIndividual ind = AlleleManager.alleleRegistry.getIndividual(item);
         if (ind == null) {
             return;
         }
-        ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(item);
+        final ISpeciesRoot root = AlleleManager.alleleRegistry.getSpeciesRoot(item);
         this.chromo.setRoot(root);
-        Random rand = new Random();
+        final Random rand = new Random();
         this.info.clear();
-        for (IChromosomeType type : root.getKaryotype()) {
-            if (Binnie.Genetics.isInvalidChromosome(type)) continue;
-            IAllele allele = ind.getGenome().getActiveAllele(type);
-            ArrayList<String> infos = new ArrayList<String>();
-            int i = 0;
-            String pref = root.getUID() + ".fieldkit." + type.getName().toLowerCase() + ".";
-            while (Binnie.Language.canLocalise(pref + i)) {
-                infos.add(Binnie.Language.localise(pref + i));
-                ++i;
+        for (final IChromosomeType type : root.getKaryotype()) {
+            if (!Binnie.Genetics.isInvalidChromosome(type)) {
+                final IAllele allele = ind.getGenome().getActiveAllele(type);
+                final List<String> infos = new ArrayList<String>();
+                int i = 0;
+                for (String pref = root.getUID() + ".fieldkit." + type.getName().toLowerCase() + "."; Binnie.Language.canLocalise(pref + i); ++i) {
+                    infos.add(Binnie.Language.localise(pref + i));
+                }
+                String text = Binnie.Genetics.getSystem(root).getAlleleName(type, allele);
+                if (!infos.isEmpty()) {
+                    text = infos.get(rand.nextInt(infos.size()));
+                }
+                this.info.put(type, text);
+                this.chromo.setRoot(root);
             }
-            String text = Binnie.Genetics.getSystem(root).getAlleleName(type, allele);
-            if (!infos.isEmpty()) {
-                text = (String) infos.get(rand.nextInt(infos.size()));
-            }
-            this.info.put(type, text);
-            this.chromo.setRoot(root);
         }
     }
 
@@ -199,18 +197,17 @@ public class WindowFieldKit
     public void onWindowInventoryChanged() {
         super.onWindowInventoryChanged();
         if (this.isServer()) {
-            int size;
-            ItemStack kit = this.getPlayer().getHeldItem();
-            int sheets = 64 - kit.getItemDamage();
-            int n = size = this.getWindowInventory().getStackInSlot(1) == null ? 0 : this.getWindowInventory().getStackInSlot((int) 1).stackSize;
+            final ItemStack kit = this.getPlayer().getHeldItem();
+            final int sheets = 64 - kit.getItemDamage();
+            final int size = (this.getWindowInventory().getStackInSlot(1) == null) ? 0 : this.getWindowInventory().getStackInSlot(1).stackSize;
             if (sheets != size) {
                 kit.setItemDamage(64 - size);
             }
             ((EntityPlayerMP) this.getPlayer()).updateHeldItem();
         }
         if (this.isClient()) {
-            ItemStack item;
-            this.prev = item = this.getWindowInventory().getStackInSlot(0);
+            final ItemStack item = this.getWindowInventory().getStackInSlot(0);
+            this.prev = item;
             this.text.setValue("");
             if (item != null && !Analyser.isAnalysed(item)) {
                 if (this.getWindowInventory().getStackInSlot(1) == null) {
@@ -263,7 +260,7 @@ public class WindowFieldKit
     }
 
     @Override
-    public void recieveGuiNBT(Side side, EntityPlayer player, String name, NBTTagCompound action) {
+    public void recieveGuiNBT(final Side side, final EntityPlayer player, final String name, final NBTTagCompound action) {
         super.recieveGuiNBT(side, player, name, action);
         if (side == Side.SERVER && name.equals("analyse")) {
             this.getWindowInventory().setInventorySlotContents(0, Analyser.analyse(this.getWindowInventory().getStackInSlot(0)));
@@ -271,8 +268,7 @@ public class WindowFieldKit
         }
     }
 
-    static class StyleSheetPunnett
-            extends StyleSheet {
+    static class StyleSheetPunnett extends StyleSheet {
         public StyleSheetPunnett() {
             this.textures.put(CraftGUITexture.Window, new PaddedTexture(0, 0, 160, 160, 0, ExtraBeeTexture.GUIPunnett, 32, 32, 32, 32));
             this.textures.put(CraftGUITexture.Slot, new StandardTexture(160, 0, 18, 18, 0, ExtraBeeTexture.GUIPunnett));
@@ -282,5 +278,4 @@ public class WindowFieldKit
             this.textures.put(CraftGUITexture.InfoButton, new StandardTexture(178, 16, 16, 16, 0, ExtraBeeTexture.GUIPunnett));
         }
     }
-
 }

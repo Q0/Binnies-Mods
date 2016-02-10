@@ -4,32 +4,34 @@ import binnie.craftgui.controls.ControlText;
 import binnie.craftgui.controls.ControlTextCentered;
 import binnie.craftgui.core.IWidget;
 import binnie.craftgui.events.EventValueChanged;
-import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod;
 import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IClassification;
 
 public class PageBranchSpecies extends PageBranch {
-    private ControlText pageBranchSpecies_title = new ControlTextCentered(this, 8.0F, "Species");
+    private ControlText pageBranchSpecies_title;
     private ControlSpeciesBox pageBranchSpecies_speciesList;
 
-    public PageBranchSpecies(IWidget parent, DatabaseTab tab) {
+    public PageBranchSpecies(final IWidget parent, final DatabaseTab tab) {
         super(parent, tab);
+        this.pageBranchSpecies_title = new ControlTextCentered(this, 8.0f, "Species");
         this.addEventHandler(new EventValueChanged.Handler() {
-            public void onEvent(EventValueChanged event) {
+            @Override
+            public void onEvent(final EventValueChanged event) {
                 if (event.isOrigin(PageBranchSpecies.this.pageBranchSpecies_speciesList)) {
                     ((WindowAbstractDatabase) PageBranchSpecies.this.getSuperParent()).gotoSpecies((IAlleleSpecies) event.getValue());
                 }
-
             }
         });
-        this.pageBranchSpecies_speciesList = new ControlSpeciesBox(this, 4.0F, 20.0F, 136.0F, 152.0F);
+        this.pageBranchSpecies_speciesList = new ControlSpeciesBox(this, 4.0f, 20.0f, 136.0f, 152.0f);
     }
 
-    @EventHandler
-    public void onHandleEvent(EventValueChanged event) {
+    @Mod.EventHandler
+    public void onHandleEvent(final EventValueChanged<IAlleleSpecies> event) {
     }
 
-    public void onValueChanged(IClassification branch) {
+    @Override
+    public void onValueChanged(final IClassification branch) {
         this.pageBranchSpecies_speciesList.setBranch(branch);
     }
 }

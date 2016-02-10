@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum AlvearyMachine implements IMachineType {
-    Mutator(AlvearyMutator.PackageAlvearyMutator.class),
-    Frame(AlvearyFrame.PackageAlvearyFrame.class),
-    RainShield(AlvearyRainShield.PackageAlvearyRainShield.class),
-    Lighting(AlvearyLighting.PackageAlvearyLighting.class),
-    Stimulator(AlvearyStimulator.PackageAlvearyStimulator.class),
-    Hatchery(AlvearyHatchery.PackageAlvearyHatchery.class),
-    Transmission(AlvearyTransmission.PackageAlvearyTransmission.class);
+    Mutator((Class<? extends MachinePackage>) AlvearyMutator.PackageAlvearyMutator.class),
+    Frame((Class<? extends MachinePackage>) AlvearyFrame.PackageAlvearyFrame.class),
+    RainShield((Class<? extends MachinePackage>) AlvearyRainShield.PackageAlvearyRainShield.class),
+    Lighting((Class<? extends MachinePackage>) AlvearyLighting.PackageAlvearyLighting.class),
+    Stimulator((Class<? extends MachinePackage>) AlvearyStimulator.PackageAlvearyStimulator.class),
+    Hatchery((Class<? extends MachinePackage>) AlvearyHatchery.PackageAlvearyHatchery.class),
+    Transmission((Class<? extends MachinePackage>) AlvearyTransmission.PackageAlvearyTransmission.class);
 
-    Class<? extends MachinePackage> cls;
+    Class<? extends MachinePackage> clss;
 
-    AlvearyMachine(final Class<? extends MachinePackage> cls) {
-        this.cls = cls;
+    private AlvearyMachine(final Class<? extends MachinePackage> clss) {
+        this.clss = clss;
     }
 
     @Override
     public Class<? extends MachinePackage> getPackageClass() {
-        return this.cls;
+        return this.clss;
     }
 
     public ItemStack get(final int size) {
@@ -63,7 +63,7 @@ public enum AlvearyMachine implements IMachineType {
 
         @Override
         public void renderMachine(final Machine machine, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
-            MachineRendererBlock.instance.renderMachine(machineTexture, x, y, z, var8);
+            MachineRendererBlock.instance.renderMachine(this.machineTexture, x, y, z, var8);
         }
     }
 }

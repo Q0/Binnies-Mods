@@ -21,7 +21,7 @@ public class FarmableFlower implements IFarmable {
     }
 
     public boolean isGermling(final ItemStack itemstack) {
-        final EnumFlowerStage stage = (EnumFlowerStage) BotanyCore.speciesRoot.getType(itemstack);
+        final EnumFlowerStage stage = BotanyCore.speciesRoot.getType(itemstack);
         return stage == EnumFlowerStage.FLOWER || stage == EnumFlowerStage.SEED;
     }
 

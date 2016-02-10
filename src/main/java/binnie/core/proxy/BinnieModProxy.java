@@ -5,6 +5,7 @@ import binnie.core.AbstractMod;
 import binnie.core.BinnieCore;
 import binnie.core.gui.IBinnieGUID;
 import binnie.core.network.packet.MessageBase;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,29 +20,29 @@ public class BinnieModProxy implements IBinnieModProxy {
 
     @Override
     public void openGui(final IBinnieGUID ID, final EntityPlayer player, final int x, final int y, final int z) {
-        BinnieCore.proxy.openGui(mod, ID.ordinal(), player, x, y, z);
+        BinnieCore.proxy.openGui(this.mod, ID.ordinal(), player, x, y, z);
     }
 
     @Override
     public void sendToAll(final MessageBase packet) {
-        mod.getNetworkWrapper().sendToAll(packet.GetMessage());
+        this.mod.getNetworkWrapper().sendToAll((IMessage) packet.GetMessage());
     }
 
     @Override
     public void sendToPlayer(final MessageBase packet, final EntityPlayer entityplayer) {
         if (entityplayer instanceof EntityPlayerMP) {
-            mod.getNetworkWrapper().sendTo(packet.GetMessage(), (EntityPlayerMP) entityplayer);
+            this.mod.getNetworkWrapper().sendTo((IMessage) packet.GetMessage(), (EntityPlayerMP) entityplayer);
         }
     }
 
     @Override
     public void sendToServer(final MessageBase packet) {
-        mod.getNetworkWrapper().sendToServer(packet.GetMessage());
+        this.mod.getNetworkWrapper().sendToServer((IMessage) packet.GetMessage());
     }
 
     @Override
     public IIcon getIcon(final IIconRegister register, final String string) {
-        return BinnieCore.proxy.getIcon(register, mod.getModID(), string);
+        return BinnieCore.proxy.getIcon(register, this.mod.getModID(), string);
     }
 
     @Override
@@ -57,10 +58,10 @@ public class BinnieModProxy implements IBinnieModProxy {
     }
 
     public String localise(final String string) {
-        return Binnie.Language.localise(mod, string);
+        return Binnie.Language.localise(this.mod, string);
     }
 
     public String localiseOrBlank(final String string) {
-        return Binnie.Language.localiseOrBlank(mod, string);
+        return Binnie.Language.localiseOrBlank(this.mod, string);
     }
 }

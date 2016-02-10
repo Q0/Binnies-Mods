@@ -5,10 +5,10 @@ import binnie.botany.api.EnumAcidity;
 import binnie.botany.api.EnumMoisture;
 import binnie.core.circuits.BinnieCircuit;
 import forestry.api.circuits.ChipsetManager;
-import forestry.api.farming.FarmDirection;
 import forestry.api.farming.IFarmHousing;
 import forestry.api.farming.IFarmLogic;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class CircuitGarden extends BinnieCircuit {
@@ -21,6 +21,8 @@ public class CircuitGarden extends BinnieCircuit {
 
     public CircuitGarden(final EnumMoisture moisture, final EnumAcidity ph, final boolean manual, final boolean fertilised, final ItemStack recipe, final ItemStack icon) {
         super("garden." + moisture.getID() + ((ph != null) ? ("." + ph.getID()) : "") + (manual ? ".manual" : "") + (fertilised ? ".fert" : ""), 4, manual ? ChipsetManager.circuitRegistry.getLayout("forestry.farms.manual") : ChipsetManager.circuitRegistry.getLayout("forestry.farms.managed"), recipe);
+        this.isManual = false;
+        this.isFertilised = false;
         this.isManual = manual;
         this.isFertilised = fertilised;
         this.moisture = moisture;
@@ -58,34 +60,34 @@ public class CircuitGarden extends BinnieCircuit {
     }
 
     @Override
-    public boolean isCircuitable(final Object tile) {
+    public boolean isCircuitable(final TileEntity tile) {
         return tile instanceof IFarmHousing;
     }
 
     @Override
-    public void onInsertion(final int slot, final Object tile) {
+    public void onInsertion(final int slot, final TileEntity tile) {
         if (!this.isCircuitable(tile)) {
             return;
         }
         final GardenLogic logic = new GardenLogic((IFarmHousing) tile);
         logic.setData(this.moisture, this.acidity, this.isManual, this.isFertilised, this.icon, Binnie.Language.localise(this.getName()));
-        ((IFarmHousing) tile).setFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]), (IFarmLogic) logic);
+        ((IFarmHousing) tile).setFarmLogic(ForgeDirection.values()[slot + 2], (IFarmLogic) logic);
     }
 
     @Override
-    public void onLoad(int slot, Object tile) {
+    public void onLoad(final int slot, final TileEntity tile) {
         this.onInsertion(slot, tile);
     }
 
     @Override
-    public void onRemoval(int slot, Object tile) {
+    public void onRemoval(final int slot, final TileEntity tile) {
         if (!this.isCircuitable(tile)) {
             return;
         }
-        ((IFarmHousing) tile).resetFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]));
+        ((IFarmHousing) tile).resetFarmLogic(ForgeDirection.values()[slot + 2]);
     }
 
     @Override
-    public void onTick(int slot, Object tile) {
+    public void onTick(final int slot, final TileEntity tile) {
     }
 }

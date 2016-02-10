@@ -3,10 +3,12 @@ package binnie.core.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,32 +25,24 @@ public class ItemMetadata extends ItemBlock {
 
     public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ, final int metadata) {
         final Block block = this.field_150939_a;
-
         if (!(block instanceof IBlockMetadata)) {
             return false;
         }
-
         final int placedMeta = ((IBlockMetadata) block).getPlacedMeta(stack, world, x, y, z, ForgeDirection.values()[side]);
-
         if (placedMeta < 0) {
             return false;
         }
-
         if (!world.setBlock(x, y, z, block, metadata, 3)) {
             return false;
         }
-
         if (world.getBlock(x, y, z) == block) {
-            final TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
-
+            final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) world, x, y, z);
             if (tile != null) {
                 tile.setTileMetadata(placedMeta, false);
             }
-    
-            block.onBlockPlacedBy(world, x, y, z, player, stack);
+            block.onBlockPlacedBy(world, x, y, z, (EntityLivingBase) player, stack);
             block.onPostBlockPlaced(world, x, y, z, metadata);
         }
-
         return true;
     }
 
@@ -58,8 +52,8 @@ public class ItemMetadata extends ItemBlock {
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List par3List, final boolean par4) {
-        ((IBlockMetadata) this.field_150939_a).getBlockTooltip(itemStack, par3List);
+    public void addInformation(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final List par3List, final boolean par4) {
+        ((IBlockMetadata) this.field_150939_a).getBlockTooltip(par1ItemStack, par3List);
     }
 
     public IIcon getIconFromDamage(final int par1) {

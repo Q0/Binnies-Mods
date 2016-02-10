@@ -2,7 +2,7 @@ package binnie.extrabees.apiary.machine;
 
 import binnie.core.machines.Machine;
 import binnie.craftgui.minecraft.IMachineInformation;
-import binnie.extrabees.apiary.modifiers.ComponentBeeModifier;
+import binnie.extrabees.apiary.ComponentBeeModifier;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.IBeeListener;
 import forestry.api.apiculture.IBeeModifier;

@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public enum EnumPropolis implements IItemEnum {
-    WATER(0x24b3c9, 0xc2bea7, "Water"),
-    OIL(0x172f33, 0xc2bea7, "oil"),
-    FUEL(0xa38d12, 0xc2bea7, "fuel"),
+    WATER(2405321, 12762791, "Water"),
+    OIL(1519411, 12762791, "oil"),
+    FUEL(10718482, 12762791, "fuel"),
     MILK,
     FRUIT,
     SEED,
@@ -23,12 +23,12 @@ public enum EnumPropolis implements IItemEnum {
     String liquidName;
     boolean active;
 
-    EnumPropolis() {
+    private EnumPropolis() {
         this(16777215, 16777215, "");
         this.active = false;
     }
 
-    EnumPropolis(final int colour, final int colour2, final String liquid) {
+    private EnumPropolis(final int colour, final int colour2, final String liquid) {
         this.colour = new int[0];
         this.active = true;
         this.colour = new int[]{colour, colour2};
@@ -37,18 +37,16 @@ public enum EnumPropolis implements IItemEnum {
 
     public static EnumPropolis get(final ItemStack itemStack) {
         final int i = itemStack.getItemDamage();
-
         if (i >= 0 && i < values().length) {
             return values()[i];
         }
-
         return values()[0];
     }
 
     public void addRecipe() {
         final FluidStack liquid = Binnie.Liquid.getLiquidStack(this.liquidName, 500);
         if (liquid != null) {
-            RecipeManagers.squeezerManager.addRecipe(20, new ItemStack[]{this.get(1)}, liquid, null, 0);
+            RecipeManagers.squeezerManager.addRecipe(20, new ItemStack[]{this.get(1)}, liquid, (ItemStack) null, 0);
         }
     }
 

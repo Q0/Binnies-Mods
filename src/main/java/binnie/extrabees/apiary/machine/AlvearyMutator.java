@@ -6,7 +6,8 @@ import binnie.core.machines.inventory.SlotValidator;
 import binnie.core.machines.inventory.ValidatorIcon;
 import binnie.craftgui.minecraft.IMachineInformation;
 import binnie.extrabees.ExtraBees;
-import binnie.extrabees.apiary.modifiers.ComponentBeeModifier;
+import binnie.extrabees.apiary.ComponentBeeModifier;
+import binnie.extrabees.apiary.ComponentExtraBeeGUI;
 import binnie.extrabees.core.ExtraBeeGUID;
 import binnie.extrabees.core.ExtraBeeTexture;
 import forestry.api.apiculture.IBee;
@@ -93,16 +94,16 @@ public class AlvearyMutator {
 
         @Override
         public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-            if (getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
+            if (this.getUtil().isSlotEmpty(AlvearyMutator.slotMutator)) {
                 return 1.0f;
             }
-            final float mult = AlvearyMutator.getMutationMult(getUtil().getStack(AlvearyMutator.slotMutator));
+            final float mult = AlvearyMutator.getMutationMult(this.getUtil().getStack(AlvearyMutator.slotMutator));
             return Math.min(mult, 15.0f / currentModifier);
         }
 
         @Override
         public void onPostQueenDeath(final IBee queen) {
-            getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
+            this.getUtil().decreaseStack(AlvearyMutator.slotMutator, 1);
         }
     }
 }

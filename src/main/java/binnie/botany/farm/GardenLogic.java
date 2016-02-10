@@ -12,11 +12,10 @@ import binnie.core.Mods;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.farming.FarmDirection;
 import forestry.api.farming.ICrop;
 import forestry.api.farming.IFarmHousing;
 import forestry.api.farming.IFarmable;
-import forestry.core.access.IOwnable;
+import forestry.core.interfaces.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -68,16 +67,6 @@ public class GardenLogic extends FarmLogic {
         return products;
     }
 
-    @Override
-    public boolean cultivate(int x, int y, int z, FarmDirection direction, int extent) {
-        return false;
-    }
-
-    @Override
-    public Collection<ICrop> harvest(int x, int y, int z, FarmDirection direction, int extent) {
-        return null;
-    }
-
     public boolean cultivate(final int x, final int y, final int z, final ForgeDirection direction, final int extent) {
         this.world = this.housing.getWorld();
         return this.maintainSoil(x, y, z, direction, extent) || (!this.isManual && this.maintainWater(x, y, z, direction, extent)) || this.maintainCrops(x, y + 1, z, direction, extent);
@@ -105,14 +94,14 @@ public class GardenLogic extends FarmLogic {
                     if (pH.ordinal() < this.acidity.ordinal()) {
                         final ItemStack stack = this.getAvailableAlkaline();
                         if (stack != null && soil.setPH(this.world, position.x, position.y, position.z, EnumAcidity.values()[pH.ordinal() + 1])) {
-                            this.housing.getFarmInventory().removeResources(new ItemStack[]{stack});
+                            this.housing.removeResources(new ItemStack[]{stack});
                             continue;
                         }
                     }
                     if (pH.ordinal() > this.acidity.ordinal()) {
                         final ItemStack stack = this.getAvailableAcid();
                         if (stack != null && soil.setPH(this.world, position.x, position.y, position.z, EnumAcidity.values()[pH.ordinal() - 1])) {
-                            this.housing.getFarmInventory().removeResources(new ItemStack[]{stack});
+                            this.housing.removeResources(new ItemStack[]{stack});
                             continue;
                         }
                     }
@@ -190,13 +179,13 @@ public class GardenLogic extends FarmLogic {
                 for (final Block type : new Block[]{Botany.flowerbed, Botany.loam, Botany.soil}) {
                     final int meta = acid.ordinal() * 3 + moist.ordinal();
                     final ItemStack[] resource = {new ItemStack(type, 1, meta)};
-                    if (this.housing.getFarmInventory().hasResources(resource)) {
+                    if (this.housing.hasResources(resource)) {
                         return resource[0];
                     }
                 }
             }
         }
-        if (this.housing.getFarmInventory().hasResources(new ItemStack[]{new ItemStack(Blocks.dirt)})) {
+        if (this.housing.hasResources(new ItemStack[]{new ItemStack(Blocks.dirt)})) {
             return new ItemStack(Blocks.dirt);
         }
         return null;
@@ -212,7 +201,7 @@ public class GardenLogic extends FarmLogic {
                 loam = new ItemStack((Block) Botany.soil, 0, 4);
             }
             this.setBlock(position, ((ItemBlock) loam.getItem()).field_150939_a, loam.getItemDamage());
-            this.housing.getFarmInventory().removeResources(new ItemStack[]{loam});
+            this.housing.removeResources(new ItemStack[]{loam});
             return true;
         }
         return false;
@@ -232,11 +221,11 @@ public class GardenLogic extends FarmLogic {
                 return this.trySetSoil(position);
             }
             final ItemStack[] sand = {new ItemStack((Block) Blocks.sand, 1)};
-            if (!this.housing.getFarmInventory().hasResources(sand)) {
+            if (!this.housing.hasResources(sand)) {
                 return false;
             }
             this.setBlock(position, (Block) Blocks.sand, 0);
-            this.housing.getFarmInventory().removeResources(sand);
+            this.housing.removeResources(sand);
             return true;
         }
     }
@@ -310,7 +299,7 @@ public class GardenLogic extends FarmLogic {
 
     public ItemStack getAvailableAcid() {
         for (final ItemStack stack : Gardening.getAcidFertilisers()) {
-            if (stack != null && stack.getItem() != null && this.housing.getFarmInventory().hasResources(new ItemStack[]{stack})) {
+            if (stack != null && stack.getItem() != null && this.housing.hasResources(new ItemStack[]{stack})) {
                 return stack;
             }
         }
@@ -319,7 +308,7 @@ public class GardenLogic extends FarmLogic {
 
     public ItemStack getAvailableAlkaline() {
         for (final ItemStack stack : Gardening.getAlkalineFertilisers()) {
-            if (stack != null && stack.getItem() != null && this.housing.getFarmInventory().hasResources(new ItemStack[]{stack})) {
+            if (stack != null && stack.getItem() != null && this.housing.hasResources(new ItemStack[]{stack})) {
                 return stack;
             }
         }

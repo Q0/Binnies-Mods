@@ -1,8 +1,6 @@
 package binnie.botany.api;
 
-import forestry.api.genetics.ISpeciesType;
-
-public enum EnumFlowerStage implements ISpeciesType {
+public enum EnumFlowerStage {
     FLOWER("Flower"),
     SEED("Seed"),
     POLLEN("Pollen"),

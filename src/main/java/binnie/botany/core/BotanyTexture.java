@@ -20,4 +20,4 @@ public enum BotanyTexture implements IBinnieTexture {
     public BinnieResource getTexture() {
         return Binnie.Resource.getPNG(ExtraBees.instance, this.type, this.texture);
     }
-}
+    }

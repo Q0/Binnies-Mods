@@ -7,26 +7,23 @@ import binnie.craftgui.core.CraftGUI;
 import binnie.craftgui.events.EventMouse;
 import binnie.craftgui.resource.minecraft.CraftGUITexture;
 
-public class ControlOption<T>
-        extends Control
-        implements IControlValue<T> {
+public class ControlOption<T> extends Control implements IControlValue<T> {
     T value;
 
-    public ControlOption(ControlList<T> controlList, T option) {
+    public ControlOption(final ControlList<T> controlList, final T option) {
         this(controlList, option, 16);
     }
 
-    public ControlOption(ControlList<T> controlList, T option, int height) {
+    public ControlOption(final ControlList<T> controlList, final T option, final int height) {
         super(controlList, 0.0f, height, controlList.getSize().x(), 20.0f);
         this.value = option;
         if (this.value != null) {
             this.addAttribute(Attribute.MouseOver);
         }
         this.addSelfEventHandler(new EventMouse.Down.Handler() {
-
             @Override
-            public void onEvent(EventMouse.Down event) {
-                ((IControlValue) ControlOption.this.getParent()).setValue(ControlOption.this.getValue());
+            public void onEvent(final EventMouse.Down event) {
+                setValue(ControlOption.this.getValue());
             }
         });
     }
@@ -49,7 +46,7 @@ public class ControlOption<T>
     }
 
     @Override
-    public void setValue(T value) {
+    public void setValue(final T value) {
         this.value = value;
     }
 
@@ -60,8 +57,7 @@ public class ControlOption<T>
     @Override
     public void onRenderForeground() {
         if (this.isCurrentSelection()) {
-            CraftGUI.Render.texture((Object) CraftGUITexture.Outline, this.getArea());
+            CraftGUI.Render.texture(CraftGUITexture.Outline, this.getArea());
         }
     }
-
 }

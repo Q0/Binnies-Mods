@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-version = "2.0-pre14-Build_3-UNOFFICIAL"
+version = "2.0-pre14-Build_3-Forestry3-UNOFFICIAL"
 group = "binnie.Binnie"
 archivesBaseName = "Binnie-mods"
 
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.sengir.forestry:forestry_1.7.10:4.2.5.53:dev'
+    compile 'net.sengir.forestry:forestry_1.7.10:3.6.12.3:dev'
     compile 'net.industrial-craft:industrialcraft-2:2.2.810-experimental:dev'
     compile 'com.mod-buildcraft:buildcraft:6.4.3:dev'
 }
