@@ -14,6 +14,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ExtraBeeMutation implements IBeeMutation {
@@ -275,9 +276,7 @@ public class ExtraBeeMutation implements IBeeMutation {
     public Collection<String> getSpecialConditions() {
         final List<String> conditions = new ArrayList<String>();
         if (this.req != null) {
-            for (final String s : this.req.tooltip()) {
-                conditions.add(s);
-            }
+            Collections.addAll(conditions, this.req.tooltip());
         }
         return conditions;
     }
