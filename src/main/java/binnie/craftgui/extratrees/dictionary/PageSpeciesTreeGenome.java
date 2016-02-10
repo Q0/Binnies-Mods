@@ -88,6 +88,7 @@ public class PageSpeciesTreeGenome extends PageSpecies {
             }
             y += th2;
         }
+
         final ItemStack log = (treeSpecies.getLogStacks().length > 0) ? treeSpecies.getLogStacks()[0] : null;
         if (log != null) {
             new ControlText(contents, new IArea(0.0f, y, w2, th2), ExtraTrees.proxy.localise("gui.database.log") + " : ", TextJustification.MiddleRight);
