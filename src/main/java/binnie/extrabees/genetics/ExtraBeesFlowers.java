@@ -16,6 +16,7 @@ import net.minecraftforge.common.EnumPlantType;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     WATER,
@@ -207,7 +208,8 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
         return this.getUID();
     }
 
-    public List<IFlower> getFlowers() {
-        return new ArrayList<IFlower>();
+    //TODO: Update method. - IFlowerRegistry
+    public Set<IFlower> getFlowers() {
+        return (Set<IFlower>) new ArrayList<IFlower>();
     }
 }
