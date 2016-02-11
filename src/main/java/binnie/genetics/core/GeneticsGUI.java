@@ -31,7 +31,7 @@ public enum GeneticsGUI implements IBinnieGUID {
 
     Class<? extends Window> windowClass;
 
-    private GeneticsGUI(final Class window) {
+    GeneticsGUI(final Class window) {
         this.windowClass = (Class<? extends Window>) window;
     }
 

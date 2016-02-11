@@ -32,7 +32,7 @@ public class MachineGroup {
             if (type.getPackageClass() != null) {
                 if (type.isActive()) {
                     try {
-                        final MachinePackage pack = (MachinePackage) type.getPackageClass().newInstance();
+                        final MachinePackage pack = type.getPackageClass().newInstance();
                         pack.assignMetadata(type.ordinal());
                         pack.setActive(type.isActive());
                         this.addPackage(pack);
@@ -45,7 +45,7 @@ public class MachineGroup {
         Binnie.Machine.registerMachineGroup(this);
         this.block = new BlockMachine(this, blockName);
         if (this.block != null) {
-            GameRegistry.registerBlock((Block) this.block, (Class) ItemMachine.class, blockName);
+            GameRegistry.registerBlock(this.block, (Class) ItemMachine.class, blockName);
             for (final MachinePackage pack2 : this.getPackages()) {
                 pack2.register();
             }

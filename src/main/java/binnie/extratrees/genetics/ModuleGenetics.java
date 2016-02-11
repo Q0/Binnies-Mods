@@ -24,10 +24,10 @@ public class ModuleGenetics implements IInitializable {
     @Override
     public void preInit() {
         for (final ExtraTreeFruitGene fruit : ExtraTreeFruitGene.values()) {
-            AlleleManager.alleleRegistry.registerAllele((IAllele) fruit);
+            AlleleManager.alleleRegistry.registerAllele(fruit);
         }
         for (final ExtraTreeSpecies species : ExtraTreeSpecies.values()) {
-            AlleleManager.alleleRegistry.registerAllele((IAllele) species);
+            AlleleManager.alleleRegistry.registerAllele(species);
         }
     }
 
@@ -45,7 +45,7 @@ public class ModuleGenetics implements IInitializable {
         ExtraTreeMutation.init();
         if (BinnieCore.isLepidopteryActive()) {
             for (final ButterflySpecies species2 : ButterflySpecies.values()) {
-                AlleleManager.alleleRegistry.registerAllele((IAllele) species2);
+                AlleleManager.alleleRegistry.registerAllele(species2);
                 Binnie.Genetics.getButterflyRoot().registerTemplate(species2.getTemplate());
                 final String scientific = species2.branchName.substring(0, 1).toUpperCase() + species2.branchName.substring(1).toLowerCase();
                 final String uid = "trees." + species2.branchName.toLowerCase();
@@ -53,7 +53,7 @@ public class ModuleGenetics implements IInitializable {
                 if (branch == null) {
                     branch = AlleleManager.alleleRegistry.createAndRegisterClassification(IClassification.EnumClassLevel.GENUS, uid, scientific);
                 }
-                (species2.branch = branch).addMemberSpecies((IAlleleSpecies) species2);
+                (species2.branch = branch).addMemberSpecies(species2);
             }
         }
     }
@@ -68,7 +68,7 @@ public class ModuleGenetics implements IInitializable {
         }
         for (final ExtraTreeSpecies species : ExtraTreeSpecies.values()) {
             final IClassification branch = this.getOrCreateClassification(IClassification.EnumClassLevel.GENUS, species.branchName);
-            branch.addMemberSpecies((IAlleleSpecies) species);
+            branch.addMemberSpecies(species);
             species.branch = branch;
             IClassification clss = branch;
             int currentLevel = IClassification.EnumClassLevel.GENUS.ordinal();

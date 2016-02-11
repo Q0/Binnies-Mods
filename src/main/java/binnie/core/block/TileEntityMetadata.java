@@ -87,7 +87,7 @@ public class TileEntityMetadata extends TileEntity {
     }
 
     public Packet getDescriptionPacket() {
-        return BinnieCore.instance.getNetworkWrapper().getPacketFrom((IMessage) new MessageMetadata(this.xCoord, this.yCoord, this.zCoord, this.meta).GetMessage());
+        return BinnieCore.instance.getNetworkWrapper().getPacketFrom(new MessageMetadata(this.xCoord, this.yCoord, this.zCoord, this.meta).GetMessage());
     }
 
     public boolean hasDroppedBlock() {

@@ -49,7 +49,7 @@ public class WindowApiaristDatabase extends WindowAbstractDatabase {
 
         public int colour;
 
-        private SpeciesTab(final int colour) {
+        SpeciesTab(final int colour) {
             this.colour = colour;
         }
     }
@@ -60,7 +60,7 @@ public class WindowApiaristDatabase extends WindowAbstractDatabase {
 
         public int colour;
 
-        private BranchesTab(final int colour) {
+        BranchesTab(final int colour) {
             this.colour = colour;
         }
     }

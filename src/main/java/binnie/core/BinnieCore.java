@@ -143,7 +143,7 @@ public final class BinnieCore extends AbstractMod {
     public void preInit() {
         BinnieCore.instance = this;
         for (final FluidContainer container : FluidContainer.values()) {
-            final Item item = (Item) new ItemFluidContainer(container);
+            final Item item = new ItemFluidContainer(container);
             GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
         }
         FieldParser.parsers.add(new ItemParser());
@@ -154,10 +154,10 @@ public final class BinnieCore extends AbstractMod {
     public void init() {
         super.init();
         for (final AbstractMod mod : getActiveMods()) {
-            NetworkRegistry.INSTANCE.registerGuiHandler((Object) mod, (IGuiHandler) new BinnieGUIHandler(mod));
+            NetworkRegistry.INSTANCE.registerGuiHandler(mod, new BinnieGUIHandler(mod));
         }
         BinnieCore.multipassRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new MultipassBlockRenderer());
+        RenderingRegistry.registerBlockHandler(new MultipassBlockRenderer());
         GameRegistry.registerTileEntity((Class) TileEntityMetadata.class, "binnie.tile.metadata");
     }
 
@@ -174,7 +174,7 @@ public final class BinnieCore extends AbstractMod {
             if (player == null) {
                 return;
             }
-            event.tracker.synchToPlayer((EntityPlayer) player);
+            event.tracker.synchToPlayer(player);
             final NBTTagCompound nbt = new NBTTagCompound();
             nbt.setString("species", event.species.getUID());
         } catch (Exception ex) {
@@ -205,9 +205,9 @@ public final class BinnieCore extends AbstractMod {
     @SideOnly(Side.CLIENT)
     public void handleTextureRemap(final TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 0) {
-            Binnie.Liquid.reloadIcons((IIconRegister) event.map);
+            Binnie.Liquid.reloadIcons(event.map);
         }
-        Binnie.Resource.registerIcons((IIconRegister) event.map, event.map.getTextureType());
+        Binnie.Resource.registerIcons(event.map, event.map.getTextureType());
     }
 
     @Override

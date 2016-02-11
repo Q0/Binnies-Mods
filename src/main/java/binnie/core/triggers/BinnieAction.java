@@ -34,7 +34,7 @@ class BinnieAction implements IActionExternal {
         this.id = 0;
         this.id = BinnieAction.incrementalID++;
         this.tag = tag;
-        StatementManager.registerStatement((IStatement) this);
+        StatementManager.registerStatement(this);
         this.icon = Binnie.Resource.getItemIcon(mod, iconFile);
         this.desc = desc;
     }
@@ -70,7 +70,7 @@ class BinnieAction implements IActionExternal {
     }
 
     public IStatement rotateLeft() {
-        return (IStatement) this;
+        return this;
     }
 
     public void actionActivate(final TileEntity target, final ForgeDirection side, final IStatementContainer source, final IStatementParameter[] parameters) {

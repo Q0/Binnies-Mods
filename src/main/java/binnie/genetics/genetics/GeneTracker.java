@@ -44,7 +44,7 @@ public class GeneTracker extends WorldSavedData {
         GeneTracker tracker = (GeneTracker) world.loadItemData((Class) GeneTracker.class, filename);
         if (tracker == null) {
             tracker = new GeneTracker(filename, player);
-            world.setItemData(filename, (WorldSavedData) tracker);
+            world.setItemData(filename, tracker);
         } else {
             tracker.username = player;
         }
@@ -86,12 +86,12 @@ public class GeneTracker extends WorldSavedData {
                 final NBTTagList nbtChromo = new NBTTagList();
                 for (final IGene gene : this.discoveredGenes) {
                     if (gene.getSpeciesRoot() == root && gene.getChromosome() == chromo) {
-                        nbtChromo.appendTag((NBTBase) new NBTTagString(gene.getAllele().getUID()));
+                        nbtChromo.appendTag(new NBTTagString(gene.getAllele().getUID()));
                     }
                 }
-                nbtRoot.setTag("" + chromo.ordinal(), (NBTBase) nbtChromo);
+                nbtRoot.setTag("" + chromo.ordinal(), nbtChromo);
             }
-            nbt.setTag(root.getUID(), (NBTBase) nbtRoot);
+            nbt.setTag(root.getUID(), nbtRoot);
         }
     }
 

@@ -11,7 +11,7 @@ public class TriggerWorking {
         if (process != null) {
             b = (process.canWork() != null && process.canProgress() != null);
         }
-        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerIsNotWorking, b);
+        return new TriggerData(BinnieTrigger.triggerIsNotWorking, b);
     }
 
     public static TriggerData isWorking(final Object inventory) {
@@ -20,7 +20,7 @@ public class TriggerWorking {
         if (process != null) {
             b = (process.canWork() == null && process.canProgress() == null);
         }
-        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerIsWorking, b);
+        return new TriggerData(BinnieTrigger.triggerIsWorking, b);
     }
 
     public static TriggerData canWork(final Object inventory) {
@@ -29,7 +29,7 @@ public class TriggerWorking {
         if (process != null) {
             b = (process.canWork() == null);
         }
-        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerCanWork, b);
+        return new TriggerData(BinnieTrigger.triggerCanWork, b);
     }
 
     public static TriggerData cannotWork(final Object inventory) {
@@ -38,6 +38,6 @@ public class TriggerWorking {
         if (process != null) {
             b = (process.canWork() != null);
         }
-        return new TriggerData((ITriggerExternal) BinnieTrigger.triggerCannotWork, b);
+        return new TriggerData(BinnieTrigger.triggerCannotWork, b);
     }
 }

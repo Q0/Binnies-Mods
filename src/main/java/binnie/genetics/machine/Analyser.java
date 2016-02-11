@@ -202,7 +202,7 @@ public class Analyser {
 
         public ComponentAnalyserFX(final IMachine machine) {
             super(machine);
-            this.dummyEntityItem = new EntityItem((World) null);
+            this.dummyEntityItem = new EntityItem(null);
         }
 
         @SideOnly(Side.CLIENT)
@@ -214,7 +214,7 @@ public class Analyser {
         @Override
         public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
             if (rand.nextFloat() < 1.0f && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, y + 1.3 + rand.nextDouble() * 0.2, z + 0.5, 0.0, 0.0, 0.0) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, y + 1.3 + rand.nextDouble() * 0.2, z + 0.5, 0.0, 0.0, 0.0) {
                     double axisX = this.posX;
                     double axisZ = this.posZ;
                     double angle = this.rand.nextDouble() * 2.0 * 3.1415;
@@ -276,7 +276,7 @@ public class Analyser {
             final ItemStack stack = this.getUtil().getStack(6);
             if (stack != null) {
                 stack.writeToNBT(item);
-                nbt.setTag("item", (NBTBase) item);
+                nbt.setTag("item", item);
             }
         }
 

@@ -18,12 +18,12 @@ class BeeBreedingSystem extends BreedingSystem {
 
     @Override
     public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
-        return ((IBeeMutation) mutation).getChance((IBeeHousing) new VirtualBeeHousing(player), species1, species2, this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID())), this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID())));
+        return ((IBeeMutation) mutation).getChance(new VirtualBeeHousing(player), species1, species2, this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species1.getUID())), this.getSpeciesRoot().templateAsGenome(this.getSpeciesRoot().getTemplate(species2.getUID())));
     }
 
     @Override
     public ISpeciesRoot getSpeciesRoot() {
-        return (ISpeciesRoot) Binnie.Genetics.getBeeRoot();
+        return Binnie.Genetics.getBeeRoot();
     }
 
     @Override
@@ -33,7 +33,7 @@ class BeeBreedingSystem extends BreedingSystem {
 
     @Override
     public Class<? extends IBreedingTracker> getTrackerClass() {
-        return (Class<? extends IBreedingTracker>) IApiaristTracker.class;
+        return IApiaristTracker.class;
     }
 
     @Override

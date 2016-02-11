@@ -44,10 +44,10 @@ public class BlockHedge extends Block implements IBlockFence {
     }
 
     public void addCollisionBoxesToList(final World world, final int x, final int y, final int z, final AxisAlignedBB aabb, final List list, final Entity p_149743_7_) {
-        final boolean connectNegZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z - 1);
-        final boolean connectPosZ = this.canConnectFenceTo((IBlockAccess) world, x, y, z + 1);
-        final boolean connectNegX = this.canConnectFenceTo((IBlockAccess) world, x - 1, y, z);
-        final boolean connectPosX = this.canConnectFenceTo((IBlockAccess) world, x + 1, y, z);
+        final boolean connectNegZ = this.canConnectFenceTo(world, x, y, z - 1);
+        final boolean connectPosZ = this.canConnectFenceTo(world, x, y, z + 1);
+        final boolean connectNegX = this.canConnectFenceTo(world, x - 1, y, z);
+        final boolean connectPosX = this.canConnectFenceTo(world, x + 1, y, z);
         float f = 0.25f;
         float f2 = 0.75f;
         float f3 = 0.25f;

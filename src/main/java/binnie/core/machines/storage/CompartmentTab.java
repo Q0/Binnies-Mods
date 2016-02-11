@@ -31,7 +31,7 @@ class CompartmentTab implements INBTTagable {
         nbt.setString("name", this.name);
         final NBTTagCompound n = new NBTTagCompound();
         this.icon.writeToNBT(n);
-        nbt.setTag("icon", (NBTBase) n);
+        nbt.setTag("icon", n);
         nbt.setByte("color", (byte) this.color.ordinal());
         nbt.setByte("id", (byte) this.id);
     }

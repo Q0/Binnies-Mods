@@ -46,7 +46,7 @@ public final class BinnieProxyClient extends BinnieProxy implements IBinnieProxy
     public boolean checkTexture(final BinnieResource location) {
         final SimpleTexture texture = new SimpleTexture(location.getResourceLocation());
         try {
-            ((ITextureObject) texture).loadTexture(this.getMinecraftInstance().getResourceManager());
+            texture.loadTexture(this.getMinecraftInstance().getResourceManager());
         } catch (IOException e) {
             return false;
         }
@@ -65,7 +65,7 @@ public final class BinnieProxyClient extends BinnieProxy implements IBinnieProxy
 
     @Override
     public World getWorld() {
-        return (World) this.getMinecraftInstance().theWorld;
+        return this.getMinecraftInstance().theWorld;
     }
 
     @Override
@@ -133,7 +133,7 @@ public final class BinnieProxyClient extends BinnieProxy implements IBinnieProxy
 
     @Override
     public EntityPlayer getPlayer() {
-        return (EntityPlayer) Minecraft.getMinecraft().thePlayer;
+        return Minecraft.getMinecraft().thePlayer;
     }
 
     public void handlePreTextureRefresh(final IIconRegister register, final int type) {
@@ -146,7 +146,7 @@ public final class BinnieProxyClient extends BinnieProxy implements IBinnieProxy
     public void preInit() {
         final IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
         if (manager instanceof IReloadableResourceManager) {
-            ((IReloadableResourceManager) manager).registerReloadListener((IResourceManagerReloadListener) new CraftGUIResourceManager());
+            ((IReloadableResourceManager) manager).registerReloadListener(new CraftGUIResourceManager());
         }
     }
 }

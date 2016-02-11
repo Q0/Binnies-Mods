@@ -36,7 +36,7 @@ public enum Juice implements IFluidType, ICocktailLiquid {
     int colour;
     float transparency;
 
-    private Juice(final String name, final String ident, final int colour, final double transparency, final String squeezing) {
+    Juice(final String name, final String ident, final int colour, final double transparency, final String squeezing) {
         this.name = name;
         this.ident = ident;
         this.colour = colour;

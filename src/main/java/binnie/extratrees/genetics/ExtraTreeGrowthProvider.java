@@ -16,7 +16,7 @@ public class ExtraTreeGrowthProvider implements IAlleleGrowth, IGrowthProvider {
     }
 
     public IGrowthProvider getProvider() {
-        return (IGrowthProvider) this;
+        return this;
     }
 
     public boolean canGrow(final ITreeGenome genome, final World world, final int xPos, final int yPos, final int zPos, final int expectedGirth, final int expectedHeight) {

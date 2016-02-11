@@ -162,7 +162,7 @@ public abstract class WindowAbstractDatabase extends Window {
                 return new ControlTab<IDatabaseMode>(this, x, y, w, h, value) {
                     @Override
                     public String getName() {
-                        return ((IDatabaseMode) this.value).getName();
+                        return this.value.getName();
                     }
                 };
             }

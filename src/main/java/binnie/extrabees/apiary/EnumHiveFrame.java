@@ -23,7 +23,7 @@ public enum EnumHiveFrame implements IHiveFrame {
     int maxDamage;
     BeeModifierLogic logic;
 
-    private EnumHiveFrame() {
+    EnumHiveFrame() {
         this.maxDamage = 240;
         this.logic = new BeeModifierLogic();
     }
@@ -42,10 +42,10 @@ public enum EnumHiveFrame implements IHiveFrame {
         EnumHiveFrame.Clay.logic.setModifier(EnumBeeModifier.Mutation, 0.5f, 0.2f);
         EnumHiveFrame.Clay.logic.setModifier(EnumBeeModifier.Production, 0.75f, 0.2f);
         EnumHiveFrame.Debug.logic.setModifier(EnumBeeModifier.Lifespan, 1.0E-4f, 1.0E-4f);
-        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Cocoa.item), new Object[]{" c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', new ItemStack(Items.dye, 1, 3)});
-        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Cage.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars});
-        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Soul.item), new Object[]{Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand});
-        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Clay.item), new Object[]{" c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', Items.clay_ball});
+        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Cocoa.item), " c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', new ItemStack(Items.dye, 1, 3));
+        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Cage.item), Mods.Forestry.stack("frameImpregnated"), Blocks.iron_bars);
+        GameRegistry.addShapelessRecipe(new ItemStack(EnumHiveFrame.Soul.item), Mods.Forestry.stack("frameImpregnated"), Blocks.soul_sand);
+        GameRegistry.addRecipe(new ItemStack(EnumHiveFrame.Clay.item), " c ", "cFc", " c ", 'F', Mods.Forestry.stack("frameImpregnated"), 'c', Items.clay_ball);
     }
 
     public int getIconIndex() {

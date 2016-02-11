@@ -38,7 +38,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
         int y = 4;
         new ControlTextCentered(this, y, "§nProduce").setColour(this.getColour());
         y += 12;
-        new ControlTextCentered(this, y, "§oRate: " + Binnie.Genetics.beeBreedingSystem.getAlleleName((IChromosomeType) EnumBeeChromosome.SPEED, ind.getGenome().getActiveAllele((IChromosomeType) EnumBeeChromosome.SPEED))).setColour(this.getColour());
+        new ControlTextCentered(this, y, "§oRate: " + Binnie.Genetics.beeBreedingSystem.getAlleleName(EnumBeeChromosome.SPEED, ind.getGenome().getActiveAllele(EnumBeeChromosome.SPEED))).setColour(this.getColour());
         y += 20;
         final Collection<ItemStack> refinedProducts = new UniqueItemStackSet();
         final Collection<ItemStack> productList = new UniqueItemStackSet();
@@ -59,7 +59,7 @@ public class AnalystPageProducts extends AnalystPageProduce {
             }
             y += 12;
         }
-        products = (Map<ItemStack, Float>) genome.getPrimary().getSpecialtyChances();
+        products = genome.getPrimary().getSpecialtyChances();
         if (!products.isEmpty()) {
             new ControlTextCentered(this, y, "Specialty Products").setColour(this.getColour());
             y += 12;

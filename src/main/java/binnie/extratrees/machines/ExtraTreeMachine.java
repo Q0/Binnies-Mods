@@ -15,19 +15,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public enum ExtraTreeMachine implements IMachineType {
-    Lumbermill((Class<? extends MachinePackage>) Lumbermill.PackageLumbermill.class),
-    Woodworker((Class<? extends MachinePackage>) Designer.PackageWoodworker.class),
-    Panelworker((Class<? extends MachinePackage>) Designer.PackagePanelworker.class),
-    Nursery((Class<? extends MachinePackage>) Nursery.PackageNursery.class),
-    Press((Class<? extends MachinePackage>) Press.PackagePress.class),
-    Brewery((Class<? extends MachinePackage>) Brewery.PackageBrewery.class),
-    Distillery((Class<? extends MachinePackage>) Distillery.PackageDistillery.class),
-    Glassworker((Class<? extends MachinePackage>) Designer.PackageGlassworker.class),
-    Tileworker((Class<? extends MachinePackage>) Designer.PackageTileworker.class);
+    Lumbermill(Lumbermill.PackageLumbermill.class),
+    Woodworker(Designer.PackageWoodworker.class),
+    Panelworker(Designer.PackagePanelworker.class),
+    Nursery(Nursery.PackageNursery.class),
+    Press(Press.PackagePress.class),
+    Brewery(Brewery.PackageBrewery.class),
+    Distillery(Distillery.PackageDistillery.class),
+    Glassworker(Designer.PackageGlassworker.class),
+    Tileworker(Designer.PackageTileworker.class);
 
     Class<? extends MachinePackage> clss;
 
-    private ExtraTreeMachine(final Class<? extends MachinePackage> clss) {
+    ExtraTreeMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 

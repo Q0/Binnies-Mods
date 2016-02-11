@@ -33,7 +33,7 @@ public enum GeneticsTexture implements IBinnieTexture {
     String texture;
     ResourceType type;
 
-    private GeneticsTexture(final ResourceType base, final String texture) {
+    GeneticsTexture(final ResourceType base, final String texture) {
         this.texture = texture;
         this.type = base;
     }

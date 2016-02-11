@@ -29,8 +29,8 @@ public class MachineRendererLab {
     private ModelMachine model;
 
     public MachineRendererLab() {
-        this.dummyEntityItem = new EntityItem((World) null);
-        this.itemSides = new EntityItem[]{new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null), new EntityItem((World) null)};
+        this.dummyEntityItem = new EntityItem(null);
+        this.itemSides = new EntityItem[]{new EntityItem(null), new EntityItem(null), new EntityItem(null), new EntityItem(null)};
         this.model = new ModelMachine();
         (this.customRenderItem = new RenderItem() {
             public boolean shouldBob() {
@@ -107,9 +107,9 @@ public class MachineRendererLab {
                     break Label_0591;
                 }
             }
-            this.dummyEntityItem.setEntityItemStack((ItemStack) null);
+            this.dummyEntityItem.setEntityItemStack(null);
             for (final EntityItem item2 : this.itemSides) {
-                item2.setEntityItemStack((ItemStack) null);
+                item2.setEntityItemStack(null);
             }
         }
         GL11.glPopMatrix();

@@ -33,7 +33,7 @@ public class ItemIndustrialFrame extends Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         for (final IndustrialFrame frame : IndustrialFrame.values()) {
-            final ItemStack stack = new ItemStack((Item) this);
+            final ItemStack stack = new ItemStack(this);
             final NBTTagCompound nbt = new NBTTagCompound();
             nbt.setInteger("frame", frame.ordinal());
             stack.setTagCompound(nbt);

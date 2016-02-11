@@ -28,6 +28,6 @@ public class SetList<E> extends ArrayList<E> implements Set<E> {
     public boolean addAll(final int index, final Collection<? extends E> c) {
         final Collection<E> copy = new ArrayList<E>(c);
         copy.removeAll(this);
-        return super.addAll(index, (Collection<? extends E>) copy);
+        return super.addAll(index, copy);
     }
 }

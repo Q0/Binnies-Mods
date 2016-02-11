@@ -32,7 +32,7 @@ public class BlockCarpentryPanel extends BlockCarpentry {
         final int by = y - facing.offsetY;
         final int bz = z - facing.offsetZ;
         final Block block = world.getBlock(bx, by, bz);
-        return block != null && block.isSideSolid((IBlockAccess) world, bx, by, bz, facing);
+        return block != null && block.isSideSolid(world, bx, by, bz, facing);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class BlockCarpentryPanel extends BlockCarpentry {
 
     public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block par5) {
         super.onNeighborBlockChange(world, x, y, z, par5);
-        final DesignBlock block = this.getCarpentryBlock((IBlockAccess) world, x, y, z);
+        final DesignBlock block = this.getCarpentryBlock(world, x, y, z);
         if (!isValidPanelPlacement(world, x, y, z, block.getFacing())) {
             for (final ItemStack stack : BlockMetadata.getBlockDropped(this, world, x, y, z, 0)) {
                 this.dropBlockAsItem(world, x, y, z, stack);

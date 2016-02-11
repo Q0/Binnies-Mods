@@ -87,7 +87,7 @@ public class Machine implements INetworkedEntity, INBTTagable, INetwork.TilePack
     }
 
     public <T extends MachineComponent> T getComponent(final Class<T> componentClass) {
-        return (T) (this.hasComponent(componentClass) ? ((T) componentClass.cast(this.componentMap.get(componentClass))) : null);
+        return this.hasComponent(componentClass) ? componentClass.cast(this.componentMap.get(componentClass)) : null;
     }
 
     public <T> T getInterface(final Class<T> interfaceClass) {
@@ -208,7 +208,7 @@ public class Machine implements INetworkedEntity, INBTTagable, INetwork.TilePack
         if (this.owner != null) {
             final NBTTagCompound nbt = new NBTTagCompound();
             NBTUtil.func_152460_a(nbt, this.owner);
-            nbttagcompound.setTag("owner", (NBTBase) nbt);
+            nbttagcompound.setTag("owner", nbt);
         }
     }
 
@@ -248,7 +248,7 @@ public class Machine implements INetworkedEntity, INBTTagable, INetwork.TilePack
         if (nbt.hasNoTags()) {
             return null;
         }
-        return BinnieCore.instance.getNetworkWrapper().getPacketFrom((IMessage) new MessageTileNBT(BinnieCorePacketID.TileDescriptionSync.ordinal(), this.getTileEntity(), nbt).GetMessage());
+        return BinnieCore.instance.getNetworkWrapper().getPacketFrom(new MessageTileNBT(BinnieCorePacketID.TileDescriptionSync.ordinal(), this.getTileEntity(), nbt).GetMessage());
     }
 
     public void syncToNBT(final NBTTagCompound nbt) {

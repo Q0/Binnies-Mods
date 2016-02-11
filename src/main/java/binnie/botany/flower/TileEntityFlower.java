@@ -77,13 +77,13 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (this.owner != null) {
             final NBTTagCompound nbt = new NBTTagCompound();
             NBTUtil.func_152460_a(nbt, this.owner);
-            nbttagcompound.setTag("owner", (NBTBase) nbt);
+            nbttagcompound.setTag("owner", nbt);
         }
         if (this.caterpillar != null) {
             nbttagcompound.setInteger("caterTime", this.matureTime);
             final NBTTagCompound subcompound = new NBTTagCompound();
             this.caterpillar.writeToNBT(subcompound);
-            nbttagcompound.setTag("cater", (NBTBase) subcompound);
+            nbttagcompound.setTag("cater", subcompound);
         }
         nbttagcompound.setByte("section", (byte) this.getSection());
         super.writeToNBT(nbttagcompound);
@@ -107,7 +107,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
     }
 
     public IIndividual getPollen() {
-        return (IIndividual) this.getFlower();
+        return this.getFlower();
     }
 
     public boolean canMateWith(final IIndividual individual) {
@@ -236,13 +236,13 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
                 for (dx3 = 0, dz2 = 0; dx3 == 0 && dz2 == 0; dx3 = rand.nextInt(5) - 2, dz2 = rand.nextInt(5) - 2) {
                 }
                 final TileEntity tile = this.getWorldObj().getTileEntity(this.xCoord + dx3, this.yCoord, this.zCoord + dz2);
-                if (tile instanceof IPollinatable && ((IPollinatable) tile).canMateWith((IIndividual) this.getFlower())) {
-                    ((IPollinatable) tile).mateWith((IIndividual) this.getFlower());
+                if (tile instanceof IPollinatable && ((IPollinatable) tile).canMateWith(this.getFlower())) {
+                    ((IPollinatable) tile).mateWith(this.getFlower());
                 }
             }
         }
         if (this.worldObj.rand.nextFloat() < CHANCE_SELFPOLLINATE && this.flower.hasFlowered() && this.flower.getMate() == null) {
-            this.mateWith((IIndividual) this.getFlower());
+            this.mateWith(this.getFlower());
         }
         this.spawnButterflies();
         this.matureCaterpillar();
@@ -255,7 +255,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (this.getFlower().getAge() == 1) {
             Gardening.onGrowFromSeed(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             if (this.getOwner() != null && this.getFlower() != null) {
-                BotanyCore.getFlowerRoot().getBreedingTracker(this.getWorldObj(), this.getOwner()).registerBirth((IIndividual) this.getFlower());
+                BotanyCore.getFlowerRoot().getBreedingTracker(this.getWorldObj(), this.getOwner()).registerBirth(this.getFlower());
             }
         }
     }
@@ -264,7 +264,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (this.renderInfo == null && this.getFlower() != null && this.getFlower().getGenome() != null) {
             this.renderInfo = new RenderInfo(this.getFlower(), this);
         }
-        return (this.renderInfo != null) ? Botany.instance.getNetworkWrapper().getPacketFrom((IMessage) new MessageFlowerUpdate(this.xCoord, this.yCoord, this.zCoord, this.renderInfo).GetMessage()) : null;
+        return (this.renderInfo != null) ? Botany.instance.getNetworkWrapper().getPacketFrom(new MessageFlowerUpdate(this.xCoord, this.yCoord, this.zCoord, this.renderInfo).GetMessage()) : null;
     }
 
     public void updateRender(final boolean update) {
@@ -295,7 +295,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (this.flower == null) {
             return null;
         }
-        return Binnie.Genetics.getFlowerRoot().getMemberStack((IIndividual) this.getFlower(), (this.flower.getAge() == 0) ? EnumFlowerStage.SEED.ordinal() : EnumFlowerStage.FLOWER.ordinal());
+        return Binnie.Genetics.getFlowerRoot().getMemberStack(this.getFlower(), (this.flower.getAge() == 0) ? EnumFlowerStage.SEED.ordinal() : EnumFlowerStage.FLOWER.ordinal());
     }
 
     private TileEntityFlower getRoot() {
@@ -314,14 +314,14 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
             final Random rand = new Random();
             final IFlower cutting = (IFlower) this.getFlower().copy();
             cutting.setAge(0);
-            final ItemStack cuttingStack = BotanyCore.getFlowerRoot().getMemberStack((IIndividual) cutting, EnumFlowerStage.SEED.ordinal());
+            final ItemStack cuttingStack = BotanyCore.getFlowerRoot().getMemberStack(cutting, EnumFlowerStage.SEED.ordinal());
             final float f = 0.7f;
             final double d = rand.nextFloat() * f + (1.0f - f) * 0.5;
             final double d2 = rand.nextFloat() * f + (1.0f - f) * 0.5;
             final double d3 = rand.nextFloat() * f + (1.0f - f) * 0.5;
             final EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + d, this.yCoord + d2, this.zCoord + d3, cuttingStack);
             entityitem.delayBeforeCanPickup = 10;
-            this.worldObj.spawnEntityInWorld((Entity) entityitem);
+            this.worldObj.spawnEntityInWorld(entityitem);
             for (int maxAge = this.getFlower().getMaxAge(), i = 0; i < maxAge; ++i) {
                 if (rand.nextBoolean()) {
                     this.getFlower().age();
@@ -358,7 +358,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
 
     public void kill() {
         if (this.flower.getAge() > 0) {
-            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, (Block) Botany.plant, BlockPlant.Type.DeadFlower.ordinal(), 2);
+            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Botany.plant, BlockPlant.Type.DeadFlower.ordinal(), 2);
         } else {
             this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
         }
@@ -493,7 +493,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
     }
 
     public IIndividual getNanny() {
-        return (IIndividual) this.getFlower();
+        return this.getFlower();
     }
 
     public boolean canNurse(final IButterfly butterfly) {

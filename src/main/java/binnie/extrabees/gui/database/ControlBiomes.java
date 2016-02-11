@@ -32,7 +32,7 @@ public class ControlBiomes extends Control implements ITooltip {
         final int y = (int) (this.getRelativeMousePosition().y() / 16.0f);
         final int i = x + y * 8;
         if (i < this.tolerated.size()) {
-            list.add(BiomeGenBase.getBiome((int) this.tolerated.get(i)).biomeName);
+            list.add(BiomeGenBase.getBiome(this.tolerated.get(i)).biomeName);
         }
     }
 

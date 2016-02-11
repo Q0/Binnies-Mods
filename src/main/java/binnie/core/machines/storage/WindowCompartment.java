@@ -92,17 +92,17 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                 return new ControlTabIcon<Integer>(this, x, y, w, h, value) {
                     @Override
                     public ItemStack getItemStack() {
-                        return WindowCompartment.this.getTab((int) this.value).getIcon();
+                        return WindowCompartment.this.getTab(this.value).getIcon();
                     }
 
                     @Override
                     public String getName() {
-                        return WindowCompartment.this.getTab((int) this.value).getName();
+                        return WindowCompartment.this.getTab(this.value).getName();
                     }
 
                     @Override
                     public int getOutlineColour() {
-                        return WindowCompartment.this.getTab((int) this.value).getColor().getColour();
+                        return WindowCompartment.this.getTab(this.value).getColor().getColour();
                     }
 
                     @Override
@@ -159,17 +159,17 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                     return new ControlTabIcon<Integer>(this, x, y, w, h, value) {
                         @Override
                         public ItemStack getItemStack() {
-                            return WindowCompartment.this.getTab((int) this.value).getIcon();
+                            return WindowCompartment.this.getTab(this.value).getIcon();
                         }
 
                         @Override
                         public String getName() {
-                            return WindowCompartment.this.getTab((int) this.value).getName();
+                            return WindowCompartment.this.getTab(this.value).getName();
                         }
 
                         @Override
                         public int getOutlineColour() {
-                            return WindowCompartment.this.getTab((int) this.value).getColor().getColour();
+                            return WindowCompartment.this.getTab(this.value).getColor().getColour();
                         }
 
                         @Override
@@ -304,7 +304,7 @@ public class WindowCompartment extends WindowMachine implements IWindowAffectsSh
                 new ControlTextEdit(this, 16.0f, 16.0f, 100.0f, 14.0f).addEventHandler(new EventTextEdit.Handler() {
                     @Override
                     public void onEvent(final EventTextEdit event) {
-                        textSearch = (String) event.value;
+                        textSearch = event.value;
                         updateSearch();
                     }
                 });

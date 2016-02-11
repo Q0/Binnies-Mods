@@ -72,7 +72,7 @@ public class PageSpeciesFlowerGenome extends PageSpecies {
         new ControlText(contents, new IArea(w2, y, w3, th), "" + String.format("%.2f", lifespan) + " days", TextJustification.MiddleLeft);
         y += th;
         new ControlText(contents, new IArea(0.0f, y, w2, th), "Nectar : ", TextJustification.MiddleRight);
-        new ControlText(contents, new IArea(w2, y, w3, th), genome.getActiveAllele((IChromosomeType) EnumFlowerChromosome.SAPPINESS).getName(), TextJustification.MiddleLeft);
+        new ControlText(contents, new IArea(w2, y, w3, th), genome.getActiveAllele(EnumFlowerChromosome.SAPPINESS).getName(), TextJustification.MiddleLeft);
         y += th;
         int x = w2;
         int tot = 0;
@@ -82,7 +82,7 @@ public class PageSpeciesFlowerGenome extends PageSpecies {
                     x -= 54;
                     y += 18;
                 }
-                final ItemStack stack = BotanyCore.getFlowerRoot().getMemberStack((IIndividual) vid, EnumFlowerStage.FLOWER.ordinal());
+                final ItemStack stack = BotanyCore.getFlowerRoot().getMemberStack(vid, EnumFlowerStage.FLOWER.ordinal());
                 final ControlItemDisplay display = new ControlItemDisplay(contents, x, y);
                 display.setItemStack(stack);
                 ++tot;

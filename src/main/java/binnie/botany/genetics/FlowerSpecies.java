@@ -20,53 +20,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum FlowerSpecies implements IAlleleFlowerSpecies {
-    Dandelion("Dandelion", "taraxacum", "officinale", (IFlowerType) EnumFlowerType.Dandelion, EnumFlowerColor.Yellow),
-    Poppy("Poppy", "papaver", "rhoeas", (IFlowerType) EnumFlowerType.Poppy, EnumFlowerColor.Red),
-    Orchid("Orchid", "vanda", "coerulea", (IFlowerType) EnumFlowerType.Orchid, EnumFlowerColor.DeepSkyBlue),
-    Allium("Allium", "allium", "giganteum", (IFlowerType) EnumFlowerType.Allium, EnumFlowerColor.MediumPurple),
-    Bluet("Bluet", "houstonia", "caerulea", (IFlowerType) EnumFlowerType.Bluet, EnumFlowerColor.Lavender, EnumFlowerColor.Khaki),
-    Tulip("Tulip", "tulipa", "agenensis", (IFlowerType) EnumFlowerType.Tulip, EnumFlowerColor.Violet),
-    Daisy("Daisy", "leucanthemum", "vulgare", (IFlowerType) EnumFlowerType.Daisy, EnumFlowerColor.White, EnumFlowerColor.Yellow),
-    Cornflower("Cornflower", "centaurea", "cyanus", (IFlowerType) EnumFlowerType.Cornflower, EnumFlowerColor.SkyBlue),
-    Pansy("Pansy", "viola", "tricolor", (IFlowerType) EnumFlowerType.Pansy, EnumFlowerColor.Pink, EnumFlowerColor.Purple),
-    Iris("Iris", "iris", "germanica", (IFlowerType) EnumFlowerType.Iris, EnumFlowerColor.LightGray, EnumFlowerColor.Purple),
-    Lavender("Lavender", "Lavandula", "angustifolia", (IFlowerType) EnumFlowerType.Lavender, EnumFlowerColor.MediumOrchid),
-    Viola("Viola", "viola", "odorata", (IFlowerType) EnumFlowerType.Viola, EnumFlowerColor.MediumPurple, EnumFlowerColor.SlateBlue),
-    Daffodil("Daffodil", "narcissus", "pseudonarcissus", (IFlowerType) EnumFlowerType.Daffodil, EnumFlowerColor.Yellow, EnumFlowerColor.Gold),
-    Dahlia("Dahlia", "dahlia", "variabilis", (IFlowerType) EnumFlowerType.Dahlia, EnumFlowerColor.HotPink, EnumFlowerColor.DeepPink),
-    Peony("Peony", "paeonia", "suffruticosa", (IFlowerType) EnumFlowerType.Peony, EnumFlowerColor.Thistle),
-    Rose("Rose", "rosa", "rubiginosa", (IFlowerType) EnumFlowerType.Rose, EnumFlowerColor.Red),
-    Lilac("Lilac", "syringa", "vulgaris", (IFlowerType) EnumFlowerType.Lilac, EnumFlowerColor.Plum),
-    Hydrangea("Hydrangea", "hydrangea", "macrophylla", (IFlowerType) EnumFlowerType.Hydrangea, EnumFlowerColor.DeepSkyBlue),
-    Foxglove("Foxglove", "digitalis", "purpurea", (IFlowerType) EnumFlowerType.Foxglove, EnumFlowerColor.HotPink),
-    Zinnia("Zinnia", "zinnia", "elegans", (IFlowerType) EnumFlowerType.Zinnia, EnumFlowerColor.MediumVioletRed, EnumFlowerColor.Yellow),
-    Chrysanthemum("Chrysanthemum", "chrysanthemum", "\u00ef¿½ grandiflorum", (IFlowerType) EnumFlowerType.Mums, EnumFlowerColor.Violet),
-    Marigold("Marigold", "calendula", "officinalis", (IFlowerType) EnumFlowerType.Marigold, EnumFlowerColor.Gold, EnumFlowerColor.DarkOrange),
-    Geranium("Geranium", "geranium", "maderense", (IFlowerType) EnumFlowerType.Geranium, EnumFlowerColor.DeepPink),
-    Azalea("Azalea", "rhododendrons", "aurigeranum", (IFlowerType) EnumFlowerType.Azalea, EnumFlowerColor.HotPink),
-    Primrose("Primrose", "primula", "vulgaris", (IFlowerType) EnumFlowerType.Primrose, EnumFlowerColor.Red, EnumFlowerColor.Gold),
-    Aster("Aster", "aster", "amellus", (IFlowerType) EnumFlowerType.Aster, EnumFlowerColor.MediumPurple, EnumFlowerColor.Goldenrod),
-    Carnation("Carnation", "dianthus", "caryophyllus", (IFlowerType) EnumFlowerType.Carnation, EnumFlowerColor.Crimson, EnumFlowerColor.White),
-    Lily("Lily", "lilium", "auratum", (IFlowerType) EnumFlowerType.Lily, EnumFlowerColor.Pink, EnumFlowerColor.Gold),
-    Yarrow("Yarrow", "achillea", "millefolium", (IFlowerType) EnumFlowerType.Yarrow, EnumFlowerColor.Yellow),
-    Petunia("Petunia", "petunia", "\u00ef¿½ atkinsiana", (IFlowerType) EnumFlowerType.Petunia, EnumFlowerColor.MediumVioletRed, EnumFlowerColor.Thistle),
-    Agapanthus("Agapanthus", "agapanthus", "praecox", (IFlowerType) EnumFlowerType.Agapanthus, EnumFlowerColor.DeepSkyBlue),
-    Fuchsia("Fuchsia", "fuchsia", "magellanica", (IFlowerType) EnumFlowerType.Fuchsia, EnumFlowerColor.DeepPink, EnumFlowerColor.MediumOrchid),
-    Dianthus("Dianthus", "dianthus", "barbatus", (IFlowerType) EnumFlowerType.Dianthus, EnumFlowerColor.Crimson, EnumFlowerColor.HotPink),
-    Forget("Forget-me-nots", "myosotis", "arvensis", (IFlowerType) EnumFlowerType.Forget, EnumFlowerColor.LightSteelBlue),
-    Anemone("Anemone", "anemone", "coronaria", (IFlowerType) EnumFlowerType.Anemone, EnumFlowerColor.Red, EnumFlowerColor.MistyRose),
-    Aquilegia("Aquilegia", "aquilegia", "vulgaris", (IFlowerType) EnumFlowerType.Aquilegia, EnumFlowerColor.SlateBlue, EnumFlowerColor.Thistle),
-    Edelweiss("Edelweiss", "leontopodium", "alpinum", (IFlowerType) EnumFlowerType.Edelweiss, EnumFlowerColor.White, EnumFlowerColor.Khaki),
-    Scabious("Scabious", "scabiosa", "columbaria", (IFlowerType) EnumFlowerType.Scabious, EnumFlowerColor.RoyalBlue),
-    Coneflower("Coneflower", "echinacea", "purpurea", (IFlowerType) EnumFlowerType.Coneflower, EnumFlowerColor.Violet, EnumFlowerColor.DarkOrange),
-    Gaillardia("Gaillardia", "gaillardia", "aristata", (IFlowerType) EnumFlowerType.Gaillardia, EnumFlowerColor.DarkOrange, EnumFlowerColor.Yellow),
-    Auricula("Auricula", "primula", "auricula", (IFlowerType) EnumFlowerType.Auricula, EnumFlowerColor.Red, EnumFlowerColor.Yellow),
-    Camellia("Camellia", "camellia", "japonica", (IFlowerType) EnumFlowerType.Camellia, EnumFlowerColor.Crimson),
-    Goldenrod("Goldenrod", "solidago", "canadensis", (IFlowerType) EnumFlowerType.Goldenrod, EnumFlowerColor.Gold),
-    Althea("Althea", "althaea", "officinalis", (IFlowerType) EnumFlowerType.Althea, EnumFlowerColor.Thistle, EnumFlowerColor.MediumOrchid),
-    Penstemon("Penstemon", "penstemon", "digitalis", (IFlowerType) EnumFlowerType.Penstemon, EnumFlowerColor.MediumOrchid, EnumFlowerColor.Thistle),
-    Delphinium("Delphinium", "delphinium", "staphisagria", (IFlowerType) EnumFlowerType.Delphinium, EnumFlowerColor.DarkSlateBlue),
-    Hollyhock("Hollyhock", "Alcea", "rosea", (IFlowerType) EnumFlowerType.Hollyhock, EnumFlowerColor.Black, EnumFlowerColor.Gold);
+    Dandelion("Dandelion", "taraxacum", "officinale", EnumFlowerType.Dandelion, EnumFlowerColor.Yellow),
+    Poppy("Poppy", "papaver", "rhoeas", EnumFlowerType.Poppy, EnumFlowerColor.Red),
+    Orchid("Orchid", "vanda", "coerulea", EnumFlowerType.Orchid, EnumFlowerColor.DeepSkyBlue),
+    Allium("Allium", "allium", "giganteum", EnumFlowerType.Allium, EnumFlowerColor.MediumPurple),
+    Bluet("Bluet", "houstonia", "caerulea", EnumFlowerType.Bluet, EnumFlowerColor.Lavender, EnumFlowerColor.Khaki),
+    Tulip("Tulip", "tulipa", "agenensis", EnumFlowerType.Tulip, EnumFlowerColor.Violet),
+    Daisy("Daisy", "leucanthemum", "vulgare", EnumFlowerType.Daisy, EnumFlowerColor.White, EnumFlowerColor.Yellow),
+    Cornflower("Cornflower", "centaurea", "cyanus", EnumFlowerType.Cornflower, EnumFlowerColor.SkyBlue),
+    Pansy("Pansy", "viola", "tricolor", EnumFlowerType.Pansy, EnumFlowerColor.Pink, EnumFlowerColor.Purple),
+    Iris("Iris", "iris", "germanica", EnumFlowerType.Iris, EnumFlowerColor.LightGray, EnumFlowerColor.Purple),
+    Lavender("Lavender", "Lavandula", "angustifolia", EnumFlowerType.Lavender, EnumFlowerColor.MediumOrchid),
+    Viola("Viola", "viola", "odorata", EnumFlowerType.Viola, EnumFlowerColor.MediumPurple, EnumFlowerColor.SlateBlue),
+    Daffodil("Daffodil", "narcissus", "pseudonarcissus", EnumFlowerType.Daffodil, EnumFlowerColor.Yellow, EnumFlowerColor.Gold),
+    Dahlia("Dahlia", "dahlia", "variabilis", EnumFlowerType.Dahlia, EnumFlowerColor.HotPink, EnumFlowerColor.DeepPink),
+    Peony("Peony", "paeonia", "suffruticosa", EnumFlowerType.Peony, EnumFlowerColor.Thistle),
+    Rose("Rose", "rosa", "rubiginosa", EnumFlowerType.Rose, EnumFlowerColor.Red),
+    Lilac("Lilac", "syringa", "vulgaris", EnumFlowerType.Lilac, EnumFlowerColor.Plum),
+    Hydrangea("Hydrangea", "hydrangea", "macrophylla", EnumFlowerType.Hydrangea, EnumFlowerColor.DeepSkyBlue),
+    Foxglove("Foxglove", "digitalis", "purpurea", EnumFlowerType.Foxglove, EnumFlowerColor.HotPink),
+    Zinnia("Zinnia", "zinnia", "elegans", EnumFlowerType.Zinnia, EnumFlowerColor.MediumVioletRed, EnumFlowerColor.Yellow),
+    Chrysanthemum("Chrysanthemum", "chrysanthemum", "\u00ef¿½ grandiflorum", EnumFlowerType.Mums, EnumFlowerColor.Violet),
+    Marigold("Marigold", "calendula", "officinalis", EnumFlowerType.Marigold, EnumFlowerColor.Gold, EnumFlowerColor.DarkOrange),
+    Geranium("Geranium", "geranium", "maderense", EnumFlowerType.Geranium, EnumFlowerColor.DeepPink),
+    Azalea("Azalea", "rhododendrons", "aurigeranum", EnumFlowerType.Azalea, EnumFlowerColor.HotPink),
+    Primrose("Primrose", "primula", "vulgaris", EnumFlowerType.Primrose, EnumFlowerColor.Red, EnumFlowerColor.Gold),
+    Aster("Aster", "aster", "amellus", EnumFlowerType.Aster, EnumFlowerColor.MediumPurple, EnumFlowerColor.Goldenrod),
+    Carnation("Carnation", "dianthus", "caryophyllus", EnumFlowerType.Carnation, EnumFlowerColor.Crimson, EnumFlowerColor.White),
+    Lily("Lily", "lilium", "auratum", EnumFlowerType.Lily, EnumFlowerColor.Pink, EnumFlowerColor.Gold),
+    Yarrow("Yarrow", "achillea", "millefolium", EnumFlowerType.Yarrow, EnumFlowerColor.Yellow),
+    Petunia("Petunia", "petunia", "\u00ef¿½ atkinsiana", EnumFlowerType.Petunia, EnumFlowerColor.MediumVioletRed, EnumFlowerColor.Thistle),
+    Agapanthus("Agapanthus", "agapanthus", "praecox", EnumFlowerType.Agapanthus, EnumFlowerColor.DeepSkyBlue),
+    Fuchsia("Fuchsia", "fuchsia", "magellanica", EnumFlowerType.Fuchsia, EnumFlowerColor.DeepPink, EnumFlowerColor.MediumOrchid),
+    Dianthus("Dianthus", "dianthus", "barbatus", EnumFlowerType.Dianthus, EnumFlowerColor.Crimson, EnumFlowerColor.HotPink),
+    Forget("Forget-me-nots", "myosotis", "arvensis", EnumFlowerType.Forget, EnumFlowerColor.LightSteelBlue),
+    Anemone("Anemone", "anemone", "coronaria", EnumFlowerType.Anemone, EnumFlowerColor.Red, EnumFlowerColor.MistyRose),
+    Aquilegia("Aquilegia", "aquilegia", "vulgaris", EnumFlowerType.Aquilegia, EnumFlowerColor.SlateBlue, EnumFlowerColor.Thistle),
+    Edelweiss("Edelweiss", "leontopodium", "alpinum", EnumFlowerType.Edelweiss, EnumFlowerColor.White, EnumFlowerColor.Khaki),
+    Scabious("Scabious", "scabiosa", "columbaria", EnumFlowerType.Scabious, EnumFlowerColor.RoyalBlue),
+    Coneflower("Coneflower", "echinacea", "purpurea", EnumFlowerType.Coneflower, EnumFlowerColor.Violet, EnumFlowerColor.DarkOrange),
+    Gaillardia("Gaillardia", "gaillardia", "aristata", EnumFlowerType.Gaillardia, EnumFlowerColor.DarkOrange, EnumFlowerColor.Yellow),
+    Auricula("Auricula", "primula", "auricula", EnumFlowerType.Auricula, EnumFlowerColor.Red, EnumFlowerColor.Yellow),
+    Camellia("Camellia", "camellia", "japonica", EnumFlowerType.Camellia, EnumFlowerColor.Crimson),
+    Goldenrod("Goldenrod", "solidago", "canadensis", EnumFlowerType.Goldenrod, EnumFlowerColor.Gold),
+    Althea("Althea", "althaea", "officinalis", EnumFlowerType.Althea, EnumFlowerColor.Thistle, EnumFlowerColor.MediumOrchid),
+    Penstemon("Penstemon", "penstemon", "digitalis", EnumFlowerType.Penstemon, EnumFlowerColor.MediumOrchid, EnumFlowerColor.Thistle),
+    Delphinium("Delphinium", "delphinium", "staphisagria", EnumFlowerType.Delphinium, EnumFlowerColor.DarkSlateBlue),
+    Hollyhock("Hollyhock", "Alcea", "rosea", EnumFlowerType.Hollyhock, EnumFlowerColor.Black, EnumFlowerColor.Gold);
 
     EnumFlowerColor stemColor;
     ForestryAllele.Fertility fert;
@@ -87,11 +87,11 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
     List<IAllele[]> variantTemplates;
     IClassification branch;
 
-    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor colour) {
+    FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor colour) {
         this(name, branch, binomial, type, colour, colour);
     }
 
-    private FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor primaryColor, final EnumFlowerColor secondaryColor) {
+    FlowerSpecies(final String name, final String branch, final String binomial, final IFlowerType type, final EnumFlowerColor primaryColor, final EnumFlowerColor secondaryColor) {
         this.stemColor = EnumFlowerColor.Green;
         this.temperature = EnumTemperature.NORMAL;
         this.pH = EnumAcidity.Neutral;
@@ -336,19 +336,19 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
         FlowerSpecies.Penstemon.setStemColor(EnumFlowerColor.OliveDrab);
         FlowerSpecies.Delphinium.setStemColor(EnumFlowerColor.DarkSeaGreen);
         FlowerSpecies.Hollyhock.setStemColor(EnumFlowerColor.Green);
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.yellow_flower, 1, 0), FlowerSpecies.Dandelion.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 0), FlowerSpecies.Poppy.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 1), FlowerSpecies.Orchid.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 2), FlowerSpecies.Allium.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 3), FlowerSpecies.Bluet.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 7), FlowerSpecies.Tulip.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 8), FlowerSpecies.Daisy.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.double_plant, 1, 1), FlowerSpecies.Lilac.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.double_plant, 1, 4), FlowerSpecies.Rose.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.double_plant, 1, 5), FlowerSpecies.Peony.getTemplate());
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 6), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.White));
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 4), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.Crimson));
-        BotanyCore.getFlowerRoot().addConversion(new ItemStack((Block) Blocks.red_flower, 1, 5), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.DarkOrange));
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.yellow_flower, 1, 0), FlowerSpecies.Dandelion.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 0), FlowerSpecies.Poppy.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 1), FlowerSpecies.Orchid.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 2), FlowerSpecies.Allium.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 3), FlowerSpecies.Bluet.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 7), FlowerSpecies.Tulip.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 8), FlowerSpecies.Daisy.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.double_plant, 1, 1), FlowerSpecies.Lilac.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.double_plant, 1, 4), FlowerSpecies.Rose.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.double_plant, 1, 5), FlowerSpecies.Peony.getTemplate());
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 6), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.White));
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 4), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.Crimson));
+        BotanyCore.getFlowerRoot().addConversion(new ItemStack(Blocks.red_flower, 1, 5), FlowerSpecies.Tulip.AddVariant(EnumFlowerColor.DarkOrange));
         for (final FlowerSpecies species : values()) {
             final String scientific = species.branchName.substring(0, 1).toUpperCase() + species.branchName.substring(1).toLowerCase();
             final String uid = "flowers." + species.branchName.toLowerCase();
@@ -356,7 +356,7 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
             if (branch == null) {
                 branch = AlleleManager.alleleRegistry.createAndRegisterClassification(IClassification.EnumClassLevel.GENUS, uid, scientific);
             }
-            (species.branch = branch).addMemberSpecies((IAlleleSpecies) species);
+            (species.branch = branch).addMemberSpecies(species);
         }
     }
 
@@ -374,13 +374,13 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
     }
 
     private void setMutation(final FlowerSpecies dandelion2, final FlowerSpecies tulip2, final int i) {
-        BotanyCore.getFlowerRoot().registerMutation((IMutation) new FlowerMutation((IAllele) dandelion2, (IAllele) tulip2, this.getTemplate(), i));
+        BotanyCore.getFlowerRoot().registerMutation(new FlowerMutation(dandelion2, tulip2, this.getTemplate(), i));
     }
 
     private IAllele[] AddVariant(final EnumFlowerColor a, final EnumFlowerColor b) {
         final IAllele[] template = this.getTemplate();
-        template[EnumFlowerChromosome.PRIMARY.ordinal()] = (IAllele) a.getAllele();
-        template[EnumFlowerChromosome.SECONDARY.ordinal()] = (IAllele) b.getAllele();
+        template[EnumFlowerChromosome.PRIMARY.ordinal()] = a.getAllele();
+        template[EnumFlowerChromosome.SECONDARY.ordinal()] = b.getAllele();
         this.variantTemplates.add(template);
         return template;
     }
@@ -472,16 +472,16 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
 
     public IAllele[] getTemplate() {
         final IAllele[] template = FlowerTemplates.getDefaultTemplate();
-        template[0] = (IAllele) this;
-        template[EnumFlowerChromosome.PRIMARY.ordinal()] = (IAllele) this.primaryColor.getAllele();
-        template[EnumFlowerChromosome.SECONDARY.ordinal()] = (IAllele) this.secondaryColor.getAllele();
+        template[0] = this;
+        template[EnumFlowerChromosome.PRIMARY.ordinal()] = this.primaryColor.getAllele();
+        template[EnumFlowerChromosome.SECONDARY.ordinal()] = this.secondaryColor.getAllele();
         template[EnumFlowerChromosome.TEMPERATURE_TOLERANCE.ordinal()] = Binnie.Genetics.getToleranceAllele(this.tempTolerance);
         template[EnumFlowerChromosome.PH_TOLERANCE.ordinal()] = Binnie.Genetics.getToleranceAllele(this.pHTolerance);
         template[EnumFlowerChromosome.HUMIDITY_TOLERANCE.ordinal()] = Binnie.Genetics.getToleranceAllele(this.moistureTolerance);
         template[EnumFlowerChromosome.FERTILITY.ordinal()] = this.fert.getAllele();
         template[EnumFlowerChromosome.LIFESPAN.ordinal()] = this.life.getAllele();
         template[EnumFlowerChromosome.SAPPINESS.ordinal()] = this.sap.getAllele();
-        template[EnumFlowerChromosome.STEM.ordinal()] = (IAllele) this.stemColor.getAllele();
+        template[EnumFlowerChromosome.STEM.ordinal()] = this.stemColor.getAllele();
         return template;
     }
 
@@ -491,7 +491,7 @@ public enum FlowerSpecies implements IAlleleFlowerSpecies {
     }
 
     public ISpeciesRoot getRoot() {
-        return (ISpeciesRoot) BotanyCore.getFlowerRoot();
+        return BotanyCore.getFlowerRoot();
     }
 
     public int getIconColour(final int renderPass) {

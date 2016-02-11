@@ -74,7 +74,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
     String fx;
     private String uid;
 
-    private ExtraBeesEffect() {
+    ExtraBeesEffect() {
         this.fx = "";
         this.uid = this.toString().toLowerCase();
         this.combinable = false;
@@ -102,7 +102,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
         if (block == Blocks.cobblestone || block == Blocks.stone) {
             world.setBlock(x, y, z, Blocks.gravel, 0, 0);
         } else if (block == Blocks.dirt | block == Blocks.grass) {
-            world.setBlock(x, y, z, (Block) Blocks.sand, 0, 0);
+            world.setBlock(x, y, z, Blocks.sand, 0, 0);
         }
     }
 
@@ -144,7 +144,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
     }
 
     public void register() {
-        AlleleManager.alleleRegistry.registerAllele((IAllele) this);
+        AlleleManager.alleleRegistry.registerAllele(this);
     }
 
     public boolean isCombinable() {
@@ -184,7 +184,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
                 final double var8 = z + (world.rand.nextDouble() - world.rand.nextDouble()) * 4.0;
                 var4.setLocationAndAngles(var6, var7, var8, world.rand.nextFloat() * 360.0f, 0.0f);
                 if (var4.getCanSpawnHere()) {
-                    world.spawnEntityInWorld((Entity) var4);
+                    world.spawnEntityInWorld(var4);
                     world.playAuxSFX(2004, x, y, z, 0);
                     var4.spawnExplosionParticle();
                 }
@@ -253,14 +253,14 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
             }
             case LIGHTNING: {
                 if (world.rand.nextInt(100) < 1 && world.canBlockSeeTheSky(x1, y1, z1) && world instanceof WorldServer) {
-                    ((WorldServer) world).addWeatherEffect((Entity) new EntityBeeLightning(world, x1, y1, z1));
+                    world.addWeatherEffect(new EntityBeeLightning(world, x1, y1, z1));
                     break;
                 }
                 break;
             }
             case METEOR: {
                 if (world.rand.nextInt(100) < 1 && world.canBlockSeeTheSky(x1, y1, z1)) {
-                    ((WorldServer) world).spawnEntityInWorld((Entity) new EntitySmallFireball(world, (double) x1, (double) (y1 + 64), (double) z1, 0.0, -0.6, 0.0));
+                    world.spawnEntityInWorld(new EntitySmallFireball(world, (double) x1, (double) (y1 + 64), (double) z1, 0.0, -0.6, 0.0));
                     break;
                 }
                 break;
@@ -376,7 +376,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
                     }
                     final EntityFireworkRocket var11 = new EntityFireworkRocket(world, (double) x1, (double) y1, (double) z1, firework.getFirework());
                     if (world.canBlockSeeTheSky(x1, y1, z1)) {
-                        ((WorldServer) world).spawnEntityInWorld((Entity) var11);
+                        world.spawnEntityInWorld(var11);
                     }
                     break;
                 }
@@ -453,7 +453,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
                     return null;
                 }
                 if (ExtraBeesFlowers.Sapling.isAcceptedFlower(world, null, x1, y1, z1)) {
-                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, (EntityPlayer) null);
+                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, null);
                     break;
                 }
                 break;
@@ -463,7 +463,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
                     return null;
                 }
                 if (ExtraBeesFlowers.Fruit.isAcceptedFlower(world, null, x1, y1, z1)) {
-                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, (EntityPlayer) null);
+                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, null);
                     break;
                 }
                 break;
@@ -473,7 +473,7 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
                     return null;
                 }
                 if (world.getBlock(x1, y1, z1) == Blocks.brown_mushroom || world.getBlock(x1, y1, z1) == Blocks.red_mushroom) {
-                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, (EntityPlayer) null);
+                    ItemDye.applyBonemeal(new ItemStack(Blocks.dirt, 1), world, x1, y1, z1, null);
                     break;
                 }
                 break;

@@ -8,11 +8,11 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public enum AdvGeneticMachine implements IMachineType {
-    Splicer((Class<? extends MachinePackage>) Splicer.PackageSplicer.class);
+    Splicer(Splicer.PackageSplicer.class);
 
     Class<? extends MachinePackage> clss;
 
-    private AdvGeneticMachine(final Class<? extends MachinePackage> clss) {
+    AdvGeneticMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
@@ -27,7 +27,7 @@ public enum AdvGeneticMachine implements IMachineType {
     }
 
     public ItemStack get(final int i) {
-        return new ItemStack((Block) Genetics.packageAdvGenetic.getBlock(), i, this.ordinal());
+        return new ItemStack(Genetics.packageAdvGenetic.getBlock(), i, this.ordinal());
     }
 
     public abstract static class PackageAdvGeneticBase extends GeneticMachine.PackageGeneticBase {

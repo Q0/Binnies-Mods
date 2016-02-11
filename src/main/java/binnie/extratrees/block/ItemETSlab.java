@@ -38,12 +38,12 @@ public class ItemETSlab extends ItemMetadata {
         }
         final Block i1 = par3World.getBlock(par4, par5, par6);
         final int j1 = par3World.getBlockMetadata(par4, par5, par6);
-        final int tileMeta = TileEntityMetadata.getTileMetadata((IBlockAccess) par3World, par4, par5, par6);
+        final int tileMeta = TileEntityMetadata.getTileMetadata(par3World, par4, par5, par6);
         final int k1 = j1 & 0x7;
         final boolean flag = (j1 & 0x8) != 0x0;
         if (((par7 == 1 && !flag) || (par7 == 0 && flag)) && i1 == this.theHalfSlab && tileMeta == par1ItemStack.getItemDamage()) {
-            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, (Block) this.doubleSlab, k1, 3)) {
-                final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) par3World, par4, par5, par6);
+            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab, k1, 3)) {
+                final TileEntityMetadata tile = TileEntityMetadata.getTile(par3World, par4, par5, par6);
                 if (tile != null) {
                     tile.setTileMetadata(tileMeta, true);
                 }
@@ -76,10 +76,10 @@ public class ItemETSlab extends ItemMetadata {
         final Block i1 = par3World.getBlock(par4, par5, par6);
         final int j1 = par3World.getBlockMetadata(par4, par5, par6);
         final int k1 = j1 & 0x7;
-        final int tileMeta = TileEntityMetadata.getTileMetadata((IBlockAccess) par3World, par4, par5, par6);
+        final int tileMeta = TileEntityMetadata.getTileMetadata(par3World, par4, par5, par6);
         if (i1 == this.theHalfSlab && tileMeta == par1ItemStack.getItemDamage()) {
-            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, (Block) this.doubleSlab, k1, 3)) {
-                final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) par3World, par4, par5, par6);
+            if (par3World.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlab, k1, 3)) {
+                final TileEntityMetadata tile = TileEntityMetadata.getTile(par3World, par4, par5, par6);
                 if (tile != null) {
                     tile.setTileMetadata(tileMeta, false);
                     par3World.markBlockForUpdate(par4, par5, par6);

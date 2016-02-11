@@ -17,11 +17,11 @@ public class ControlColourMixBox extends ControlListBox<IColourMix> {
 
     @Override
     public IWidget createOption(final IColourMix value, final int y) {
-        return new ControlColourMixItem(((ControlScrollableContent<ControlList<IColourMix>>) this).getContent(), value, y);
+        return new ControlColourMixItem(this.getContent(), value, y);
     }
 
     enum Type {
         Resultant,
-        Further;
+        Further
     }
 }

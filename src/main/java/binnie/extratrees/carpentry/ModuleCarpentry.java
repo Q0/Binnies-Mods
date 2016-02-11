@@ -28,7 +28,7 @@ public class ModuleCarpentry implements IInitializable {
     }
 
     public static ItemStack getItemStack(final BlockDesign block, final int type1, final int type2, final int design) {
-        return TileEntityMetadata.getItemStack((Block) block, getMetadata(type1, type2, design, 0, ForgeDirection.UP.ordinal()));
+        return TileEntityMetadata.getItemStack(block, getMetadata(type1, type2, design, 0, ForgeDirection.UP.ordinal()));
     }
 
     public static ItemStack getItemStack(final BlockDesign blockC, final DesignBlock block) {
@@ -78,13 +78,13 @@ public class ModuleCarpentry implements IInitializable {
         ExtraTrees.blockCarpentry = new BlockCarpentry();
         ExtraTrees.blockPanel = new BlockCarpentryPanel();
         ExtraTrees.blockStained = new BlockStainedDesign();
-        GameRegistry.registerBlock((Block) ExtraTrees.blockCarpentry, (Class) ItemMetadata.class, "carpentry");
-        GameRegistry.registerBlock((Block) ExtraTrees.blockPanel, (Class) ItemMetadata.class, "panel");
-        GameRegistry.registerBlock((Block) ExtraTrees.blockStained, (Class) ItemMetadata.class, "stainedglass");
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockCarpentry), (IItemRenderer) new MultipassItemRenderer());
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockStained), (IItemRenderer) new MultipassItemRenderer());
-        MinecraftForge.EVENT_BUS.register((Object) ExtraTrees.blockCarpentry);
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockPanel), (IItemRenderer) new MultipassItemRenderer());
+        GameRegistry.registerBlock(ExtraTrees.blockCarpentry, (Class) ItemMetadata.class, "carpentry");
+        GameRegistry.registerBlock(ExtraTrees.blockPanel, (Class) ItemMetadata.class, "panel");
+        GameRegistry.registerBlock(ExtraTrees.blockStained, (Class) ItemMetadata.class, "stainedglass");
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockCarpentry), new MultipassItemRenderer());
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockStained), new MultipassItemRenderer());
+        MinecraftForge.EVENT_BUS.register(ExtraTrees.blockCarpentry);
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockPanel), new MultipassItemRenderer());
     }
 
     @Override
@@ -101,6 +101,6 @@ public class ModuleCarpentry implements IInitializable {
     enum Axis {
         Y,
         X,
-        Z;
+        Z
     }
 }

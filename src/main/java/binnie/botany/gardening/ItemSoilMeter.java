@@ -43,7 +43,7 @@ public class ItemSoilMeter extends Item {
             info = info + "§" + (new char[]{'e', '7', '9'})[moisture.ordinal()] + Binnie.Language.localise(moisture) + "§f";
             info += ", pH: ";
             info = info + "§" + (new char[]{'c', 'a', 'b'})[pH.ordinal()] + Binnie.Language.localise(pH) + "§f";
-            final IChatComponent chat = (IChatComponent) new ChatComponentText(info);
+            final IChatComponent chat = new ChatComponentText(info);
             player.addChatMessage(chat);
         }
         return super.onItemUse(stack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);

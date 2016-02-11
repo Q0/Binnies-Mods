@@ -64,7 +64,7 @@ public class InventorySlot extends BaseSlot<ItemStack> {
         if (this.itemStack != null) {
             this.itemStack.writeToNBT(itemNBT);
         }
-        slotNBT.setTag("item", (NBTBase) itemNBT);
+        slotNBT.setTag("item", itemNBT);
     }
 
     @Override
@@ -95,6 +95,6 @@ public class InventorySlot extends BaseSlot<ItemStack> {
 
     public enum Type {
         Standard,
-        Recipe;
+        Recipe
     }
 }

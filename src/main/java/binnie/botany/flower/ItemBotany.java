@@ -87,7 +87,7 @@ public abstract class ItemBotany extends Item {
     }
 
     protected IIndividual getIndividual(final ItemStack itemstack) {
-        return (IIndividual) new Flower(itemstack.getTagCompound());
+        return new Flower(itemstack.getTagCompound());
     }
 
     private IAlleleFlowerSpecies getPrimarySpecies(final ItemStack itemstack) {
@@ -159,20 +159,20 @@ public abstract class ItemBotany extends Item {
                 return false;
             }
             final IPollinatable pollinatable = (IPollinatable) target;
-            if (!pollinatable.canMateWith((IIndividual) flower)) {
+            if (!pollinatable.canMateWith(flower)) {
                 return false;
             }
-            pollinatable.mateWith((IIndividual) flower);
+            pollinatable.mateWith(flower);
             if (!player.capabilities.isCreativeMode) {
                 --itemstack.stackSize;
             }
             return true;
         } else {
-            final Block blockFlower = (Block) Botany.flower;
+            final Block blockFlower = Botany.flower;
             final Block blockAlreadyThere = world.getBlock(x, y, z);
             if (blockAlreadyThere == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 0x7) < 1) {
                 side = 1;
-            } else if (blockAlreadyThere != Blocks.vine && blockAlreadyThere != Blocks.tallgrass && blockAlreadyThere != Blocks.deadbush && !blockAlreadyThere.isReplaceable((IBlockAccess) world, x, y, z)) {
+            } else if (blockAlreadyThere != Blocks.vine && blockAlreadyThere != Blocks.tallgrass && blockAlreadyThere != Blocks.deadbush && !blockAlreadyThere.isReplaceable(world, x, y, z)) {
                 if (side == 0) {
                     --y;
                 }
@@ -201,7 +201,7 @@ public abstract class ItemBotany extends Item {
             if (y == 255 && blockFlower.getMaterial().isSolid()) {
                 return false;
             }
-            if (world.canPlaceEntityOnSide(blockFlower, x, y, z, false, side, (Entity) player, itemstack)) {
+            if (world.canPlaceEntityOnSide(blockFlower, x, y, z, false, side, player, itemstack)) {
                 final int i1 = this.getMetadata(itemstack.getItemDamage());
                 final int j1 = blockFlower.onBlockPlaced(world, x, y, z, side, px, py, pz, i1);
                 if (this.placeBlockAt(itemstack, player, world, x, y, z, side, px, py, pz, j1)) {
@@ -216,11 +216,11 @@ public abstract class ItemBotany extends Item {
 
     @SideOnly(Side.CLIENT)
     public boolean func_150936_a(final World p_150936_1_, int p_150936_2_, int p_150936_3_, int p_150936_4_, int p_150936_5_, final EntityPlayer p_150936_6_, final ItemStack p_150936_7_) {
-        final Block field_150939_a = (Block) Botany.flower;
+        final Block field_150939_a = Botany.flower;
         final Block block = p_150936_1_.getBlock(p_150936_2_, p_150936_3_, p_150936_4_);
         if (block == Blocks.snow_layer) {
             p_150936_5_ = 1;
-        } else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable((IBlockAccess) p_150936_1_, p_150936_2_, p_150936_3_, p_150936_4_)) {
+        } else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(p_150936_1_, p_150936_2_, p_150936_3_, p_150936_4_)) {
             if (p_150936_5_ == 0) {
                 --p_150936_3_;
             }
@@ -240,16 +240,16 @@ public abstract class ItemBotany extends Item {
                 ++p_150936_2_;
             }
         }
-        return p_150936_1_.canPlaceEntityOnSide(field_150939_a, p_150936_2_, p_150936_3_, p_150936_4_, false, p_150936_5_, (Entity) null, p_150936_7_);
+        return p_150936_1_.canPlaceEntityOnSide(field_150939_a, p_150936_2_, p_150936_3_, p_150936_4_, false, p_150936_5_, null, p_150936_7_);
     }
 
     public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ, final int metadata) {
-        final Block field_150939_a = (Block) Botany.flower;
+        final Block field_150939_a = Botany.flower;
         if (!world.setBlock(x, y, z, field_150939_a, metadata, 3)) {
             return false;
         }
         if (world.getBlock(x, y, z) == field_150939_a) {
-            field_150939_a.onBlockPlacedBy(world, x, y, z, (EntityLivingBase) player, stack);
+            field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
             field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
         }
         return true;

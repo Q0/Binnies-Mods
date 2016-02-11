@@ -14,7 +14,7 @@ public class AnalystPageSpecimen extends ControlAnalystPage {
         new ControlTextCentered(this, y, "§nSpecimen").setColour(this.getColour());
         y += 12;
         final float w = (this.w() - 16.0f) * ind.getSize();
-        new ControlIndividualDisplay(this, (this.w() - w) / 2.0f, y + (this.w() - w) / 2.0f, w, (IIndividual) ind);
+        new ControlIndividualDisplay(this, (this.w() - w) / 2.0f, y + (this.w() - w) / 2.0f, w, ind);
     }
 
     @Override

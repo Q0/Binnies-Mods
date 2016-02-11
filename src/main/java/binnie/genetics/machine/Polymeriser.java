@@ -236,7 +236,7 @@ public class Polymeriser {
         public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
             final int tick = (int) (world.getTotalWorldTime() % 8L);
             if ((tick == 0 || tick == 3) && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, y + 1.8, z + 0.5, 0.0, 0.0, 0.0) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, y + 1.8, z + 0.5, 0.0, 0.0, 0.0) {
                     double axisX = this.posX;
                     double axisZ = this.posZ;
                     double angle = 0.7 + (int) (this.worldObj.getTotalWorldTime() % 2L) * 3.1415;

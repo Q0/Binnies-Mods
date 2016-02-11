@@ -100,17 +100,17 @@ public class Acclimatiser {
 
     public static void setupRecipes() {
         if (BinnieCore.isApicultureActive()) {
-            addTolerance(Binnie.Genetics.getBeeRoot().getUID(), (IChromosomeType) EnumBeeChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
-            addTolerance(Binnie.Genetics.getBeeRoot().getUID(), (IChromosomeType) EnumBeeChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
+            addTolerance(Binnie.Genetics.getBeeRoot().getUID(), EnumBeeChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
+            addTolerance(Binnie.Genetics.getBeeRoot().getUID(), EnumBeeChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
         }
         if (BinnieCore.isLepidopteryActive()) {
-            addTolerance(Binnie.Genetics.getButterflyRoot().getUID(), (IChromosomeType) EnumButterflyChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
-            addTolerance(Binnie.Genetics.getButterflyRoot().getUID(), (IChromosomeType) EnumButterflyChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
+            addTolerance(Binnie.Genetics.getButterflyRoot().getUID(), EnumButterflyChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
+            addTolerance(Binnie.Genetics.getButterflyRoot().getUID(), EnumButterflyChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
         }
         if (BinnieCore.isBotanyActive()) {
-            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), (IChromosomeType) EnumFlowerChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
-            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), (IChromosomeType) EnumFlowerChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
-            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), (IChromosomeType) EnumFlowerChromosome.PH_TOLERANCE, ToleranceType.PH);
+            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), EnumFlowerChromosome.HUMIDITY_TOLERANCE, ToleranceType.Humidity);
+            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), EnumFlowerChromosome.TEMPERATURE_TOLERANCE, ToleranceType.Temperature);
+            addTolerance(Binnie.Genetics.getFlowerRoot().getUID(), EnumFlowerChromosome.PH_TOLERANCE, ToleranceType.PH);
         }
         addTemperatureItem(new ItemStack(Items.blaze_powder), 0.5f);
         addTemperatureItem(new ItemStack(Items.blaze_rod), 0.75f);
@@ -118,7 +118,7 @@ public class Acclimatiser {
         addTemperatureItem(new ItemStack(Items.snowball), -0.15f);
         addTemperatureItem(new ItemStack(Blocks.ice), -0.75f);
         addHumidityItem(new ItemStack(Items.water_bucket), 0.75f);
-        addHumidityItem(new ItemStack((Block) Blocks.sand), -0.15f);
+        addHumidityItem(new ItemStack(Blocks.sand), -0.15f);
         addTemperatureItem(Mods.Forestry.stack("canLava"), 0.75f);
         addTemperatureItem(Mods.Forestry.stack("refractoryLava"), 0.75f);
         addHumidityItem(Mods.Forestry.stack("canWater"), 0.75f);

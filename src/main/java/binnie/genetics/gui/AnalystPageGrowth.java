@@ -25,9 +25,9 @@ public class AnalystPageGrowth extends ControlAnalystPage {
             y += 12;
             new ControlTextCentered(this, y, "§l" + this.getTimeString(1373.3999f * mat)).setColour(this.getColour());
             y += 22;
-            new ControlTextCentered(this, y, "§oHeight: " + Binnie.Genetics.treeBreedingSystem.getAlleleName((IChromosomeType) EnumTreeChromosome.HEIGHT, ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.HEIGHT))).setColour(this.getColour());
+            new ControlTextCentered(this, y, "§oHeight: " + Binnie.Genetics.treeBreedingSystem.getAlleleName(EnumTreeChromosome.HEIGHT, ind.getGenome().getActiveAllele(EnumTreeChromosome.HEIGHT))).setColour(this.getColour());
             y += 12;
-            new ControlTextCentered(this, y, "§oGirth: " + Binnie.Genetics.treeBreedingSystem.getAlleleName((IChromosomeType) EnumTreeChromosome.GIRTH, ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.GIRTH))).setColour(this.getColour());
+            new ControlTextCentered(this, y, "§oGirth: " + Binnie.Genetics.treeBreedingSystem.getAlleleName(EnumTreeChromosome.GIRTH, ind.getGenome().getActiveAllele(EnumTreeChromosome.GIRTH))).setColour(this.getColour());
             y += 20;
             new ControlTextCentered(this, y, "Growth Conditions").setColour(this.getColour());
             y += 12;

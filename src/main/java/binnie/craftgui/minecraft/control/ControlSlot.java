@@ -50,7 +50,7 @@ public class ControlSlot extends ControlSlotBase {
                     final int slotNumber = ControlSlot.this.slot.slotNumber;
                     final int button = event.getButton();
                     Window.get(ControlSlot.this.getWidget()).getGui();
-                    playerController.windowClick(windowId, slotNumber, button, (int) (GuiCraftGUI.isShiftKeyDown() ? 1 : 0), (EntityPlayer) ((Window) ControlSlot.this.getSuperParent()).getGui().getMinecraft().thePlayer);
+                    playerController.windowClick(windowId, slotNumber, button, GuiCraftGUI.isShiftKeyDown() ? 1 : 0, ((Window) ControlSlot.this.getSuperParent()).getGui().getMinecraft().thePlayer);
                 }
             }
         });

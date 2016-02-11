@@ -20,12 +20,12 @@ class FlowerBreedingSystem extends BreedingSystem {
 
     @Override
     public float getChance(final IMutation mutation, final EntityPlayer player, final IAllele species1, final IAllele species2) {
-        return ((IFlowerMutation) mutation).getBaseChance();
+        return mutation.getBaseChance();
     }
 
     @Override
     public ISpeciesRoot getSpeciesRoot() {
-        return (ISpeciesRoot) Binnie.Genetics.getFlowerRoot();
+        return Binnie.Genetics.getFlowerRoot();
     }
 
     @Override
@@ -35,7 +35,7 @@ class FlowerBreedingSystem extends BreedingSystem {
 
     @Override
     public Class<? extends IBreedingTracker> getTrackerClass() {
-        return (Class<? extends IBreedingTracker>) IBotanistTracker.class;
+        return IBotanistTracker.class;
     }
 
     @Override
@@ -99,7 +99,7 @@ class FlowerBreedingSystem extends BreedingSystem {
             case SECONDARY:
             case STEM: {
                 for (final EnumFlowerColor a4 : EnumFlowerColor.values()) {
-                    alleles.add((IAllele) a4.getAllele());
+                    alleles.add(a4.getAllele());
                 }
                 break;
             }

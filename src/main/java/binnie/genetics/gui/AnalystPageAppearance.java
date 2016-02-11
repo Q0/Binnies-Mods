@@ -17,7 +17,7 @@ public class AnalystPageAppearance extends ControlAnalystPage {
         super(parent, area);
         this.setColour(3355443);
         int y = 4;
-        final IAlleleSpecies species = (IAlleleSpecies) ind.getGenome().getPrimary();
+        final IAlleleSpecies species = ind.getGenome().getPrimary();
         new ControlTextCentered(this, y, "§nAppearance").setColour(this.getColour());
         y += 12;
         final ControlColourDisplay a = new ControlColourDisplay(this, this.w() / 2.0f - 28.0f, y);

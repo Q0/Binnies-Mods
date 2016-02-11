@@ -175,7 +175,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
         String name;
         IIcon[] icons;
 
-        private TileType(final String id, final String name) {
+        TileType(final String id, final String name) {
             this.icons = new IIcon[3];
             this.id = id;
             this.name = name;
@@ -202,7 +202,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                         if (this.isMortar(stack)) {
                             ++mortars;
                         } else {
-                            if (stack.getItem() != Item.getItemFromBlock((Block) Botany.ceramic)) {
+                            if (stack.getItem() != Item.getItemFromBlock(Botany.ceramic)) {
                                 return null;
                             }
                             ++blocks;
@@ -231,7 +231,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                     int altCounter = 0;
                     for (final ItemStack stack2 : stacks) {
                         final int alt = (altCounter != 0 && altCounter != 3) ? 1 : 0;
-                        if (stack2.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
+                        if (stack2.getItem() != Item.getItemFromBlock(Botany.ceramicBrick)) {
                             return null;
                         }
                         final BlockType type = new BlockType(stack2);
@@ -254,7 +254,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                     }
                     final int[] colors = {-1, -1};
                     for (final ItemStack stack2 : stacks) {
-                        if (stack2.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
+                        if (stack2.getItem() != Item.getItemFromBlock(Botany.ceramicBrick)) {
                             return null;
                         }
                         final BlockType type2 = new BlockType(stack2);
@@ -282,7 +282,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                     final int[] colors = {-1, -1};
                     for (int index = 0; index < stacks.size(); ++index) {
                         final ItemStack stack2 = stacks.get(index);
-                        if (stack2.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
+                        if (stack2.getItem() != Item.getItemFromBlock(Botany.ceramicBrick)) {
                             return null;
                         }
                         final BlockType type2 = new BlockType(stack2);
@@ -330,7 +330,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                         int b = 0;
                         for (int index2 = 0; index2 < stacks.size(); ++index2) {
                             final ItemStack stack4 = stacks.get(index2);
-                            if (stack4.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
+                            if (stack4.getItem() != Item.getItemFromBlock(Botany.ceramicBrick)) {
                                 return null;
                             }
                             final BlockType type4 = new BlockType(stack4);
@@ -380,7 +380,7 @@ public class BlockCeramicBrick extends Block implements IBlockMetadata, IMultipa
                         final int[] colors = {-1, -1};
                         for (int index2 = 0; index2 < stacks.size(); ++index2) {
                             final ItemStack stack4 = stacks.get(index2);
-                            if (stack4.getItem() != Item.getItemFromBlock((Block) Botany.ceramicBrick)) {
+                            if (stack4.getItem() != Item.getItemFromBlock(Botany.ceramicBrick)) {
                                 return null;
                             }
                             final BlockType type4 = new BlockType(stack4);

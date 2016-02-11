@@ -20,9 +20,9 @@ public class CeramicTileRecipe implements IRecipe {
     }
 
     public ItemStack getCraftingResult(final InventoryCrafting inv) {
-        final Item ceramicBlock = Item.getItemFromBlock((Block) Botany.ceramic);
-        final Item ceramicTile = Item.getItemFromBlock((Block) Botany.ceramicTile);
-        final Item ceramicBrick = Item.getItemFromBlock((Block) Botany.ceramicBrick);
+        final Item ceramicBlock = Item.getItemFromBlock(Botany.ceramic);
+        final Item ceramicTile = Item.getItemFromBlock(Botany.ceramicTile);
+        final Item ceramicBrick = Item.getItemFromBlock(Botany.ceramicBrick);
         final Item mortar = Botany.misc;
         final List<ItemStack> stacks = new ArrayList<ItemStack>();
         int ix = -1;

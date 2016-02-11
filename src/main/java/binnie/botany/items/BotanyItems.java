@@ -23,7 +23,7 @@ public enum BotanyItems implements IItemMisc {
     String name;
     String iconPath;
 
-    private BotanyItems(final String name, final String iconPath) {
+    BotanyItems(final String name, final String iconPath) {
         this.name = name;
         this.iconPath = iconPath;
     }
@@ -49,7 +49,7 @@ public enum BotanyItems implements IItemMisc {
 
     @Override
     public ItemStack get(final int size) {
-        return new ItemStack((Item) Botany.misc, size, this.ordinal());
+        return new ItemStack(Botany.misc, size, this.ordinal());
     }
 
     @Override

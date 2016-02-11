@@ -7,6 +7,6 @@ import forestry.api.core.IIconProvider;
 public class ProxyClient extends Proxy implements IExtraTreeProxy {
     @Override
     public void init() {
-        ForestryAPI.textureManager.registerIconProvider((IIconProvider) FruitSprite.Average);
+        ForestryAPI.textureManager.registerIconProvider(FruitSprite.Average);
     }
 }

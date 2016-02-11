@@ -32,7 +32,7 @@ public class ItemProduct extends Item {
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (final IItemEnum type : this.types) {
             if (type.isActive()) {
-                itemList.add(new ItemStack((Item) this, 1, type.ordinal()));
+                itemList.add(new ItemStack(this, 1, type.ordinal()));
             }
         }
     }

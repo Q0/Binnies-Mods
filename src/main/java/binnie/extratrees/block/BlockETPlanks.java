@@ -78,7 +78,7 @@ public class BlockETPlanks extends BlockWood implements IBlockMetadata {
 
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (int i = 0; i < PlankType.ExtraTreePlanks.values().length; ++i) {
-            itemList.add(TileEntityMetadata.getItemStack((Block) this, i));
+            itemList.add(TileEntityMetadata.getItemStack(this, i));
         }
     }
 

@@ -35,7 +35,7 @@ public class ItemMisc extends Item {
     }
 
     public ItemStack getStack(final IItemMisc type, final int size) {
-        return new ItemStack((Item) this, size, type.ordinal());
+        return new ItemStack(this, size, type.ordinal());
     }
 
     @SideOnly(Side.CLIENT)

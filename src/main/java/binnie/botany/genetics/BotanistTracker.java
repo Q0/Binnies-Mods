@@ -21,7 +21,7 @@ public class BotanistTracker extends BreedingTracker implements IBotanistTracker
     }
 
     protected IBreedingTracker getBreedingTracker(final EntityPlayer player) {
-        return (IBreedingTracker) Binnie.Genetics.getFlowerRoot().getBreedingTracker(player.worldObj, player.getGameProfile());
+        return Binnie.Genetics.getFlowerRoot().getBreedingTracker(player.worldObj, player.getGameProfile());
     }
 
     protected String speciesRootUID() {

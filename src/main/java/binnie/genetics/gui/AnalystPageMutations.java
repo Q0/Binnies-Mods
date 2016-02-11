@@ -75,7 +75,7 @@ public class AnalystPageMutations extends ControlAnalystPage {
                 hive = new ItemStack(Mods.Forestry.block("beehives"), 1, 7);
             }
             if (ind.getGenome().getPrimary() == ForestryAllele.BeeSpecies.Steadfast.getAllele()) {
-                hive = new ItemStack((Block) Blocks.chest);
+                hive = new ItemStack(Blocks.chest);
             }
             if (ind.getGenome().getPrimary() == ForestryAllele.BeeSpecies.Valiant.getAllele()) {
                 new ControlTextCentered(this, y, "Natural Habitat").setColour(this.getColour());
@@ -164,7 +164,7 @@ public class AnalystPageMutations extends ControlAnalystPage {
             new ControlTextCentered(this, y, "Further Mutations").setColour(this.getColour());
             y += 10;
             for (final IMutation mutation : further) {
-                final IAllele speciesComb = mutation.getPartner((IAllele) speciesCurrent);
+                final IAllele speciesComb = mutation.getPartner(speciesCurrent);
                 final float specificChance2 = this.getSpecificChance(ind, mutation, system);
                 if (!isMaster && !this.isKnown(system, mutation)) {
                     new ControlUnknownMutation(this, ox + dx, y, 44.0f, 16.0f);

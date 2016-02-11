@@ -33,12 +33,12 @@ public class HiveDrop implements IHiveDrop {
     }
 
     public ItemStack getPrincess(final World world, final int x, final int y, final int z, final int fortune) {
-        return Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().getBee(world, Binnie.Genetics.getBeeRoot().templateAsGenome(this.template)), EnumBeeType.PRINCESS.ordinal());
+        return Binnie.Genetics.getBeeRoot().getMemberStack(Binnie.Genetics.getBeeRoot().getBee(world, Binnie.Genetics.getBeeRoot().templateAsGenome(this.template)), EnumBeeType.PRINCESS.ordinal());
     }
 
     public ArrayList<ItemStack> getDrones(final World world, final int x, final int y, final int z, final int fortune) {
         final ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().templateAsIndividual(this.template), EnumBeeType.DRONE.ordinal()));
+        ret.add(Binnie.Genetics.getBeeRoot().getMemberStack(Binnie.Genetics.getBeeRoot().templateAsIndividual(this.template), EnumBeeType.DRONE.ordinal()));
         return ret;
     }
 

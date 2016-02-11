@@ -37,7 +37,7 @@ public class WoodManager {
         if (stack == null) {
             return null;
         }
-        if (stack.getItem() == Item.getItemFromBlock((Block) ExtraTrees.blockMultiFence)) {
+        if (stack.getItem() == Item.getItemFromBlock(ExtraTrees.blockMultiFence)) {
             final int damage = TileEntityMetadata.getItemDamage(stack);
             return getFenceDescription(damage);
         }
@@ -82,7 +82,7 @@ public class WoodManager {
         }
         final int ord = type.ordinal();
         final int i = getPlankTypeIndex(plank) + 256 * ord;
-        final ItemStack stack = TileEntityMetadata.getItemStack((Block) ExtraTrees.blockMultiFence, i + 65536 * getPlankTypeIndex(plank2));
+        final ItemStack stack = TileEntityMetadata.getItemStack(ExtraTrees.blockMultiFence, i + 65536 * getPlankTypeIndex(plank2));
         stack.stackSize = amount;
         return stack;
     }

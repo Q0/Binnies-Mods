@@ -65,7 +65,7 @@ public class AlvearyFrame {
             }
             final World world = this.getMachine().getTileEntity().getWorldObj();
             final int wear = Math.round(amount * 5 * Binnie.Genetics.getBeeRoot().getBeekeepingMode(world).getWearModifier());
-            this.getInventory().setInventorySlotContents(AlvearyFrame.slotFrame, this.getHiveFrame().frameUsed((IBeeHousing) ((TileExtraBeeAlveary) this.getMachine().getTileEntity()).getCentralTE(), this.getInventory().getStackInSlot(AlvearyFrame.slotFrame), (IBee) null, wear));
+            this.getInventory().setInventorySlotContents(AlvearyFrame.slotFrame, this.getHiveFrame().frameUsed((IBeeHousing) ((TileExtraBeeAlveary) this.getMachine().getTileEntity()).getCentralTE(), this.getInventory().getStackInSlot(AlvearyFrame.slotFrame), null, wear));
         }
 
         @Override

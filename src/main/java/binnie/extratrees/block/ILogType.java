@@ -19,47 +19,47 @@ public interface ILogType {
 
     int getColour();
 
-    public enum ExtraTreeLog implements ILogType {
-        Apple("Apple", 8092283, (IDesignMaterial) PlankType.ExtraTreePlanks.Apple),
-        Fig("Fig", 8418135, (IDesignMaterial) PlankType.ExtraTreePlanks.Fig),
-        Butternut("Butternut", 12037536, (IDesignMaterial) PlankType.ExtraTreePlanks.Butternut),
-        Cherry("Cherry", 7432272, (IDesignMaterial) PlankType.ForestryPlanks.CHERRY),
-        Whitebeam("Whitebeam", 7891565, (IDesignMaterial) PlankType.ExtraTreePlanks.Whitebeam),
-        Rowan("Rowan", 11972763, (IDesignMaterial) PlankType.ExtraTreePlanks.Rowan),
-        Hemlock("Hemlock", 11379611, (IDesignMaterial) PlankType.ExtraTreePlanks.Hemlock),
-        Ash("Ash", 9013634, (IDesignMaterial) PlankType.ExtraTreePlanks.Ash),
-        Alder("Alder", 13025464, (IDesignMaterial) PlankType.ExtraTreePlanks.Alder),
-        Beech("Beech", 11702654, (IDesignMaterial) PlankType.ExtraTreePlanks.Beech),
-        Hawthorn("Hawthorn", 6248261, (IDesignMaterial) PlankType.ExtraTreePlanks.Hawthorn),
+    enum ExtraTreeLog implements ILogType {
+        Apple("Apple", 8092283, PlankType.ExtraTreePlanks.Apple),
+        Fig("Fig", 8418135, PlankType.ExtraTreePlanks.Fig),
+        Butternut("Butternut", 12037536, PlankType.ExtraTreePlanks.Butternut),
+        Cherry("Cherry", 7432272, PlankType.ForestryPlanks.CHERRY),
+        Whitebeam("Whitebeam", 7891565, PlankType.ExtraTreePlanks.Whitebeam),
+        Rowan("Rowan", 11972763, PlankType.ExtraTreePlanks.Rowan),
+        Hemlock("Hemlock", 11379611, PlankType.ExtraTreePlanks.Hemlock),
+        Ash("Ash", 9013634, PlankType.ExtraTreePlanks.Ash),
+        Alder("Alder", 13025464, PlankType.ExtraTreePlanks.Alder),
+        Beech("Beech", 11702654, PlankType.ExtraTreePlanks.Beech),
+        Hawthorn("Hawthorn", 6248261, PlankType.ExtraTreePlanks.Hawthorn),
         Banana("Banana", 8753743),
-        Yew("Yew", 13745089, (IDesignMaterial) PlankType.ExtraTreePlanks.Yew),
-        Cypress("Cypress", 10126467, (IDesignMaterial) PlankType.ExtraTreePlanks.Cypress),
-        Fir("Fir", 8553346, (IDesignMaterial) PlankType.ExtraTreePlanks.Fir),
-        Hazel("Hazel", 11180143, (IDesignMaterial) PlankType.ExtraTreePlanks.Hazel),
-        Hickory("Hickory", 4076848, (IDesignMaterial) PlankType.ExtraTreePlanks.Hickory),
-        Elm("Elm", 8684422, (IDesignMaterial) PlankType.ExtraTreePlanks.Elm),
-        Elder("Elder", 14202996, (IDesignMaterial) PlankType.ExtraTreePlanks.Elder),
-        Holly("Holly", 11905669, (IDesignMaterial) PlankType.ExtraTreePlanks.Holly),
-        Hornbeam("Hornbeam", 10719862, (IDesignMaterial) PlankType.ExtraTreePlanks.Hornbeam),
-        Cedar("Cedar", 11368015, (IDesignMaterial) PlankType.ExtraTreePlanks.Cedar),
-        Olive("Olive", 8089706, (IDesignMaterial) PlankType.ExtraTreePlanks.Olive),
-        Sweetgum("Sweetgum", 10592668, (IDesignMaterial) PlankType.ExtraTreePlanks.Sweetgum),
-        Locust("Locust", 11381948, (IDesignMaterial) PlankType.ExtraTreePlanks.Locust),
-        Pear("Pear", 11048825, (IDesignMaterial) PlankType.ExtraTreePlanks.Pear),
-        Maclura("Maclura", 9131828, (IDesignMaterial) PlankType.ExtraTreePlanks.Maclura),
-        Brazilwood("Brazilwood", 10387560, (IDesignMaterial) PlankType.ExtraTreePlanks.Brazilwood),
-        Logwood("Logwood", 16376530, (IDesignMaterial) PlankType.ExtraTreePlanks.Logwood),
-        Rosewood("Rosewood", 10061414, (IDesignMaterial) PlankType.ExtraTreePlanks.Rosewood),
-        Purpleheart("Purpleheart", 9671330, (IDesignMaterial) PlankType.ExtraTreePlanks.Purpleheart),
-        Iroko("Iroko", 6315099, (IDesignMaterial) PlankType.ExtraTreePlanks.Iroko),
-        Gingko("Gingko", 11382428, (IDesignMaterial) PlankType.ExtraTreePlanks.Gingko),
-        Eucalyptus("Eucalyptus", 15392474, (IDesignMaterial) PlankType.ExtraTreePlanks.Eucalyptus),
-        Eucalyptus2("Eucalyptus", 8814181, (IDesignMaterial) PlankType.ExtraTreePlanks.Eucalyptus),
-        Box("Box", 11235159, (IDesignMaterial) PlankType.ExtraTreePlanks.Box),
-        Syzgium("Syzgium", 11235159, (IDesignMaterial) PlankType.ExtraTreePlanks.Syzgium),
-        Eucalyptus3("Eucalyptus", 7123007, (IDesignMaterial) PlankType.ExtraTreePlanks.Eucalyptus),
-        Cinnamon("Cinnamon", 8804412, (IDesignMaterial) PlankType.VanillaPlanks.JUNGLE),
-        PinkIvory("Pink Ivory", 8349012, (IDesignMaterial) PlankType.ExtraTreePlanks.PinkIvory);
+        Yew("Yew", 13745089, PlankType.ExtraTreePlanks.Yew),
+        Cypress("Cypress", 10126467, PlankType.ExtraTreePlanks.Cypress),
+        Fir("Fir", 8553346, PlankType.ExtraTreePlanks.Fir),
+        Hazel("Hazel", 11180143, PlankType.ExtraTreePlanks.Hazel),
+        Hickory("Hickory", 4076848, PlankType.ExtraTreePlanks.Hickory),
+        Elm("Elm", 8684422, PlankType.ExtraTreePlanks.Elm),
+        Elder("Elder", 14202996, PlankType.ExtraTreePlanks.Elder),
+        Holly("Holly", 11905669, PlankType.ExtraTreePlanks.Holly),
+        Hornbeam("Hornbeam", 10719862, PlankType.ExtraTreePlanks.Hornbeam),
+        Cedar("Cedar", 11368015, PlankType.ExtraTreePlanks.Cedar),
+        Olive("Olive", 8089706, PlankType.ExtraTreePlanks.Olive),
+        Sweetgum("Sweetgum", 10592668, PlankType.ExtraTreePlanks.Sweetgum),
+        Locust("Locust", 11381948, PlankType.ExtraTreePlanks.Locust),
+        Pear("Pear", 11048825, PlankType.ExtraTreePlanks.Pear),
+        Maclura("Maclura", 9131828, PlankType.ExtraTreePlanks.Maclura),
+        Brazilwood("Brazilwood", 10387560, PlankType.ExtraTreePlanks.Brazilwood),
+        Logwood("Logwood", 16376530, PlankType.ExtraTreePlanks.Logwood),
+        Rosewood("Rosewood", 10061414, PlankType.ExtraTreePlanks.Rosewood),
+        Purpleheart("Purpleheart", 9671330, PlankType.ExtraTreePlanks.Purpleheart),
+        Iroko("Iroko", 6315099, PlankType.ExtraTreePlanks.Iroko),
+        Gingko("Gingko", 11382428, PlankType.ExtraTreePlanks.Gingko),
+        Eucalyptus("Eucalyptus", 15392474, PlankType.ExtraTreePlanks.Eucalyptus),
+        Eucalyptus2("Eucalyptus", 8814181, PlankType.ExtraTreePlanks.Eucalyptus),
+        Box("Box", 11235159, PlankType.ExtraTreePlanks.Box),
+        Syzgium("Syzgium", 11235159, PlankType.ExtraTreePlanks.Syzgium),
+        Eucalyptus3("Eucalyptus", 7123007, PlankType.ExtraTreePlanks.Eucalyptus),
+        Cinnamon("Cinnamon", 8804412, PlankType.VanillaPlanks.JUNGLE),
+        PinkIvory("Pink Ivory", 8349012, PlankType.ExtraTreePlanks.PinkIvory);
 
         String name;
         int color;
@@ -67,13 +67,13 @@ public interface ILogType {
         IIcon trunk;
         IIcon bark;
 
-        private ExtraTreeLog(final String name, final int color) {
+        ExtraTreeLog(final String name, final int color) {
             this.plank = null;
             this.name = name;
             this.color = color;
         }
 
-        private ExtraTreeLog(final String name, final int color, final IDesignMaterial plank) {
+        ExtraTreeLog(final String name, final int color, final IDesignMaterial plank) {
             this.plank = null;
             this.name = name;
             this.color = color;
@@ -98,7 +98,7 @@ public interface ILogType {
             final ItemStack log = this.getItemStack();
             final ItemStack result = this.plank.getStack();
             result.stackSize = 4;
-            GameRegistry.addShapelessRecipe(result, new Object[]{log});
+            GameRegistry.addShapelessRecipe(result, log);
         }
 
         @Override
@@ -128,7 +128,7 @@ public interface ILogType {
         }
     }
 
-    public enum ForestryLog implements ILogType {
+    enum ForestryLog implements ILogType {
         LARCH(1, 0, 6376529),
         TEAK(1, 1, 3486249),
         ACACIA(1, 2, 7565906),
@@ -158,7 +158,7 @@ public interface ILogType {
         int metadata;
         int colour;
 
-        private ForestryLog(final int blockOffset, final int meta, final int colour) {
+        ForestryLog(final int blockOffset, final int meta, final int colour) {
             this.block = blockOffset;
             this.metadata = meta;
             this.colour = colour;
@@ -181,7 +181,7 @@ public interface ILogType {
         }
     }
 
-    public enum VanillaLog implements ILogType {
+    enum VanillaLog implements ILogType {
         Oak(6376752),
         Spruce(2759179),
         Birch(6376752),
@@ -189,7 +189,7 @@ public interface ILogType {
 
         int colour;
 
-        private VanillaLog(final int colour) {
+        VanillaLog(final int colour) {
             this.colour = colour;
         }
 

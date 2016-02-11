@@ -15,7 +15,7 @@ public class ModuleTrigger implements IInitializable {
     public void init() {
         BinnieAction.actionPauseProcess = new BinnieAction("Pause Process", "binnie.action.pauseProcess", "actions/PauseProcess");
         BinnieAction.actionCancelTask = new BinnieAction("Cancel Task", "binnie.action.cancelTask", "actions/CancelTask");
-        StatementManager.registerActionProvider((IActionProvider) new ActionProvider());
+        StatementManager.registerActionProvider(new ActionProvider());
         BinnieTrigger.triggerNoBlankTemplate = new BinnieTrigger("No Blank Template", "binnie.trigger.noBlankTemplate", ExtraBees.instance, "triggers/NoBlankTemplate");
         BinnieTrigger.triggerNoTemplate = new BinnieTrigger("No Template", "binnie.trigger.noTemplate", ExtraBees.instance, "triggers/NoTemplate");
         BinnieTrigger.triggerIsWorking = new BinnieTrigger("Is Working", "binnie.trigger.isWorking", "triggers/IsWorking");
@@ -30,7 +30,7 @@ public class ModuleTrigger implements IInitializable {
         BinnieTrigger.triggerSerumFull = new BinnieTrigger("Serum Full", "binnie.trigger.serumFull", ExtraBees.instance, "triggers/SerumFull");
         BinnieTrigger.triggerSerumPure = new BinnieTrigger("Serum Pure", "binnie.trigger.serumPure", ExtraBees.instance, "triggers/SerumPure");
         BinnieTrigger.triggerSerumEmpty = new BinnieTrigger("Serum Pure", "binnie.trigger.serumEmpty", ExtraBees.instance, "triggers/SerumEmpty");
-        StatementManager.registerTriggerProvider((ITriggerProvider) new TriggerProvider());
+        StatementManager.registerTriggerProvider(new TriggerProvider());
     }
 
     @Override

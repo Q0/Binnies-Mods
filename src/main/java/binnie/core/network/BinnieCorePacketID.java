@@ -41,7 +41,7 @@ public enum BinnieCorePacketID implements IPacketID {
             }
         } else if (this == BinnieCorePacketID.CraftGUIAction && context.side == Side.SERVER && context.netHandler instanceof NetHandlerPlayServer) {
             final MessageCraftGUI packet3 = new MessageCraftGUI(message);
-            final EntityPlayer player = (EntityPlayer) ((NetHandlerPlayServer) context.netHandler).playerEntity;
+            final EntityPlayer player = ((NetHandlerPlayServer) context.netHandler).playerEntity;
             if (player.openContainer instanceof ContainerCraftGUI && packet3.getTagCompound() != null) {
                 ((ContainerCraftGUI) player.openContainer).recieveNBT(Side.SERVER, player, packet3.getTagCompound());
             }

@@ -58,7 +58,7 @@ public class ItemSerum extends ItemGene implements IItemSerum {
                         continue;
                     }
                     final IGeneItem item = new GeneItem(gene);
-                    final ItemStack stack = new ItemStack((Item) this);
+                    final ItemStack stack = new ItemStack(this);
                     item.writeToItem(stack);
                     itemList.add(stack);
                 }

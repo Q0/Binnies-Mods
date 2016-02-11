@@ -35,7 +35,7 @@ public class EntityBeeLightning extends EntityLightningBolt {
                     final int j = MathHelper.floor_double(this.posY);
                     final int k = MathHelper.floor_double(this.posZ);
                     if (this.worldObj.getBlock(i, j, k) == null && Blocks.fire.canPlaceBlockAt(this.worldObj, i, j, k)) {
-                        this.worldObj.setBlock(i, j, k, (Block) Blocks.fire);
+                        this.worldObj.setBlock(i, j, k, Blocks.fire);
                     }
                 }
             }
@@ -45,10 +45,10 @@ public class EntityBeeLightning extends EntityLightningBolt {
                 this.worldObj.lastLightningBolt = 2;
             } else {
                 final double d0 = 3.0;
-                final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) this, AxisAlignedBB.getBoundingBox(this.posX - d0, this.posY - d0, this.posZ - d0, this.posX + d0, this.posY + 6.0 + d0, this.posZ + d0));
+                final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - d0, this.posY - d0, this.posZ - d0, this.posX + d0, this.posY + 6.0 + d0, this.posZ + d0));
                 for (int l = 0; l < list.size(); ++l) {
                     final Entity entity = (Entity) list.get(l);
-                    entity.onStruckByLightning((EntityLightningBolt) this);
+                    entity.onStruckByLightning(this);
                 }
             }
         }

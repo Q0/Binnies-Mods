@@ -51,11 +51,11 @@ public class ItemETDoor extends ItemMetadata {
         par0World.setBlock(par1, par2, par3, par5Block, par4, 2);
         par0World.setBlock(par1, par2 + 1, par3, par5Block, 0x8 | (flag3 ? 1 : 0), 2);
         if (par0World.getBlock(par1, par2, par3) == par5Block) {
-            final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) par0World, par1, par2, par3);
+            final TileEntityMetadata tile = TileEntityMetadata.getTile(par0World, par1, par2, par3);
             if (tile != null) {
                 tile.setTileMetadata(TileEntityMetadata.getItemDamage(item), false);
             }
-            par5Block.onBlockPlacedBy(par0World, par1, par2, par3, (EntityLivingBase) player, item);
+            par5Block.onBlockPlacedBy(par0World, par1, par2, par3, player, item);
             par5Block.onPostBlockPlaced(par0World, par1, par2, par3, par4);
         }
         par0World.notifyBlocksOfNeighborChange(par1, par2, par3, par5Block);

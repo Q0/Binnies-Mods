@@ -97,7 +97,7 @@ public class ItemFluidContainer extends ItemFood {
 
     public ItemStack getContainer(final IFluidType liquid) {
         final int id = ItemFluidContainer.fluidToID.get(liquid.getIdentifier().toLowerCase());
-        final ItemStack itemstack = new ItemStack((Item) this, 1, id);
+        final ItemStack itemstack = new ItemStack(this, 1, id);
         return itemstack;
     }
 
@@ -125,8 +125,8 @@ public class ItemFluidContainer extends ItemFood {
     }
 
     public ItemStack onEaten(final ItemStack stack, final World world, final EntityPlayer player) {
-        player.getFoodStats().func_151686_a((ItemFood) this, stack);
-        world.playSoundAtEntity((Entity) player, "random.burp", 0.5f, world.rand.nextFloat() * 0.1f + 0.9f);
+        player.getFoodStats().func_151686_a(this, stack);
+        world.playSoundAtEntity(player, "random.burp", 0.5f, world.rand.nextFloat() * 0.1f + 0.9f);
         this.onFoodEaten(stack, world, player);
         return this.container.getEmpty();
     }

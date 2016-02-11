@@ -71,19 +71,19 @@ public class WindowGenesis extends Window {
                 return new ControlTabIcon<BreedingSystem>(this, x, y, w, h, value) {
                     @Override
                     public ItemStack getItemStack() {
-                        final int type = ((BreedingSystem) this.value).getDefaultType();
-                        final IIndividual ind = ((BreedingSystem) this.value).getDefaultIndividual();
-                        return ((BreedingSystem) this.value).getSpeciesRoot().getMemberStack(ind, type);
+                        final int type = this.value.getDefaultType();
+                        final IIndividual ind = this.value.getDefaultIndividual();
+                        return this.value.getSpeciesRoot().getMemberStack(ind, type);
                     }
 
                     @Override
                     public String getName() {
-                        return ((BreedingSystem) this.value).getName();
+                        return this.value.getName();
                     }
 
                     @Override
                     public int getOutlineColour() {
-                        return ((BreedingSystem) this.value).getColour();
+                        return this.value.getColour();
                     }
 
                     @Override

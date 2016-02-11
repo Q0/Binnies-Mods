@@ -38,7 +38,7 @@ public class ItemFood extends net.minecraft.item.ItemFood {
     }
 
     public ItemStack getStack(final IItemMisc type, final int size) {
-        return new ItemStack((Item) this, size, type.ordinal());
+        return new ItemStack(this, size, type.ordinal());
     }
 
     @SideOnly(Side.CLIENT)

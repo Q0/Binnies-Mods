@@ -40,6 +40,6 @@ public class ItemSetSquare extends Item implements IToolHammer {
     public enum EnumSetSquareMode {
         Rotate,
         Edit,
-        Swap;
+        Swap
     }
 }

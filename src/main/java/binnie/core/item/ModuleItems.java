@@ -31,7 +31,7 @@ public class ModuleItems implements IInitializable {
 
     @Override
     public void postInit() {
-        GameRegistry.addRecipe(new ItemStack((Item) BinnieCore.fieldKit, 1, 63), new Object[]{"g  ", " is", " pi", 'g', Blocks.glass_pane, 'i', Items.iron_ingot, 'p', Items.paper, 's', new ItemStack(Items.dye, 1)});
+        GameRegistry.addRecipe(new ItemStack(BinnieCore.fieldKit, 1, 63), "g  ", " is", " pi", 'g', Blocks.glass_pane, 'i', Items.iron_ingot, 'p', Items.paper, 's', new ItemStack(Items.dye, 1));
     }
 
     @SubscribeEvent
@@ -57,7 +57,7 @@ public class ModuleItems implements IInitializable {
                     info.setBoolean("Wilting", flower.isWilted());
                     info.setBoolean("Flowered", flower.hasFlowered());
                     Botany.proxy.sendToPlayer(new MessageNBT(PacketID.Encylopedia.ordinal(), info), event.entityPlayer);
-                    event.entityPlayer.getHeldItem().damageItem(1, (EntityLivingBase) event.entityPlayer);
+                    event.entityPlayer.getHeldItem().damageItem(1, event.entityPlayer);
                 }
             }
         }

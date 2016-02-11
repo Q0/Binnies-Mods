@@ -115,11 +115,11 @@ public class ComponentTankContainer extends MachineComponent implements ITankMac
         final NBTTagList tanksNBT = new NBTTagList();
         for (final Map.Entry<Integer, TankSlot> entry : this.tanks.entrySet()) {
             final NBTTagCompound tankNBT = new NBTTagCompound();
-            tankNBT.setInteger("index", (int) entry.getKey());
+            tankNBT.setInteger("index", entry.getKey());
             entry.getValue().writeToNBT(tankNBT);
-            tanksNBT.appendTag((NBTBase) tankNBT);
+            tanksNBT.appendTag(tankNBT);
         }
-        nbttagcompound.setTag("liquidTanks", (NBTBase) tanksNBT);
+        nbttagcompound.setTag("liquidTanks", tanksNBT);
     }
 
     public boolean isTankReadOnly(final int tank) {

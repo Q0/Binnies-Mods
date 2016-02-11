@@ -40,7 +40,7 @@ public class ItemDrink extends ItemFood implements IFluidContainerItem {
     }
 
     public ItemStack getStack(final Glassware glass, final FluidStack fluid) {
-        final ItemStack stack = new ItemStack((Item) this);
+        final ItemStack stack = new ItemStack(this);
         this.saveGlassware(glass, stack);
         this.saveFluid(fluid, stack);
         return stack;
@@ -63,7 +63,7 @@ public class ItemDrink extends ItemFood implements IFluidContainerItem {
         } else {
             final NBTTagCompound liq = new NBTTagCompound();
             fluid.writeToNBT(liq);
-            nbt.setTag("fluid", (NBTBase) liq);
+            nbt.setTag("fluid", liq);
         }
     }
 

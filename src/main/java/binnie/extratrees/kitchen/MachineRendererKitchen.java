@@ -27,7 +27,7 @@ public class MachineRendererKitchen {
 
     public void renderMachine(final Machine machine, final BinnieResource texture, final double x, final double y, final double z, final float var8, final RenderBlocks renderer) {
         if (renderer != null && renderer.blockAccess != null) {
-            final Block block = (Block) machine.getPackage().getGroup().getBlock();
+            final Block block = machine.getPackage().getGroup().getBlock();
             final float i = 0.0625f;
             renderer.setRenderBounds((double) (2.0f * i), 0.0, (double) (2.0f * i), (double) (14.0f * i), (double) (14.0f * i), (double) (14.0f * i));
             renderer.renderStandardBlock(block, (int) x, (int) y, (int) z);

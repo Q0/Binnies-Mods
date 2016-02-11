@@ -25,7 +25,7 @@ public class ItemSerumArray extends ItemGene implements IItemSerum {
     }
 
     public static ItemStack create(final IGene gene) {
-        final ItemStack item = new ItemStack((Item) Genetics.itemSerumArray);
+        final ItemStack item = new ItemStack(Genetics.itemSerumArray);
         item.setItemDamage(item.getMaxDamage());
         final GeneArrayItem seq = new GeneArrayItem(gene);
         seq.writeToItem(item);
@@ -80,7 +80,7 @@ public class ItemSerumArray extends ItemGene implements IItemSerum {
                         }
                     }
                 }
-                final ItemStack array = new ItemStack((Item) this);
+                final ItemStack array = new ItemStack(this);
                 item.writeToItem(array);
                 itemList.add(array);
             }

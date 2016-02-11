@@ -25,7 +25,7 @@ public class GeneProjectTracker extends WorldSavedData {
         GeneProjectTracker tracker = (GeneProjectTracker) world.loadItemData((Class) GeneProjectTracker.class, filename);
         if (tracker == null) {
             tracker = new GeneProjectTracker(filename);
-            world.setItemData(filename, (WorldSavedData) tracker);
+            world.setItemData(filename, tracker);
         }
         return tracker;
     }

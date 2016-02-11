@@ -57,7 +57,7 @@ public class BinnieProxy extends BinnieModProxy implements IBinnieProxy {
 
     @Override
     public void openGui(final AbstractMod mod, final int id, final EntityPlayer player, final int x, final int y, final int z) {
-        player.openGui((Object) mod, id, player.worldObj, x, y, z);
+        player.openGui(mod, id, player.worldObj, x, y, z);
     }
 
     @Override

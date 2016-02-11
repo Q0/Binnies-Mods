@@ -13,16 +13,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 enum Compartment implements IMachineType {
-    Compartment((Class<? extends MachinePackage>) StandardCompartment.PackageCompartment.class),
-    CompartmentCopper((Class<? extends MachinePackage>) StandardCompartment.PackageCompartmentCopper.class),
-    CompartmentBronze((Class<? extends MachinePackage>) StandardCompartment.PackageCompartmentBronze.class),
-    CompartmentIron((Class<? extends MachinePackage>) StandardCompartment.PackageCompartmentIron.class),
-    CompartmentGold((Class<? extends MachinePackage>) StandardCompartment.PackageCompartmentGold.class),
-    CompartmentDiamond((Class<? extends MachinePackage>) StandardCompartment.PackageCompartmentDiamond.class);
+    Compartment(StandardCompartment.PackageCompartment.class),
+    CompartmentCopper(StandardCompartment.PackageCompartmentCopper.class),
+    CompartmentBronze(StandardCompartment.PackageCompartmentBronze.class),
+    CompartmentIron(StandardCompartment.PackageCompartmentIron.class),
+    CompartmentGold(StandardCompartment.PackageCompartmentGold.class),
+    CompartmentDiamond(StandardCompartment.PackageCompartmentDiamond.class);
 
     Class<? extends MachinePackage> clss;
 
-    private Compartment(final Class<? extends MachinePackage> clss) {
+    Compartment(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
@@ -37,7 +37,7 @@ enum Compartment implements IMachineType {
     }
 
     public ItemStack get(final int i) {
-        return new ItemStack((Block) BinnieCore.packageCompartment.getBlock(), i, this.ordinal());
+        return new ItemStack(BinnieCore.packageCompartment.getBlock(), i, this.ordinal());
     }
 
     public abstract static class PackageCompartment extends MachinePackage {

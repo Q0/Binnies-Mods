@@ -88,7 +88,7 @@ public class BlockETSlab extends BlockWoodSlab implements IBlockMetadata {
             return;
         }
         for (int i = 0; i < PlankType.ExtraTreePlanks.values().length; ++i) {
-            itemList.add(TileEntityMetadata.getItemStack((Block) this, i));
+            itemList.add(TileEntityMetadata.getItemStack(this, i));
         }
     }
 

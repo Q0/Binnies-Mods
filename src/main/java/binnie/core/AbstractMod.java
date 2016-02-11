@@ -27,7 +27,7 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable {
         this.fields = new LinkedHashSet<Field>();
         this.modules = new ArrayList<IInitializable>();
         BinnieCore.registerMod(this);
-        MinecraftForge.EVENT_BUS.register((Object) this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public abstract boolean isActive();
@@ -134,6 +134,6 @@ public abstract class AbstractMod implements IPacketProvider, IInitializable {
 
     protected final void addModule(final IInitializable init) {
         this.modules.add(init);
-        MinecraftForge.EVENT_BUS.register((Object) init);
+        MinecraftForge.EVENT_BUS.register(init);
     }
 }

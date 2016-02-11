@@ -42,7 +42,7 @@ public class Press {
             return null;
         }
         for (final Map.Entry<ItemStack, FluidStack> entry : Press.pressRecipes.entrySet()) {
-            if (itemstack.isItemEqual((ItemStack) entry.getKey())) {
+            if (itemstack.isItemEqual(entry.getKey())) {
                 return entry.getValue();
             }
         }

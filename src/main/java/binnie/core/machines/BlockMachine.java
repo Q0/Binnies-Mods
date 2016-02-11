@@ -37,7 +37,7 @@ class BlockMachine extends BlockContainer implements IBlockMachine {
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (final MachinePackage pack : this.group.getPackages()) {
             if (pack.isActive()) {
-                itemList.add(new ItemStack((Block) this, 1, (int) pack.getMetadata()));
+                itemList.add(new ItemStack(this, 1, pack.getMetadata()));
             }
         }
     }
@@ -146,7 +146,7 @@ class BlockMachine extends BlockContainer implements IBlockMachine {
     public boolean removedByPlayer(final World world, final EntityPlayer player, final int x, final int y, final int z, final boolean willHarvest) {
         if (BinnieCore.proxy.isSimulating(world) && this.canHarvestBlock(player, world.getBlockMetadata(x, y, z)) && !player.capabilities.isCreativeMode) {
             final int metadata = world.getBlockMetadata(x, y, z);
-            final ItemStack stack = new ItemStack(Item.getItemFromBlock((Block) this), 1, this.damageDropped(metadata));
+            final ItemStack stack = new ItemStack(Item.getItemFromBlock(this), 1, this.damageDropped(metadata));
             this.dropBlockAsItem(world, x, y, z, stack);
         }
         return world.setBlockToAir(x, y, z);

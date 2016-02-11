@@ -26,27 +26,27 @@ public class FlowerGenome extends Genome implements IFlowerGenome {
     }
 
     public ISpeciesRoot getSpeciesRoot() {
-        return (ISpeciesRoot) BotanyCore.getFlowerRoot();
+        return BotanyCore.getFlowerRoot();
     }
 
     public EnumFlowerColor getPrimaryColor() {
-        return ((AlleleColor) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.PRIMARY)).getColor();
+        return ((AlleleColor) this.getActiveAllele(EnumFlowerChromosome.PRIMARY)).getColor();
     }
 
     public EnumFlowerColor getSecondaryColor() {
-        return ((AlleleColor) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.SECONDARY)).getColor();
+        return ((AlleleColor) this.getActiveAllele(EnumFlowerChromosome.SECONDARY)).getColor();
     }
 
     public EnumFlowerColor getStemColor() {
-        return ((AlleleColor) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.STEM)).getColor();
+        return ((AlleleColor) this.getActiveAllele(EnumFlowerChromosome.STEM)).getColor();
     }
 
     public int getFertility() {
-        return ((IAlleleInteger) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.FERTILITY)).getValue();
+        return ((IAlleleInteger) this.getActiveAllele(EnumFlowerChromosome.FERTILITY)).getValue();
     }
 
     public int getLifespan() {
-        return ((IAlleleInteger) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.LIFESPAN)).getValue() / 5;
+        return ((IAlleleInteger) this.getActiveAllele(EnumFlowerChromosome.LIFESPAN)).getValue() / 5;
     }
 
     public IFlowerType getType() {
@@ -54,15 +54,15 @@ public class FlowerGenome extends Genome implements IFlowerGenome {
     }
 
     public EnumTolerance getToleranceTemperature() {
-        return ((IAlleleTolerance) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.TEMPERATURE_TOLERANCE)).getValue();
+        return ((IAlleleTolerance) this.getActiveAllele(EnumFlowerChromosome.TEMPERATURE_TOLERANCE)).getValue();
     }
 
     public EnumTolerance getToleranceMoisture() {
-        return ((IAlleleTolerance) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.HUMIDITY_TOLERANCE)).getValue();
+        return ((IAlleleTolerance) this.getActiveAllele(EnumFlowerChromosome.HUMIDITY_TOLERANCE)).getValue();
     }
 
     public EnumTolerance getTolerancePH() {
-        return ((IAlleleTolerance) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.PH_TOLERANCE)).getValue();
+        return ((IAlleleTolerance) this.getActiveAllele(EnumFlowerChromosome.PH_TOLERANCE)).getValue();
     }
 
     public void readFromNBT(final NBTTagCompound nbttagcompound) {
@@ -74,7 +74,7 @@ public class FlowerGenome extends Genome implements IFlowerGenome {
     }
 
     public float getSappiness() {
-        return ((IAlleleFloat) this.getActiveAllele((IChromosomeType) EnumFlowerChromosome.SAPPINESS)).getValue();
+        return ((IAlleleFloat) this.getActiveAllele(EnumFlowerChromosome.SAPPINESS)).getValue();
     }
 
     public boolean canTolerate(final EnumAcidity ePH) {

@@ -12,7 +12,7 @@ public class ModuleKitchen implements IInitializable {
         final MachineGroup machineGroup = new MachineGroup(ExtraTrees.instance, "kitchen", "kitchen", KitchenMachine.values());
         machineGroup.setCreativeTab(Tabs.tabArboriculture);
         machineGroup.customRenderer = false;
-        ExtraTrees.blockKitchen = (Block) machineGroup.getBlock();
+        ExtraTrees.blockKitchen = machineGroup.getBlock();
     }
 
     @Override

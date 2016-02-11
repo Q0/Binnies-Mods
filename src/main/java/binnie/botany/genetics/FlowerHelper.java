@@ -138,7 +138,7 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
     }
 
     public IAllele[] getRandomTemplate(final Random rand) {
-        return ((IAllele[][]) this.speciesTemplates.values().toArray(new IAllele[0][]))[rand.nextInt(this.speciesTemplates.values().size())];
+        return this.speciesTemplates.values().toArray(new IAllele[0][])[rand.nextInt(this.speciesTemplates.values().size())];
     }
 
     public Collection<IFlowerMutation> getMutations(final boolean shuffle) {
@@ -166,13 +166,13 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
         BotanistTracker tracker = (BotanistTracker) world.loadItemData((Class) BotanistTracker.class, filename);
         if (tracker == null) {
             tracker = new BotanistTracker(filename, player);
-            world.setItemData(filename, (WorldSavedData) tracker);
+            world.setItemData(filename, tracker);
         }
         return tracker;
     }
 
     public IIndividual getMember(final NBTTagCompound compound) {
-        return (IIndividual) new Flower(compound);
+        return new Flower(compound);
     }
 
     public Class getMemberClass() {
@@ -180,11 +180,11 @@ public class FlowerHelper extends SpeciesRoot implements IFlowerRoot {
     }
 
     public IChromosomeType[] getKaryotype() {
-        return (IChromosomeType[]) EnumFlowerChromosome.values();
+        return EnumFlowerChromosome.values();
     }
 
     public IChromosomeType getKaryotypeKey() {
-        return (IChromosomeType) EnumFlowerChromosome.SPECIES;
+        return EnumFlowerChromosome.SPECIES;
     }
 
     public void addConversion(final ItemStack itemstack, final IAllele[] template) {

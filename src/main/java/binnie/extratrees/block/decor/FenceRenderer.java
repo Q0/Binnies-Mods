@@ -185,12 +185,12 @@ public class FenceRenderer implements ISimpleBlockRenderingHandler {
         FenceRenderer.layer = 1;
         if (connectAnyX) {
             renderer.setRenderBounds((double) minX, (double) barMinY, (double) minPostPos, (double) maxX, (double) barMaxY, (double) maxPostPos);
-            renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+            renderer.renderStandardBlock(blockFence, par2, par3, par4);
             rendered = true;
         }
         if (connectAnyZ) {
             renderer.setRenderBounds((double) minPostPos, (double) barMinY, (double) minZ, (double) maxPostPos, (double) barMaxY, (double) maxZ);
-            renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+            renderer.renderStandardBlock(blockFence, par2, par3, par4);
             rendered = true;
         }
         if (renderBottom) {
@@ -201,12 +201,12 @@ public class FenceRenderer implements ISimpleBlockRenderingHandler {
             }
             if (connectAnyX) {
                 renderer.setRenderBounds((double) minX, (double) barMinY, (double) minPostPos, (double) maxX, (double) barMaxY, (double) maxPostPos);
-                renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+                renderer.renderStandardBlock(blockFence, par2, par3, par4);
                 rendered = true;
             }
             if (connectAnyZ) {
                 renderer.setRenderBounds((double) minPostPos, (double) barMinY, (double) minZ, (double) maxPostPos, (double) barMaxY, (double) maxZ);
-                renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+                renderer.renderStandardBlock(blockFence, par2, par3, par4);
                 rendered = true;
             }
         }
@@ -216,12 +216,12 @@ public class FenceRenderer implements ISimpleBlockRenderingHandler {
             barMaxY += i;
             if (connectAnyX) {
                 renderer.setRenderBounds((double) minX, (double) barMinY, (double) minPostPos, (double) maxX, (double) barMaxY, (double) maxPostPos);
-                renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+                renderer.renderStandardBlock(blockFence, par2, par3, par4);
                 rendered = true;
             }
             if (connectAnyZ) {
                 renderer.setRenderBounds((double) minPostPos, (double) barMinY, (double) minZ, (double) maxPostPos, (double) barMaxY, (double) maxZ);
-                renderer.renderStandardBlock((Block) blockFence, par2, par3, par4);
+                renderer.renderStandardBlock(blockFence, par2, par3, par4);
                 rendered = true;
             }
         }

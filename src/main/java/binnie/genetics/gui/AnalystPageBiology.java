@@ -67,7 +67,7 @@ public class AnalystPageBiology extends ControlAnalystPage {
             }
             y += 30;
         } else if (ind instanceof ITree) {
-            new ControlTextCentered(this, y, "§oSappiness: " + Binnie.Genetics.treeBreedingSystem.getAlleleName((IChromosomeType) EnumTreeChromosome.SAPPINESS, ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.SAPPINESS))).setColour(this.getColour());
+            new ControlTextCentered(this, y, "§oSappiness: " + Binnie.Genetics.treeBreedingSystem.getAlleleName(EnumTreeChromosome.SAPPINESS, ind.getGenome().getActiveAllele(EnumTreeChromosome.SAPPINESS))).setColour(this.getColour());
             y += 20;
         } else {
             y += 10;

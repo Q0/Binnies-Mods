@@ -35,7 +35,7 @@ public enum ExtraTreeTexture implements IBinnieTexture {
     String texture;
     ResourceType type;
 
-    private ExtraTreeTexture(final ResourceType base, final String texture) {
+    ExtraTreeTexture(final ResourceType base, final String texture) {
         this.texture = texture;
         this.type = base;
     }

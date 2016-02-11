@@ -73,7 +73,7 @@ public class GeneItem implements INBTTagable, IGeneItem {
             return;
         }
         final NBTTagCompound geneNBT = this.gene.getNBTTagCompound();
-        nbt.setTag("gene", (NBTBase) geneNBT);
+        nbt.setTag("gene", geneNBT);
     }
 
     public ISpeciesRoot getSpeciesRoot() {

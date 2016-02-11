@@ -51,7 +51,7 @@ final class BinnieTrigger implements ITriggerExternal {
         this.id = 0;
         this.id = BinnieTrigger.incrementalID++;
         this.tag = tag;
-        StatementManager.registerStatement((IStatement) this);
+        StatementManager.registerStatement(this);
         TriggerProvider.triggers.add(this);
         this.icon = Binnie.Resource.getItemIcon(mod, iconFile);
         this.desc = desc;

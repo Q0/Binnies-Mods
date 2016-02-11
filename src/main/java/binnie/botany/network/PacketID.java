@@ -65,7 +65,7 @@ public enum PacketID implements IPacketID {
                     info += ". Shame it is Wilting!";
                 }
             }
-            final IChatComponent chat = (IChatComponent) new ChatComponentText(info);
+            final IChatComponent chat = new ChatComponentText(info);
             player.addChatMessage(chat);
         } else if (this == PacketID.FlowerUpdate) {
             final MessageFlowerUpdate packet2 = new MessageFlowerUpdate(message);

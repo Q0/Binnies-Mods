@@ -37,19 +37,19 @@ public class ModuleGeneration implements IWorldGenerator, IInitializable {
         ModuleGeneration.waterRate = ConfigurationMain.waterHiveRate;
         ModuleGeneration.rockRate = ConfigurationMain.rockHiveRate;
         ModuleGeneration.netherRate = ConfigurationMain.netherHiveRate;
-        GameRegistry.registerWorldGenerator((IWorldGenerator) new ModuleGeneration(), 0);
+        GameRegistry.registerWorldGenerator(new ModuleGeneration(), 0);
         if (!ConfigurationMain.canQuarryMineHives) {
             BuildCraftAPI.softBlocks.add(ExtraBees.hive);
         }
     }
 
     public void postInit() {
-        EnumHiveType.Water.drops.add((IHiveDrop) new HiveDrop((IAlleleBeeSpecies) ExtraBeesSpecies.WATER, 80));
-        EnumHiveType.Water.drops.add((IHiveDrop) new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
-        EnumHiveType.Rock.drops.add((IHiveDrop) new HiveDrop((IAlleleBeeSpecies) ExtraBeesSpecies.ROCK, 80));
-        EnumHiveType.Rock.drops.add((IHiveDrop) new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
-        EnumHiveType.Nether.drops.add((IHiveDrop) new HiveDrop((IAlleleBeeSpecies) ExtraBeesSpecies.BASALT, 80));
-        EnumHiveType.Nether.drops.add((IHiveDrop) new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
+        EnumHiveType.Water.drops.add(new HiveDrop(ExtraBeesSpecies.WATER, 80));
+        EnumHiveType.Water.drops.add(new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
+        EnumHiveType.Rock.drops.add(new HiveDrop(ExtraBeesSpecies.ROCK, 80));
+        EnumHiveType.Rock.drops.add(new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
+        EnumHiveType.Nether.drops.add(new HiveDrop(ExtraBeesSpecies.BASALT, 80));
+        EnumHiveType.Nether.drops.add(new HiveDrop(ForestryAllele.BeeSpecies.Valiant.getAllele(), 3));
         ExtraBees.hive.setHarvestLevel("scoop", 0, 0);
         ExtraBees.hive.setHarvestLevel("scoop", 0, 1);
         ExtraBees.hive.setHarvestLevel("scoop", 0, 2);

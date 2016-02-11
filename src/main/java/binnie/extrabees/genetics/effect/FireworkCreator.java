@@ -14,7 +14,7 @@ public class FireworkCreator {
         LargeBall,
         Star,
         Creeper,
-        Burst;
+        Burst
     }
 
     public static class Firework {
@@ -70,10 +70,10 @@ public class FireworkCreator {
             final NBTTagCompound var15 = new NBTTagCompound();
             final NBTTagCompound var16 = new NBTTagCompound();
             final NBTTagList var17 = new NBTTagList();
-            var17.appendTag((NBTBase) this.getNBT());
-            var16.setTag("Explosions", (NBTBase) var17);
+            var17.appendTag(this.getNBT());
+            var16.setTag("Explosions", var17);
             var16.setByte("Flight", (byte) 0);
-            var15.setTag("Fireworks", (NBTBase) var16);
+            var15.setTag("Fireworks", var16);
             final ItemStack item = new ItemStack(Items.fireworks);
             item.setTagCompound(var15);
             return item;

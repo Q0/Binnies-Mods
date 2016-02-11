@@ -24,7 +24,7 @@ class ControlMutationBox extends ControlListBox<IMutation> {
 
     @Override
     public IWidget createOption(final IMutation value, final int y) {
-        return new ControlMutationItem(((ControlScrollableContent<ControlList<IMutation>>) this).getContent(), value, this.species, y);
+        return new ControlMutationItem(this.getContent(), value, this.species, y);
     }
 
     public void setSpecies(final IAlleleSpecies species) {
@@ -56,6 +56,6 @@ class ControlMutationBox extends ControlListBox<IMutation> {
 
     enum Type {
         Resultant,
-        Further;
+        Further
     }
 }

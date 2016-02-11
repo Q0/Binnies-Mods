@@ -100,7 +100,7 @@ public class Gardening {
     }
 
     public static boolean plant(final World world, final int x, final int y, final int z, final IFlower flower, final GameProfile owner) {
-        final boolean set = world.setBlock(x, y, z, (Block) Botany.flower, 0, 2);
+        final boolean set = world.setBlock(x, y, z, Botany.flower, 0, 2);
         if (!set) {
             return false;
         }
@@ -126,7 +126,7 @@ public class Gardening {
             final IFlower iflower = ((TileEntityFlower) flower).getFlower();
             final int section = ((TileEntityFlower) flower).getSection();
             if (iflower != null && section < iflower.getGenome().getPrimary().getType().getSections() - 1 && iflower.getAge() > 0) {
-                world.setBlock(x, y + 1, z, (Block) Botany.flower, 0, 2);
+                world.setBlock(x, y + 1, z, Botany.flower, 0, 2);
                 final TileEntity tileFlower = world.getTileEntity(x, y + 1, z);
                 if (tileFlower != null && tileFlower instanceof TileEntityFlower) {
                     ((TileEntityFlower) tileFlower).setSection(section + 1);
@@ -250,7 +250,7 @@ public class Gardening {
         final EnumSoilType type = getSoilType(world, x, y, z);
         final Block block = getSoilBlock(type, true);
         final boolean done = world.setBlock(x, y, z, block, world.getBlockMetadata(x, y, z), 2);
-        if (done && BlockPlant.isWeed((IBlockAccess) world, x, y + 1, z)) {
+        if (done && BlockPlant.isWeed(world, x, y + 1, z)) {
             world.setBlockToAir(x, y + 1, z);
         }
         return done;

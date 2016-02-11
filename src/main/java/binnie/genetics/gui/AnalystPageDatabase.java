@@ -78,11 +78,11 @@ public class AnalystPageDatabase extends ControlAnalystPage {
         final boolean textView = false;
         final Collection<IAlleleSpecies> options = this.getSpecies(system);
         for (final IAlleleSpecies species : options) {
-            final String height = system.getAlleleName((IChromosomeType) EnumTreeChromosome.HEIGHT, system.getIndividual(species.getUID()).getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.HEIGHT));
-            final String fertility = system.getAlleleName((IChromosomeType) EnumTreeChromosome.FERTILITY, system.getIndividual(species.getUID()).getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.FERTILITY));
-            final String yield = system.getAlleleName((IChromosomeType) EnumTreeChromosome.YIELD, system.getIndividual(species.getUID()).getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.YIELD));
-            final String sappiness = system.getAlleleName((IChromosomeType) EnumTreeChromosome.SAPPINESS, system.getIndividual(species.getUID()).getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.SAPPINESS));
-            final String maturation = system.getAlleleName((IChromosomeType) EnumTreeChromosome.MATURATION, system.getIndividual(species.getUID()).getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.MATURATION));
+            final String height = system.getAlleleName(EnumTreeChromosome.HEIGHT, system.getIndividual(species.getUID()).getGenome().getActiveAllele(EnumTreeChromosome.HEIGHT));
+            final String fertility = system.getAlleleName(EnumTreeChromosome.FERTILITY, system.getIndividual(species.getUID()).getGenome().getActiveAllele(EnumTreeChromosome.FERTILITY));
+            final String yield = system.getAlleleName(EnumTreeChromosome.YIELD, system.getIndividual(species.getUID()).getGenome().getActiveAllele(EnumTreeChromosome.YIELD));
+            final String sappiness = system.getAlleleName(EnumTreeChromosome.SAPPINESS, system.getIndividual(species.getUID()).getGenome().getActiveAllele(EnumTreeChromosome.SAPPINESS));
+            final String maturation = system.getAlleleName(EnumTreeChromosome.MATURATION, system.getIndividual(species.getUID()).getGenome().getActiveAllele(EnumTreeChromosome.MATURATION));
         }
         if (textView) {
             this.scroll = new ControlListBox<IAlleleSpecies>(this, 4.0f, (float) y, this.w() - 8.0f, this.h() - y - 8.0f - 20.0f, 0.0f) {

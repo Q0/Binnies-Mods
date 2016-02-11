@@ -36,9 +36,9 @@ public class ModuleGenetics implements IInitializable {
         Botany.flowerItem = new ItemFlower();
         Botany.pollen = new ItemPollen();
         Botany.seed = new ItemSeed();
-        AlleleManager.alleleRegistry.registerSpeciesRoot((ISpeciesRoot) BotanyCore.speciesRoot);
-        AlleleManager.alleleRegistry.registerAllele((IAllele) ModuleGenetics.alleleEffectNone);
-        GameRegistry.registerBlock((Block) Botany.flower, "flower");
+        AlleleManager.alleleRegistry.registerSpeciesRoot(BotanyCore.speciesRoot);
+        AlleleManager.alleleRegistry.registerAllele(ModuleGenetics.alleleEffectNone);
+        GameRegistry.registerBlock(Botany.flower, "flower");
         BinnieCore.proxy.registerTileEntity(TileEntityFlower.class, "botany.tile.flower", null);
         Botany.database = new ItemDictionary();
         Botany.encyclopedia = new ItemEncyclopedia(false);
@@ -48,11 +48,11 @@ public class ModuleGenetics implements IInitializable {
     @Override
     public void init() {
         for (final EnumFlowerColor color : EnumFlowerColor.values()) {
-            AlleleManager.alleleRegistry.registerAllele((IAllele) color.getAllele());
+            AlleleManager.alleleRegistry.registerAllele(color.getAllele());
         }
         FlowerSpecies.setupVariants();
         for (final FlowerSpecies species : FlowerSpecies.values()) {
-            AlleleManager.alleleRegistry.registerAllele((IAllele) species);
+            AlleleManager.alleleRegistry.registerAllele(species);
             BotanyCore.getFlowerRoot().registerTemplate(species.getUID(), species.getTemplate());
             for (final IAllele[] variant : species.getVariants()) {
                 BotanyCore.getFlowerRoot().registerTemplate(variant);
@@ -64,11 +64,11 @@ public class ModuleGenetics implements IInitializable {
 
     @Override
     public void postInit() {
-        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(new ItemStack((Item) Botany.encyclopedia), new Object[]{"fff", "fbf", "fff", 'f', new ItemStack((Block) Blocks.red_flower, 1, 32767), 'b', Items.book}));
-        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(new ItemStack((Item) Botany.encyclopedia), new Object[]{"fff", "fbf", "fff", 'f', new ItemStack((Block) Blocks.yellow_flower, 1, 32767), 'b', Items.book}));
-        GameRegistry.addRecipe((IRecipe) new ShapedOreRecipe(new ItemStack((Item) Botany.encyclopedia), new Object[]{"fff", "fbf", "fff", 'f', new ItemStack((Block) Botany.flower, 1, 32767), 'b', Items.book}));
-        GameRegistry.addRecipe((IRecipe) new ShapelessOreRecipe(new ItemStack((Item) Botany.encyclopediaIron), new Object[]{new ItemStack((Item) Botany.encyclopedia), "ingotIron"}));
-        FlowerManager.flowerRegistry.registerAcceptableFlower((Block) Botany.flower, new String[]{"flowersVanilla"});
-        RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("water", 2000), (ItemStack) null, new ItemStack((Item) Botany.database), new Object[]{"X#X", "YEY", "RDR", '#', Blocks.glass_pane, 'X', Items.gold_ingot, 'Y', Items.gold_nugget, 'R', Items.redstone, 'D', Items.diamond, 'E', Items.emerald});
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Botany.encyclopedia), "fff", "fbf", "fff", 'f', new ItemStack(Blocks.red_flower, 1, 32767), 'b', Items.book));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Botany.encyclopedia), "fff", "fbf", "fff", 'f', new ItemStack(Blocks.yellow_flower, 1, 32767), 'b', Items.book));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Botany.encyclopedia), "fff", "fbf", "fff", 'f', new ItemStack(Botany.flower, 1, 32767), 'b', Items.book));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Botany.encyclopediaIron), new ItemStack(Botany.encyclopedia), "ingotIron"));
+        FlowerManager.flowerRegistry.registerAcceptableFlower(Botany.flower, "flowersVanilla");
+        RecipeManagers.carpenterManager.addRecipe(100, Binnie.Liquid.getLiquidStack("water", 2000), null, new ItemStack(Botany.database), "X#X", "YEY", "RDR", '#', Blocks.glass_pane, 'X', Items.gold_ingot, 'Y', Items.gold_nugget, 'R', Items.redstone, 'D', Items.diamond, 'E', Items.emerald);
     }
 }

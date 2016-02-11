@@ -26,7 +26,7 @@ class MothBreedingSystem extends BreedingSystem {
 
     @Override
     public ISpeciesRoot getSpeciesRoot() {
-        return (ISpeciesRoot) Binnie.Genetics.getButterflyRoot();
+        return Binnie.Genetics.getButterflyRoot();
     }
 
     @Override
@@ -36,7 +36,7 @@ class MothBreedingSystem extends BreedingSystem {
 
     @Override
     public Class<? extends IBreedingTracker> getTrackerClass() {
-        return (Class<? extends IBreedingTracker>) ILepidopteristTracker.class;
+        return ILepidopteristTracker.class;
     }
 
     @Override

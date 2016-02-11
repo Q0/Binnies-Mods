@@ -92,11 +92,11 @@ public enum EnumFlowerColor implements IFlowerColour {
     AlleleColor allele;
     String ident;
 
-    private EnumFlowerColor(final String ident, final int c) {
+    EnumFlowerColor(final String ident, final int c) {
         this(c);
     }
 
-    private EnumFlowerColor(final int c) {
+    EnumFlowerColor(final int c) {
         this.color = c;
         this.allele = new AlleleColor(this, "botany.color" + this.name(), this.toString(), this.color);
         int r = this.color >> 16 & 0xFF;
@@ -2941,7 +2941,7 @@ public enum EnumFlowerColor implements IFlowerColour {
 
     @Override
     public IAlleleInteger getAllele() {
-        return (IAlleleInteger) this.allele;
+        return this.allele;
     }
 
     @Override

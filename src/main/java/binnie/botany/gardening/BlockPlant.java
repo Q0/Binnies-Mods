@@ -118,7 +118,7 @@ public class BlockPlant extends BlockBush {
         public IIcon icon;
         String name;
 
-        private Type(final String name) {
+        Type(final String name) {
             this.name = name;
         }
 
@@ -127,7 +127,7 @@ public class BlockPlant extends BlockBush {
         }
 
         public ItemStack get() {
-            return new ItemStack((Block) Botany.plant, 1, this.ordinal());
+            return new ItemStack(Botany.plant, 1, this.ordinal());
         }
 
         public String getName() {

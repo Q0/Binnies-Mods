@@ -12,17 +12,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum AlvearyMachine implements IMachineType {
-    Mutator((Class<? extends MachinePackage>) AlvearyMutator.PackageAlvearyMutator.class),
-    Frame((Class<? extends MachinePackage>) AlvearyFrame.PackageAlvearyFrame.class),
-    RainShield((Class<? extends MachinePackage>) AlvearyRainShield.PackageAlvearyRainShield.class),
-    Lighting((Class<? extends MachinePackage>) AlvearyLighting.PackageAlvearyLighting.class),
-    Stimulator((Class<? extends MachinePackage>) AlvearyStimulator.PackageAlvearyStimulator.class),
-    Hatchery((Class<? extends MachinePackage>) AlvearyHatchery.PackageAlvearyHatchery.class),
-    Transmission((Class<? extends MachinePackage>) AlvearyTransmission.PackageAlvearyTransmission.class);
+    Mutator(AlvearyMutator.PackageAlvearyMutator.class),
+    Frame(AlvearyFrame.PackageAlvearyFrame.class),
+    RainShield(AlvearyRainShield.PackageAlvearyRainShield.class),
+    Lighting(AlvearyLighting.PackageAlvearyLighting.class),
+    Stimulator(AlvearyStimulator.PackageAlvearyStimulator.class),
+    Hatchery(AlvearyHatchery.PackageAlvearyHatchery.class),
+    Transmission(AlvearyTransmission.PackageAlvearyTransmission.class);
 
     Class<? extends MachinePackage> clss;
 
-    private AlvearyMachine(final Class<? extends MachinePackage> clss) {
+    AlvearyMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 

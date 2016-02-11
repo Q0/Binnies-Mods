@@ -104,7 +104,7 @@ public class Incubator {
                 public ItemStack getOutputStack(final MachineUtil machine) {
                     final ItemStack larvae = machine.getStack(3);
                     final IBee bee = Binnie.Genetics.getBeeRoot().getMember(larvae);
-                    return Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) bee, EnumBeeType.DRONE.ordinal());
+                    return Binnie.Genetics.getBeeRoot().getMemberStack(bee, EnumBeeType.DRONE.ordinal());
                 }
             });
         }

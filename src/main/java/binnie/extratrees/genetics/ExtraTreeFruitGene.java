@@ -105,7 +105,7 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     FruitSprite index;
     HashMap<ItemStack, Float> products;
 
-    private ExtraTreeFruitGene(final int time, final int unripe, final int colour, final FruitSprite index) {
+    ExtraTreeFruitGene(final int time, final int unripe, final int colour, final FruitSprite index) {
         this.isRipening = false;
         this.diffB = 0;
         this.pod = null;
@@ -116,7 +116,7 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         this.setRipening(time, unripe);
     }
 
-    private ExtraTreeFruitGene(final String name, final FruitPod pod) {
+    ExtraTreeFruitGene(final String name, final FruitPod pod) {
         this.isRipening = false;
         this.diffB = 0;
         this.pod = null;
@@ -131,8 +131,8 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         final IFruitFamily familyPome = AlleleManager.alleleRegistry.getFruitFamily("forestry.pomes");
         final IFruitFamily familyJungle = AlleleManager.alleleRegistry.getFruitFamily("forestry.jungle");
         final IFruitFamily familyNuts = AlleleManager.alleleRegistry.getFruitFamily("forestry.nuts");
-        final IFruitFamily familyBerry = (IFruitFamily) ExtraTreeFruitFamily.Berry;
-        final IFruitFamily familyCitrus = (IFruitFamily) ExtraTreeFruitFamily.Citrus;
+        final IFruitFamily familyBerry = ExtraTreeFruitFamily.Berry;
+        final IFruitFamily familyCitrus = ExtraTreeFruitFamily.Citrus;
         AlleleManager.alleleRegistry.registerFruitFamily(familyBerry);
         AlleleManager.alleleRegistry.registerFruitFamily(familyCitrus);
         ExtraTreeFruitGene.Apple.addProduct(new ItemStack(Items.apple), 1.0f);
@@ -290,7 +290,7 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
         if (block == Blocks.log || block == Blocks.log2) {
             return BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
         }
-        return block != null && block.isWood((IBlockAccess) world, x, y, z);
+        return block != null && block.isWood(world, x, y, z);
     }
 
     public void setRipening(final int time, final int unripe) {
@@ -315,7 +315,7 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     }
 
     public IFruitProvider getProvider() {
-        return (IFruitProvider) this;
+        return this;
     }
 
     public ItemStack[] getProducts() {
@@ -401,7 +401,7 @@ public enum ExtraTreeFruitGene implements IAlleleFruit, IFruitProvider {
     }
 
     public boolean trySpawnFruitBlock(final ITreeGenome genome, final World world, final int x, final int y, final int z) {
-        return this.pod != null && world.rand.nextFloat() <= genome.getSappiness() && Binnie.Genetics.getTreeRoot().setFruitBlock(world, (IAlleleFruit) genome.getActiveAllele((IChromosomeType) EnumTreeChromosome.FRUITS), genome.getSappiness(), this.pod.getTextures(), x, y, z);
+        return this.pod != null && world.rand.nextFloat() <= genome.getSappiness() && Binnie.Genetics.getTreeRoot().setFruitBlock(world, (IAlleleFruit) genome.getActiveAllele(EnumTreeChromosome.FRUITS), genome.getSappiness(), this.pod.getTextures(), x, y, z);
     }
 
     public boolean setFruitBlock(final World world, final IAlleleFruit allele, final float sappiness, final int x, final int y, final int z) {

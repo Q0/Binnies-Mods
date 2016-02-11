@@ -46,7 +46,7 @@ public class CraftGUIResourceManager implements IResourceManagerReloadListener {
             BufferedReader bufferedreader = null;
             try {
                 bufferedreader = new BufferedReader(new InputStreamReader(res.getInputStream(), Charsets.UTF_8));
-                jsonobject = new JsonParser().parse((Reader) bufferedreader).getAsJsonObject();
+                jsonobject = new JsonParser().parse(bufferedreader).getAsJsonObject();
                 for (final JsonElement el : jsonobject.get("texture-sheets").getAsJsonArray()) {
                     if (el instanceof JsonObject) {
                         final JsonObject sheet = (JsonObject) el;
@@ -74,9 +74,9 @@ public class CraftGUIResourceManager implements IResourceManagerReloadListener {
                     }
                 }
             } catch (RuntimeException runtimeexception) {
-                throw new JsonParseException("Failed to parse stylesheet for Binnie's Mods", (Throwable) runtimeexception);
+                throw new JsonParseException("Failed to parse stylesheet for Binnie's Mods", runtimeexception);
             } finally {
-                IOUtils.closeQuietly((Reader) bufferedreader);
+                IOUtils.closeQuietly(bufferedreader);
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to load default stylesheet for Binnie's Mods.", e);

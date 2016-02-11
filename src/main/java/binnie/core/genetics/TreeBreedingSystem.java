@@ -41,7 +41,7 @@ public class TreeBreedingSystem extends BreedingSystem {
 
     @Override
     public ISpeciesRoot getSpeciesRoot() {
-        return (ISpeciesRoot) Binnie.Genetics.getTreeRoot();
+        return Binnie.Genetics.getTreeRoot();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TreeBreedingSystem extends BreedingSystem {
 
     @Override
     public Class<? extends IBreedingTracker> getTrackerClass() {
-        return (Class<? extends IBreedingTracker>) IArboristTracker.class;
+        return IArboristTracker.class;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class TreeBreedingSystem extends BreedingSystem {
             return ((IAlleleInteger) allele).getValue() + "x" + ((IAlleleInteger) allele).getValue();
         }
         if (chromosome == EnumTreeChromosome.PLANT) {
-            final EnumSet<EnumPlantType> types = (EnumSet<EnumPlantType>) ((IAllelePlantType) allele).getPlantTypes();
+            final EnumSet<EnumPlantType> types = ((IAllelePlantType) allele).getPlantTypes();
             return types.isEmpty() ? Binnie.Language.localise(BinnieCore.instance, "allele.none") : types.iterator().next().toString();
         }
         if (chromosome == EnumTreeChromosome.FRUITS && allele.getUID().contains(".")) {
@@ -193,7 +193,7 @@ public class TreeBreedingSystem extends BreedingSystem {
             return null;
         }
         for (final Map.Entry<ItemStack, IIndividual> entry : AlleleManager.ersatzSaplings.entrySet()) {
-            if (ItemStack.areItemStacksEqual(stack, (ItemStack) entry.getKey())) {
+            if (ItemStack.areItemStacksEqual(stack, entry.getKey())) {
                 return entry.getValue();
             }
         }

@@ -87,9 +87,9 @@ public class GeneArrayItem implements INBTTagable, IGeneItem {
         final NBTTagList list = new NBTTagList();
         for (final IGene gene : this.genes) {
             final NBTTagCompound geneNBT = gene.getNBTTagCompound();
-            list.appendTag((NBTBase) geneNBT);
+            list.appendTag(geneNBT);
         }
-        nbt.setTag("genes", (NBTBase) list);
+        nbt.setTag("genes", list);
     }
 
     public ISpeciesRoot getSpeciesRoot() {

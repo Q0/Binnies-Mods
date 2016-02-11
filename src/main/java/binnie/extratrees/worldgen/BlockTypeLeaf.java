@@ -13,6 +13,6 @@ public class BlockTypeLeaf extends BlockType {
 
     @Override
     public void setBlock(final World world, final ITree tree, final int x, final int y, final int z) {
-        ((ITreeGenData) tree).setLeaves(world, (GameProfile) null, x, y, z);
+        tree.setLeaves(world, null, x, y, z);
     }
 }

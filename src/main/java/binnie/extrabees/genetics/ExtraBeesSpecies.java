@@ -177,7 +177,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     @SideOnly(Side.CLIENT)
     private IIcon[][] icons;
 
-    private ExtraBeesSpecies(final String binomial, final int colour) {
+    ExtraBeesSpecies(final String binomial, final int colour) {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -201,7 +201,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.primaryColor = colour;
     }
 
-    private ExtraBeesSpecies() {
+    ExtraBeesSpecies() {
         this.primaryColor = 16777215;
         this.secondaryColor = 16768022;
         this.temperature = EnumTemperature.NORMAL;
@@ -789,7 +789,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     public IAllele[] getTemplate() {
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
         return this.template;
     }
 
@@ -806,7 +806,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         this.setHumidity(((IAlleleSpecies) template[0]).getHumidity());
         this.setTemperature(((IAlleleSpecies) template[0]).getTemperature());
         this.setSecondaryColor(((IAlleleSpecies) template[0]).getIconColour(1));
-        this.template[EnumBeeChromosome.SPECIES.ordinal()] = (IAllele) this;
+        this.template[EnumBeeChromosome.SPECIES.ordinal()] = this;
     }
 
     public void recessive() {
@@ -838,7 +838,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     public IIconProvider getIconProvider() {
-        return (IIconProvider) this;
+        return this;
     }
 
     public IIcon getIcon(final short texUID) {
@@ -987,7 +987,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
         final ArrayList<ItemStack> bounty = new ArrayList<ItemStack>();
         ItemStack research = null;
         if (world.rand.nextFloat() < 10.0f / bountyLevel) {
-            final Collection<? extends IMutation> combinations = (Collection<? extends IMutation>) this.getRoot().getCombinations((IAllele) this);
+            final Collection<? extends IMutation> combinations = this.getRoot().getCombinations((IAllele) this);
             if (combinations.size() > 0) {
                 final IMutation[] candidates = combinations.toArray(new IMutation[0]);
                 research = AlleleManager.alleleRegistry.getMutationNoteStack(researcher, candidates[world.rand.nextInt(candidates.length)]);
@@ -1016,7 +1016,7 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     public int getComplexity() {
-        return 1 + this.getGeneticAdvancement((IAllele) this, new ArrayList<IAllele>());
+        return 1 + this.getGeneticAdvancement(this, new ArrayList<IAllele>());
     }
 
     private int getGeneticAdvancement(final IAllele species, final ArrayList<IAllele> exclude) {
@@ -1056,6 +1056,6 @@ public enum ExtraBeesSpecies implements IAlleleBeeSpecies, IIconProvider {
     public enum State {
         Active,
         Inactive,
-        Deprecated;
+        Deprecated
     }
 }

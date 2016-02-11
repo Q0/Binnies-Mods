@@ -34,11 +34,7 @@ public class Flower extends Individual implements IFlower {
         this.wilting = false;
         this.genome = genome;
         this.age = age;
-        if (age > 0) {
-            this.flowered = true;
-        } else {
-            this.flowered = false;
-        }
+        this.flowered = age > 0;
     }
 
     public String getDisplayName() {
@@ -56,7 +52,7 @@ public class Flower extends Individual implements IFlower {
     public void addTooltip(final List<String> list) {
         final IAlleleFlowerSpecies primary = this.genome.getPrimary();
         final IAlleleFlowerSpecies secondary = this.genome.getSecondary();
-        if (!this.isPureBred((IChromosomeType) EnumFlowerChromosome.SPECIES)) {
+        if (!this.isPureBred(EnumFlowerChromosome.SPECIES)) {
             list.add("§9" + primary.getName() + "-" + secondary.getName() + " Hybrid");
         }
         list.add("§6Age: " + this.getAge());
@@ -95,12 +91,12 @@ public class Flower extends Individual implements IFlower {
         if (this.genome != null) {
             final NBTTagCompound NBTmachine = new NBTTagCompound();
             this.genome.writeToNBT(NBTmachine);
-            nbttagcompound.setTag("Genome", (NBTBase) NBTmachine);
+            nbttagcompound.setTag("Genome", NBTmachine);
         }
         if (this.mate != null) {
             final NBTTagCompound NBTmachine = new NBTTagCompound();
             this.mate.writeToNBT(NBTmachine);
-            nbttagcompound.setTag("Mate", (NBTBase) NBTmachine);
+            nbttagcompound.setTag("Mate", NBTmachine);
         }
     }
 
@@ -126,9 +122,9 @@ public class Flower extends Individual implements IFlower {
             choice2 = parent2.getSecondaryAllele();
         }
         if (rand.nextBoolean()) {
-            return (IChromosome) new Chromosome(choice1, choice2);
+            return new Chromosome(choice1, choice2);
         }
-        return (IChromosome) new Chromosome(choice2, choice1);
+        return new Chromosome(choice2, choice1);
     }
 
     public void mate(final IFlower other) {
@@ -220,7 +216,7 @@ public class Flower extends Individual implements IFlower {
         if (colour1 != colour2) {
             for (final IColourMix mutation : BotanyCore.getFlowerRoot().getColourMixes(true)) {
                 if (mutation.isMutation(colour1, colour2) && world.rand.nextFloat() * 100.0f < mutation.getChance()) {
-                    parent1[EnumFlowerChromosome.PRIMARY.ordinal()] = (IChromosome) new Chromosome((IAllele) mutation.getResult().getAllele());
+                    parent1[EnumFlowerChromosome.PRIMARY.ordinal()] = new Chromosome(mutation.getResult().getAllele());
                 }
             }
         }
@@ -229,7 +225,7 @@ public class Flower extends Individual implements IFlower {
         if (colour1 != colour2) {
             for (final IColourMix mutation : BotanyCore.getFlowerRoot().getColourMixes(true)) {
                 if (mutation.isMutation(colour1, colour2) && world.rand.nextFloat() * 100.0f < mutation.getChance()) {
-                    parent1[EnumFlowerChromosome.SECONDARY.ordinal()] = (IChromosome) new Chromosome((IAllele) mutation.getResult().getAllele());
+                    parent1[EnumFlowerChromosome.SECONDARY.ordinal()] = new Chromosome(mutation.getResult().getAllele());
                 }
             }
         }
@@ -238,13 +234,13 @@ public class Flower extends Individual implements IFlower {
         if (colour1 != colour2) {
             for (final IColourMix mutation : BotanyCore.getFlowerRoot().getColourMixes(true)) {
                 if (mutation.isMutation(colour1, colour2) && world.rand.nextFloat() * 100.0f < mutation.getChance()) {
-                    parent1[EnumFlowerChromosome.STEM.ordinal()] = (IChromosome) new Chromosome((IAllele) mutation.getResult().getAllele());
+                    parent1[EnumFlowerChromosome.STEM.ordinal()] = new Chromosome(mutation.getResult().getAllele());
                 }
             }
         }
         IChromosome[] template = null;
         for (final IFlowerMutation mutation2 : BotanyCore.getFlowerRoot().getMutations(true)) {
-            final float chance = mutation2.getChance(allele0, allele2, (IGenome) genome0, (IGenome) genome2);
+            final float chance = mutation2.getChance(allele0, allele2, genome0, genome2);
             if (chance > 0.0f && world.rand.nextFloat() * 100.0f < chance && template == null) {
                 template = BotanyCore.getFlowerRoot().templateAsChromosomes(mutation2.getTemplate());
             }

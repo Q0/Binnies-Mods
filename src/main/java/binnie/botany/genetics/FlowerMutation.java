@@ -65,7 +65,7 @@ public class FlowerMutation implements IFlowerMutation {
     }
 
     public ISpeciesRoot getRoot() {
-        return (ISpeciesRoot) BotanyCore.getFlowerRoot();
+        return BotanyCore.getFlowerRoot();
     }
 
     public Collection<String> getSpecialConditions() {

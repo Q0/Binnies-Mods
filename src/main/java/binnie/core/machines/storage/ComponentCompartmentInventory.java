@@ -60,10 +60,10 @@ class ComponentCompartmentInventory extends ComponentInventorySlots implements I
         for (int i = 0; i < this.numberOfTabs; ++i) {
             final NBTTagCompound nbt2 = new NBTTagCompound();
             this.getTab(i).writeToNBT(nbt2);
-            list.appendTag((NBTBase) nbt2);
+            list.appendTag(nbt2);
         }
         final NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("tabs", (NBTBase) list);
+        tag.setTag("tabs", list);
         nbt.put("comp-tabs", tag);
     }
 
@@ -105,8 +105,8 @@ class ComponentCompartmentInventory extends ComponentInventorySlots implements I
         for (int i = 0; i < this.numberOfTabs; ++i) {
             final NBTTagCompound nbt2 = new NBTTagCompound();
             this.getTab(i).writeToNBT(nbt2);
-            list.appendTag((NBTBase) nbt2);
+            list.appendTag(nbt2);
         }
-        nbt.setTag("tabs", (NBTBase) list);
+        nbt.setTag("tabs", list);
     }
 }

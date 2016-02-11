@@ -49,7 +49,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive {
         this.allResultantMutations = new HashMap<IAlleleSpecies, List<IMutation>>();
         this.allFurtherMutations = new HashMap<IAlleleSpecies, List<IMutation>>();
         Binnie.Genetics.registerBreedingSystem(this);
-        MinecraftForge.EVENT_BUS.register((Object) this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public String getChromosomeName(final IChromosomeType chromo) {
@@ -136,7 +136,7 @@ public abstract class BreedingSystem implements IItemStackRepresentitive {
             final Set<IMutation> mutations = new LinkedHashSet<IMutation>();
             mutations.addAll(this.getSpeciesRoot().getMutations(false));
             if (this == Binnie.Genetics.beeBreedingSystem) {
-                mutations.addAll((Collection<? extends IMutation>) ExtraBeeMutation.mutations);
+                mutations.addAll(ExtraBeeMutation.mutations);
             }
             for (final IMutation mutation : mutations) {
                 this.allMutations.add(mutation);

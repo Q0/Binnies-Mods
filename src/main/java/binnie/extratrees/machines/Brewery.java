@@ -226,12 +226,12 @@ public class Brewery {
         public void writeToNBT(final NBTTagCompound nbt) {
             final NBTTagCompound fluidTag = new NBTTagCompound();
             this.currentInput.writeToNBT(fluidTag);
-            nbt.setTag("fluid", (NBTBase) fluidTag);
-            nbt.setTag("ingr", (NBTBase) this.getNBT(this.ingr));
-            nbt.setTag("in1", (NBTBase) this.getNBT(this.inputs[0]));
-            nbt.setTag("in2", (NBTBase) this.getNBT(this.inputs[1]));
-            nbt.setTag("in3", (NBTBase) this.getNBT(this.inputs[2]));
-            nbt.setTag("yeast", (NBTBase) this.getNBT(this.yeast));
+            nbt.setTag("fluid", fluidTag);
+            nbt.setTag("ingr", this.getNBT(this.ingr));
+            nbt.setTag("in1", this.getNBT(this.inputs[0]));
+            nbt.setTag("in2", this.getNBT(this.inputs[1]));
+            nbt.setTag("in3", this.getNBT(this.inputs[2]));
+            nbt.setTag("yeast", this.getNBT(this.yeast));
         }
 
         private NBTTagCompound getNBT(final ItemStack ingr) {

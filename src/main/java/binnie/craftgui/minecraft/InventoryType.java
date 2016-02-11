@@ -4,5 +4,5 @@ public enum InventoryType {
     Player,
     Machine,
     Window,
-    Custom;
+    Custom
 }

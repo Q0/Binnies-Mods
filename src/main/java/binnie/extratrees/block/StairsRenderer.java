@@ -50,14 +50,14 @@ public class StairsRenderer implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(final IBlockAccess world, final int par2, final int par3, final int par4, final Block block, final int modelId, final RenderBlocks renderer) {
         final BlockETStairs blockStairs = (BlockETStairs) block;
         blockStairs.func_150147_e(renderer.blockAccess, par2, par3, par4);
-        renderer.setRenderBoundsFromBlock((Block) blockStairs);
-        renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
+        renderer.setRenderBoundsFromBlock(blockStairs);
+        renderer.renderStandardBlock(blockStairs, par2, par3, par4);
         final boolean var5 = blockStairs.func_150145_f(renderer.blockAccess, par2, par3, par4);
-        renderer.setRenderBoundsFromBlock((Block) blockStairs);
-        renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
+        renderer.setRenderBoundsFromBlock(blockStairs);
+        renderer.renderStandardBlock(blockStairs, par2, par3, par4);
         if (var5 && blockStairs.func_150144_g(renderer.blockAccess, par2, par3, par4)) {
-            renderer.setRenderBoundsFromBlock((Block) blockStairs);
-            renderer.renderStandardBlock((Block) blockStairs, par2, par3, par4);
+            renderer.setRenderBoundsFromBlock(blockStairs);
+            renderer.renderStandardBlock(blockStairs, par2, par3, par4);
         }
         return true;
     }

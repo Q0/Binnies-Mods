@@ -193,7 +193,7 @@ public class Isolator {
             if (!this.getUtil().getProcess().isInProgress()) {
                 return;
             }
-            BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.4 + 0.2 * rand.nextDouble(), y + 1.6, z + 0.4 + rand.nextDouble() * 0.2, 0.0, 0.0, 0.0) {
+            BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.4 + 0.2 * rand.nextDouble(), y + 1.6, z + 0.4 + rand.nextDouble() * 0.2, 0.0, 0.0, 0.0) {
                 double axisX = 0.0;
                 double axisZ = 0.0;
                 double angle = 0.0;
@@ -225,7 +225,7 @@ public class Isolator {
         public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
             final int tick = (int) (world.getTotalWorldTime() % 6L);
             if ((tick == 0 || tick == 5) && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, (double) (y + 1), z + 0.5, 0.0, 0.0, 0.0) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, (double) (y + 1), z + 0.5, 0.0, 0.0, 0.0) {
                     double axisX = this.posX;
                     double axisZ = this.posZ;
                     double angle = 0.7 + (int) (this.worldObj.getTotalWorldTime() % 2L) * 3.1415;

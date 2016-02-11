@@ -69,7 +69,7 @@ public abstract class BlockDesign extends BlockMetadata implements IMultipassBlo
         if (!((IToolHammer) item.getItem()).isActive(item)) {
             return;
         }
-        final DesignBlock block = blockC.getCarpentryBlock((IBlockAccess) world, x, y, z);
+        final DesignBlock block = blockC.getCarpentryBlock(world, x, y, z);
         final TileEntityMetadata tile = (TileEntityMetadata) world.getTileEntity(x, y, z);
         block.rotate(event.face, item, player, world, x, y, z);
         final int meta = block.getBlockMetadata(blockC.getDesignSystem());
@@ -143,7 +143,7 @@ public abstract class BlockDesign extends BlockMetadata implements IMultipassBlo
     }
 
     public ItemStack getItemStack(final int plank1, final int plank2, final int design) {
-        return TileEntityMetadata.getItemStack((Block) this, getMetadata(plank1, plank2, design));
+        return TileEntityMetadata.getItemStack(this, getMetadata(plank1, plank2, design));
     }
 
     @SideOnly(Side.CLIENT)

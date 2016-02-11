@@ -83,7 +83,7 @@ public class ItemSequence extends Item implements IItemAnalysable, IItemChargabl
 
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         final IAlleleBeeSpecies species = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("forestry.speciesMeadows");
-        itemList.add(create(new Gene((IAllele) species, (IChromosomeType) EnumBeeChromosome.SPECIES, (ISpeciesRoot) Binnie.Genetics.getBeeRoot()), false));
+        itemList.add(create(new Gene(species, EnumBeeChromosome.SPECIES, Binnie.Genetics.getBeeRoot()), false));
     }
 
     public boolean isAnalysed(final ItemStack stack) {

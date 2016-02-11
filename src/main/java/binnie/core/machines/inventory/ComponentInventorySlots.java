@@ -110,11 +110,11 @@ public class ComponentInventorySlots extends ComponentInventory implements IInve
         final NBTTagList inventoryNBT = new NBTTagList();
         for (final Map.Entry<Integer, InventorySlot> entry : this.inventory.entrySet()) {
             final NBTTagCompound slotNBT = new NBTTagCompound();
-            slotNBT.setInteger("id", (int) entry.getKey());
+            slotNBT.setInteger("id", entry.getKey());
             entry.getValue().writeToNBT(slotNBT);
-            inventoryNBT.appendTag((NBTBase) slotNBT);
+            inventoryNBT.appendTag(slotNBT);
         }
-        nbttagcompound.setTag("inventory", (NBTBase) inventoryNBT);
+        nbttagcompound.setTag("inventory", inventoryNBT);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class ComponentInventorySlots extends ComponentInventory implements IInve
                 entityitem.motionX = (float) this.getMachine().getWorld().rand.nextGaussian() * accel;
                 entityitem.motionY = (float) this.getMachine().getWorld().rand.nextGaussian() * accel + 0.2f;
                 entityitem.motionZ = (float) this.getMachine().getWorld().rand.nextGaussian() * accel;
-                this.getMachine().getWorld().spawnEntityInWorld((Entity) entityitem);
+                this.getMachine().getWorld().spawnEntityInWorld(entityitem);
             }
         }
     }

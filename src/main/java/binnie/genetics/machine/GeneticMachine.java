@@ -13,14 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public enum GeneticMachine implements IMachineType {
-    Isolator((Class<? extends MachinePackage>) Isolator.PackageIsolator.class),
-    Sequencer((Class<? extends MachinePackage>) Sequencer.PackageSequencer.class),
-    Polymeriser((Class<? extends MachinePackage>) Polymeriser.PackagePolymeriser.class),
-    Inoculator((Class<? extends MachinePackage>) Inoculator.PackageInoculator.class);
+    Isolator(Isolator.PackageIsolator.class),
+    Sequencer(Sequencer.PackageSequencer.class),
+    Polymeriser(Polymeriser.PackagePolymeriser.class),
+    Inoculator(Inoculator.PackageInoculator.class);
 
     Class<? extends MachinePackage> clss;
 
-    private GeneticMachine(final Class<? extends MachinePackage> clss) {
+    GeneticMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
@@ -35,7 +35,7 @@ public enum GeneticMachine implements IMachineType {
     }
 
     public ItemStack get(final int i) {
-        return new ItemStack((Block) Genetics.packageGenetic.getBlock(), i, this.ordinal());
+        return new ItemStack(Genetics.packageGenetic.getBlock(), i, this.ordinal());
     }
 
     public abstract static class PackageGeneticBase extends MachinePackage {

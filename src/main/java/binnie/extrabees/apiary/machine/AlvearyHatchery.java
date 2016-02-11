@@ -74,7 +74,7 @@ public class AlvearyHatchery {
                         final ItemStack queenStack = house.getQueen();
                         final IBee queen = (queenStack == null) ? null : Binnie.Genetics.getBeeRoot().getMember(queenStack);
                         if (queen != null) {
-                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack((IIndividual) Binnie.Genetics.getBeeRoot().getBee(this.getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
+                            final ItemStack larvae = Binnie.Genetics.getBeeRoot().getMemberStack(Binnie.Genetics.getBeeRoot().getBee(this.getMachine().getWorld(), queen.getGenome()), EnumBeeType.LARVAE.ordinal());
                             new TransferRequest(larvae, this.getInventory()).transfer(true);
                         }
                     }

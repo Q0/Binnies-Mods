@@ -27,7 +27,7 @@ public class ControlGene extends Control implements IControlValue<IGene>, IToolt
                     final NBTTagCompound action = new NBTTagCompound();
                     final NBTTagCompound geneNBT = new NBTTagCompound();
                     ControlGene.this.getValue().writeToNBT(geneNBT);
-                    action.setTag("gene", (NBTBase) geneNBT);
+                    action.setTag("gene", geneNBT);
                     Window.get(ControlGene.this.getWidget()).sendClientAction("gene-select", action);
                 }
             }

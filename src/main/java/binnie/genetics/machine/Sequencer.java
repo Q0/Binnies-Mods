@@ -188,7 +188,7 @@ public class Sequencer {
             if (!this.getUtil().getProcess().isInProgress()) {
                 return;
             }
-            BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, y + 1.2 + rand.nextDouble() * 0.2, z + 0.5, 0.0, 0.0, 0.0) {
+            BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, y + 1.2 + rand.nextDouble() * 0.2, z + 0.5, 0.0, 0.0, 0.0) {
                 double axisX = this.posX;
                 double axisZ = this.posZ;
                 double angle = this.rand.nextDouble() * 2.0 * 3.1415;
@@ -225,7 +225,7 @@ public class Sequencer {
         public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
             final int ticks = (int) (world.getTotalWorldTime() % 16L);
             if (ticks == 0 && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, (double) (y + 1), z + 0.5, 0.0, 0.0, 0.0) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, (double) (y + 1), z + 0.5, 0.0, 0.0, 0.0) {
                     double axisX = 0.0;
                     double axisZ = 0.0;
                     double angle = 0.0;

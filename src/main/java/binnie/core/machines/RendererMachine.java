@@ -24,7 +24,7 @@ public class RendererMachine extends TileEntitySpecialRenderer implements ISimpl
     }
 
     public void renderInvBlock(final RenderBlocks renderblocks, final Block block, final int i, final int j) {
-        final TileEntity entity = block.createTileEntity((World) null, i);
+        final TileEntity entity = block.createTileEntity(null, i);
         this.renderTileEntity((TileEntityMachine) entity, 0.0, -0.1, 0.0, 0.0625f, renderblocks);
     }
 
@@ -51,6 +51,6 @@ public class RendererMachine extends TileEntitySpecialRenderer implements ISimpl
     }
 
     public void func_147496_a(final World par1World) {
-        this.blockRenderer = new RenderBlocks((IBlockAccess) par1World);
+        this.blockRenderer = new RenderBlocks(par1World);
     }
 }

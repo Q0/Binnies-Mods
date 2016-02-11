@@ -11,6 +11,6 @@ public class EventValuesChanged<T> extends Event {
     }
 
     public T[] getValues() {
-        return (T[]) this.values;
+        return this.values;
     }
 }

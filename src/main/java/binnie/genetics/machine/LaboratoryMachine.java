@@ -25,15 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum LaboratoryMachine implements IMachineType {
-    LabMachine((Class<? extends MachinePackage>) PackageLabMachine.class),
-    Analyser((Class<? extends MachinePackage>) Analyser.PackageAnalyser.class),
-    Incubator((Class<? extends MachinePackage>) Incubator.PackageIncubator.class),
-    Genepool((Class<? extends MachinePackage>) Genepool.PackageGenepool.class),
-    Acclimatiser((Class<? extends MachinePackage>) Acclimatiser.PackageAcclimatiser.class);
+    LabMachine(PackageLabMachine.class),
+    Analyser(Analyser.PackageAnalyser.class),
+    Incubator(Incubator.PackageIncubator.class),
+    Genepool(Genepool.PackageGenepool.class),
+    Acclimatiser(Acclimatiser.PackageAcclimatiser.class);
 
     Class<? extends MachinePackage> clss;
 
-    private LaboratoryMachine(final Class<? extends MachinePackage> clss) {
+    LaboratoryMachine(final Class<? extends MachinePackage> clss) {
         this.clss = clss;
     }
 
@@ -48,7 +48,7 @@ public enum LaboratoryMachine implements IMachineType {
     }
 
     public ItemStack get(final int i) {
-        return new ItemStack((Block) Genetics.packageLabMachine.getBlock(), i, this.ordinal());
+        return new ItemStack(Genetics.packageLabMachine.getBlock(), i, this.ordinal());
     }
 
     public static class PackageLabMachine extends GeneticMachine.PackageGeneticBase {
@@ -94,7 +94,7 @@ public enum LaboratoryMachine implements IMachineType {
             if (this.stack != null) {
                 this.stack.writeToNBT(nbt);
             }
-            nbttagcompound.setTag("Item", (NBTBase) nbt);
+            nbttagcompound.setTag("Item", nbt);
         }
 
         @Override
@@ -122,7 +122,7 @@ public enum LaboratoryMachine implements IMachineType {
                 entityitem.motionX = (float) this.getMachine().getWorld().rand.nextGaussian() * accel;
                 entityitem.motionY = (float) this.getMachine().getWorld().rand.nextGaussian() * accel + 0.2f;
                 entityitem.motionZ = (float) this.getMachine().getWorld().rand.nextGaussian() * accel;
-                this.getMachine().getWorld().spawnEntityInWorld((Entity) entityitem);
+                this.getMachine().getWorld().spawnEntityInWorld(entityitem);
             }
         }
 
@@ -136,7 +136,7 @@ public enum LaboratoryMachine implements IMachineType {
                     final double d3 = world.rand.nextFloat() * f + (1.0f - f) * 0.5;
                     final EntityItem entityitem = new EntityItem(world, x + d0, y + d2, z + d3, this.stack);
                     entityitem.delayBeforeCanPickup = 10;
-                    world.spawnEntityInWorld((Entity) entityitem);
+                    world.spawnEntityInWorld(entityitem);
                     this.stack = null;
                     ((IToolWrench) player.getHeldItem().getItem()).wrenchUsed(player, x, y, z);
                     this.getUtil().refreshBlock();

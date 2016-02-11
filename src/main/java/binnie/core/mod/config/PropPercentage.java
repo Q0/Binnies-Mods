@@ -13,25 +13,25 @@ public @interface PropPercentage {
 
     int lower() default 0;
 
-    public static class PropertyPercentage extends PropertyBase<Integer, PropPercentage> {
+    class PropertyPercentage extends PropertyBase<Integer, PropPercentage> {
         public PropertyPercentage(final Field field, final BinnieConfiguration file, final ConfigProperty configProperty, final PropPercentage annotedProperty) throws IllegalArgumentException, IllegalAccessException {
             super(field, file, configProperty, annotedProperty);
         }
 
         @Override
         protected Integer getConfigValue() {
-            return this.property.getInt((int) this.defaultValue);
+            return this.property.getInt(this.defaultValue);
         }
 
         @Override
         protected void addComments() {
             this.addComment("Default value is " + this.defaultValue + "%.");
-            this.addComment("Range is " + ((PropPercentage) this.annotatedProperty).lower() + "-" + ((PropPercentage) this.annotatedProperty).upper() + "%.");
+            this.addComment("Range is " + this.annotatedProperty.lower() + "-" + this.annotatedProperty.upper() + "%.");
         }
 
         @Override
         protected Property getProperty() {
-            return this.file.get(this.getCategory(), this.getKey(), (int) this.defaultValue);
+            return this.file.get(this.getCategory(), this.getKey(), this.defaultValue);
         }
     }
 }

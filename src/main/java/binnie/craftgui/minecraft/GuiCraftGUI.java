@@ -39,7 +39,7 @@ public class GuiCraftGUI extends GuiContainer {
     private ItemStack draggedItem;
 
     public GuiCraftGUI(final Window window) {
-        super((Container) window.getContainer());
+        super(window.getContainer());
         this.mousePos = new IPoint(0.0f, 0.0f);
         this.window = window;
         this.resize(window.getSize());
@@ -375,7 +375,7 @@ public class GuiCraftGUI extends GuiContainer {
             }
             GuiCraftGUI.itemRender.renderItemAndEffectIntoGUI(font, this.mc.renderEngine, item, (int) pos.x(), (int) pos.y());
             GL11.glPopMatrix();
-            GuiCraftGUI.itemRender.renderItemOverlayIntoGUI(font, this.mc.renderEngine, item, (int) pos.x(), (int) pos.y(), (String) null);
+            GuiCraftGUI.itemRender.renderItemOverlayIntoGUI(font, this.mc.renderEngine, item, (int) pos.x(), (int) pos.y(), null);
         }
         GL11.glClear(256);
         GL11.glEnable(3042);

@@ -20,7 +20,7 @@ public class CreativeTabBotany extends CreativeTabs {
     }
 
     public ItemStack getIconItemStack() {
-        return new ItemStack((Block) Blocks.red_flower, 1, 5);
+        return new ItemStack(Blocks.red_flower, 1, 5);
     }
 
     public String getTranslatedTabLabel() {
@@ -34,6 +34,6 @@ public class CreativeTabBotany extends CreativeTabs {
 
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem() {
-        return Item.getItemFromBlock((Block) Blocks.yellow_flower);
+        return Item.getItemFromBlock(Blocks.yellow_flower);
     }
 }

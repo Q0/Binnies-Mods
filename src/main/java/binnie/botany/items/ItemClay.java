@@ -32,7 +32,7 @@ public class ItemClay extends Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item p_150895_1_, final CreativeTabs p_150895_2_, final List list) {
         for (final EnumFlowerColor c : EnumFlowerColor.values()) {
-            list.add(new ItemStack((Item) this, 1, c.ordinal()));
+            list.add(new ItemStack(this, 1, c.ordinal()));
         }
     }
 

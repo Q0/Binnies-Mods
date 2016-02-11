@@ -35,7 +35,7 @@ public class ModuleAlcohol implements IInitializable {
         ModuleAlcohol.liquid = Binnie.Resource.getBlockIcon(ExtraTrees.instance, "liquids/liquid");
         ModuleAlcohol.drinkRendererID = BinnieCore.proxy.getUniqueRenderID();
         ExtraTrees.drink = new ItemDrink();
-        BinnieCore.proxy.registerCustomItemRenderer((Item) ExtraTrees.drink, (IItemRenderer) new CocktailRenderer());
+        BinnieCore.proxy.registerCustomItemRenderer(ExtraTrees.drink, new CocktailRenderer());
         Binnie.Liquid.createLiquids(Juice.values(), ItemFluidContainer.LiquidJuice);
         Binnie.Liquid.createLiquids(Alcohol.values(), ItemFluidContainer.LiquidAlcohol);
         Binnie.Liquid.createLiquids(Spirit.values(), ItemFluidContainer.LiquidSpirit);

@@ -65,7 +65,7 @@ public class Inoculator {
         if (chromosomeID >= EnumBeeChromosome.HUMIDITY.ordinal() && gene.getSpeciesRoot() instanceof IBeeRoot) {
             --chromosomeID;
         }
-        final Class<? extends IAllele> cls = (Class<? extends IAllele>) gene.getChromosome().getAlleleClass();
+        final Class<? extends IAllele> cls = gene.getChromosome().getAlleleClass();
         if (!cls.isInstance(gene.getAllele())) {
             return;
         }
@@ -283,7 +283,7 @@ public class Inoculator {
 
         public ComponentInoculatorFX(final IMachine machine) {
             super(machine);
-            this.dummyEntityItem = new EntityItem((World) null);
+            this.dummyEntityItem = new EntityItem(null);
         }
 
         @SideOnly(Side.CLIENT)
@@ -296,7 +296,7 @@ public class Inoculator {
         public void onDisplayTick(final World world, final int x, final int y, final int z, final Random rand) {
             final int tick = (int) (world.getTotalWorldTime() % 3L);
             if (tick == 0 && this.getUtil().getProcess().isInProgress()) {
-                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect((EntityFX) new EntityFX(world, x + 0.5, y + 0.92, z + 0.5, 0.0, 0.0, 0.0) {
+                BinnieCore.proxy.getMinecraftInstance().effectRenderer.addEffect(new EntityFX(world, x + 0.5, y + 0.92, z + 0.5, 0.0, 0.0, 0.0) {
                     double axisX = this.posX;
                     double axisZ = this.posZ;
                     double angle = (int) (this.worldObj.getTotalWorldTime() % 4L) * 0.5 * 3.1415;
@@ -368,7 +368,7 @@ public class Inoculator {
             final ItemStack stack = this.getUtil().getStack(9);
             if (stack != null) {
                 stack.writeToNBT(item);
-                nbt.setTag("item", (NBTBase) item);
+                nbt.setTag("item", item);
             }
         }
 

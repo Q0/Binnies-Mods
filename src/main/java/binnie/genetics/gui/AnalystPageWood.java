@@ -26,7 +26,7 @@ public class AnalystPageWood extends AnalystPageProduce {
         int y = 4;
         new ControlTextCentered(this, y, "§nWood").setColour(this.getColour());
         y += 12;
-        if (((IAlleleBoolean) ind.getGenome().getActiveAllele((IChromosomeType) EnumTreeChromosome.FIREPROOF)).getValue()) {
+        if (((IAlleleBoolean) ind.getGenome().getActiveAllele(EnumTreeChromosome.FIREPROOF)).getValue()) {
             new ControlIconDisplay(this, (this.w() - 16.0f) / 2.0f, y, ModuleItem.iconNoFire.getIcon()).addTooltip("Fireproof");
         } else {
             new ControlIconDisplay(this, (this.w() - 16.0f) / 2.0f, y, ModuleItem.iconFire.getIcon()).addTooltip("Flammable");

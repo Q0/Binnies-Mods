@@ -100,8 +100,8 @@ public class BlockETDoor extends BlockDoor implements IBlockMetadata {
         for (final DoorType type : DoorType.values()) {
             type.iconDoorLower = ExtraTrees.proxy.getIcon(register, "door." + type.id + ".lower");
             type.iconDoorUpper = ExtraTrees.proxy.getIcon(register, "door." + type.id + ".upper");
-            type.iconDoorLowerFlip = (IIcon) new IconFlipped(type.iconDoorLower, true, false);
-            type.iconDoorUpperFlip = (IIcon) new IconFlipped(type.iconDoorUpper, true, false);
+            type.iconDoorLowerFlip = new IconFlipped(type.iconDoorLower, true, false);
+            type.iconDoorUpperFlip = new IconFlipped(type.iconDoorUpper, true, false);
         }
     }
 

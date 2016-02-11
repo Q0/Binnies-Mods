@@ -63,6 +63,6 @@ public class TankInfo implements INBTTagable {
         }
         final NBTTagCompound tag = new NBTTagCompound();
         this.liquid.writeToNBT(tag);
-        nbt.setTag("liquid", (NBTBase) tag);
+        nbt.setTag("liquid", tag);
     }
 }

@@ -33,27 +33,27 @@ public class ModuleBlocks implements IInitializable {
     @Override
     public void preInit() {
         PlankType.setup();
-        ExtraTrees.blockPlanks = (Block) new BlockETPlanks();
-        ExtraTrees.blockFence = (Block) new BlockFence();
-        ExtraTrees.blockLog = (Block) new BlockETLog();
-        ExtraTrees.blockGate = (Block) new BlockGate();
-        ExtraTrees.blockDoor = (Block) new BlockETDoor();
+        ExtraTrees.blockPlanks = new BlockETPlanks();
+        ExtraTrees.blockFence = new BlockFence();
+        ExtraTrees.blockLog = new BlockETLog();
+        ExtraTrees.blockGate = new BlockGate();
+        ExtraTrees.blockDoor = new BlockETDoor();
         ExtraTrees.blockMultiFence = new BlockMultiFence();
-        ExtraTrees.blockSlab = (Block) new BlockETSlab(false);
-        ExtraTrees.blockDoubleSlab = (Block) new BlockETSlab(true);
-        ExtraTrees.blockStairs = (Block) new BlockETStairs(ExtraTrees.blockPlanks);
+        ExtraTrees.blockSlab = new BlockETSlab(false);
+        ExtraTrees.blockDoubleSlab = new BlockETSlab(true);
+        ExtraTrees.blockStairs = new BlockETStairs(ExtraTrees.blockPlanks);
         GameRegistry.registerBlock(ExtraTrees.blockPlanks, (Class) ItemMetadata.class, "planks");
         GameRegistry.registerBlock(ExtraTrees.blockFence, (Class) ItemMetadata.class, "fence");
-        GameRegistry.registerBlock((Block) ExtraTrees.blockMultiFence, (Class) ItemMetadata.class, "multifence");
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock((Block) ExtraTrees.blockMultiFence), (IItemRenderer) new ItemMetadataRenderer());
+        GameRegistry.registerBlock(ExtraTrees.blockMultiFence, (Class) ItemMetadata.class, "multifence");
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockMultiFence), new ItemMetadataRenderer());
         GameRegistry.registerBlock(ExtraTrees.blockLog, (Class) ItemMetadata.class, "log");
         GameRegistry.registerBlock(ExtraTrees.blockGate, (Class) ItemMetadata.class, "gate");
         GameRegistry.registerBlock(ExtraTrees.blockSlab, (Class) ItemETSlab.class, "slab");
         GameRegistry.registerBlock(ExtraTrees.blockDoubleSlab, (Class) ItemETSlab.class, "doubleSlab");
         GameRegistry.registerBlock(ExtraTrees.blockDoor, (Class) ItemETDoor.class, "door");
         GameRegistry.registerBlock(ExtraTrees.blockStairs, (Class) ItemETStairs.class, "stairs");
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockStairs), (IItemRenderer) new StairItemRenderer());
-        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockGate), (IItemRenderer) new GateItemRenderer());
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockStairs), new StairItemRenderer());
+        BinnieCore.proxy.registerCustomItemRenderer(Item.getItemFromBlock(ExtraTrees.blockGate), new GateItemRenderer());
         for (final ILogType plank : ILogType.ExtraTreeLog.values()) {
             OreDictionary.registerOre("logWood", plank.getItemStack());
         }
@@ -71,14 +71,14 @@ public class ModuleBlocks implements IInitializable {
     @Override
     public void init() {
         ExtraTrees.fenceID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new FenceRenderer());
+        RenderingRegistry.registerBlockHandler(new FenceRenderer());
         ExtraTrees.stairsID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new StairsRenderer());
+        RenderingRegistry.registerBlockHandler(new StairsRenderer());
         ExtraTrees.doorRenderId = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new DoorBlockRenderer());
+        RenderingRegistry.registerBlockHandler(new DoorBlockRenderer());
         ExtraTrees.branchRenderId = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new BranchBlockRenderer());
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new HedgeRenderer());
+        RenderingRegistry.registerBlockHandler(new BranchBlockRenderer());
+        RenderingRegistry.registerBlockHandler(new HedgeRenderer());
         RecipeSorter.register("extratrees:multifence", (Class) MultiFenceRecipeSize.class, RecipeSorter.Category.SHAPED, "");
         RecipeSorter.register("extratrees:multifence2", (Class) MultiFenceRecipeEmbedded.class, RecipeSorter.Category.SHAPED, "");
         RecipeSorter.register("extratrees:multifence3", (Class) MultiFenceRecipeSolid.class, RecipeSorter.Category.SHAPED, "");
@@ -91,13 +91,13 @@ public class ModuleBlocks implements IInitializable {
             final ItemStack slabs = TileEntityMetadata.getItemStack(ExtraTrees.blockSlab, plank.ordinal());
             final ItemStack stairs = TileEntityMetadata.getItemStack(ExtraTrees.blockStairs, plank.ordinal());
             stairs.stackSize = 4;
-            GameRegistry.addRecipe(stairs.copy(), new Object[]{"#  ", "## ", "###", '#', planks.copy()});
+            GameRegistry.addRecipe(stairs.copy(), "#  ", "## ", "###", '#', planks.copy());
             slabs.stackSize = 6;
-            CraftingManager.getInstance().getRecipeList().add(0, new ShapedOreRecipe(slabs.copy(), new Object[]{"###", '#', planks.copy()}));
+            CraftingManager.getInstance().getRecipeList().add(0, new ShapedOreRecipe(slabs.copy(), "###", '#', planks.copy()));
         }
-        GameRegistry.addRecipe((IRecipe) new MultiFenceRecipeSize());
-        GameRegistry.addRecipe((IRecipe) new MultiFenceRecipeEmbedded());
-        GameRegistry.addRecipe((IRecipe) new MultiFenceRecipeSolid());
+        GameRegistry.addRecipe(new MultiFenceRecipeSize());
+        GameRegistry.addRecipe(new MultiFenceRecipeEmbedded());
+        GameRegistry.addRecipe(new MultiFenceRecipeSolid());
         for (final IPlankType plank2 : WoodManager.getAllPlankTypes()) {
             final ItemStack planks2 = plank2.getStack();
             final ItemStack fenceNormal = WoodManager.getFence(plank2, new FenceType(0), 1);
@@ -111,13 +111,13 @@ public class ModuleBlocks implements IInitializable {
                     continue;
                 }
                 gate.stackSize = 1;
-                GameRegistry.addRecipe(gate.copy(), new Object[]{"fpf", 'f', fenceNormal.copy(), 'p', planks2.copy()});
+                GameRegistry.addRecipe(gate.copy(), "fpf", 'f', fenceNormal.copy(), 'p', planks2.copy());
                 fenceNormal.stackSize = 4;
-                GameRegistry.addRecipe(fenceNormal.copy(), new Object[]{"###", "# #", '#', planks2.copy()});
-                GameRegistry.addRecipe(doorSolid.copy(), new Object[]{"###", "###", "###", '#', planks2.copy()});
-                GameRegistry.addRecipe(doorStandard.copy(), new Object[]{"# #", "###", "###", '#', planks2.copy()});
-                GameRegistry.addRecipe(doorSplit.copy(), new Object[]{"# #", "###", "# #", '#', planks2.copy()});
-                GameRegistry.addRecipe(doorFull.copy(), new Object[]{"# #", "# #", "# #", '#', planks2.copy()});
+                GameRegistry.addRecipe(fenceNormal.copy(), "###", "# #", '#', planks2.copy());
+                GameRegistry.addRecipe(doorSolid.copy(), "###", "###", "###", '#', planks2.copy());
+                GameRegistry.addRecipe(doorStandard.copy(), "# #", "###", "###", '#', planks2.copy());
+                GameRegistry.addRecipe(doorSplit.copy(), "# #", "###", "# #", '#', planks2.copy());
+                GameRegistry.addRecipe(doorFull.copy(), "# #", "# #", "# #", '#', planks2.copy());
             }
         }
         this.addSqueezer(ILogType.VanillaLog.Spruce, ExtraTreeLiquid.Resin, 50);

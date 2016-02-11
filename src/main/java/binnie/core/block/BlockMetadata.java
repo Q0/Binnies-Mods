@@ -29,7 +29,7 @@ public class BlockMetadata extends BlockContainer implements IBlockMetadata {
 
     public static ArrayList<ItemStack> getBlockDropped(final IBlockMetadata block, final World world, final int x, final int y, final int z, final int blockMeta) {
         final ArrayList<ItemStack> array = new ArrayList<ItemStack>();
-        final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) world, x, y, z);
+        final TileEntityMetadata tile = TileEntityMetadata.getTile(world, x, y, z);
         if (tile != null && !tile.hasDroppedBlock()) {
             final int meta = block.getDroppedMeta(world.getBlockMetadata(x, y, z), tile.getTileMetadata());
             array.add(TileEntityMetadata.getItemStack((Block) block, meta));
@@ -40,10 +40,10 @@ public class BlockMetadata extends BlockContainer implements IBlockMetadata {
     public static boolean breakBlock(final IBlockMetadata block, final EntityPlayer player, final World world, final int i, final int j, final int k) {
         List<ItemStack> drops = new ArrayList<ItemStack>();
         final Block block2 = (Block) block;
-        final TileEntityMetadata tile = TileEntityMetadata.getTile((IBlockAccess) world, i, j, k);
+        final TileEntityMetadata tile = TileEntityMetadata.getTile(world, i, j, k);
         if (tile != null && !tile.hasDroppedBlock()) {
-            final int tileMeta = TileEntityMetadata.getTileMetadata((IBlockAccess) world, i, j, k);
-            drops = (List<ItemStack>) block2.getDrops(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
+            final int tileMeta = TileEntityMetadata.getTileMetadata(world, i, j, k);
+            drops = block2.getDrops(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
         }
         final boolean hasBeenBroken = world.setBlockToAir(i, j, k);
         if (hasBeenBroken && BinnieCore.proxy.isSimulating(world) && drops.size() > 0 && (player == null || !player.capabilities.isCreativeMode)) {

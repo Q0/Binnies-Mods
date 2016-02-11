@@ -40,7 +40,7 @@ public class ItemTrowel extends Item {
             return false;
         }
         final Block block = world.getBlock(x, y, z);
-        if (p_77648_7_ == 0 || (!world.getBlock(x, y + 1, z).isAir((IBlockAccess) world, x, y + 1, z) && world.getBlock(x, y + 1, z) != Botany.flower) || (block != Blocks.grass && block != Blocks.dirt)) {
+        if (p_77648_7_ == 0 || (!world.getBlock(x, y + 1, z).isAir(world, x, y + 1, z) && world.getBlock(x, y + 1, z) != Botany.flower) || (block != Blocks.grass && block != Blocks.dirt)) {
             return false;
         }
         final Block block2 = Botany.soil;
@@ -51,7 +51,7 @@ public class ItemTrowel extends Item {
         final EnumMoisture moisture = Gardening.getNaturalMoisture(world, x, y, z);
         final EnumAcidity acidity = Gardening.getNaturalPH(world, x, y, z);
         Gardening.createSoil(world, x, y, z, EnumSoilType.SOIL, moisture, acidity);
-        stack.damageItem(1, (EntityLivingBase) player);
+        stack.damageItem(1, player);
         return true;
     }
 

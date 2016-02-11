@@ -36,7 +36,7 @@ public class ItemInsulatedTube extends Item {
     public void getSubItems(final Item p_150895_1_, final CreativeTabs p_150895_2_, final List p_150895_3_) {
         for (final Material mat : Material.values()) {
             for (final Insulate ins : Insulate.values()) {
-                p_150895_3_.add(new ItemStack((Item) this, 1, mat.ordinal() + ins.ordinal() * 128));
+                p_150895_3_.add(new ItemStack(this, 1, mat.ordinal() + ins.ordinal() * 128));
             }
         }
     }
@@ -84,7 +84,7 @@ public class ItemInsulatedTube extends Item {
         int color;
         String name;
 
-        private Material(final int color, final String name) {
+        Material(final int color, final String name) {
             this.color = color;
             this.name = name;
         }
@@ -113,7 +113,7 @@ public class ItemInsulatedTube extends Item {
         int color;
         String name;
 
-        private Insulate(final int color, final String name) {
+        Insulate(final int color, final String name) {
             this.color = color;
             this.name = name;
         }
@@ -142,7 +142,7 @@ public class ItemInsulatedTube extends Item {
                     return new ItemStack(Blocks.hardened_clay);
                 }
                 case Sand: {
-                    return new ItemStack((Block) Blocks.sand);
+                    return new ItemStack(Blocks.sand);
                 }
                 case Sandstone: {
                     return new ItemStack(Blocks.sandstone);

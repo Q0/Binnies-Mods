@@ -78,7 +78,7 @@ public class AnalystPageSoil extends ControlAnalystPage {
                 recomPH = EnumAcidity.Alkaline;
             }
         }
-        final ItemStack stack = new ItemStack((Block) Botany.soil, 1, BlockSoil.getMeta(recomPH, recomMoisture));
+        final ItemStack stack = new ItemStack(Botany.soil, 1, BlockSoil.getMeta(recomPH, recomMoisture));
         final ControlItemDisplay recomSoil = new ControlItemDisplay(this, (this.w() - 24.0f) / 2.0f, y, 24.0f);
         recomSoil.setItemStack(stack);
         recomSoil.setTooltip();
@@ -89,7 +89,7 @@ public class AnalystPageSoil extends ControlAnalystPage {
         for (final EnumAcidity a : EnumSet.range(EnumAcidity.Acid, EnumAcidity.Alkaline)) {
             for (final EnumMoisture b : EnumSet.range(EnumMoisture.Dry, EnumMoisture.Damp)) {
                 if (Tolerance.canTolerate(pH, a, pHTol) && Tolerance.canTolerate(moisture, b, moistureTol) && (a != recomPH || b != recomMoisture)) {
-                    stacks.add(new ItemStack((Block) Botany.soil, 1, BlockSoil.getMeta(a, b)));
+                    stacks.add(new ItemStack(Botany.soil, 1, BlockSoil.getMeta(a, b)));
                 }
             }
         }

@@ -47,8 +47,8 @@ public class GardenLogic extends FarmLogic {
     public GardenLogic(final IFarmHousing housing) {
         super(housing);
         this.produce = new ArrayList<ItemStack>();
-        (this.farmables = new ArrayList<IFarmable>()).add((IFarmable) new FarmableFlower());
-        this.farmables.add((IFarmable) new FarmableVanillaFlower());
+        (this.farmables = new ArrayList<IFarmable>()).add(new FarmableFlower());
+        this.farmables.add(new FarmableVanillaFlower());
     }
 
     public int getFertilizerConsumption() {
@@ -60,7 +60,7 @@ public class GardenLogic extends FarmLogic {
     }
 
     public boolean isAcceptedResource(final ItemStack itemstack) {
-        return Gardening.isSoil(itemstack.getItem()) || itemstack.getItem() == Item.getItemFromBlock((Block) Blocks.sand) || itemstack.getItem() == Item.getItemFromBlock(Blocks.dirt) || Gardening.isAcidFertiliser(itemstack) || Gardening.isAlkalineFertiliser(itemstack);
+        return Gardening.isSoil(itemstack.getItem()) || itemstack.getItem() == Item.getItemFromBlock(Blocks.sand) || itemstack.getItem() == Item.getItemFromBlock(Blocks.dirt) || Gardening.isAcidFertiliser(itemstack) || Gardening.isAlkalineFertiliser(itemstack);
     }
 
     public Collection<ItemStack> collect() {
@@ -120,7 +120,7 @@ public class GardenLogic extends FarmLogic {
                         }
                     }
                 }
-                if (!this.isAirBlock(position) && !this.world.getBlock(position.x, position.y, position.z).isReplaceable((IBlockAccess) this.world, position.x, position.y, position.z)) {
+                if (!this.isAirBlock(position) && !this.world.getBlock(position.x, position.y, position.z).isReplaceable(this.world, position.x, position.y, position.z)) {
                     final ItemStack block = this.getAsItemStack(position);
                     final ItemStack loam = this.getAvailableLoam();
                     if (this.isWaste(block) && loam != null) {
@@ -156,7 +156,7 @@ public class GardenLogic extends FarmLogic {
     private boolean maintainWater(final int x, final int y, final int z, final ForgeDirection direction, final int extent) {
         for (int i = 0; i < extent; ++i) {
             final Vect position = this.translateWithOffset(x, y, z, direction, i);
-            if (this.isAirBlock(position) || this.world.getBlock(x, y, z).isReplaceable((IBlockAccess) this.world, position.x, position.y, position.z)) {
+            if (this.isAirBlock(position) || this.world.getBlock(x, y, z).isReplaceable(this.world, position.x, position.y, position.z)) {
                 if (!this.isWaterBlock(position)) {
                     boolean isEnclosed = true;
                     if (this.world.isAirBlock(position.x + 1, position.y, position.z)) {
@@ -212,7 +212,7 @@ public class GardenLogic extends FarmLogic {
     private boolean trySetSoil(final Vect position, ItemStack loam) {
         if (loam != null) {
             if (loam.getItem() == Item.getItemFromBlock(Blocks.dirt)) {
-                loam = new ItemStack((Block) Botany.soil, 0, 4);
+                loam = new ItemStack(Botany.soil, 0, 4);
             }
             this.setBlock(position, ((ItemBlock) loam.getItem()).field_150939_a, loam.getItemDamage());
             this.housing.getFarmInventory().removeResources(new ItemStack[]{loam});
@@ -277,7 +277,7 @@ public class GardenLogic extends FarmLogic {
     protected boolean maintainCrops(final int x, final int y, final int z, final ForgeDirection direction, final int extent) {
         for (int i = 0; i < extent; ++i) {
             final Vect position = this.translateWithOffset(x, y, z, direction, i);
-            if (this.isAirBlock(position) || this.world.getBlock(x, y, z).isReplaceable((IBlockAccess) this.world, position.x, position.y, position.z)) {
+            if (this.isAirBlock(position) || this.world.getBlock(x, y, z).isReplaceable(this.world, position.x, position.y, position.z)) {
                 final ItemStack below = this.getAsItemStack(position.add(new Vect(0, -1, 0)));
                 if (Gardening.isSoil(below.getItem())) {
                     return this.trySetCrop(position);

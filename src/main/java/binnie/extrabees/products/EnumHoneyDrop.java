@@ -44,11 +44,11 @@ public enum EnumHoneyDrop implements IItemEnum {
     String liquidName;
     ItemStack remenant;
 
-    private EnumHoneyDrop() {
+    EnumHoneyDrop() {
         this(16777215, 16777215, "");
     }
 
-    private EnumHoneyDrop(final int colour, final int colour2, final String liquid) {
+    EnumHoneyDrop(final int colour, final int colour2, final String liquid) {
         this.liquidName = "";
         this.remenant = null;
         this.deprecated = false;

@@ -65,7 +65,7 @@ public class BlockSoil extends Block implements IBlockSoil {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         for (int i = 0; i < 9; ++i) {
-            par3List.add(new ItemStack((Block) this, 1, i));
+            par3List.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -117,7 +117,7 @@ public class BlockSoil extends Block implements IBlockSoil {
             world.setBlockMetadataWithNotify(x, y, z, meta2, 2);
         }
         if (!this.weedKilled && random.nextInt(5 - this.getType(world, x, y, z).ordinal()) == 0 && world.getBlock(x, y + 1, z) == Blocks.air) {
-            world.setBlock(x, y + 1, z, (Block) Botany.plant, BlockPlant.Type.Weeds.ordinal(), 2);
+            world.setBlock(x, y + 1, z, Botany.plant, BlockPlant.Type.Weeds.ordinal(), 2);
         }
     }
 

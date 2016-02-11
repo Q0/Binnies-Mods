@@ -42,9 +42,9 @@ public abstract class WorldGenTree extends WorldGenerator {
         this.air = new BlockTypeVoid();
         this.bushiness = 0.0f;
         this.tree = tree;
-        this.spawnPods = ((ITreeGenData) tree).allowsFruitBlocks();
+        this.spawnPods = tree.allowsFruitBlocks();
         if (tree instanceof ITreeGenData) {
-            this.treeGen = (ITreeGenData) tree;
+            this.treeGen = tree;
         }
     }
 

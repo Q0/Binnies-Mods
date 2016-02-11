@@ -13,7 +13,7 @@ public class BinnieCircuitLayout implements ICircuitLayout {
     public BinnieCircuitLayout(final AbstractMod mod, final String uid) {
         this.uid = uid;
         this.mod = mod;
-        ChipsetManager.circuitRegistry.registerLayout((ICircuitLayout) this);
+        ChipsetManager.circuitRegistry.registerLayout(this);
     }
 
     public String getUID() {

@@ -109,9 +109,9 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
         for (final ItemStack item : this.indexerInventory) {
             final NBTTagCompound itemNBT = new NBTTagCompound();
             item.writeToNBT(itemNBT);
-            indexerNBT.appendTag((NBTBase) itemNBT);
+            indexerNBT.appendTag(itemNBT);
         }
-        nbttagcompound.setTag("indexer", (NBTBase) indexerNBT);
+        nbttagcompound.setTag("indexer", indexerNBT);
     }
 
     public void readFromNBT(final NBTTagCompound nbttagcompound) {
@@ -148,7 +148,7 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
             }
             this.needsSorting = false;
             ++this.guiRefreshCounter;
-            switch ((Mode) this.sortingMode) {
+            switch (this.sortingMode) {
                 case Species:
                 case Type: {
                     class SpeciesList {
@@ -188,7 +188,7 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
                         }
                     }
                     this.sortedInventory = new SetList<Integer>();
-                    switch ((Mode) this.sortingMode) {
+                    switch (this.sortingMode) {
                         case Species: {
                             for (int j = 0; j < 1024; ++j) {
                                 if (speciesList.containsKey(j)) {
@@ -241,7 +241,7 @@ public abstract class ComponentIndexerInventory<T> extends ComponentInventory im
         public enum Mode {
             None,
             Species,
-            Type;
+            Type
         }
     }
 }

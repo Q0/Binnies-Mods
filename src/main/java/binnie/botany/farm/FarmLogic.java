@@ -19,7 +19,7 @@ public abstract class FarmLogic implements IFarmLogic {
 
     public IFarmLogic setManual(final boolean flag) {
         this.isManual = flag;
-        return (IFarmLogic) this;
+        return this;
     }
 
     protected final boolean isAirBlock(final Vect position) {

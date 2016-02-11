@@ -18,7 +18,7 @@ public class MinecraftTooltip extends Tooltip {
 
     public enum Type implements ITooltipType {
         Error,
-        Warning;
+        Warning
     }
 
     private enum TypeColour {
@@ -34,7 +34,7 @@ public class MinecraftTooltip extends Tooltip {
         String mainText;
         String bodyText;
 
-        private TypeColour(final int outline, final EnumChatFormatting mainText, final EnumChatFormatting bodyText) {
+        TypeColour(final int outline, final EnumChatFormatting mainText, final EnumChatFormatting bodyText) {
             this.outline = outline;
             this.mainText = mainText.toString();
             this.bodyText = bodyText.toString();

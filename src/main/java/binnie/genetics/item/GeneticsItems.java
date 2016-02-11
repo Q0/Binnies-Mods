@@ -26,7 +26,7 @@ public enum GeneticsItems implements IItemMisc {
     String name;
     String iconPath;
 
-    private GeneticsItems(final String name, final String iconPath) {
+    GeneticsItems(final String name, final String iconPath) {
         this.name = name;
         this.iconPath = iconPath;
     }

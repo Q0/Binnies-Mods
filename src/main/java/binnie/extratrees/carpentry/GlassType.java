@@ -62,7 +62,7 @@ public class GlassType implements IDesignMaterial {
     @Override
     public ItemStack getStack() {
         if (this.id < 128) {
-            return new ItemStack((Block) Blocks.stained_glass, 1, this.id);
+            return new ItemStack(Blocks.stained_glass, 1, this.id);
         }
         return TileEntityMetadata.getItemStack(Botany.stained, this.id - 128);
     }
@@ -98,7 +98,7 @@ public class GlassType implements IDesignMaterial {
         String name;
         int colour;
 
-        private StandardColor(final String name, final int colour) {
+        StandardColor(final String name, final int colour) {
             this.name = name;
             this.colour = colour;
         }

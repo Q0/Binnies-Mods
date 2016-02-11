@@ -96,7 +96,7 @@ public class ContainerCraftGUI extends Container {
             if (inventory.dispenseOnClose(i)) {
                 ItemStack stack = inventory.getStackInSlot(i);
                 if (stack != null) {
-                    stack = new TransferRequest(stack, (IInventory) par1EntityPlayer.inventory).transfer(true);
+                    stack = new TransferRequest(stack, par1EntityPlayer.inventory).transfer(true);
                     if (stack != null) {
                         par1EntityPlayer.dropPlayerItemWithRandomChoice(stack, false);
                     }
@@ -148,9 +148,9 @@ public class ContainerCraftGUI extends Container {
         if (shiftClickedSlot.getHasStack()) {
             itemstack = shiftClickedSlot.getStack().copy();
         }
-        final IInventory playerInventory = (IInventory) player.inventory;
+        final IInventory playerInventory = player.inventory;
         final IInventory containerInventory = this.window.getInventory();
-        final IInventory windowInventory = (IInventory) this.window.getWindowInventory();
+        final IInventory windowInventory = this.window.getWindowInventory();
         final IInventory fromPlayer = (containerInventory == null) ? windowInventory : containerInventory;
         final int[] target = new int[36];
         for (int i = 0; i < 36; ++i) {
@@ -173,7 +173,7 @@ public class ContainerCraftGUI extends Container {
             return null;
         }
         ItemStack heldItem = player.inventory.getItemStack().copy();
-        heldItem = new TransferRequest(heldItem, this.window.getInventory()).setOrigin((IInventory) player.inventory).setTargetSlots(new int[0]).setTargetTanks(new int[]{slotID}).transfer(true);
+        heldItem = new TransferRequest(heldItem, this.window.getInventory()).setOrigin(player.inventory).setTargetSlots(new int[0]).setTargetTanks(new int[]{slotID}).transfer(true);
         player.inventory.setItemStack(heldItem);
         if (player instanceof EntityPlayerMP) {
             ((EntityPlayerMP) player).updateHeldItem();
@@ -239,17 +239,17 @@ public class ContainerCraftGUI extends Container {
         }
         final Map<String, NBTTagCompound> sentThisTime = new HashMap<String, NBTTagCompound>();
         for (final Map.Entry<String, NBTTagCompound> nbt : this.syncedNBT.entrySet()) {
-            nbt.getValue().setString("type", (String) nbt.getKey());
+            nbt.getValue().setString("type", nbt.getKey());
             boolean shouldSend = true;
             final NBTTagCompound lastSent = this.sentNBT.get(nbt.getKey());
             if (lastSent != null) {
-                shouldSend = !lastSent.equals((Object) nbt.getValue());
+                shouldSend = !lastSent.equals(nbt.getValue());
             }
             if (shouldSend) {
                 for (int j = 0; j < this.crafters.size(); ++j) {
                     if (this.crafters.get(j) instanceof EntityPlayerMP) {
                         final EntityPlayerMP player = (EntityPlayerMP) this.crafters.get(j);
-                        BinnieCore.proxy.sendToPlayer(new MessageContainerUpdate(nbt.getValue()), (EntityPlayer) player);
+                        BinnieCore.proxy.sendToPlayer(new MessageContainerUpdate(nbt.getValue()), player);
                     }
                 }
                 sentThisTime.put(nbt.getKey(), nbt.getValue());
@@ -431,10 +431,10 @@ public class ContainerCraftGUI extends Container {
             return this.window.getInventory();
         }
         if (type == InventoryType.Player) {
-            return (IInventory) this.window.getPlayer().inventory;
+            return this.window.getPlayer().inventory;
         }
         if (type == InventoryType.Window) {
-            return (IInventory) this.window.getWindowInventory();
+            return this.window.getWindowInventory();
         }
         return null;
     }

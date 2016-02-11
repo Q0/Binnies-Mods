@@ -154,7 +154,7 @@ public class Botany extends AbstractMod {
             if (tile instanceof TileEntityFlower) {
                 final TileEntityFlower flower = (TileEntityFlower) tile;
                 flower.onShear();
-                event.entityPlayer.getHeldItem().damageItem(1, (EntityLivingBase) event.entityPlayer);
+                event.entityPlayer.getHeldItem().damageItem(1, event.entityPlayer);
             }
         }
         if (event.entityPlayer != null && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() == Botany.pollen) {
@@ -162,8 +162,8 @@ public class Botany extends AbstractMod {
             if (tile instanceof TileEntityFlower) {
                 final TileEntityFlower flower = (TileEntityFlower) tile;
                 final IFlower pollen = BotanyCore.getFlowerRoot().getMember(event.entityPlayer.getHeldItem());
-                if (pollen != null && flower.canMateWith((IIndividual) pollen)) {
-                    flower.mateWith((IIndividual) pollen);
+                if (pollen != null && flower.canMateWith(pollen)) {
+                    flower.mateWith(pollen);
                     if (!event.entityPlayer.capabilities.isCreativeMode) {
                         final ItemStack heldItem = event.entityPlayer.getHeldItem();
                         --heldItem.stackSize;
@@ -258,7 +258,7 @@ public class Botany extends AbstractMod {
             final int z = event.z;
             final Block block = world.getBlock(x, y, z);
             int py = -1;
-            if (block instanceof IBlockSoil && (world.isAirBlock(x, y + 1, z) || world.getBlock(x, y, z).isReplaceable((IBlockAccess) world, x, y, z))) {
+            if (block instanceof IBlockSoil && (world.isAirBlock(x, y + 1, z) || world.getBlock(x, y, z).isReplaceable(world, x, y, z))) {
                 py = 1;
             }
             if (py >= 0) {

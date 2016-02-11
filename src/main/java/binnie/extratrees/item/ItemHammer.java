@@ -37,6 +37,6 @@ public class ItemHammer extends Item implements IToolHammer {
     }
 
     public void onHammerUsed(final ItemStack item, final EntityPlayer player) {
-        item.damageItem(1, (EntityLivingBase) player);
+        item.damageItem(1, player);
     }
 }

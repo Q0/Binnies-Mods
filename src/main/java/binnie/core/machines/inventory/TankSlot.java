@@ -45,7 +45,7 @@ public class TankSlot extends BaseSlot<FluidStack> {
     }
 
     public IFluidTank getTank() {
-        return (IFluidTank) this.tank;
+        return this.tank;
     }
 
     @Override

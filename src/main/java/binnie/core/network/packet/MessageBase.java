@@ -34,7 +34,7 @@ public class MessageBase {
         }
         final byte[] compressed = new byte[length];
         data.readBytes(compressed);
-        return CompressedStreamTools.readCompressed((InputStream) new ByteArrayInputStream(compressed));
+        return CompressedStreamTools.readCompressed(new ByteArrayInputStream(compressed));
     }
 
     protected void writeNBTTagCompound(final NBTTagCompound nbttagcompound, final ByteBuf data) throws IOException {

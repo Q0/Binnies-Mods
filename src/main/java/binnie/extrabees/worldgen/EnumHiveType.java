@@ -13,7 +13,7 @@ public enum EnumHiveType {
 
     public List<IHiveDrop> drops;
 
-    private EnumHiveType() {
+    EnumHiveType() {
         this.drops = new ArrayList<IHiveDrop>();
     }
 }

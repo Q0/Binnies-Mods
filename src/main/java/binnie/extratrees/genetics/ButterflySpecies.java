@@ -60,7 +60,7 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
     private Map<ItemStack, Float> butterflyLoot;
     private Map<ItemStack, Float> caterpillarLoot;
 
-    private ButterflySpecies(final String name, final String scientific, final int colour) {
+    ButterflySpecies(final String name, final String scientific, final int colour) {
         this.butterflyLoot = new HashMap<ItemStack, Float>();
         this.caterpillarLoot = new HashMap<ItemStack, Float>();
         this.name = name;
@@ -129,7 +129,7 @@ public enum ButterflySpecies implements IAlleleButterflySpecies {
 
     public IAllele[] getTemplate() {
         final IAllele[] def = this.getRoot().getDefaultTemplate().clone();
-        def[0] = (IAllele) this;
+        def[0] = this;
         return def;
     }
 

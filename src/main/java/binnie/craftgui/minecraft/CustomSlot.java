@@ -33,7 +33,7 @@ public class CustomSlot extends Slot {
     public void onSlotClick(final ContainerCraftGUI container, final int mouseButton, final int modifier, final EntityPlayer player) {
         ItemStack stack = player.inventory.getItemStack();
         if (stack == null || mouseButton == 2) {
-            this.putStack((ItemStack) null);
+            this.putStack(null);
         } else {
             stack = stack.copy();
             stack.stackSize = 1;

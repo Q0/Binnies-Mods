@@ -4,15 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public interface IInteraction {
-    public interface ChunkUnload {
+    interface ChunkUnload {
         void onChunkUnload();
     }
 
-    public interface Invalidation {
+    interface Invalidation {
         void onInvalidation();
     }
 
-    public interface RightClick {
+    interface RightClick {
         void onRightClick(final World p0, final EntityPlayer p1, final int p2, final int p3, final int p4);
     }
 }

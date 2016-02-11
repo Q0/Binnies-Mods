@@ -40,7 +40,7 @@ public class BlockETStairs extends BlockStairs implements IBlockMetadata {
 
     public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List itemList) {
         for (int i = 0; i < PlankType.ExtraTreePlanks.values().length; ++i) {
-            itemList.add(new ItemStack((Block) this, 1, i));
+            itemList.add(new ItemStack(this, 1, i));
         }
     }
 

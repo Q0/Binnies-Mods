@@ -34,16 +34,16 @@ public class AnalystPageClimate extends ControlAnalystPage {
         final EnumHumidity humid = ind.getGenome().getPrimary().getHumidity();
         EnumTolerance humidTol = EnumTolerance.NONE;
         if (ind instanceof IBee) {
-            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele((IChromosomeType) EnumBeeChromosome.TEMPERATURE_TOLERANCE)).getValue();
-            humidTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele((IChromosomeType) EnumBeeChromosome.HUMIDITY_TOLERANCE)).getValue();
+            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele(EnumBeeChromosome.TEMPERATURE_TOLERANCE)).getValue();
+            humidTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele(EnumBeeChromosome.HUMIDITY_TOLERANCE)).getValue();
         }
         if (ind instanceof IFlower) {
-            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele((IChromosomeType) EnumFlowerChromosome.TEMPERATURE_TOLERANCE)).getValue();
+            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele(EnumFlowerChromosome.TEMPERATURE_TOLERANCE)).getValue();
             humidTol = EnumTolerance.BOTH_5;
         }
         if (ind instanceof IButterfly) {
-            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele((IChromosomeType) EnumButterflyChromosome.TEMPERATURE_TOLERANCE)).getValue();
-            humidTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele((IChromosomeType) EnumButterflyChromosome.HUMIDITY_TOLERANCE)).getValue();
+            tempTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele(EnumButterflyChromosome.TEMPERATURE_TOLERANCE)).getValue();
+            humidTol = ((IAlleleTolerance) ind.getGenome().getActiveAllele(EnumButterflyChromosome.HUMIDITY_TOLERANCE)).getValue();
         }
         int y = 4;
         new ControlTextCentered(this, y, "§nClimate").setColour(this.getColour());

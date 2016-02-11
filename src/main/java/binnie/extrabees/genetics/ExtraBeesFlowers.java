@@ -33,7 +33,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
 
     boolean dominant;
 
-    private ExtraBeesFlowers() {
+    ExtraBeesFlowers() {
         this.dominant = true;
     }
 
@@ -102,7 +102,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
     }
 
     public boolean isAcceptedPollinatable(final World world, final IPollinatable pollinatable) {
-        final EnumSet<EnumPlantType> types = (EnumSet<EnumPlantType>) pollinatable.getPlantType();
+        final EnumSet<EnumPlantType> types = pollinatable.getPlantType();
         return types.size() > 1 || !types.contains(EnumPlantType.Nether);
     }
 
@@ -131,13 +131,13 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers {
                 return block == Blocks.deadbush;
             }
             case WOOD: {
-                return block.isWood((IBlockAccess) world, x, y, z);
+                return block.isWood(world, x, y, z);
             }
             case Fruit: {
                 return world.getTileEntity(x, y, z) instanceof IFruitBearer;
             }
             case LEAVES: {
-                return block.isLeaves((IBlockAccess) world, x, y, z);
+                return block.isLeaves(world, x, y, z);
             }
             case Sapling: {
                 return block.getClass().getName().toLowerCase().contains("sapling");
