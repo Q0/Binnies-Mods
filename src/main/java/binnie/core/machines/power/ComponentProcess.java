@@ -13,12 +13,12 @@ public abstract class ComponentProcess extends ComponentProcessIndefinate implem
 
     @Override
     public float getEnergyPerTick() {
-        return this.getProcessEnergy() / this.getProcessLength();
+        return (float) this.getProcessEnergy() / (float) this.getProcessLength();
     }
 
     @Override
     public float getProgressPerTick() {
-        return 100.0f / this.getProcessLength();
+        return 100.0f / (float) this.getProcessLength();
     }
 
     @Override
