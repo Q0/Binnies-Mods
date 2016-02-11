@@ -142,10 +142,10 @@ public abstract class BreedingSystem implements IItemStackRepresentitive {
                 this.allMutations.add(mutation);
                 final Set<IAlleleSpecies> participatingSpecies = new LinkedHashSet<IAlleleSpecies>();
                 if (mutation.getAllele0() instanceof IAlleleSpecies) {
-                    participatingSpecies.add((IAlleleSpecies) mutation.getAllele0());
+                    participatingSpecies.add(mutation.getAllele0());
                 }
                 if (mutation.getAllele1() instanceof IAlleleSpecies) {
-                    participatingSpecies.add((IAlleleSpecies) mutation.getAllele1());
+                    participatingSpecies.add(mutation.getAllele1());
                 }
                 for (final IAlleleSpecies species3 : participatingSpecies) {
                     this.allFurtherMutations.get(species3).add(mutation);

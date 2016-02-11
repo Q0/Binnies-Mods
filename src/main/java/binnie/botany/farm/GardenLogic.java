@@ -297,9 +297,9 @@ public class GardenLogic extends FarmLogic {
                         final IOwnable housing2 = (IOwnable) this.housing;
                         GameProfile prof = null;
                         if (Mods.Forestry.dev()) {
-                            prof = (GameProfile) IOwnable.class.getMethod("getOwner", (Class<?>[]) new Class[0]).invoke(housing2, new Object[0]);
+                            prof = (GameProfile) IOwnable.class.getMethod("getOwner", (Class<?>[]) new Class[0]).invoke(housing2);
                         } else {
-                            prof = (GameProfile) IOwnable.class.getMethod("getOwnerProfile", (Class<?>[]) new Class[0]).invoke(housing2, new Object[0]);
+                            prof = (GameProfile) IOwnable.class.getMethod("getOwnerProfile", (Class<?>[]) new Class[0]).invoke(housing2);
                         }
                         ((TileEntityFlower) tile).setOwner(prof);
                     } catch (Exception ex) {

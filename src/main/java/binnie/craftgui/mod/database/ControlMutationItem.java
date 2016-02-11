@@ -27,10 +27,10 @@ class ControlMutationItem extends ControlOption<IMutation> {
             final boolean isMutationDiscovered = system.isMutationDiscovered(this.getValue(), Window.get(this).getWorld(), Window.get(this).getUsername());
             IAlleleSpecies allele = null;
             EnumDiscoveryState state = null;
-            allele = (IAlleleSpecies) this.getValue().getAllele0();
+            allele = this.getValue().getAllele0();
             state = ((isNEI || isMutationDiscovered) ? EnumDiscoveryState.Show : ((species == allele) ? EnumDiscoveryState.Show : EnumDiscoveryState.Undetermined));
             this.itemWidget1.setSpecies(allele, state);
-            allele = (IAlleleSpecies) this.getValue().getAllele1();
+            allele = this.getValue().getAllele1();
             state = ((isNEI || isMutationDiscovered) ? EnumDiscoveryState.Show : ((species == allele) ? EnumDiscoveryState.Show : EnumDiscoveryState.Undetermined));
             this.itemWidget2.setSpecies(allele, state);
             allele = (IAlleleSpecies) this.getValue().getTemplate()[0];

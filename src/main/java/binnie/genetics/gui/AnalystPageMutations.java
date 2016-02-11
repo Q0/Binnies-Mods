@@ -115,8 +115,8 @@ public class AnalystPageMutations extends ControlAnalystPage {
                 } else {
                     new Control(this, ox + dx, (float) y, 44.0f, 16.0f) {
                         public void initialise() {
-                            final IAlleleSpecies species0 = (IAlleleSpecies) mutation.getAllele0();
-                            final IAlleleSpecies species2 = (IAlleleSpecies) mutation.getAllele1();
+                            final IAlleleSpecies species0 = mutation.getAllele0();
+                            final IAlleleSpecies species2 = mutation.getAllele1();
                             final String comb = species0.getName() + " + " + species2.getName();
                             this.addTooltip(comb);
                             String chance = AnalystPageMutations.this.getMutationColour(mutation.getBaseChance()).getCode() + (int) mutation.getBaseChance() + "% Chance";

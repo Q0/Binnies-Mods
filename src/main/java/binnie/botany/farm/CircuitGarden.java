@@ -72,7 +72,7 @@ public class CircuitGarden extends BinnieCircuit {
         }
         final GardenLogic logic = new GardenLogic((IFarmHousing) tile);
         logic.setData(this.moisture, this.acidity, this.isManual, this.isFertilised, this.icon, Binnie.Language.localise(this.getName()));
-        ((IFarmHousing) tile).setFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]), (IFarmLogic) logic); //TODO: UPD TO Forestry4
+        ((IFarmHousing) tile).setFarmLogic(FarmDirection.getFarmDirection(ForgeDirection.values()[slot + 2]), logic); //TODO: UPD TO Forestry4
     }
 
     @Override
